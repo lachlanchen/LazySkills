@@ -18,6 +18,7 @@ There is no application build step. Validate scripts directly:
 ```bash
 python3 skills/lalachan-xyq-browser-video/scripts/xyq_cdp_browser.py --help
 python3 skills/lalachan-xyq-browser-video/scripts/xyq_chrome/watch_thread_dom_download.py --help
+sed -n '1,40p' skills/lazyedit-publish-workflow/SKILL.md
 ```
 
 Check Markdown and file layout manually before committing:
@@ -28,7 +29,7 @@ find skills docs i18n -type f | sort
 
 ## Coding Style & Naming Conventions
 
-Use lowercase, hyphenated skill names, for example `lalachan-xyq-browser-video`. Shell and Python scripts must accept explicit arguments and avoid hard-coded secrets. Markdown should be concise, task-oriented, and include runnable examples when useful.
+Use lowercase, hyphenated skill names, for example `lalachan-xyq-browser-video` or `lazyedit-publish-workflow`. Shell and Python scripts must accept explicit arguments and avoid hard-coded secrets. Markdown should be concise, task-oriented, and include runnable examples when useful.
 
 ## Testing Guidelines
 

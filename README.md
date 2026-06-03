@@ -31,6 +31,7 @@ The repository is intentionally platform-neutral. A skill should be useful to Ag
 | Skill | What it does | Key tools |
 | --- | --- | --- |
 | `lalachan-xyq-browser-video` | Generates and monitors Xiaoyunque videos through the logged-in browser UI, with visible validation before paid submission. | Chrome/CDP, upload verification, prompt fill, thread watcher, MP4 download fallback |
+| `lazyedit-publish-workflow` | Publishes LazyEdit videos and AI-generated LALACHAN/RARACHAN videos through AutoPubMonitor and AutoPublish, including subtitle correction and queue monitoring. | LazyEdit CLI/API, AutoPubMonitor, `lazyingart` SSH, tmux, Shipinhao, YouTube, Instagram |
 
 ## Skill Anatomy
 
@@ -52,6 +53,7 @@ For Codex-style skill loading:
 
 ```bash
 cp -R skills/lalachan-xyq-browser-video ~/.codex/skills/
+cp -R skills/lazyedit-publish-workflow ~/.codex/skills/
 ```
 
 For other agents, point the agent at this repository or copy the relevant `skills/<name>/` folder into that agent's custom-skill directory.
@@ -63,12 +65,15 @@ The first packaged skill includes browser automation helpers. Check that they lo
 ```bash
 python3 skills/lalachan-xyq-browser-video/scripts/xyq_cdp_browser.py --help
 python3 skills/lalachan-xyq-browser-video/scripts/xyq_chrome/watch_thread_dom_download.py --help
+sed -n '1,40p' skills/lazyedit-publish-workflow/SKILL.md
 ```
 
 ## Documentation
 
 - [Platform support](docs/platform-support.md)
 - [Xiaoyunque browser video publishing](docs/xyq-browser-video-publishing.md)
+- [LazyEdit publish runbook](docs/lazyedit-publish-runbook.md)
+- [Reusable language header](i18n/language-header.md)
 
 Detailed, project-specific run logs should live in the project that produced them. LazySkills keeps only reusable procedures and general examples.
 
