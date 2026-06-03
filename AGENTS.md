@@ -19,6 +19,7 @@ There is no application build step. Validate scripts directly:
 python3 skills/lalachan-xyq-browser-video/scripts/xyq_cdp_browser.py --help
 python3 skills/lalachan-xyq-browser-video/scripts/xyq_chrome/watch_thread_dom_download.py --help
 sed -n '1,40p' skills/lazyedit-publish-workflow/SKILL.md
+test -f skills/npm-publishing/SKILL.md
 ```
 
 Check Markdown and file layout manually before committing:
