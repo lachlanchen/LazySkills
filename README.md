@@ -1,64 +1,91 @@
 # LazySkills
 
+[![Agent Skills](https://img.shields.io/badge/agent--skills-portable-6f42c1)](docs/platform-support.md)
+[![Browser Automation](https://img.shields.io/badge/browser--automation-CDP-0969da)](docs/xyq-browser-video-publishing.md)
+[![LazyingArt](https://img.shields.io/badge/LazyingArt-lazying.art-111111)](https://lazying.art)
+
 [English](README.md) · [简体中文](i18n/README.zh-CN.md) · [繁體中文](i18n/README.zh-TW.md) · [日本語](i18n/README.ja.md) · [한국어](i18n/README.ko.md) · [Français](i18n/README.fr.md) · [Español](i18n/README.es.md) · [Deutsch](i18n/README.de.md) · [Italiano](i18n/README.it.md) · [Português](i18n/README.pt-BR.md) · [Русский](i18n/README.ru.md) · [العربية](i18n/README.ar.md)
 
-Reusable AI-agent skills, browser automation notes, and production workflows by [lachlanchen](https://github.com/lachlanchen) for the LazyingArt ecosystem.
+Portable skills for agents that need to act, verify, and finish real work.
 
-LazySkills is a compact skill library for repeatable creative and engineering tasks. The first packaged skill is a browser-first Xiaoyunque video workflow for the LALACHAN series: it prepares prompts, uploads references, validates model settings, submits through Chrome/CDP, downloads protected output videos, and syncs them to local publishing folders.
+LazySkills is a reusable skill library by [lachlanchen](https://github.com/lachlanchen) for the LazyingArt ecosystem. It packages proven workflows as compact `SKILL.md` playbooks with optional scripts, references, and validation methods.
 
-## Platform Support
+## Why LazySkills
 
-LazySkills is designed to be agent-platform friendly. The skill folders, Markdown instructions, bundled scripts, and references can be adapted for AgInTi, Codex, Gemini, GitHub Copilot, Claude, and other agent harnesses that can read local files and run tools.
+Modern agents are strongest when they have reliable working memory outside the chat window: task-specific procedures, deterministic scripts, and evidence-based completion checks. LazySkills keeps those pieces organized so different agents can reuse the same operational knowledge instead of rediscovering it every session.
 
-Codex can use `SKILL.md` directly. Other agents can treat each skill folder as a portable playbook: read `SKILL.md`, call scripts from `scripts/`, and load deeper notes from `references/` only when needed.
+The repository is intentionally platform-neutral. A skill should be useful to AgInTi, Codex, Gemini, GitHub Copilot, Claude, or any local-tool agent harness that can read files and run commands.
 
-## Skills
+## Supported Agents
 
-| Skill | Purpose |
+| Platform | How to use LazySkills |
 | --- | --- |
-| `lalachan-xyq-browser-video` | Generate and monitor Xiaoyunque videos through the logged-in browser UI, avoiding API submission unless explicitly requested. |
+| AgInTi / AgInTiFlow | Import a skill folder as a custom skill or route it through a skill mesh. |
+| Codex | Copy a skill folder into a Codex skills directory and use `SKILL.md` directly. |
+| Gemini agents | Load `SKILL.md` as the workflow guide and call bundled scripts as tools. |
+| GitHub Copilot agents | Use the repo as task context plus executable helper scripts. |
+| Claude agents | Treat each skill folder as a structured playbook with validation checklists. |
 
-## Repository Layout
+## Available Skills
+
+| Skill | What it does | Key tools |
+| --- | --- | --- |
+| `lalachan-xyq-browser-video` | Generates and monitors Xiaoyunque videos through the logged-in browser UI, with visible validation before paid submission. | Chrome/CDP, upload verification, prompt fill, thread watcher, MP4 download fallback |
+
+## Skill Anatomy
 
 ```text
 skills/
-  lalachan-xyq-browser-video/
-    SKILL.md
-    scripts/
-    references/
-docs/
-  xyq-browser-video-publishing.md
-  runs/
-i18n/
+  skill-name/
+    SKILL.md        # trigger conditions and core workflow
+    scripts/        # deterministic helpers for fragile steps
+    references/     # deeper notes loaded only when needed
+docs/               # general workflow documentation
+i18n/               # localized README summaries
 ```
 
-## Use
+This structure keeps the skill itself concise while still preserving the tools and details needed for hard tasks.
 
-Copy a skill folder into a Codex-compatible skills directory, or point your agent harness at this repository.
+## Install
+
+For Codex-style skill loading:
 
 ```bash
 cp -R skills/lalachan-xyq-browser-video ~/.codex/skills/
 ```
 
-The Xiaoyunque skill expects a logged-in Chrome window with CDP enabled and uses bundled scripts such as:
+For other agents, point the agent at this repository or copy the relevant `skills/<name>/` folder into that agent's custom-skill directory.
+
+## Quick Validation
+
+The first packaged skill includes browser automation helpers. Check that they load before using them:
 
 ```bash
-skills/lalachan-xyq-browser-video/scripts/xyq_cdp_browser.py --help
-skills/lalachan-xyq-browser-video/scripts/xyq_chrome/watch_thread_dom_download.py --help
+python3 skills/lalachan-xyq-browser-video/scripts/xyq_cdp_browser.py --help
+python3 skills/lalachan-xyq-browser-video/scripts/xyq_chrome/watch_thread_dom_download.py --help
 ```
 
 ## Documentation
 
 - [Platform support](docs/platform-support.md)
 - [Xiaoyunque browser video publishing](docs/xyq-browser-video-publishing.md)
-- [2026-06-03 typhoon ping-pong shark run](docs/runs/2026-06-03-typhoon-pingpong-shark.md)
 
-## Profile
+Detailed, project-specific run logs should live in the project that produced them. LazySkills keeps only reusable procedures and general examples.
+
+## Design Principles
+
+- Keep skills small enough to load quickly.
+- Put fragile operations into scripts instead of rewriting them repeatedly.
+- Validate before claiming completion.
+- Keep API keys, cookies, browser profiles, generated videos, and private run artifacts out of the repo.
+- Prefer general methods over hard-coded one-off task state.
+
+## LazyingArt
 
 Built by Lachlan Chen for creative AI workflows across storytelling, multilingual publishing, browser agents, and practical automation.
 
 Main site: [lazying.art](https://lazying.art)  
-Shop and creative goods: [buy.lazying.art](https://buy.lazying.art)
+Creative goods: [buy.lazying.art](https://buy.lazying.art)
 
 ---
 
