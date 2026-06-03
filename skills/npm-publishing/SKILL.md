@@ -1,13 +1,31 @@
 ---
 name: npm-publishing
 description: Use when preparing, packaging, testing, publishing, or troubleshooting npm packages, including scoped packages, CLI bins, npm 2FA/web login, env-file tokens, GitHub Actions trusted publishing, provenance, and post-publish install verification.
+triggers:
+  - npm publish
+  - publish npm package
+  - package publishing
+  - npm pack
+  - npm provenance
+  - trusted publishing
+  - GitHub Actions npm publish
+  - npm 2FA
+  - npm auth
+  - npm E401
+  - npm E403
+  - temp prefix install
+tools:
+  - run_command
+  - read_file
+  - search_files
+  - apply_patch
 ---
 
 # npm Publishing
 
 ## Core Rule
 
-Never expose credentials. Do not print, paste, commit, or log npm tokens, `.npmrc`, `.env`, OTPs, cookies, recovery codes, or full auth URLs after they are consumed. Prefer verified commands and registry checks over assumptions.
+Never expose credentials. Do not print, paste, commit, or log npm tokens, `.npmrc`, `.env`, OTPs, cookies, recovery codes, or full auth URLs after they are consumed. Prefer verified commands and registry checks over assumptions. If npm prints an auth URL, open it directly for the user when possible, but do not preserve it in commits, docs, or logs.
 
 Use this skill when the user asks to make a repo installable through npm, publish a package, fix npm auth, add trusted publishing, or verify npm installation.
 
@@ -73,6 +91,15 @@ npm whoami
 
 `E404` from `npm view` means the package is not yet published. A published package needs a new version before another publish.
 
+For scoped packages, verify scope rights before assuming auth is enough:
+
+```bash
+npm org ls scope-name
+npm access list packages @scope --json
+```
+
+If the account is an org owner but the new package still returns `E404`, treat it as an initial package-creation/bootstrap issue, not a normal version publish.
+
 ## Authentication
 
 First test the current session:
@@ -87,13 +114,20 @@ If unauthenticated, use web login:
 npm login --auth-type=web
 ```
 
-If npm prints a browser URL and waits, tell the user to complete login or 2FA on a trusted device, then keep the CLI session alive. For publish-time approval, press Enter when npm asks to open the browser and wait for completion. If the auth URL expires, rerun the publish command to generate a fresh URL.
+If npm prints a browser URL and waits, tell the user to complete login or 2FA on a trusted device, then keep the CLI session alive. For publish-time approval, run the publish in a real TTY/PTTY, press Enter when npm asks to open the browser, and wait for completion:
+
+```bash
+npx -y npm@^11.10.0 publish --access public
+```
+
+Non-interactive command capture may redact npm auth URLs as `***`, making them unrecoverable after the command exits. Prefer a TTY session for web-auth publish attempts. If the auth URL expires or npm ends with `GET https://registry.npmjs.org/-/v1/done?authId=***` plus `E404`, rerun the publish command to generate a fresh auth URL.
 
 For token-based publishing, read tokens from an uncommitted env file without printing values:
 
 ```bash
-NPM_TOKEN=...
-NODE_AUTH_TOKEN=...
+# .env, not committed:
+# set NPM_TOKEN privately
+# set NODE_AUTH_TOKEN privately if your tooling expects it
 NPM_CONFIG_REGISTRY=https://registry.npmjs.org
 ```
 
@@ -101,12 +135,14 @@ Use a temporary npm config for token commands and delete it afterward:
 
 ```bash
 TMP_NPMRC="$(mktemp)"
-printf '//registry.npmjs.org/:_authToken=%s\n' "$NPM_TOKEN" > "$TMP_NPMRC"
+npm config set //registry.npmjs.org/:_authToken "$NPM_TOKEN" --userconfig "$TMP_NPMRC"
 NPM_CONFIG_USERCONFIG="$TMP_NPMRC" npm whoami
 rm -f "$TMP_NPMRC"
 ```
 
 If `whoami` returns `E401`, the token is invalid, expired, scoped incorrectly, or lacks registry access. Do not publish until auth succeeds.
+
+Do not infer token validity from token shape, length, or `npm_` prefix. Always verify with `npm whoami` through the same temporary npm config that will be used for publish.
 
 ## Publish Workflow
 
@@ -123,6 +159,8 @@ npm publish --access public --provenance
 ```
 
 If npm requires publish authentication, share only the current approval URL with the user and wait. After success, verify the registry:
+
+For a first publish of a new scoped package, npm may require one bootstrap publish by local web-auth/OTP or by a granular token with 2FA bypass. Trusted publishing cannot reliably create the first package version until npm has a package record and trusted publisher configuration.
 
 ```bash
 npm view @scope/package-name version dist.tarball --json
@@ -141,14 +179,14 @@ Report the package name, version, npm URL, install command, validation commands,
 
 ## GitHub Actions Trusted Publishing
 
-After the first package version exists, configure tokenless future releases with npm trusted publishing.
+After the first package version exists, configure tokenless future releases with npm trusted publishing. npm trust requires npm 11.10+ and the package must already exist on the registry.
 
 Workflow requirements:
 
 ```yaml
 permissions:
   contents: read
-  id-token: write
+  "id-token": write
 ```
 
 Publish job outline:
@@ -168,20 +206,30 @@ Publish job outline:
 Trusted publisher setup:
 
 ```bash
-npm install -g npm@^11.10.0
-npm trust github @scope/package-name --repo owner/repo --file npm-publish.yml
+npx -y npm@^11.10.0 trust github @scope/package-name --repo owner/repo --file npm-publish.yml --allow-publish
 ```
 
-The npm CLI may require account-level 2FA and package write access. If it returns `E400` after saying 2FA is required without opening a browser flow, configure the trusted publisher from the npm package settings page with the same package, repository, and workflow filename.
+The `--allow-publish` flag is required on current npm 11. For staged publishing, use `--allow-stage-publish` as appropriate.
+
+The npm CLI may require account-level 2FA and package write access. Like publish, run trust setup in a TTY when you need a browser-auth flow. Non-interactive output may redact the auth URL. If the CLI cannot complete setup, configure the trusted publisher from the npm package settings page with the same package, repository, and workflow filename.
+
+Run the workflow only after trust is configured:
+
+```bash
+gh workflow run npm-publish.yml --repo owner/repo
+gh run watch <run-id> --repo owner/repo --exit-status
+```
 
 ## Common Failures
 
 - `E401 Unauthorized`: login expired or token invalid; rerun `npm whoami` and refresh auth.
 - `E403 Forbidden`: account lacks package/scope rights, package name is protected, or version already exists.
 - `E404 Not Found` from `npm view`: package has not been published yet.
+- `E404 Not Found` from `npm publish` in GitHub Actions after provenance is signed: OIDC ran, but npm did not accept the package write. Common causes are missing trusted publisher configuration, attempting trusted publishing before the first package exists, or insufficient scope/package rights.
 - `EPUBLISHCONFLICT`: version already exists; bump `version` and retry after checks.
 - Expired 2FA web approval: rerun `npm publish` to get a fresh URL.
-- Trusted publishing fails before first publish: npm requires the package to exist first.
+- `npm trust github` says a permission flag is required: rerun with `--allow-publish` or `--allow-stage-publish`.
+- Trusted publishing fails before first publish: npm requires the package to exist first; bootstrap the first version locally or with a valid bypass-2FA granular token.
 
 ## Completion Check
 
