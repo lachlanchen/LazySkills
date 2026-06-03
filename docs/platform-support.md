@@ -33,3 +33,41 @@ Each skill folder is a self-contained playbook:
 ## Platform Notes
 
 Codex can install a skill folder directly into a skills directory. AgInTi can import the same folder as a custom skill or route it through its own skill mesh. Gemini, Copilot, and Claude agents can treat the folder as structured context plus tools, with the same validation checklist.
+
+## AgInTiFlow SkillMesh Install
+
+AgInTiFlow `0.20.191+` can import Codex-style `SKILL.md` files that use `name:` and `description:` frontmatter. It normalizes them to SkillMesh `id:` and `label:` metadata during import.
+
+Install one LazySkills skill as a local-reviewed enabled SkillMesh skill:
+
+```bash
+cd /home/lachlan/ProjectsLFS/Agent/AgInTiFlow
+export SKILL_PATH="/home/lachlan/ProjectsLFS/LazySkills/skills/npm-publishing/SKILL.md"
+export SKILL_ID="npm-publishing"
+node --input-type=module - <<'NODE'
+import fs from "node:fs/promises";
+import {
+  buildSkillPackFromMarkdown,
+  enableSkillMeshSkill,
+  installSkillPack,
+} from "./src/skillmesh.js";
+
+const source = process.env.SKILL_PATH;
+const skillId = process.env.SKILL_ID;
+const content = await fs.readFile(source, "utf8");
+const pack = await buildSkillPackFromMarkdown(content, { valueScore: 92 });
+await installSkillPack(pack, { enabled: true });
+await enableSkillMeshSkill(skillId, true);
+console.log(JSON.stringify({ ok: true, source, installedSkills: pack.skills.map((skill) => skill.id), packHash: pack.packHash }, null, 2));
+NODE
+```
+
+Verify discovery and routing:
+
+```bash
+aginti skillmesh status
+aginti skills "npm publishing"
+aginti skills "GitHub Actions trusted npm publishing provenance"
+```
+
+The expected result includes `npm-publishing ... source=skillmesh`.

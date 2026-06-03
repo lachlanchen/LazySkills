@@ -50,6 +50,26 @@ This structure keeps the skill itself concise while still preserving the tools a
 
 ## Install
 
+For AgInTiFlow `0.20.191+`, install a skill through SkillMesh. Example for `npm-publishing`:
+
+```bash
+cd /home/lachlan/ProjectsLFS/Agent/AgInTiFlow
+node --input-type=module - <<'NODE'
+import fs from "node:fs/promises";
+import {
+  buildSkillPackFromMarkdown,
+  enableSkillMeshSkill,
+  installSkillPack,
+} from "./src/skillmesh.js";
+
+const content = await fs.readFile("/home/lachlan/ProjectsLFS/LazySkills/skills/npm-publishing/SKILL.md", "utf8");
+const pack = await buildSkillPackFromMarkdown(content, { valueScore: 92 });
+await installSkillPack(pack, { enabled: true });
+await enableSkillMeshSkill("npm-publishing", true);
+console.log(JSON.stringify({ ok: true, installedSkills: pack.skills.map((skill) => skill.id), packHash: pack.packHash }, null, 2));
+NODE
+```
+
 For Codex-style skill loading:
 
 ```bash
@@ -69,6 +89,7 @@ python3 skills/lalachan-xyq-browser-video/scripts/xyq_cdp_browser.py --help
 python3 skills/lalachan-xyq-browser-video/scripts/xyq_chrome/watch_thread_dom_download.py --help
 sed -n '1,40p' skills/lazyedit-publish-workflow/SKILL.md
 test -f skills/npm-publishing/SKILL.md
+aginti skills "npm publishing"
 ```
 
 ## Documentation
