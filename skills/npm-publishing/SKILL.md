@@ -100,6 +100,41 @@ npm access list packages @scope --json
 
 If the account is an org owner but the new package still returns `E404`, treat it as an initial package-creation/bootstrap issue, not a normal version publish.
 
+## Smooth Local Release Helper
+
+When a repo will be published repeatedly, prefer adding a deterministic release helper instead of retyping the release sequence each time. The helper should:
+
+- require a clean git tree;
+- compute `patch`, `minor`, `major`, or exact `x.y.z` target versions;
+- reject versions already published on npm;
+- run `npm whoami`, `npm test`, and `npm pack --dry-run`;
+- update `package.json` and any lockfile;
+- commit `Release vX.Y.Z` and tag `vX.Y.Z`;
+- run `npm publish --access public` in a TTY so web/2FA approval can complete;
+- verify `npm view` and a temp-prefix global install;
+- push the release commit and tag only after publish succeeds.
+
+Expose it through package scripts:
+
+```json
+{
+  "scripts": {
+    "release:npm": "node scripts/npm-release.js",
+    "release:npm:dry-run": "node scripts/npm-release.js patch --dry-run",
+    "publish:npm:current": "node scripts/npm-release.js current"
+  }
+}
+```
+
+Typical use:
+
+```bash
+npm run release:npm:dry-run
+npm run release:npm -- patch
+```
+
+If npm auth expires after the release commit/tag is created but before publish completes, keep the same version and recover with `npm run publish:npm:current`.
+
 ## Authentication
 
 First test the current session:
@@ -209,7 +244,7 @@ Trusted publisher setup:
 npx -y npm@^11.10.0 trust github @scope/package-name --repo owner/repo --file npm-publish.yml --allow-publish
 ```
 
-The `--allow-publish` flag is required on current npm 11. For staged publishing, use `--allow-stage-publish` as appropriate.
+Some npm 11 builds require `--allow-publish`; others reject it and accept only `--repo` and `--file`. Start with the permission flag. If the CLI returns "Unknown flag: --allow-publish", retry without it. For staged publishing, use `--allow-stage-publish` only when the local help shows that flag.
 
 The npm CLI may require account-level 2FA and package write access. Like publish, run trust setup in a TTY when you need a browser-auth flow. Non-interactive output may redact the auth URL. If the CLI cannot complete setup, configure the trusted publisher from the npm package settings page with the same package, repository, and workflow filename.
 
