@@ -2,13 +2,14 @@
 
 ## Project Structure & Module Organization
 
-This repository stores reusable Codex/agent skills and workflow documentation.
+This repository stores reusable agent skills and workflow documentation for AgInTi, Codex, Gemini, GitHub Copilot, Claude, and compatible local-tool agent harnesses.
 
 - `skills/` contains installable skill folders. Each skill must include a `SKILL.md`.
 - `skills/*/scripts/` contains executable helpers bundled with a skill.
 - `skills/*/references/` contains detailed reference notes loaded only when needed.
 - `docs/` contains user-facing workflow documentation and run logs.
 - `i18n/` contains localized README files.
+- `docs/platform-support.md` explains how to adapt skills across supported agent platforms.
 
 ## Build, Test, and Development Commands
 

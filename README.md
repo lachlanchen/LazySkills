@@ -6,6 +6,12 @@ Reusable AI-agent skills, browser automation notes, and production workflows by 
 
 LazySkills is a compact skill library for repeatable creative and engineering tasks. The first packaged skill is a browser-first Xiaoyunque video workflow for the LALACHAN series: it prepares prompts, uploads references, validates model settings, submits through Chrome/CDP, downloads protected output videos, and syncs them to local publishing folders.
 
+## Platform Support
+
+LazySkills is designed to be agent-platform friendly. The skill folders, Markdown instructions, bundled scripts, and references can be adapted for AgInTi, Codex, Gemini, GitHub Copilot, Claude, and other agent harnesses that can read local files and run tools.
+
+Codex can use `SKILL.md` directly. Other agents can treat each skill folder as a portable playbook: read `SKILL.md`, call scripts from `scripts/`, and load deeper notes from `references/` only when needed.
+
 ## Skills
 
 | Skill | Purpose |
@@ -43,6 +49,7 @@ skills/lalachan-xyq-browser-video/scripts/xyq_chrome/watch_thread_dom_download.p
 
 ## Documentation
 
+- [Platform support](docs/platform-support.md)
 - [Xiaoyunque browser video publishing](docs/xyq-browser-video-publishing.md)
 - [2026-06-03 typhoon ping-pong shark run](docs/runs/2026-06-03-typhoon-pingpong-shark.md)
 
