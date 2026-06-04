@@ -1,10 +1,11 @@
+[English](README.md) · [简体中文](i18n/README.zh-CN.md) · [繁體中文](i18n/README.zh-TW.md) · [日本語](i18n/README.ja.md) · [한국어](i18n/README.ko.md) · [Français](i18n/README.fr.md) · [Español](i18n/README.es.md) · [Deutsch](i18n/README.de.md) · [Italiano](i18n/README.it.md) · [Português](i18n/README.pt-BR.md) · [Русский](i18n/README.ru.md) · [العربية](i18n/README.ar.md)
+
 # LazySkills
 
 [![Agent Skills](https://img.shields.io/badge/agent--skills-portable-6f42c1)](docs/platform-support.md)
 [![Browser Automation](https://img.shields.io/badge/browser--automation-CDP-0969da)](docs/xyq-browser-video-publishing.md)
 [![LazyingArt](https://img.shields.io/badge/LazyingArt-lazying.art-111111)](https://lazying.art)
-
-[English](README.md) · [简体中文](i18n/README.zh-CN.md) · [繁體中文](i18n/README.zh-TW.md) · [日本語](i18n/README.ja.md) · [한국어](i18n/README.ko.md) · [Français](i18n/README.fr.md) · [Español](i18n/README.es.md) · [Deutsch](i18n/README.de.md) · [Italiano](i18n/README.it.md) · [Português](i18n/README.pt-BR.md) · [Русский](i18n/README.ru.md) · [العربية](i18n/README.ar.md)
+[![GitHub Sponsors](https://img.shields.io/badge/Sponsor-lachlanchen-ea4aaa?style=for-the-badge&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/lachlanchen)
 
 Portable skills for agents that need to act, verify, and finish real work.
 
@@ -118,6 +119,10 @@ Creative goods: [buy.lazying.art](https://buy.lazying.art)
 
 ---
 
-### Support
+## Support
 
-If this repository helps your agent workflow, support the LazyingArt projects through [lazying.art](https://lazying.art) or [buy.lazying.art](https://buy.lazying.art).
+| Donate | PayPal | Stripe |
+| --- | --- | --- |
+| [![Donate](https://img.shields.io/badge/Donate-LazyingArt-0EA5E9?style=for-the-badge&logo=kofi&logoColor=white)](https://chat.lazying.art/donate) | [![PayPal](https://img.shields.io/badge/PayPal-RongzhouChen-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://paypal.me/RongzhouChen) | [![Stripe](https://img.shields.io/badge/Stripe-Donate-635BFF?style=for-the-badge&logo=stripe&logoColor=white)](https://buy.stripe.com/aFadR8gIaflgfQV6T4fw400) |
+
+[![GitHub Sponsors](https://img.shields.io/badge/Sponsor-lachlanchen-ea4aaa?style=for-the-badge&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/lachlanchen)
