@@ -21,7 +21,7 @@ Use this skill when a video face should be fully covered or replaced with a supp
 - Use one source image when the user asks for one generated/reused asset. Do not call image generation again unless explicitly requested.
 - Prefer image-overlay replacement for non-human faces. Human face-swap models such as `inswapper_128`, Roop, or FaceFusion assume human-to-human identity transfer and are usually wrong for a panda/avatar mask.
 - Preserve the original video and audio. Write a new output file; never overwrite the source.
-- Remove green, white, or other simple generated backgrounds locally and composite with alpha.
+- Remove green, white, or other simple generated backgrounds locally and composite with alpha. Key only the background connected to the image border; do not globally remove all white pixels, because that can punch holes through a panda/animal/avatar face.
 - Use accurate face detection first, then tracking or detection reuse for speed. Validate with sample frames before processing the full video.
 - For private videos, keep raw source media uncommitted and publish only intentional derived clips.
 
@@ -34,7 +34,7 @@ Use the best available detector in this order:
 - **MediaPipe Face Detector/BlazeFace**: fast, lightweight, good for real-time or mobile-like workflows.
 - **OpenCV Haar cascades**: emergency fallback only; fast but less reliable.
 
-For full replacement, enlarge the detected face box enough to cover hairline, ears, chin, and motion jitter. Start with `scale=1.8-2.2` around the face box and tune from sample frames.
+For full replacement, enlarge the detected face box enough to cover hairline, ears, chin, and motion jitter. Start with `scale=1.8-2.2` around the face box and tune from sample frames. If the user asks for "2x bigger" after a `scale=2.0` result, use `scale=4.0` and save it as a new output variant.
 
 ## Workflow
 
@@ -51,6 +51,15 @@ ffprobe -v error -show_entries format=duration -show_entries stream=codec_type,w
 - If generated, request a centered mask on a flat chroma-key background.
 - If supplied, inspect it first.
 - Remove a flat green or white background locally into `replacement_alpha.png`.
+- Use edge-connected background removal: detect the likely background color from border pixels, flood-fill or connected-component the keyed border region, and make only that border-connected region transparent. This preserves interior white/light subject regions such as a panda's face.
+
+Example asset preparation command when the local script supports it:
+
+```bash
+python face_overlay.py prepare-asset \
+  --input artifacts/face_replace/assets/replacement_generated.png \
+  --output artifacts/face_replace/assets/replacement_alpha.png
+```
 
 3. Extract representative frames and run detection:
 
@@ -96,12 +105,25 @@ python face_overlay.py process \
 
 Mux original audio back with `ffmpeg` if the processing script does not preserve it.
 
+For a larger variant, never overwrite the first output:
+
+```bash
+python face_overlay.py process \
+  --input video/source.mp4 \
+  --replacement artifacts/face_replace/assets/replacement_alpha.png \
+  --output artifacts/face_replace/output/v2_large/source_replaced_2x.mp4 \
+  --det-size 320 \
+  --detect-every 5 \
+  --scale 4.0
+```
+
 ## Practical Notes
 
 - For a static talking-head video, detecting every 5-15 frames and reusing the most recent box is usually accurate and much faster than per-frame detection.
 - For fast head movement, use a smaller `detect_every`, optical-flow tracking, or detector correction on every frame.
 - If there are multiple people, either process all faces or choose the target by area, position, or a reference face embedding.
 - If the asset has hair/fur, chroma-key removal may leave fringing. Use despill and a slight alpha feather.
+- If the subject itself contains white or background-like colors, do not use global thresholding. Use border-connected keying from the original opaque generated image, or regenerate on green screen.
 - If the overlay must match head angle, generate or prepare a small view set instead of one image; one asset cannot fully match large yaw/pitch changes.
 
 ## Validation Checklist
