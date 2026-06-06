@@ -235,6 +235,34 @@ python scripts/lazyedit_publish.py \
   --poll-seconds 10
 ```
 
+## Local Section Clip Publishing
+
+Use this path when another workflow has already created a finished section clip, such as a transcript-derived split from Audio2Text. Publish the section clip directly; do not re-split or regenerate the source video.
+
+Before publishing, gather:
+
+- Absolute clip path.
+- Suggested title from the section JSON or manifest.
+- Section time range.
+- Full transcript path, if subtitle correction or metadata needs context.
+- Split manifest path, if the user asks what the clip came from.
+
+Example direct publish for a local section clip:
+
+```bash
+python scripts/lazyedit_publish.py \
+  --video /home/lachlan/ProjectsLFS/Audio2Text/artifacts/panda_face_swap/output/v2_large_panda/sections/01_detection-decision-data-generation.mp4 \
+  --title "Detection, decision making, and automated data generation" \
+  --use-current-settings \
+  --platforms shipinhao,youtube,instagram \
+  --wait \
+  --poll-seconds 10
+```
+
+If subtitles or metadata should use the transcript context, create a temporary prompt/context file from the transcript and section notes, pass it with `--prompt-file`, and remove it after the run unless the user asks to keep it.
+
+For section clips generated from a private source, public metadata should describe only the section content. Do not mention the source recording, private processing notes, or agent workflow unless the user explicitly asks.
+
 ## Monitoring
 
 Local LazyEdit queue:
