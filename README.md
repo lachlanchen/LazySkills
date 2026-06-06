@@ -66,7 +66,7 @@ The repository is intentionally platform-neutral. A skill should be useful to Ag
 | `ocr-book-polisher` | Converts scanned or image-heavy books into corrected, publishable Markdown/TeX/PDF while preserving figures, captions, structure, and evidence checks. | OCR, page-aware Markdown, strict TOC validation, TeX/PDF compilation |
 | `pocketpolyglot-bookmaker` | Builds LinguaLeaf/PocketPolyglot-style multilingual interlinear pocket books with durable JSON, ruby/pinyin/furigana, grammar roles, and bidirectional PDFs. | EPUB/PDF extraction, chunk manifests, JSON validation, tmux workers, XeLaTeX |
 | `transcript-video-section-splitter` | Transcribes videos, derives topic-based section boundaries, and splits edited or source videos into named clips with manifests. | Whisper/WhisperX, content sections, ffmpeg, clip manifest |
-| `video-face-image-replacement` | Covers or replaces detected video faces with one supplied image asset, including keyed-background removal, face detection, tracking/reuse, and audio-preserving output. | InsightFace/SCRFD, RetinaFace/MediaPipe options, alpha compositing, ffmpeg |
+| `video-face-image-replacement` | Covers or replaces one or more detected video faces with supplied or generated image assets, including multi-person animal masks with stable identity tracking. | InsightFace/SCRFD, identity maps, RetinaFace/MediaPipe options, alpha compositing, ffmpeg |
 
 ## Skill Anatomy
 

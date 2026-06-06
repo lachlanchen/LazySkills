@@ -53,7 +53,7 @@
       "path": "skills/video-face-image-replacement/SKILL.md",
       "category": "video-editing",
       "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
-      "description": "Replace or cover detected video faces with one supplied image asset using keyed-background removal, accurate face detection, tracking or detection reuse, alpha compositing, and audio-preserving output."
+      "description": "Replace or cover one or more detected video faces with supplied or generated image assets, including multi-person animal masks with stable identity tracking, keyed-background removal, alpha compositing, and audio-preserving output."
     },
     {
       "id": "transcript-video-section-splitter",
