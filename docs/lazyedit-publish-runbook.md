@@ -35,7 +35,7 @@ Omit `--no-process` when processing should run before publishing.
 
 ## AI-Generated Video Publish
 
-Generated video scripts are reference material for subtitle correction. They help infer likely recognition errors, but the final subtitle text should still follow the actual audio and preserve timing.
+Generated video scripts are reference material for subtitle correction. They help infer likely recognition errors, but the final subtitle text should still follow the actual audio and preserve timing. Use a human middle path: do not over-edit, and do not stay too conservative when ASR is obviously abnormal, broken, strange, or mismatched with context. Read neighboring lines, check whether the sentence makes sense, compare with the audio/Whisper text and story context, then infer the most likely intended wording without inventing unsupported content.
 
 Recommended Nutstore import path:
 
@@ -159,7 +159,7 @@ Video:
 Prompt context:
 
 - `/home/lachlan/ProjectsLFS/LALACHAN/references/prompts/2026-06-06-firefly-cave-cicada-rain-duanpian-15s.md`
-- A temporary wrapper added correction guardrails: treat the script as story context, fix likely ASR errors gently, preserve timing/line structure, and generate metadata about a warm fantasy firefly-cave short.
+- A temporary wrapper added correction guardrails: treat the script as story context, use a human middle path between over-editing and under-correcting, fix likely ASR errors, preserve timing/line structure, and generate metadata about a warm fantasy firefly-cave short.
 
 Command pattern:
 
