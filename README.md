@@ -65,6 +65,8 @@ The repository is intentionally platform-neutral. A skill should be useful to Ag
 | `publish-repo` | Publishes local git repositories to GitHub with safe commit discipline, remote creation, push, homepage, description, and topic metadata. | git, GitHub CLI, repo metadata, topic sync, Codex/AgInTi handoff |
 | `ocr-book-polisher` | Converts scanned or image-heavy books into corrected, publishable Markdown/TeX/PDF while preserving figures, captions, structure, and evidence checks. | OCR, page-aware Markdown, strict TOC validation, TeX/PDF compilation |
 | `pocketpolyglot-bookmaker` | Builds LinguaLeaf/PocketPolyglot-style multilingual interlinear pocket books with durable JSON, ruby/pinyin/furigana, grammar roles, and bidirectional PDFs. | EPUB/PDF extraction, chunk manifests, JSON validation, tmux workers, XeLaTeX |
+| `transcript-video-section-splitter` | Transcribes videos, derives topic-based section boundaries, and splits edited or source videos into named clips with manifests. | Whisper/WhisperX, content sections, ffmpeg, clip manifest |
+| `video-face-image-replacement` | Covers or replaces detected video faces with one supplied image asset, including keyed-background removal, face detection, tracking/reuse, and audio-preserving output. | InsightFace/SCRFD, RetinaFace/MediaPipe options, alpha compositing, ffmpeg |
 
 ## Skill Anatomy
 
@@ -141,6 +143,8 @@ cp -R skills/npm-publishing ~/.codex/skills/
 cp -R skills/publish-repo ~/.codex/skills/
 cp -R skills/ocr-book-polisher ~/.codex/skills/
 cp -R skills/pocketpolyglot-bookmaker ~/.codex/skills/
+cp -R skills/transcript-video-section-splitter ~/.codex/skills/
+cp -R skills/video-face-image-replacement ~/.codex/skills/
 ```
 
 ### Claude, Gemini, Copilot, Generic Agents
@@ -173,6 +177,8 @@ test -f skills/publish-repo/SKILL.md
 bash -n skills/publish-repo/scripts/publish_repo.sh
 test -f skills/ocr-book-polisher/SKILL.md
 test -f skills/pocketpolyglot-bookmaker/SKILL.md
+test -f skills/transcript-video-section-splitter/SKILL.md
+test -f skills/video-face-image-replacement/SKILL.md
 aginti skills "npm publishing"
 ```
 

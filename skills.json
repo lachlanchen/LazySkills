@@ -49,6 +49,20 @@
       "description": "Transcribe audio or video into timestamped Markdown with optional WhisperX diarization, then produce neutral Markdown, LaTeX, and PDF reports without leaking private source context."
     },
     {
+      "id": "video-face-image-replacement",
+      "path": "skills/video-face-image-replacement/SKILL.md",
+      "category": "video-editing",
+      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "description": "Replace or cover detected video faces with one supplied image asset using keyed-background removal, accurate face detection, tracking or detection reuse, alpha compositing, and audio-preserving output."
+    },
+    {
+      "id": "transcript-video-section-splitter",
+      "path": "skills/transcript-video-section-splitter/SKILL.md",
+      "category": "media-clipping",
+      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "description": "Transcribe a video, derive topic-based section boundaries from the transcript, and split a source or edited video into named clips with a manifest."
+    },
+    {
       "id": "ocr-book-polisher",
       "path": "skills/ocr-book-polisher/SKILL.md",
       "category": "books",
