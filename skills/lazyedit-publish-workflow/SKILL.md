@@ -44,6 +44,26 @@ conda activate lazyedit
 
 ## Common Commands
 
+Process with a one-off context prompt, then publish:
+
+```bash
+python scripts/lazyedit_publish.py \
+  --video-id VIDEO_ID \
+  --use-current-settings \
+  --prompt-file temp/video_context.md \
+  --no-correct-subtitles \
+  --steps keyframes,caption,transcribe,polish,translate,burn,metadata_zh,metadata_en,cover \
+  --platforms shipinhao,youtube,instagram \
+  --guided-monitor \
+  --remote-log-command "ssh lachlan@lazyingart 'tmux capture-pane -pt autopub:0 -S -140 | tail -n 140'" \
+  --wait \
+  --poll-seconds 10 \
+  --process-timeout 3600 \
+  --publish-timeout 7200
+```
+
+Use this for existing videos with no subtitles yet when the user provides background context. The prompt is passed as `polish_notes` and metadata notes, so the pipeline can transcribe first and then polish/correct with context. Delete temporary prompt wrappers after the run.
+
 Publish an already finished output:
 
 ```bash
@@ -132,6 +152,88 @@ Use the LALACHAN story/prompt/script as both subtitle-correction background and 
 If the prompt needs extra guardrails, create a temporary context wrapper in `temp/`, pass it as `--prompt-file`, then delete it after the run. Do not commit temporary prompt wrappers, generated ZIPs, or runtime media.
 
 If the user requests no rerun, use `--no-process`.
+
+## Manual Subtitle Quality Pass
+
+After transcription/polish, inspect the polished subtitles before publish when the user gave precise context:
+
+```bash
+sed -n '1,180p' DATA/VIDEO_FOLDER/*_mixed_polished.md
+rg -n "bad term|broken term|ASR artifact" DATA/VIDEO_FOLDER/*_mixed_polished.*
+```
+
+Use a middle path:
+
+- Fix clear recognition errors, broken filler words, wrong objects, and wrong names.
+- Keep the conversational structure and timing.
+- Do not invent lines that are unsupported by the transcript/context.
+- If the corrected text is Chinese filler such as `嗯` or `呃...`, make sure the JSON item language is `zh`, not a stale `ja` or `en`.
+
+When hand-editing subtitles, keep `.json`, `.srt`, and `.md` aligned. Prefer the LazyEdit subtitle-correction save endpoint if it responds quickly. If it starts a duplicate transcription or times out, stop that duplicate process and use the DB recovery note below.
+
+## Recovery Notes
+
+A late duplicate Whisper run can write a newer failed `mixed` transcription row after a valid completed transcript already exists. Symptoms:
+
+- `process-status` shows `transcribe:error`.
+- Corrected `*_mixed_polished.json/.srt/.md` files exist and downstream steps may already be done.
+- A stray process like `vad_lang_subtitle.py ... --force` or `HandBrakeCLI ... _compatible.MOV` is visible in `ps`.
+
+First stop only the duplicate worker if it is clearly redundant:
+
+```bash
+ps -eo pid,ppid,cmd | rg 'vad_lang_subtitle|HandBrakeCLI|scripts/lazyedit_publish.py'
+kill PID
+```
+
+Then insert a fresh completed `mixed` row pointing at the verified corrected files so status ordering recovers:
+
+```bash
+source .env 2>/dev/null || true
+psql "${LAZYEDIT_DATABASE_URL:-${DATABASE_URL:-dbname=lazyedit_db}}" -v ON_ERROR_STOP=1 -c "
+INSERT INTO transcriptions (
+  video_id, language_code, status,
+  output_json_path, output_srt_path, output_md_path,
+  error, publication_session_id
+) VALUES (
+  VIDEO_ID, 'mixed', 'completed',
+  '/abs/path/to/VIDEO_compatible_mixed_polished.json',
+  '/abs/path/to/VIDEO_compatible_mixed_polished.srt',
+  '/abs/path/to/VIDEO_compatible_mixed_polished.md',
+  NULL, NULL
+);"
+```
+
+This is a narrow status repair, not a content rewrite. Confirm with:
+
+```bash
+psql "${LAZYEDIT_DATABASE_URL:-${DATABASE_URL:-dbname=lazyedit_db}}" -P pager=off -c \
+  "SELECT id, language_code, status, output_json_path, error, created_at
+   FROM transcriptions WHERE video_id=VIDEO_ID ORDER BY id DESC LIMIT 8;"
+```
+
+If all downstream outputs exist except cover, extract cover directly:
+
+```bash
+curl -m 180 -fsS -H 'Content-Type: application/json' \
+  -d '{"lang":"zh"}' \
+  http://127.0.0.1:18787/api/videos/VIDEO_ID/cover | jq .
+```
+
+Then publish without rerunning processing or correction:
+
+```bash
+python scripts/lazyedit_publish.py \
+  --video-id VIDEO_ID \
+  --use-current-settings \
+  --no-correct-subtitles \
+  --no-process \
+  --platforms shipinhao,youtube,instagram \
+  --guided-monitor \
+  --remote-log-command "ssh lachlan@lazyingart 'tmux capture-pane -pt autopub:0 -S -140 | tail -n 140'" \
+  --wait \
+  --poll-seconds 10
+```
 
 ## Monitoring
 
