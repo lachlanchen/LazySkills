@@ -11,6 +11,29 @@ Portable skills for agents that need to act, verify, and finish real work.
 
 LazySkills is a reusable skill library by [lachlanchen](https://github.com/lachlanchen) for the LazyingArt ecosystem. It packages proven workflows as compact `SKILL.md` playbooks with optional scripts, references, and validation methods.
 
+## Fast Start
+
+```bash
+git clone git@github.com:lachlanchen/LazySkills.git
+cd LazySkills
+python3 scripts/lazyskills.py validate
+python3 scripts/lazyskills.py list
+```
+
+Use without copying in AgInTiFlow:
+
+```bash
+export AGINTIFLOW_SKILL_PACKS="$PWD"
+aginti skills "npm publishing"
+```
+
+Install locally for Codex or Claude:
+
+```bash
+python3 scripts/lazyskills.py install --platform codex
+python3 scripts/lazyskills.py install --platform claude
+```
+
 ## Why LazySkills
 
 Modern agents are strongest when they have reliable working memory outside the chat window: task-specific procedures, deterministic scripts, and evidence-based completion checks. LazySkills keeps those pieces organized so different agents can reuse the same operational knowledge instead of rediscovering it every session.
@@ -21,11 +44,12 @@ The repository is intentionally platform-neutral. A skill should be useful to Ag
 
 | Platform | How to use LazySkills |
 | --- | --- |
-| AgInTi / AgInTiFlow | Import a skill folder as a custom skill or route it through a skill mesh. |
-| Codex | Copy a skill folder into a Codex skills directory and use `SKILL.md` directly. |
-| Gemini agents | Load `SKILL.md` as the workflow guide and call bundled scripts as tools. |
-| GitHub Copilot agents | Use the repo as task context plus executable helper scripts. |
-| Claude agents | Treat each skill folder as a structured playbook with validation checklists. |
+| AgInTi / AgInTiFlow | Prefer `AGINTIFLOW_SKILL_PACKS=/path/to/LazySkills`; copy to project `.aginti/skills/` only for project-local overrides. |
+| Codex | Install folders into `~/.codex/skills/` with `scripts/lazyskills.py install --platform codex`. |
+| Claude agents | Use `CLAUDE.md` as the repo entrypoint or copy folders into a Claude-readable skill directory. |
+| Gemini agents | Use `GEMINI.md` as the repo entrypoint and `skills.json` for skill discovery. |
+| GitHub Copilot agents | Use `.github/copilot-instructions.md` and `.github/instructions/lazyskills.instructions.md`. |
+| Generic local-tool agents | Read `skills.json`, then the selected `skills/<id>/SKILL.md`, and run bundled scripts under normal policy. |
 
 ## Available Skills
 
@@ -46,6 +70,11 @@ skills/
     SKILL.md        # trigger conditions and core workflow
     scripts/        # deterministic helpers for fragile steps
     references/     # deeper notes loaded only when needed
+skills.json         # machine-readable skill inventory
+AGENTS.md           # general/Codex-style repo instructions
+CLAUDE.md           # Claude project instructions
+GEMINI.md           # Gemini project instructions
+.github/            # Copilot instructions and sponsorship metadata
 docs/               # general workflow documentation
 i18n/               # localized README summaries
 ```
@@ -54,7 +83,25 @@ This structure keeps the skill itself concise while still preserving the tools a
 
 ## Install
 
-For AgInTiFlow `0.20.191+`, install a skill through SkillMesh. Example for `npm-publishing`:
+### AgInTiFlow
+
+Preferred no-copy external pack use:
+
+```bash
+export AGINTIFLOW_SKILL_PACKS="/home/lachlan/ProjectsLFS/LazySkills"
+aginti skills "npm publishing"
+aginti skills "PocketPolyglot"
+```
+
+Project-local copy when a single project needs pinned/customized skills:
+
+```bash
+cd /path/to/project
+python3 /home/lachlan/ProjectsLFS/LazySkills/scripts/lazyskills.py install --platform aginti --scope project npm-publishing
+aginti skills "npm publishing"
+```
+
+SkillMesh import still works when you want reviewed/enabled SkillMesh copies. Example for `npm-publishing`:
 
 ```bash
 cd /home/lachlan/ProjectsLFS/Agent/AgInTiFlow
@@ -74,7 +121,13 @@ console.log(JSON.stringify({ ok: true, installedSkills: pack.skills.map((skill) 
 NODE
 ```
 
-For Codex-style skill loading:
+### Codex
+
+```bash
+python3 scripts/lazyskills.py install --platform codex
+```
+
+Manual equivalent:
 
 ```bash
 cp -R skills/lalachan-xyq-browser-video ~/.codex/skills/
@@ -85,13 +138,27 @@ cp -R skills/ocr-book-polisher ~/.codex/skills/
 cp -R skills/pocketpolyglot-bookmaker ~/.codex/skills/
 ```
 
-For other agents, point the agent at this repository or copy the relevant `skills/<name>/` folder into that agent's custom-skill directory.
+### Claude, Gemini, Copilot, Generic Agents
+
+- Claude: start from `CLAUDE.md`, then selected `skills/<id>/SKILL.md`.
+- Gemini: start from `GEMINI.md`, then `skills.json`, then selected `SKILL.md`.
+- GitHub Copilot: repository instructions live in `.github/copilot-instructions.md` and `.github/instructions/lazyskills.instructions.md`.
+- Generic agents: use `skills.json` as the index and keep skill folder structure intact.
+
+For folder-copy agents:
+
+```bash
+python3 scripts/lazyskills.py install --platform claude
+python3 scripts/lazyskills.py install --platform generic --dest ./agent-skills npm-publishing
+```
 
 ## Quick Validation
 
 Check browser automation helpers and skill file layout before using them:
 
 ```bash
+python3 scripts/lazyskills.py validate
+python3 scripts/lazyskills.py list --json
 python3 skills/lalachan-xyq-browser-video/scripts/xyq_cdp_browser.py --help
 python3 skills/lalachan-xyq-browser-video/scripts/xyq_chrome/watch_thread_dom_download.py --help
 sed -n '1,40p' skills/lazyedit-publish-workflow/SKILL.md

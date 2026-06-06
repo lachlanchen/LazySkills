@@ -7,15 +7,19 @@ This repository stores reusable agent skills and workflow documentation for AgIn
 - `skills/` contains installable skill folders. Each skill must include a `SKILL.md`.
 - `skills/*/scripts/` contains executable helpers bundled with a skill.
 - `skills/*/references/` contains detailed reference notes loaded only when needed.
+- `skills.json` is the machine-readable skill inventory and must stay synchronized with `skills/`.
 - `docs/` contains user-facing workflow documentation and run logs.
 - `i18n/` contains localized README files.
 - `docs/platform-support.md` explains how to adapt skills across supported agent platforms.
+- `CLAUDE.md`, `GEMINI.md`, and `.github/copilot-instructions.md` are platform adapters, not canonical skill bodies.
 
 ## Build, Test, and Development Commands
 
 There is no application build step. Validate scripts directly:
 
 ```bash
+python3 scripts/lazyskills.py validate
+python3 scripts/lazyskills.py list --json
 python3 skills/lalachan-xyq-browser-video/scripts/xyq_cdp_browser.py --help
 python3 skills/lalachan-xyq-browser-video/scripts/xyq_chrome/watch_thread_dom_download.py --help
 sed -n '1,40p' skills/lazyedit-publish-workflow/SKILL.md
@@ -32,6 +36,8 @@ find skills docs i18n -type f | sort
 ## Coding Style & Naming Conventions
 
 Use lowercase, hyphenated skill names, for example `lalachan-xyq-browser-video` or `lazyedit-publish-workflow`. Shell and Python scripts must accept explicit arguments and avoid hard-coded secrets. Markdown should be concise, task-oriented, and include runnable examples when useful.
+
+When adding a skill, update `skills.json` and keep frontmatter `name` equal to the folder name. Use `description` as the primary routing text because most platforms see it before the body.
 
 ## Testing Guidelines
 

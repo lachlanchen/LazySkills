@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "1.0",
+  "name": "LazySkills",
+  "description": "Portable agent skills by Lachlan Chen for AgInTiFlow, Codex, Claude, Gemini, GitHub Copilot, and compatible local-tool agents.",
+  "homepage": "https://github.com/lachlanchen/LazySkills",
+  "skillsRoot": "skills",
+  "platformEntrypoints": {
+    "general": "AGENTS.md",
+    "codex": "AGENTS.md",
+    "claude": "CLAUDE.md",
+    "gemini": "GEMINI.md",
+    "copilot": ".github/copilot-instructions.md",
+    "aginti": "docs/platform-support.md"
+  },
+  "skills": [
+    {
+      "id": "lalachan-xyq-browser-video",
+      "path": "skills/lalachan-xyq-browser-video/SKILL.md",
+      "category": "browser-video",
+      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "description": "Prepare, generate, monitor, download, and publish LALACHAN Xiaoyunque videos through the logged-in browser UI with evidence checks."
+    },
+    {
+      "id": "lazyedit-publish-workflow",
+      "path": "skills/lazyedit-publish-workflow/SKILL.md",
+      "category": "publishing",
+      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "description": "Publish LazyEdit and LALACHAN/RARACHAN videos through LazyEdit, AutoPubMonitor, AutoPublish, and platform queues."
+    },
+    {
+      "id": "npm-publishing",
+      "path": "skills/npm-publishing/SKILL.md",
+      "category": "release-engineering",
+      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "description": "Prepare, publish, and verify npm packages, including token-safe local auth, 2FA, trusted publishing, provenance, and install smoke tests."
+    },
+    {
+      "id": "media-transcription-report",
+      "path": "skills/media-transcription-report/SKILL.md",
+      "category": "media-reporting",
+      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "description": "Transcribe audio or video into timestamped Markdown with optional WhisperX diarization, then produce neutral Markdown, LaTeX, and PDF reports without leaking private source context."
+    },
+    {
+      "id": "ocr-book-polisher",
+      "path": "skills/ocr-book-polisher/SKILL.md",
+      "category": "books",
+      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "description": "Correct scanned/OCR books into page-aware Markdown, booklike TeX, and validated PDFs while preserving figures, captions, and TOC structure."
+    },
+    {
+      "id": "pocketpolyglot-bookmaker",
+      "path": "skills/pocketpolyglot-bookmaker/SKILL.md",
+      "category": "multilingual-books",
+      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "description": "Build LinguaLeaf/PocketPolyglot multilingual interlinear books with JSON chunks, ruby/pinyin/furigana, grammar roles, and bidirectional PDFs."
+    }
+  ]
+}
