@@ -82,6 +82,20 @@
       "category": "agent-collaboration",
       "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
       "description": "Coordinate multiple agent sessions across machines, repos, tools, and runtimes using safe handoff packets, peer identity maps, private session mirrors, status probes, and action contracts."
+    },
+    {
+      "id": "kv260-metavision-lab",
+      "path": "skills/kv260-metavision-lab/SKILL.md",
+      "category": "embedded-vision",
+      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "description": "Operate and maintain the AMD Kria KV260 Prophesee Metavision lab, including PetaLinux desktop launchers, custom event viewer, recording API, native viewer recovery, Windows X11 control center, and file-transfer GUI."
+    },
+    {
+      "id": "kv260-windows-arduino",
+      "path": "skills/kv260-windows-arduino/SKILL.md",
+      "category": "embedded-control",
+      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "description": "Coordinate KV260 Prophesee event recording with the Windows host and USB Arduino light controller, including LAN identity, COM-port checks, recording API use, repo context, and cross-session handoff memory."
     }
   ]
 }

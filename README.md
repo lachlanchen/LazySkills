@@ -68,6 +68,8 @@ The repository is intentionally platform-neutral. A skill should be useful to Ag
 | `transcript-video-section-splitter` | Transcribes videos, derives topic-based section boundaries, and splits edited or source videos into named clips with manifests. | Whisper/WhisperX, content sections, ffmpeg, clip manifest |
 | `video-face-image-replacement` | Covers or replaces one or more detected video faces with supplied or generated image assets, including multi-person animal masks with stable identity tracking. | InsightFace/SCRFD, identity maps, RetinaFace/MediaPipe options, alpha compositing, ffmpeg |
 | `aginti-agentlink` | Coordinates multiple agent sessions across machines, repos, tools, hardware, and APIs using safe handoffs and action contracts. | peer maps, handoff packets, private session mirrors, status probes, evidence bundles |
+| `kv260-metavision-lab` | Operates and maintains the AMD Kria KV260 + Prophesee Metavision lab, including desktop launchers, custom viewer, recording API, native viewer recovery, Windows X11 control center, and file transfer. | PetaLinux, Prophesee, Metavision, V4L2, X11/Matchbox, SSH X11, event recording |
+| `kv260-windows-arduino` | Coordinates KV260 event recording with the Windows host and USB Arduino light controller, including LAN identity, COM-port checks, future Arduino APIs, and cross-session handoffs. | KV260 API, Windows SSH, Arduino CLI, COM ports, DualLampHI, private session mirrors |
 
 ## Skill Anatomy
 
@@ -147,6 +149,8 @@ cp -R skills/pocketpolyglot-bookmaker ~/.codex/skills/
 cp -R skills/transcript-video-section-splitter ~/.codex/skills/
 cp -R skills/video-face-image-replacement ~/.codex/skills/
 cp -R skills/aginti-agentlink ~/.codex/skills/
+cp -R skills/kv260-metavision-lab ~/.codex/skills/
+cp -R skills/kv260-windows-arduino ~/.codex/skills/
 ```
 
 ### Claude, Gemini, Copilot, Generic Agents
@@ -181,6 +185,14 @@ test -f skills/ocr-book-polisher/SKILL.md
 test -f skills/pocketpolyglot-bookmaker/SKILL.md
 test -f skills/transcript-video-section-splitter/SKILL.md
 test -f skills/video-face-image-replacement/SKILL.md
+test -f skills/aginti-agentlink/SKILL.md
+test -f skills/kv260-metavision-lab/SKILL.md
+test -f skills/kv260-windows-arduino/SKILL.md
+bash -n skills/kv260-metavision-lab/scripts/kv260_metavision_probe.sh
+bash -n skills/kv260-windows-arduino/scripts/fetch-windows-codex-session.sh
+bash -n skills/kv260-windows-arduino/scripts/kv260-lab-status.sh
+bash -n skills/kv260-windows-arduino/scripts/kv260-record-once.sh
+bash -n skills/kv260-windows-arduino/scripts/windows-arduino-probe.sh
 aginti skills "npm publishing"
 ```
 

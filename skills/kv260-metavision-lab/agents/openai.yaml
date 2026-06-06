@@ -1,0 +1,4 @@
+interface:
+  display_name: "KV260 Metavision Lab"
+  short_description: "KV260 Prophesee viewer, recorder, desktop, and control center"
+  default_prompt: "Use the KV260 Metavision Lab skill to inspect the board state, operate or recover the Prophesee event camera viewer, manage recording API workflows, maintain desktop launchers, and coordinate Windows X11 control-center access."
