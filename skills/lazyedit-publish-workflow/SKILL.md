@@ -39,6 +39,8 @@ conda activate lazyedit
 - Only `--persist-settings` writes CLI options back to the webapp preferences.
 - `--languages` is bottom-to-top subtitle order.
 - Use polished/corrected subtitles for real publishes and debug publishes unless the user explicitly requests original subtitles.
+- Burn the existing LazyEdit webapp logo on real publishes unless the user explicitly says no logo. Use the configured Studio logo; do not upload or invent a new asset.
+- Required logo state is `enabled: true`, `logoPath` present, and `position: "top-left"`. Check it before CLI/API publishes with `curl -fsS http://127.0.0.1:18787/api/ui-settings/logo_settings | jq .`.
 - `--no-process` reuses an already completed output. Use it when the user says "last run", "same version", or "already finished run".
 - `--publication-session-id ID` targets a specific run. Omit it for the current output.
 
@@ -108,6 +110,8 @@ python scripts/lazyedit_publish.py \
 ```
 
 Use `--guided-monitor` when the user wants less manual supervision. It prints heartbeat progress during blocking subtitle correction, follows the local LazyEdit queue, checks the remote AutoPublish queue, and can periodically tail the Pi `autopub` tmux log. It should not restart services by itself; diagnose first, then intervene only when the queue reports failure or the logs show a clear stall.
+
+If a processed output includes subtitles, confirm the final video path or subtitle-burn config has the logo overlay applied. Normal logo outputs end in `_subtitles_logo.mp4`.
 
 Override languages for one run without changing Studio defaults:
 
