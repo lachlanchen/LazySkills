@@ -10,6 +10,9 @@ triggers:
   - panda red panda horse cow giraffe
   - identity animal mapping
   - face identity tracking video
+  - keyframe rgb mask propagation
+  - aginti mask grid
+  - feature matching identity propagation
   - face overlay video
   - face mask compositing
   - swap face with avatar
@@ -31,6 +34,7 @@ For multi-person animal masking, see `references/multi-person-animal-masks.md` f
 - Preserve the original video and audio. Write a new output file; never overwrite the source.
 - Remove green, white, or other simple generated backgrounds locally and composite with alpha. Key only the background connected to the image border; do not globally remove all white pixels, because that can punch holes through a panda/animal/avatar face.
 - Use accurate face detection first, then tracking or detection reuse for speed. For multiple people, persist identity-to-animal assignments in `identity_map.json` and reuse that file for rerenders and section clips.
+- For difficult multi-person videos, use keyframe RGB identity masks as a bootstrap: color each person consistently on selected keyframes, parse the masks, then propagate IDs with video object segmentation, optical flow, feature matching, face embeddings, or person tracking.
 - Use user-provided or source-provided girl/boy labels only as style direction. If no label is provided, default to neutral styling or store automatic analysis only as a private `style_hint` with confidence; do not publish it as a factual gender claim.
 - Validate with sample frames before processing the full video. For multiple people, create a contact sheet showing representative crops, `track_id`, animal, and style before the final render.
 - For private videos, keep raw source media uncommitted and publish only intentional derived clips.
@@ -47,6 +51,8 @@ Use the best available detector in this order:
 For full replacement, enlarge the detected face box enough to cover hairline, ears, chin, and motion jitter. Start with `scale=1.8-2.2` around the face box and tune from sample frames. If the user asks for "2x bigger" after a `scale=2.0` result, use `scale=4.0` and save it as a new output variant.
 
 For multiple people, match detections to tracks by combining face-embedding cosine similarity, bounding-box IoU, and center-distance motion. Keep lost tracks alive for short occlusions. Add ByteTrack or DeepSORT only if face-only tracking shows identity switches in validation.
+
+If the user proposes AgInTi-generated keyframe masks, use that as an annotation/bootstrap layer, not as a per-frame renderer. The local `aginti image` CLI may only expose text-to-image generation; for masks from actual frames, use an image-edit/chat surface that can see the uploaded keyframe grid, then validate the returned mask mechanically.
 
 ## Workflow
 
@@ -155,6 +161,17 @@ python animal_face_overlay.py process \
   }
 }
 ```
+
+For keyframe RGB mask bootstrapping, create a grid of selected frames and a layout JSON, ask AgInTi or another image-edit model for a same-size PNG mask with black background plus person colors, then split and threshold it:
+
+```text
+person_1: #ff0000 -> panda
+person_2: #00ff00 -> red_panda
+person_3: #0000ff -> horse
+background: #000000
+```
+
+Use the colored masks to attach face detections and embeddings to stable person IDs. For intermediate frames, continue using face/head boxes for animal placement; use propagated person masks only to preserve identity through crossings, occlusion, or missed face detections.
 
 ## Practical Notes
 

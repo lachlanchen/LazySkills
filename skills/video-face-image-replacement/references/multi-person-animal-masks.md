@@ -8,6 +8,7 @@ Use this reference when one video contains multiple people and each person shoul
 - **Face-only identity association first**: combine embedding similarity, bounding-box IoU, and center distance. This is usually enough for talking-head or light-motion videos.
 - **ByteTrack or DeepSORT only when needed**: add a person-level tracker if faces disappear, people cross, or identity switches appear in sample clips.
 - **SAM 2 only for hard compositing**: use it when masks must respect hands, props, occlusions, or full head/body segmentation. For ordinary face-cover overlays, alpha PNGs on tracked boxes are faster.
+- **Keyframe RGB masks for difficult 2-3 person videos**: use AgInTi or another image-edit/vision model to create sparse color-coded identity masks, then propagate those IDs with video object segmentation, optical flow, feature matching, face embeddings, or person tracking.
 - **Persistent `identity_map.json`**: store `track_id -> animal/style/asset` and reuse it for full renders, 2x variants, and section splits.
 
 ## Identity Tracking
@@ -49,6 +50,34 @@ cost = 0.35 * (1 - IoU(track_box, detection_box))
 ```
 
 Use Hungarian assignment when multiple tracks and detections exist in the same frame. Keep lost tracks alive for `30-90` frames so short occlusions do not create a new animal identity.
+
+## AgInTi Keyframe RGB Mask Bootstrap
+
+Use this when face-only tracking is likely to switch identities, especially with two or three people crossing, occluding, or entering/leaving.
+
+Workflow:
+
+1. Extract keyframes around identity-risk moments: first all-visible frame, shot boundaries, before/after crossing, before/after occlusion, new person entry, low face confidence, and every `5-15` seconds as fallback.
+2. Tile selected frames into grids and save a layout JSON with each cell's frame index and coordinates.
+3. Use an AgInTi image-edit/chat surface or another vision model to return a same-size PNG mask grid. The local `aginti image` CLI may only expose text-to-image generation, so do not assume it can take the keyframe grid as image input unless the installed version documents that feature.
+4. Prompt for exact colors: `person_1=#ff0000`, `person_2=#00ff00`, `person_3=#0000ff`, background `#000000`; no labels, no redraw, no antialias halos.
+5. Split the returned mask by the layout JSON, threshold pixels to the nearest palette color, clean connected components, and reject masks with wrong dimensions or unexpected colors.
+6. Attach face detections to colored person IDs by face-box center inside the person mask or by highest mask IoU; save embeddings per person.
+7. Propagate IDs between keyframes with SAM 2/Cutie/XMem when available, or short-range optical flow and feature matching when a lightweight CPU path is enough.
+8. Use propagated person IDs to choose the animal, but use face/head boxes for overlay placement unless doing full-body replacement.
+
+Prompt skeleton:
+
+```text
+Given this keyframe grid, output a segmentation mask PNG with exactly the same pixel dimensions.
+Use solid black (#000000) for background and all non-person areas.
+Fill person 1 with pure red (#ff0000), person 2 with pure green (#00ff00), and person 3 with pure blue (#0000ff).
+Use the same color for the same person in every grid cell.
+Do not redraw the scene. Do not add text, labels, shadows, gradients, or decorative elements.
+Return the mask only.
+```
+
+This is an annotation/bootstrap method. Do not call image generation for every frame.
 
 ## Animal Assignment
 
@@ -120,6 +149,13 @@ Before the full render:
 - ByteTrack implementation: `https://github.com/FoundationVision/ByteTrack`
 - DeepSORT paper: `https://arxiv.org/abs/1703.07402`
 - SAM 2 official page: `https://ai.meta.com/sam2/`
+- XMem paper: `https://arxiv.org/abs/2207.07115`
+- Cutie paper: `https://arxiv.org/abs/2310.12982`
+- RAFT optical flow paper: `https://arxiv.org/abs/2003.12039`
+- OpenCV Lucas-Kanade optical flow tutorial: `https://docs.opencv.org/4.x/d4/dee/tutorial_optical_flow.html`
+- OpenCV feature matching tutorial: `https://docs.opencv.org/4.x/dc/dc3/tutorial_py_matcher.html`
+- SuperGlue paper: `https://arxiv.org/abs/1911.11763`
+- LoFTR paper: `https://arxiv.org/abs/2104.00680`
 - DeepFace package: `https://pypi.org/project/deepface/`
 - FairFace paper: `https://arxiv.org/abs/1908.04913`
 - Gender Shades paper: `https://proceedings.mlr.press/v81/buolamwini18a.html`
