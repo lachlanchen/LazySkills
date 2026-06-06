@@ -25,14 +25,15 @@ import websocket
 
 STATUS_RE = (
     r"(排队等待中|优先处理中|生成中|大约还需\s*\d+\s*分钟|还需\s*\d+\s*分钟|"
-    r"下载|完成|失败|内部错误|"
+    r"下载|完成|生成失败|任务失败|内部错误|"
     r"积分不足|余额不足|审核|合规|开会员加速|重新生成)"
 )
 
 PROBE_JS = rf"""
 (() => {{
   const text = document.body ? (document.body.innerText || '') : '';
-  const status = (text.match(/{STATUS_RE}/g) || []).slice(-100);
+  const tail = text.slice(-2500);
+  const status = (tail.match(/{STATUS_RE}/g) || []).slice(-100);
   const videos = [...document.querySelectorAll('video')].map((v, i) => ({{
     i,
     src: v.currentSrc || v.src || '',
@@ -63,7 +64,7 @@ PROBE_JS = rf"""
     videos,
     anchors,
     resources,
-    tail: text.slice(-1200)
+    tail
   }};
 }})()
 """
@@ -145,6 +146,63 @@ def download(url: str, output: Path) -> None:
             handle.write(chunk)
 
 
+def browser_fetch_info(page: CdpPage, url: str) -> dict[str, Any]:
+    expression = f"""
+(async () => {{
+  try {{
+    const response = await fetch({json.dumps(url)}, {{credentials: 'include'}});
+    return {{
+      ok: response.ok,
+      status: response.status,
+      type: response.headers.get('content-type') || '',
+      length: response.headers.get('content-length') || ''
+    }};
+  }} catch (error) {{
+    return {{ok: false, error: String(error)}};
+  }}
+}})()
+"""
+    return page.eval(expression)
+
+
+def trigger_browser_blob_download(page: CdpPage, url: str, filename: str) -> dict[str, Any]:
+    expression = f"""
+(async () => {{
+  try {{
+    const response = await fetch({json.dumps(url)}, {{credentials: 'include'}});
+    if (!response.ok) return {{ok: false, status: response.status}};
+    const blob = await response.blob();
+    const objectUrl = URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.href = objectUrl;
+    anchor.download = {json.dumps(filename)};
+    document.body.appendChild(anchor);
+    anchor.click();
+    setTimeout(() => {{
+      URL.revokeObjectURL(objectUrl);
+      anchor.remove();
+    }}, 5000);
+    return {{ok: true, size: blob.size, type: blob.type}};
+  }} catch (error) {{
+    return {{ok: false, error: String(error)}};
+  }}
+}})()
+"""
+    return page.eval(expression)
+
+
+def wait_for_browser_download(filename: str, min_bytes: int, timeout: float = 120) -> Path | None:
+    downloads = Path.home() / "Downloads"
+    deadline = time.time() + timeout
+    path = downloads / filename
+    partial = downloads / f"{filename}.crdownload"
+    while time.time() < deadline:
+        if path.exists() and path.stat().st_size >= min_bytes and not partial.exists():
+            return path
+        time.sleep(1)
+    return None
+
+
 def ffprobe(path: Path) -> str:
     if not shutil.which("ffprobe"):
         return ""
@@ -213,6 +271,8 @@ def main() -> int:
             continue
 
         try:
+            if poll == 1:
+                page.eval("performance.clearResourceTimings(); true")
             if time.time() - last_reload > args.reload_every:
                 page.navigate(args.thread_url)
                 last_reload = time.time()
@@ -244,6 +304,7 @@ def main() -> int:
             for video in videos
             if video.get("src") and not str(video.get("src")).startswith("blob:")
         ]
+        video_srcs = set(urls)
         if urls or "下载" in status:
             urls.extend(data.get("anchors") or [])
             urls.extend(data.get("resources") or [])
@@ -255,6 +316,38 @@ def main() -> int:
             content_type, content_length = head_type(url)
             print(f"candidate: {content_type} {content_length} {url[:180]}", flush=True)
             if content_type.startswith("ERR:") or content_type.startswith("text/html"):
+                if url in video_srcs:
+                    try:
+                        info = browser_fetch_info(page, url)
+                    except Exception as exc:  # noqa: BLE001 - keep trying other candidates.
+                        print(f"browser fetch probe failed: {type(exc).__name__}: {exc}", flush=True)
+                        continue
+                    print(f"browser fetch: {json.dumps(info, ensure_ascii=False)}", flush=True)
+                    if info.get("ok") and "video" in str(info.get("type", "")).lower():
+                        download_name = f"{output.stem}.browser.{int(time.time())}{output.suffix}"
+                        try:
+                            triggered = trigger_browser_blob_download(page, url, download_name)
+                        except Exception as exc:  # noqa: BLE001 - keep trying other candidates.
+                            print(f"browser download trigger failed: {type(exc).__name__}: {exc}", flush=True)
+                            continue
+                        print(f"browser download trigger: {json.dumps(triggered, ensure_ascii=False)}", flush=True)
+                        if not triggered.get("ok"):
+                            continue
+                        downloaded = wait_for_browser_download(download_name, args.min_bytes)
+                        if not downloaded:
+                            print(f"browser download not found: {download_name}", flush=True)
+                            continue
+                        shutil.copy2(downloaded, output)
+                        probe = ffprobe(output)
+                        if probe:
+                            print(probe, flush=True)
+                        for folder in args.copy_to:
+                            folder.mkdir(parents=True, exist_ok=True)
+                            target = folder / output.name
+                            shutil.copy2(output, target)
+                            print(f"copied: {target}", flush=True)
+                        print(f"DONE output={output}", flush=True)
+                        return 0
                 continue
             if "video" not in content_type.lower() and ".mp4" not in url.lower():
                 continue

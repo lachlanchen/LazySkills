@@ -97,6 +97,7 @@ aginti skills "npm publishing"
 
 - [Platform support](docs/platform-support.md)
 - [Xiaoyunque browser video publishing](docs/xyq-browser-video-publishing.md)
+- [Smooth Xiaoyunque video generation runbook](skills/lalachan-xyq-browser-video/references/smooth-video-generation-runbook.md)
 - [LazyEdit publish runbook](docs/lazyedit-publish-runbook.md)
 - [Reusable language header](i18n/language-header.md)
 

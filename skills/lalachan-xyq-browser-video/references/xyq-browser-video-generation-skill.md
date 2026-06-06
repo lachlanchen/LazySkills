@@ -29,6 +29,34 @@ scripts/xyq_cdp_browser.py bring-to-front PAGE_ID
 scripts/xyq_cdp_browser.py visible PAGE_ID
 ```
 
+## Chrome Startup And Blank-Page Recovery
+
+Before using any Xiaoyunque browser helper, confirm the controlled Chrome
+endpoint is really alive:
+
+```bash
+curl -fsS http://127.0.0.1:9222/json/list
+```
+
+If Chrome is visibly open but `9222` refuses connections, the tab is not the
+controlled CDP browser. Start the controlled profile again before filling or
+uploading; do not rely on a normal Chrome window.
+
+If `list-pages` works but the Xiaoyunque page appears blank, infinitely loading,
+or `visible PAGE_ID` returns `[]`, recover the same tab by re-entering the URL.
+This is equivalent to clicking the address bar, pressing `Ctrl+L`, then pressing
+`Enter`. In CDP form:
+
+```bash
+scripts/xyq_cdp_browser.py navigate PAGE_ID \
+  "https://xyq.jianying.com/home?tab_name=integrated-agent"
+sleep 8
+scripts/xyq_cdp_browser.py visible PAGE_ID
+```
+
+Avoid opening a new tab for this recovery. The same-tab address reload is the
+reliable fix for the Xiaoyunque blank-loading state.
+
 ## Standard Short Video Contract
 
 For ordinary LALACHAN short videos:
@@ -36,6 +64,7 @@ For ordinary LALACHAN short videos:
 - Mode: `沉浸式短片`.
 - Model: `Seedance 2.0 Fast`, normal/non-VIP unless explicitly requested.
 - Duration: `15s`.
+- Ratio: `4:3` unless explicitly requested otherwise.
 - Language: mainly Chinese, with short English/Japanese phrases only if useful.
 - Prompt must include: `不要字幕，不要生成任何字幕、说明文字、下三分之一文字或画面文字。`
 
@@ -63,7 +92,8 @@ Use `Trio.png` as the role identity reference:
 4. Select `沉浸式短片`.
 5. Select `Seedance 2.0 Fast`, not VIP, unless the user asks for VIP.
 6. Set duration to `15秒`; current UI may use a slider.
-7. Upload and verify the five images:
+7. Set ratio to `4:3`; open the ratio menu or take a screenshot if the compact toolbar only shows `比例`.
+8. Upload and verify the five images:
 
 ```bash
 scripts/xyq_cdp_browser.py upload-images-verify PAGE_ID \
@@ -75,14 +105,14 @@ scripts/xyq_cdp_browser.py upload-images-verify PAGE_ID \
   --screenshot outputs/xyq-run/after-upload.png
 ```
 
-8. Fill prompt with user-like typing:
+9. Fill prompt with user-like typing:
 
 ```bash
 scripts/xyq_cdp_browser.py type-prompt PAGE_ID references/prompts/YYYY-MM-DD-topic-submit-15s.md
 ```
 
-9. Verify page state before submit: mode, model, duration, prompt, five filenames.
-10. Submit only if requested. Record thread URL, page id, screenshot, and charged credits.
+10. Verify page state before submit: mode, model, ratio, duration, prompt, five filenames.
+11. Submit only if requested. Record thread URL, page id, screenshot, and charged credits.
 
 ## Watch Flow
 
@@ -108,6 +138,16 @@ tail -80 outputs/xyq-run/watch.log
 ```
 
 The watcher can see `排队等待中`, `优先处理中`, `生成中`, and `下载`. Direct media URLs can be protected and may return `403`; this is normal.
+When the active `video.currentSrc` fails through direct HTTP but browser-context
+`fetch(..., {credentials: 'include'})` returns `200 video/mp4`, the watcher can
+trigger an in-page blob download, wait for the file in `~/Downloads`, and copy
+it to the requested output path.
+
+For the recent lessons and exact failure modes, see:
+
+```text
+references/smooth-video-generation-runbook.md
+```
 
 ## Manual Download Fallback
 

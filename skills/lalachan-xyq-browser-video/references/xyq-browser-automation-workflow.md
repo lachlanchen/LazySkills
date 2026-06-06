@@ -308,10 +308,13 @@ This is useful for inspection, but CDP is the preferred method for robust prompt
 ## Recommended Future Workflow
 
 1. Launch 小云雀 with `scripts/xyq_chrome/launch_chrome.sh`.
-2. Log in once in that controlled profile if needed.
-3. Use `scripts/xyq_chrome/xyq_cdp.py --state` to confirm the page and editable fields.
-4. Use `--fill-prompt-file` to fill generated prompts.
-5. Submit manually or add an explicit submit helper only after verifying the send button selector on the page.
+2. Confirm `http://127.0.0.1:9222/json/list` responds. If it does not, the visible Chrome is not the controlled driver browser.
+3. Log in once in that controlled profile if needed.
+4. If the Xiaoyunque page is blank or `visible PAGE_ID` returns no usable text, recover the same tab by re-entering the address (`Ctrl+L`, `Enter`) or by CDP `navigate` to the same URL. Do not open a new tab for this.
+5. Use `scripts/xyq_chrome/xyq_cdp.py --state` to confirm the page and editable fields.
+6. For standard LALACHAN short videos, verify the ratio menu is set to `4:3`; the compact toolbar may only show `比例`.
+7. Use `--fill-prompt-file` to fill generated prompts.
+8. Submit manually or add an explicit submit helper only after verifying the send button selector on the page.
 
 For reference-video generation through the API and browser driver together, use:
 

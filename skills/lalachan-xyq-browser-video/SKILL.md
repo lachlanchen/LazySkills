@@ -22,6 +22,7 @@ Load detailed references only when needed:
 ```text
 references/xyq-browser-video-generation-skill.md
 references/xyq-browser-automation-workflow.md
+references/smooth-video-generation-runbook.md
 ```
 
 ## LALACHAN Defaults
@@ -50,6 +51,7 @@ Default short-video setup:
 Mode: 沉浸式短片
 Model: Seedance 2.0 Fast normal/non-VIP, or Seedance 2.0 normal/non-VIP for lower credit budgets
 Duration: 15s
+Ratio: 4:3 unless the user requests otherwise
 Prompt language: mainly Chinese
 Always include: 不要字幕，不要生成任何字幕、说明文字、下三分之一文字或画面文字。
 ```
@@ -115,6 +117,8 @@ scripts/xyq_chrome/watch_thread_dom_download.py \
 ```
 
 Protected `everphoto` URLs may fail from unauthenticated direct HTTP. First test browser-context fetch with `--await-promise`; if it returns `200 video/mp4`, pull the active `video.currentSrc` from the page and download with browser-like `Referer` and `User-Agent` headers.
+The bundled watcher can now use this same browser-context path by triggering an
+in-page blob download and copying the downloaded MP4 from `~/Downloads`.
 
 ## Completion Check
 
