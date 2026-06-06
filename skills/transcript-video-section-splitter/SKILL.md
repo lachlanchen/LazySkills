@@ -9,6 +9,8 @@ triggers:
   - content based video clips
   - Whisper video sections
   - split panda face video
+  - split edited video as before
+  - reuse section JSON for new video
   - generate section clips from transcript
 ---
 
@@ -20,9 +22,11 @@ Use this skill when the user wants a long video divided into meaningful content 
 
 - Transcribe first; do not guess section boundaries from duration alone.
 - Keep the original media unchanged. Split from a derived edited video when the user asks to section that edited version.
+- If the user asks to split a regenerated or edited variant "as before", reuse the existing section JSON only when the variant preserves the same timeline and final duration.
 - Use topic changes, long pauses, repeated framing phrases, and concrete action shifts to set boundaries.
 - Store section boundaries in durable JSON before cutting clips.
 - Preserve audio and avoid unnecessary re-encoding when exact keyframe cuts are acceptable; re-encode when frame-accurate starts matter.
+- Write variant clips to a variant-specific folder such as `artifacts/.../v2/sections/` so older split outputs are not overwritten.
 - Keep private or raw transcripts separate when the clips or section summaries will be published.
 
 ## Recommended Layout
@@ -103,12 +107,56 @@ ffmpeg -y -ss 12.000 -i edited_video.mp4 -t 48.000 \
 
 Write a `manifest.json` with clip index, title, start, end, duration, and path.
 
+When a helper script already exists, prefer it over hand-running many `ffmpeg` commands. For example:
+
+```bash
+python3 split_video_by_sections.py \
+  --input artifacts/edited_variant/source_edited.mp4 \
+  --sections text/source_sections.json \
+  --output-dir artifacts/edited_variant/sections \
+  --reencode \
+  --overwrite
+```
+
+For a new edited variant that shares the same transcript timeline:
+
+1. Probe the variant duration with `ffprobe`.
+2. Confirm it matches the section JSON final end time, allowing only normal container padding.
+3. Reuse the previous `text/*_sections.json`.
+4. Save clips under the variant output folder.
+5. Validate every clip with `ffprobe` for both video and audio streams.
+
+Validation helper:
+
+```bash
+python3 - <<'PY'
+import json, subprocess
+from pathlib import Path
+manifest = json.loads(Path('artifacts/edited_variant/sections/manifest.json').read_text())
+print('clips', len(manifest))
+for item in manifest:
+    path = Path(item['path'])
+    probe = json.loads(subprocess.check_output([
+        'ffprobe', '-v', 'error',
+        '-show_entries', 'format=duration,size',
+        '-show_entries', 'stream=codec_type',
+        '-of', 'json',
+        str(path),
+    ], text=True))
+    types = [s['codec_type'] for s in probe['streams']]
+    fmt = probe['format']
+    print(f"{item['index']:02d} {float(fmt['duration']):8.3f}s {int(fmt['size'])/1024/1024:7.1f} MB {types} {path.name}")
+PY
+```
+
 ## Validation Checklist
 
 - Transcript exists and includes timestamps.
 - Section JSON covers the full intended duration without overlap or gaps.
 - Section titles and summaries are content-based and neutral.
 - Clips exist, play, and preserve audio.
+- Reused section JSON is timeline-compatible with the edited variant.
+- Variant clips are written to a new folder rather than overwriting previous clips.
 - Manifest matches the generated clip filenames.
 - At least the first, middle, and final clips are spot-checked.
 - Generated sections are derived from transcript content, not private chat context.
