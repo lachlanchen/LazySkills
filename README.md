@@ -62,6 +62,7 @@ The repository is intentionally platform-neutral. A skill should be useful to Ag
 | `lazyedit-publish-workflow` | Publishes LazyEdit videos and AI-generated LALACHAN/RARACHAN videos through AutoPubMonitor and AutoPublish, including subtitle correction and queue monitoring. | LazyEdit CLI/API, AutoPubMonitor, `lazyingart` SSH, tmux, Shipinhao, YouTube, Instagram |
 | `media-transcription-report` | Transcribes audio or video into timestamped Markdown with optional WhisperX speaker diarization, then turns transcripts or source notes into neutral third-person Markdown/TeX/PDF reports. | Whisper, WhisperX, ffmpeg, speaker diarization, Markdown, XeLaTeX/PDF compilation |
 | `npm-publishing` | Packages, publishes, and verifies npm packages while handling 2FA, token files, trusted publishing, and install smoke tests safely. | npm, GitHub Actions OIDC, temp `.npmrc`, registry verification |
+| `publish-repo` | Publishes local git repositories to GitHub with safe commit discipline, remote creation, push, homepage, description, and topic metadata. | git, GitHub CLI, repo metadata, topic sync, Codex/AgInTi handoff |
 | `ocr-book-polisher` | Converts scanned or image-heavy books into corrected, publishable Markdown/TeX/PDF while preserving figures, captions, structure, and evidence checks. | OCR, page-aware Markdown, strict TOC validation, TeX/PDF compilation |
 | `pocketpolyglot-bookmaker` | Builds LinguaLeaf/PocketPolyglot-style multilingual interlinear pocket books with durable JSON, ruby/pinyin/furigana, grammar roles, and bidirectional PDFs. | EPUB/PDF extraction, chunk manifests, JSON validation, tmux workers, XeLaTeX |
 
@@ -137,6 +138,7 @@ cp -R skills/lalachan-xyq-browser-video ~/.codex/skills/
 cp -R skills/lazyedit-publish-workflow ~/.codex/skills/
 cp -R skills/media-transcription-report ~/.codex/skills/
 cp -R skills/npm-publishing ~/.codex/skills/
+cp -R skills/publish-repo ~/.codex/skills/
 cp -R skills/ocr-book-polisher ~/.codex/skills/
 cp -R skills/pocketpolyglot-bookmaker ~/.codex/skills/
 ```
@@ -167,6 +169,8 @@ python3 skills/lalachan-xyq-browser-video/scripts/xyq_chrome/watch_thread_dom_do
 sed -n '1,40p' skills/lazyedit-publish-workflow/SKILL.md
 test -f skills/media-transcription-report/SKILL.md
 test -f skills/npm-publishing/SKILL.md
+test -f skills/publish-repo/SKILL.md
+bash -n skills/publish-repo/scripts/publish_repo.sh
 test -f skills/ocr-book-polisher/SKILL.md
 test -f skills/pocketpolyglot-bookmaker/SKILL.md
 aginti skills "npm publishing"
@@ -179,6 +183,7 @@ aginti skills "npm publishing"
 - [Xiaoyunque browser video publishing](docs/xyq-browser-video-publishing.md)
 - [Smooth Xiaoyunque video generation runbook](skills/lalachan-xyq-browser-video/references/smooth-video-generation-runbook.md)
 - [LazyEdit publish runbook](docs/lazyedit-publish-runbook.md)
+- [Publish repo skill handoff](docs/publish-repo-skill-handoff.md)
 - [Reusable language header](i18n/language-header.md)
 
 Detailed, project-specific run logs should live in the project that produced them. LazySkills keeps only reusable procedures and general examples.

@@ -35,6 +35,13 @@
       "description": "Prepare, publish, and verify npm packages, including token-safe local auth, 2FA, trusted publishing, provenance, and install smoke tests."
     },
     {
+      "id": "publish-repo",
+      "path": "skills/publish-repo/SKILL.md",
+      "category": "release-engineering",
+      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "description": "Publish a local git repository to GitHub from Codex or AgInTi, including README/resource checks, safe commit discipline, remote creation, push, homepage, description, and topics."
+    },
+    {
       "id": "media-transcription-report",
       "path": "skills/media-transcription-report/SKILL.md",
       "category": "media-reporting",
