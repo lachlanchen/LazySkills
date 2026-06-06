@@ -4,12 +4,15 @@
 
 [![Agent Skills](https://img.shields.io/badge/agent--skills-portable-6f42c1)](docs/platform-support.md)
 [![Browser Automation](https://img.shields.io/badge/browser--automation-CDP-0969da)](docs/xyq-browser-video-publishing.md)
+[![Website](https://img.shields.io/badge/website-lachlanchen.github.io%2FLazySkills-1e6b4d)](https://lachlanchen.github.io/LazySkills/)
 [![LazyingArt](https://img.shields.io/badge/LazyingArt-lazying.art-111111)](https://lazying.art)
 [![GitHub Sponsors](https://img.shields.io/badge/Sponsor-lachlanchen-ea4aaa?style=for-the-badge&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/lachlanchen)
 
 Portable skills for agents that need to act, verify, and finish real work.
 
 LazySkills is a reusable skill library by [lachlanchen](https://github.com/lachlanchen) for the LazyingArt ecosystem. It packages proven workflows as compact `SKILL.md` playbooks with optional scripts, references, and validation methods.
+
+Website: [lachlanchen.github.io/LazySkills](https://lachlanchen.github.io/LazySkills/)
 
 ## Fast Start
 
@@ -171,6 +174,7 @@ aginti skills "npm publishing"
 
 ## Documentation
 
+- [LazySkills website source](website/)
 - [Platform support](docs/platform-support.md)
 - [Xiaoyunque browser video publishing](docs/xyq-browser-video-publishing.md)
 - [Smooth Xiaoyunque video generation runbook](skills/lalachan-xyq-browser-video/references/smooth-video-generation-runbook.md)

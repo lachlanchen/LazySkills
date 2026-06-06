@@ -2,7 +2,7 @@
   "schemaVersion": "1.0",
   "name": "LazySkills",
   "description": "Portable agent skills by Lachlan Chen for AgInTiFlow, Codex, Claude, Gemini, GitHub Copilot, and compatible local-tool agents.",
-  "homepage": "https://github.com/lachlanchen/LazySkills",
+  "homepage": "https://lachlanchen.github.io/LazySkills/",
   "skillsRoot": "skills",
   "platformEntrypoints": {
     "general": "AGENTS.md",

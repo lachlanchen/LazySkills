@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <meta
+      name="description"
+      content="LazySkills is the portable skill library for LazyingArt agents, creative automation, publishing, books, browser workflows, and evidence-based task completion."
+    >
+    <title>LazySkills | LazyingArt Agent Skills</title>
+    <link rel="icon" href="assets/lazyingart-logo.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <nav class="nav-shell" aria-label="Primary navigation">
+        <a class="brand" href="https://lazying.art" aria-label="LazyingArt home">
+          <img src="assets/lazyingart-logo.svg" alt="LazyingArt logo">
+        </a>
+        <div class="nav-links">
+          <a href="#skills">Skills</a>
+          <a href="#ecosystem">Ecosystem</a>
+          <a href="#install">Install</a>
+          <a href="#support">Support</a>
+        </div>
+        <a class="nav-cta" href="https://github.com/lachlanchen/LazySkills">GitHub</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">LazyingArt skill library</p>
+          <h1>Portable agent skills for real creative and scientific work.</h1>
+          <p class="hero-lede">
+            LazySkills packages reusable workflows as compact, evidence-first
+            <code>SKILL.md</code> playbooks that AgInTiFlow, Codex, Claude, Gemini,
+            GitHub Copilot, and local-tool agents can all read.
+          </p>
+          <div class="hero-actions" aria-label="Main actions">
+            <a class="button primary" href="#install">Install LazySkills</a>
+            <a class="button ghost" href="#ecosystem">Explore the ecosystem</a>
+          </div>
+        </div>
+        <aside class="hero-card" aria-label="LazySkills summary">
+          <div class="signal-ring">
+            <span>6</span>
+            <small>skills</small>
+          </div>
+          <dl class="hero-stats">
+            <div>
+              <dt>Primary runtime</dt>
+              <dd>AgInTiFlow</dd>
+            </div>
+            <div>
+              <dt>Works with</dt>
+              <dd>Codex, Claude, Gemini, Copilot</dd>
+            </div>
+            <div>
+              <dt>Design rule</dt>
+              <dd>Act, verify, finish</dd>
+            </div>
+          </dl>
+        </aside>
+      </section>
+
+      <section class="language-strip" aria-label="Readme languages">
+        <a href="https://github.com/lachlanchen/LazySkills/blob/main/README.md">English</a>
+        <a href="https://github.com/lachlanchen/LazySkills/blob/main/i18n/README.zh-CN.md">zh-CN</a>
+        <a href="https://github.com/lachlanchen/LazySkills/blob/main/i18n/README.zh-TW.md">zh-TW</a>
+        <a href="https://github.com/lachlanchen/LazySkills/blob/main/i18n/README.ja.md">ja</a>
+        <a href="https://github.com/lachlanchen/LazySkills/blob/main/i18n/README.ko.md">ko</a>
+        <a href="https://github.com/lachlanchen/LazySkills/blob/main/i18n/README.fr.md">fr</a>
+        <a href="https://github.com/lachlanchen/LazySkills/blob/main/i18n/README.es.md">es</a>
+        <a href="https://github.com/lachlanchen/LazySkills/blob/main/i18n/README.de.md">de</a>
+        <a href="https://github.com/lachlanchen/LazySkills/blob/main/i18n/README.it.md">it</a>
+        <a href="https://github.com/lachlanchen/LazySkills/blob/main/i18n/README.pt-BR.md">pt-BR</a>
+        <a href="https://github.com/lachlanchen/LazySkills/blob/main/i18n/README.ru.md">ru</a>
+        <a href="https://github.com/lachlanchen/LazySkills/blob/main/i18n/README.ar.md">ar</a>
+      </section>
+
+      <section class="section-intro" id="skills">
+        <p class="eyebrow">Skill shelf</p>
+        <h2>Reusable work units, not one-off chat memory.</h2>
+        <p>
+          Each skill keeps the operational knowledge close to the deterministic
+          checks that prove the work finished. The folders stay portable so they
+          can be mounted into different agent runtimes without flattening the repo.
+        </p>
+      </section>
+
+      <section class="skill-grid" aria-label="LazySkills cards">
+        <article class="skill-card">
+          <span class="card-index">01</span>
+          <h3>LALACHAN Xiaoyunque browser video</h3>
+          <p>
+            Prepare, generate, monitor, download, and publish Xiaoyunque videos
+            through the logged-in browser UI with visible evidence checks.
+          </p>
+          <div class="tag-row">
+            <span>CDP</span><span>video</span><span>browser</span>
+          </div>
+        </article>
+
+        <article class="skill-card featured">
+          <span class="card-index">02</span>
+          <h3>LazyEdit publish workflow</h3>
+          <p>
+            Connects LazyEdit, AutoPubMonitor, AutoPublish, subtitle correction,
+            platform queues, and remote publish monitoring into one durable flow.
+          </p>
+          <div class="tag-row">
+            <span>LazyEdit</span><span>AutoPublish</span><span>queue</span>
+          </div>
+        </article>
+
+        <article class="skill-card">
+          <span class="card-index">03</span>
+          <h3>Media transcription report</h3>
+          <p>
+            Turns audio or video into timestamped Markdown, optional diarization,
+            neutral third-person reports, TeX, and PDF deliverables.
+          </p>
+          <div class="tag-row">
+            <span>Whisper</span><span>Markdown</span><span>PDF</span>
+          </div>
+        </article>
+
+        <article class="skill-card">
+          <span class="card-index">04</span>
+          <h3>NPM publishing</h3>
+          <p>
+            Handles package checks, token-safe publishing, 2FA, trusted publishing,
+            provenance, registry checks, and post-publish install verification.
+          </p>
+          <div class="tag-row">
+            <span>npm</span><span>release</span><span>CI</span>
+          </div>
+        </article>
+
+        <article class="skill-card">
+          <span class="card-index">05</span>
+          <h3>OCR book polisher</h3>
+          <p>
+            Converts scanned books into corrected Markdown, booklike TeX, and
+            validated PDFs while preserving figures, captions, and TOC structure.
+          </p>
+          <div class="tag-row">
+            <span>OCR</span><span>books</span><span>TeX</span>
+          </div>
+        </article>
+
+        <article class="skill-card">
+          <span class="card-index">06</span>
+          <h3>PocketPolyglot bookmaker</h3>
+          <p>
+            Builds multilingual interlinear pocket books with JSON chunks,
+            ruby, pinyin, furigana, grammar roles, and bidirectional PDFs.
+          </p>
+          <div class="tag-row">
+            <span>language</span><span>JSON</span><span>books</span>
+          </div>
+        </article>
+      </section>
+
+      <section class="workflow-band" aria-label="How LazySkills connects products">
+        <div>
+          <p class="eyebrow">How it connects</p>
+          <h2>Skills sit between intent, agents, and finished artifacts.</h2>
+        </div>
+        <ol class="flow-steps">
+          <li><strong>Prompt or project data</strong><span>User intent, source files, media, experiments.</span></li>
+          <li><strong>LazySkills</strong><span>Task-specific methods and validation contracts.</span></li>
+          <li><strong>AgInTiFlow or AAPS</strong><span>Agent execution, structured workflows, tool use.</span></li>
+          <li><strong>Products</strong><span>LazyEdit, AutoPublish, LazyBlog, books, reports.</span></li>
+        </ol>
+      </section>
+
+      <section class="section-intro" id="ecosystem">
+        <p class="eyebrow">LazyingArt ecosystem</p>
+        <h2>Related products and where LazySkills fits.</h2>
+        <p>
+          LazySkills is not a standalone app. It is the reusable knowledge layer
+          that helps the surrounding LazyingArt tools behave consistently across
+          writing, media, publishing, automation, and scientific workflows.
+        </p>
+      </section>
+
+      <section class="ecosystem-grid" aria-label="LazyingArt products">
+        <a class="product-card anchor-card" href="https://flow.lazying.art">
+          <span>Agent runtime</span>
+          <h3>AgInTiFlow</h3>
+          <p>Project-aware agent workspace for hybrid R&amp;D, software automation, media tasks, and long-running supervised work.</p>
+        </a>
+        <a class="product-card" href="https://aaps.lazying.art">
+          <span>Workflow language</span>
+          <h3>AAPS</h3>
+          <p>Prompt-native structured workflows that parse, compile, run, and verify declared outputs.</p>
+        </a>
+        <a class="product-card" href="https://studio.lazying.art/">
+          <span>Video editing</span>
+          <h3>LazyEdit</h3>
+          <p>AI-assisted auto-caption, transcription, highlights, metadata, subtitles, and video editing workflows.</p>
+        </a>
+        <a class="product-card" href="https://github.com/lachlanchen/AutoPublish">
+          <span>Publishing</span>
+          <h3>AutoPublish</h3>
+          <p>Script-first, browser-driven multi-platform short-video publishing with queue and platform automation workflows.</p>
+        </a>
+        <a class="product-card" href="https://github.com/lachlanchen/AutoPubMonitor">
+          <span>Queue monitor</span>
+          <h3>AutoPubMonitor</h3>
+          <p>File monitoring and synchronization for the AutoPublication system, especially watched video handoff folders.</p>
+        </a>
+        <a class="product-card" href="https://blog.lazying.art">
+          <span>Publishing toolkit</span>
+          <h3>LazyBlog</h3>
+          <p>Markdown publishing, translation, and WordPress workflows for multilingual articles and documentation.</p>
+        </a>
+        <a class="product-card" href="https://learn.lazying.art">
+          <span>Language books</span>
+          <h3>PocketPolyglot</h3>
+          <p>Pocket-size interlinear books for language learning, with aligned text and grammar-aware layouts.</p>
+        </a>
+        <a class="product-card" href="https://router.lazying.art">
+          <span>Model routing</span>
+          <h3>LazyingRouter</h3>
+          <p>Private AI API gateway for user keys, credits, provider routing, and upstream model aggregation.</p>
+        </a>
+        <a class="product-card" href="https://earn.lazying.art">
+          <span>Research refinery</span>
+          <h3>LazyEarn</h3>
+          <p>Research-driven money, business, finance, and decision-making guide with living book outputs.</p>
+        </a>
+      </section>
+
+      <section class="install-panel" id="install">
+        <div>
+          <p class="eyebrow">Install</p>
+          <h2>Use as a repo, a skill pack, or a platform-specific install.</h2>
+          <p>
+            The default path keeps the skill folders intact. AgInTiFlow can mount
+            the repo directly; Codex, Claude, and generic agents can copy selected
+            skills into their local skill directories.
+          </p>
+        </div>
+        <div class="code-stack">
+          <pre><code>git clone git@github.com:lachlanchen/LazySkills.git
+cd LazySkills
+python3 scripts/lazyskills.py validate
+python3 scripts/lazyskills.py list</code></pre>
+          <pre><code>export AGINTIFLOW_SKILL_PACKS="$PWD"
+aginti skills "npm publishing"</code></pre>
+          <pre><code>python3 scripts/lazyskills.py install --platform codex
+python3 scripts/lazyskills.py install --platform claude</code></pre>
+        </div>
+      </section>
+
+      <section class="platform-panel">
+        <p class="eyebrow">Agent compatibility</p>
+        <h2>One skill folder, multiple agent surfaces.</h2>
+        <div class="platform-grid">
+          <div><strong>AgInTiFlow</strong><span>External pack or project-local `.aginti/skills`.</span></div>
+          <div><strong>Codex</strong><span>Install into `~/.codex/skills`.</span></div>
+          <div><strong>Claude</strong><span>Use `CLAUDE.md` plus selected skill folder.</span></div>
+          <div><strong>Gemini</strong><span>Use `GEMINI.md` and `skills.json` discovery.</span></div>
+          <div><strong>Copilot</strong><span>Use `.github` repository instructions.</span></div>
+          <div><strong>Generic agents</strong><span>Read `skills.json`, then `SKILL.md`.</span></div>
+        </div>
+      </section>
+
+      <section class="support-panel" id="support">
+        <div>
+          <p class="eyebrow">Support</p>
+          <h2>Support Lachlan Chen and LazyingArt.</h2>
+          <p>
+            Sponsorship helps maintain the agent workflows, publishing automation,
+            public examples, and reusable skills behind the LazyingArt ecosystem.
+          </p>
+        </div>
+        <div class="support-actions">
+          <a class="button primary" href="https://github.com/sponsors/lachlanchen">GitHub Sponsors</a>
+          <a class="button ghost" href="https://chat.lazying.art/donate">Donate</a>
+          <a class="button ghost" href="https://paypal.me/RongzhouChen">PayPal</a>
+          <a class="button ghost" href="https://buy.stripe.com/aFadR8gIaflgfQV6T4fw400">Stripe</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div>
+        <strong>LazySkills</strong>
+        <span>Portable skills for LazyingArt agents and automation.</span>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/lachlanchen/LazySkills">Repository</a>
+        <a href="https://lazying.art">LazyingArt</a>
+        <a href="https://github.com/lachlanchen">Lachlan Chen</a>
+      </div>
+    </footer>
+  </body>
+</html>
