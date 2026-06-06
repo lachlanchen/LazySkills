@@ -75,6 +75,13 @@
       "category": "multilingual-books",
       "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
       "description": "Build LinguaLeaf/PocketPolyglot multilingual interlinear books with JSON chunks, ruby/pinyin/furigana, grammar roles, and bidirectional PDFs."
+    },
+    {
+      "id": "aginti-agentlink",
+      "path": "skills/aginti-agentlink/SKILL.md",
+      "category": "agent-collaboration",
+      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "description": "Coordinate multiple agent sessions across machines, repos, tools, and runtimes using safe handoff packets, peer identity maps, private session mirrors, status probes, and action contracts."
     }
   ]
 }

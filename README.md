@@ -67,6 +67,7 @@ The repository is intentionally platform-neutral. A skill should be useful to Ag
 | `pocketpolyglot-bookmaker` | Builds LinguaLeaf/PocketPolyglot-style multilingual interlinear pocket books with durable JSON, ruby/pinyin/furigana, grammar roles, and bidirectional PDFs. | EPUB/PDF extraction, chunk manifests, JSON validation, tmux workers, XeLaTeX |
 | `transcript-video-section-splitter` | Transcribes videos, derives topic-based section boundaries, and splits edited or source videos into named clips with manifests. | Whisper/WhisperX, content sections, ffmpeg, clip manifest |
 | `video-face-image-replacement` | Covers or replaces one or more detected video faces with supplied or generated image assets, including multi-person animal masks with stable identity tracking. | InsightFace/SCRFD, identity maps, RetinaFace/MediaPipe options, alpha compositing, ffmpeg |
+| `aginti-agentlink` | Coordinates multiple agent sessions across machines, repos, tools, hardware, and APIs using safe handoffs and action contracts. | peer maps, handoff packets, private session mirrors, status probes, evidence bundles |
 
 ## Skill Anatomy
 
@@ -145,6 +146,7 @@ cp -R skills/ocr-book-polisher ~/.codex/skills/
 cp -R skills/pocketpolyglot-bookmaker ~/.codex/skills/
 cp -R skills/transcript-video-section-splitter ~/.codex/skills/
 cp -R skills/video-face-image-replacement ~/.codex/skills/
+cp -R skills/aginti-agentlink ~/.codex/skills/
 ```
 
 ### Claude, Gemini, Copilot, Generic Agents
