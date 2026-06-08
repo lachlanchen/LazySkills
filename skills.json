@@ -96,6 +96,13 @@
       "category": "embedded-control",
       "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
       "description": "Coordinate KV260 Prophesee event recording with the Windows host and USB Arduino light controller, including LAN identity, COM-port checks, recording API use, repo context, and cross-session handoff memory."
+    },
+    {
+      "id": "kicad-mcp-pcb-design",
+      "path": "skills/kicad-mcp-pcb-design/SKILL.md",
+      "category": "hardware-design",
+      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "description": "Install and use KiCad with MCP/agent automation to inspect existing PCB projects, generate or edit boards, save component datasets, validate DRC, export Gerbers/STEP, and render board previews."
     }
   ]
 }
