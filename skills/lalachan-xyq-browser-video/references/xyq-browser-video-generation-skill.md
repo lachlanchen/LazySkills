@@ -82,7 +82,7 @@ Trio.png
 
 Use these prompt labels after upload:
 
-- 图1: words card / 小白屏学习卡.
+- 图1: words card / 小白屏学习卡; choose a fresh story-relevant word each episode.
 - 图2: `LazyingArtRobot.png`, robot `庄子`; keep the LazyingArt logo on chest.
 - 图3: LightMind AI glasses.
 - 图4: handmade patchwork notebook.
@@ -99,6 +99,9 @@ Use `Trio.png` / 图7 as the role identity reference:
 Never paste local filesystem paths into the Xiaoyunque prompt. Paths are only
 for browser upload commands. In the prompt, refer to uploaded references as
 `图1`, `图2`, ..., in this exact order.
+
+For `图1`, generate a new word or concept for each new video. The card should
+look like a real in-scene learning prop, not a subtitle.
 
 ## Submit Flow
 

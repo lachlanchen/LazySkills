@@ -60,6 +60,13 @@ Characters:
 - `display.png`: LightMind AI glasses.
 - `patchwork-leather-notebook-luxury-clean-v2.png`: handmade patchwork notebook/tool prop.
 
+Words-card rule:
+
+- Treat `图1` as the visual style reference for the physical learning card.
+- For every new video, choose a fresh story-relevant word or concept for the card; do not reuse the previous word unless the user asks.
+- Prefer one concise English word plus Japanese with furigana and a short Chinese meaning when useful.
+- The card is a real prop in the scene, not a subtitle overlay.
+
 Never paste local filesystem paths into the Xiaoyunque prompt. Paths are only
 for the browser file upload command. The prompt should say `图1` through `图7`
 and explicitly ask not to draw file names or paths into the video.
