@@ -21,15 +21,18 @@ Load detailed references only when needed:
 
 ```text
 references/xyq-browser-video-generation-skill.md
+references/uploaded-images-no-path-workflow.md
 references/xyq-browser-automation-workflow.md
 references/smooth-video-generation-runbook.md
 ```
 
 ## LALACHAN Defaults
 
-Default reference images in the LALACHAN project:
+Default uploaded image order in the LALACHAN project:
 
 ```text
+artifacts/images/2026-06-07T02-10-31-891Z/image.png
+LazyingArtRobot.png
 display.png
 patchwork-leather-notebook-luxury-clean-v2.png
 R1.jpg.jpeg
@@ -37,13 +40,29 @@ R3.jpg.jpeg
 Trio.png
 ```
 
+Prompt labels after upload:
+
+- 图1: words card / 小白屏学习卡.
+- 图2: `LazyingArtRobot.png`, robot `庄子`; keep the LazyingArt logo on chest.
+- 图3: LightMind AI glasses.
+- 图4: handmade patchwork notebook.
+- 图5: 啦啦侠 clothing reference.
+- 图6: 飒飒君 clothing reference.
+- 图7: three-character identity reference.
+
 Characters:
 
 - `啦啦侠 / Lala Xia`: giant panda from `Trio.png`.
 - `阿芽酱 / Aya Chan`: red panda from `Trio.png`.
 - `飒飒君 / Sasa Kun`: boy from `Trio.png`.
+- `artifacts/images/2026-06-07T02-10-31-891Z/image.png`: words card / 小白屏学习卡.
+- `LazyingArtRobot.png`: robot `庄子`; preserve the LazyingArt chest logo.
 - `display.png`: LightMind AI glasses.
 - `patchwork-leather-notebook-luxury-clean-v2.png`: handmade patchwork notebook/tool prop.
+
+Never paste local filesystem paths into the Xiaoyunque prompt. Paths are only
+for the browser file upload command. The prompt should say `图1` through `图7`
+and explicitly ask not to draw file names or paths into the video.
 
 Default short-video setup:
 
@@ -85,7 +104,8 @@ scripts/xyq_cdp_browser.py --cdp-url http://127.0.0.1:9222 visible PAGE_ID
 
 ```bash
 scripts/xyq_cdp_browser.py --cdp-url http://127.0.0.1:9222 upload-images-verify PAGE_ID \
-  display.png patchwork-leather-notebook-luxury-clean-v2.png \
+  artifacts/images/2026-06-07T02-10-31-891Z/image.png \
+  LazyingArtRobot.png display.png patchwork-leather-notebook-luxury-clean-v2.png \
   R1.jpg.jpeg R3.jpg.jpeg Trio.png \
   --timeout 180 \
   --screenshot outputs/xyq-run/after-upload.png
@@ -99,7 +119,9 @@ scripts/xyq_cdp_browser.py --cdp-url http://127.0.0.1:9222 type-prompt PAGE_ID r
 
 6. If the submit button stays disabled, inspect upload item classes. Wait until every uploaded file item is `success`; a single `uploading` reference blocks submission.
 
-7. Submit only when the user asked for generation and the pre-submit contract is satisfied.
+7. If the current thread is stale, completed, or in the wrong workflow, use the page `创作` / new-session button in the same controlled tab, then record the new thread URL.
+
+8. Submit only when the user asked for generation and the pre-submit contract is satisfied.
 
 ## Watch, Download, Copy
 
@@ -127,5 +149,6 @@ Before final response, report only verified facts:
 - prompt/reference files saved;
 - mode/model/duration/ratio seen on page;
 - attachment filenames verified;
+- prompt verified to contain no local image paths;
 - credit charge or blocker observed;
 - local MP4 path, `ffprobe` dimensions/duration, and copy targets.

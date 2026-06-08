@@ -68,9 +68,11 @@ For ordinary LALACHAN short videos:
 - Language: mainly Chinese, with short English/Japanese phrases only if useful.
 - Prompt must include: `不要字幕，不要生成任何字幕、说明文字、下三分之一文字或画面文字。`
 
-Default images:
+Default uploaded image order:
 
 ```text
+artifacts/images/2026-06-07T02-10-31-891Z/image.png
+LazyingArtRobot.png
 display.png
 patchwork-leather-notebook-luxury-clean-v2.png
 R1.jpg.jpeg
@@ -78,25 +80,43 @@ R3.jpg.jpeg
 Trio.png
 ```
 
-Use `Trio.png` as the role identity reference:
+Use these prompt labels after upload:
+
+- 图1: words card / 小白屏学习卡.
+- 图2: `LazyingArtRobot.png`, robot `庄子`; keep the LazyingArt logo on chest.
+- 图3: LightMind AI glasses.
+- 图4: handmade patchwork notebook.
+- 图5: 啦啦侠 clothing reference.
+- 图6: 飒飒君 clothing reference.
+- 图7: three-character identity reference.
+
+Use `Trio.png` / 图7 as the role identity reference:
 
 - 啦啦侠 / Lala Xia: giant panda.
 - 阿芽酱 / Aya Chan: red panda.
 - 飒飒君 / Sasa Kun: boy.
+
+Never paste local filesystem paths into the Xiaoyunque prompt. Paths are only
+for browser upload commands. In the prompt, refer to uploaded references as
+`图1`, `图2`, ..., in this exact order.
 
 ## Submit Flow
 
 1. Save the story prompt in `references/prompts/YYYY-MM-DD-topic-15s.md`.
 2. Save the exact Xiaoyunque submit prompt in `references/prompts/YYYY-MM-DD-topic-submit-15s.md`.
 3. Open or reuse a Xiaoyunque `integrated-agent` tab.
+   If the current thread is stale or completed, use the page `创作` / new-session
+   button in the same controlled tab, then record the new thread URL.
 4. Select `沉浸式短片`.
 5. Select `Seedance 2.0 Fast`, not VIP, unless the user asks for VIP.
 6. Set duration to `15秒`; current UI may use a slider.
 7. Set ratio to `4:3`; open the ratio menu or take a screenshot if the compact toolbar only shows `比例`.
-8. Upload and verify the five images:
+8. Upload and verify the seven images:
 
 ```bash
 scripts/xyq_cdp_browser.py upload-images-verify PAGE_ID \
+  artifacts/images/2026-06-07T02-10-31-891Z/image.png \
+  LazyingArtRobot.png \
   display.png \
   patchwork-leather-notebook-luxury-clean-v2.png \
   R1.jpg.jpeg \
@@ -111,7 +131,7 @@ scripts/xyq_cdp_browser.py upload-images-verify PAGE_ID \
 scripts/xyq_cdp_browser.py type-prompt PAGE_ID references/prompts/YYYY-MM-DD-topic-submit-15s.md
 ```
 
-10. Verify page state before submit: mode, model, ratio, duration, prompt, five filenames.
+10. Verify page state before submit: mode, model, ratio, duration, prompt, seven filenames, and no local paths in the prompt.
 11. Submit only if requested. Record thread URL, page id, screenshot, and charged credits.
 
 ## Watch Flow
@@ -146,6 +166,7 @@ it to the requested output path.
 For the recent lessons and exact failure modes, see:
 
 ```text
+references/uploaded-images-no-path-workflow.md
 references/smooth-video-generation-runbook.md
 ```
 
@@ -177,5 +198,6 @@ Save run-specific notes in `references/`, including:
 - submit time;
 - model/mode/duration;
 - attached filenames;
+- prompt path-leak check result;
 - watch log path;
 - final copied output paths.

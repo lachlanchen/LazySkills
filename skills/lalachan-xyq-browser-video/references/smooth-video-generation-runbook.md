@@ -13,6 +13,8 @@ Before clicking generate, prove these facts from the visible page or DOM:
 - requested duration, usually `15秒`;
 - requested ratio, currently default `4:3` for LALACHAN;
 - prompt contains the no-subtitle/no-screen-text requirement;
+- prompt contains no local filesystem paths or filenames; references should be
+  described by uploaded image order such as `图1` through `图7`;
 - all reference images or videos are attached and no upload item is still
   `uploading`;
 - submit button exists and is enabled.
@@ -42,11 +44,16 @@ scripts/xyq_cdp_browser.py visible PAGE_ID
 
 Do not open a new tab for this recovery.
 
+If the old thread is stale or already completed, use the page `创作` /
+new-session control in the same controlled tab and record the new thread URL.
+Avoid accumulating extra tabs.
+
 ## Submit Pattern
 
 ```bash
 scripts/xyq_cdp_browser.py upload-images-verify PAGE_ID \
-  display.png patchwork-leather-notebook-luxury-clean-v2.png \
+  artifacts/images/2026-06-07T02-10-31-891Z/image.png \
+  LazyingArtRobot.png display.png patchwork-leather-notebook-luxury-clean-v2.png \
   R1.jpg.jpeg R3.jpg.jpeg Trio.png \
   --timeout 180 \
   --screenshot outputs/run/after-upload.png
@@ -54,6 +61,12 @@ scripts/xyq_cdp_browser.py upload-images-verify PAGE_ID \
 
 ```bash
 scripts/xyq_cdp_browser.py type-prompt PAGE_ID references/prompts/submit.md
+```
+
+Before filling the page, reject prompt files that leak local image paths:
+
+```bash
+rg -n '/home|ProjectsLFS|artifacts|\.png|\.jpg|\.jpeg' references/prompts/submit.md || true
 ```
 
 Re-query the create button rectangle immediately before submitting. Xiaoyunque
