@@ -63,8 +63,12 @@ Characters:
 Words-card rule:
 
 - Treat `图1` as the visual style reference for the physical learning card.
-- For every new video, choose a fresh story-relevant word or concept for the card; do not reuse the previous word unless the user asks.
-- Prefer one concise English word plus Japanese with furigana and a short Chinese meaning when useful.
+- For every new video, create a fresh story-relevant word card; do not reuse the previous word unless the user asks.
+- The card content must include English, Japanese, and Japanese furigana. Add a short Chinese meaning when useful.
+- Two valid methods are allowed:
+  - Pre-generate a new words-card image first with AgInTi/image generation, then upload that generated card as `图1`.
+  - Upload the existing words-card as a style/example reference, then give Xiaoyunque the exact English/Japanese/furigana content and make it responsible for rendering the new card in the scene.
+- Use either method, or both, as long as the final video has the fresh words card. Prefer pre-generation when text accuracy matters.
 - The card is a real prop in the scene, not a subtitle overlay.
 
 Never paste local filesystem paths into the Xiaoyunque prompt. Paths are only

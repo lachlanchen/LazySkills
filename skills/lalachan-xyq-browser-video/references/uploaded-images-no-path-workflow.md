@@ -8,7 +8,7 @@ the Xiaoyunque prompt.
 
 | Label | File | Meaning |
 | --- | --- | --- |
-| 图1 | `artifacts/images/2026-06-07T02-10-31-891Z/image.png` | words card / 小白屏学习卡; show a fresh word each episode |
+| 图1 | `artifacts/images/2026-06-07T02-10-31-891Z/image.png` | words card / 小白屏学习卡; show a fresh English/Japanese/furigana word each episode |
 | 图2 | `LazyingArtRobot.png` | robot `庄子`; keep LazyingArt chest logo |
 | 图3 | `display.png` | LightMind AI glasses |
 | 图4 | `patchwork-leather-notebook-luxury-clean-v2.png` | handmade patchwork notebook |
@@ -46,8 +46,20 @@ Use wording like:
 不要把任何文件名或路径画进视频。
 ```
 
-Choose a new story-relevant English/Japanese learning word for `图1` every time
-unless the user explicitly wants to continue the previous word.
+Choose a new story-relevant learning word for `图1` every time unless the user
+explicitly wants to continue the previous word. The card content must include
+English, Japanese, and Japanese furigana.
+
+Two methods are valid:
+
+- Pre-generate a new words-card image first with AgInTi/image generation and
+  upload that new card as `图1`.
+- Upload the existing words-card as the `图1` style/example reference, then give
+  Xiaoyunque the exact English/Japanese/furigana content and let it render the
+  new card in-scene.
+
+Use either method, or both, as long as it works. Prefer pre-generation when exact
+text accuracy matters.
 
 Reject path leakage before submission:
 

@@ -82,7 +82,7 @@ Trio.png
 
 Use these prompt labels after upload:
 
-- 图1: words card / 小白屏学习卡; choose a fresh story-relevant word each episode.
+- 图1: words card / 小白屏学习卡; create a fresh story-relevant card each episode.
 - 图2: `LazyingArtRobot.png`, robot `庄子`; keep the LazyingArt logo on chest.
 - 图3: LightMind AI glasses.
 - 图4: handmade patchwork notebook.
@@ -100,8 +100,19 @@ Never paste local filesystem paths into the Xiaoyunque prompt. Paths are only
 for browser upload commands. In the prompt, refer to uploaded references as
 `图1`, `图2`, ..., in this exact order.
 
-For `图1`, generate a new word or concept for each new video. The card should
-look like a real in-scene learning prop, not a subtitle.
+For `图1`, generate a new word or concept for each new video. The card content
+must include English, Japanese, and furigana. The card should look like a real
+in-scene learning prop, not a subtitle.
+
+Two words-card methods are valid:
+
+- Pre-generate a new card image first with AgInTi/image generation and upload it
+  as `图1`.
+- Use the existing card as a style/example upload and provide Xiaoyunque the
+  exact English/Japanese/furigana content to render in the scene.
+
+Use whichever method works, or both. Prefer pre-generation when text accuracy is
+important.
 
 ## Submit Flow
 
