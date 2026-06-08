@@ -1,11 +1,11 @@
 ---
 name: publish-repo
-description: Publish a local git repository to GitHub from Codex or AgInTi, including README/resource checks, safe commit discipline, remote creation, push, homepage, description, and topics.
+description: Publish a local git repository to GitHub from Codex or AgInTi, including profile-style multilingual README generation, LazyingArt banner/support panels, .github/FUNDING.yml, safe commit discipline, remote creation, push, homepage, description, and topics.
 ---
 
 # Publish Repo
 
-Use this skill when the user asks to publish a local repository to GitHub, add repository metadata, set topics/homepage, or prepare a repo for public release from Codex or AgInTi.
+Use this skill when the user asks to publish a local repository to GitHub, add repository metadata, set topics/homepage, write a polished public README, create profile-style multilingual README files, add LazyingArt banner/support panels, add `.github/FUNDING.yml`, or prepare a repo for public release from Codex or AgInTi.
 
 ## Core Rules
 
@@ -44,6 +44,22 @@ Use this skill when the user asks to publish a local repository to GitHub, add r
    - `gh repo view OWNER/REPO --json nameWithOwner,url,homepageUrl,description,repositoryTopics`;
    - open or report the final GitHub URL.
 
+## Lachlanchen Profile-Style README Mode
+
+Use this mode when the user asks for "beautiful README", "like lachlanchen profile", "11 languages", "LazyingArt banner", "donation panel", or `.github sponsor`.
+
+Read `references/lachlanchen-profile-readme-style.md` before editing. Required outputs:
+
+- `README.md` in English.
+- `i18n/README.ar.md`, `README.es.md`, `README.fr.md`, `README.ja.md`, `README.ko.md`, `README.vi.md`, `README.zh-Hans.md`, `README.zh-Hant.md`, `README.de.md`, and `README.ru.md`.
+- The 11-language header on every README, with root-relative links in the root README and `../README.md` links in i18n files.
+- LazyingArt banner from the profile README.
+- Donation panel with Donate, PayPal, and Stripe links.
+- `.github/FUNDING.yml` matching the lachlanchen profile sponsorship pattern.
+- A concise repo-specific README body: project promise, visual/asset signal, current contents, quick start, validation/build commands, status, and links to key PDFs/docs/assets.
+
+Do not machine-translate blindly if repo-specific terms matter. Preserve project names, command names, file paths, and badge labels. Translate section prose completely for each language, not only the headings.
+
 ## Helper Script
 
 If this skill is vendored inside the target repository, run from that repository root:
@@ -79,6 +95,8 @@ The script:
 - adds `origin` if missing;
 - pushes the current branch;
 - sets homepage, description, and topics.
+
+The script does not write README/i18n files. Codex or AgInTi must prepare and commit those files first.
 
 ## Codex Notes
 

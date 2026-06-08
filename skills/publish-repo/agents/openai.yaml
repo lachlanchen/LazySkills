@@ -1,7 +1,7 @@
 interface:
   display_name: "Publish Repo"
-  short_description: "Safely publish a local repo to GitHub"
+  short_description: "Publish a polished multilingual repo to GitHub"
   brand_color: "#0F766E"
-  default_prompt: "Use $publish-repo to prepare this local repository, publish it to GitHub, and set homepage, description, and topics."
+  default_prompt: "Use $publish-repo to prepare a profile-style multilingual README with LazyingArt banner, sponsors, GitHub metadata, and publish this local repository."
 policy:
   allow_implicit_invocation: true
