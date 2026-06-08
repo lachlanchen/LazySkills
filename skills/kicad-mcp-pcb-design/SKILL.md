@@ -22,7 +22,8 @@ Use this skill when an agent must control KiCad, research components, clone an e
 - Save source-backed component assumptions in a dataset file, including URLs, model numbers, dimensions, currents, voltages, thermal notes, and uncertainty.
 - Prefer KiCad-native tooling for validation: `kicad-cli pcb drc`, `export step`, `export gerbers`, `export drill`, and `render`.
 - Use `/usr/bin/python3` or a venv made with `--system-site-packages` when Python code needs `pcbnew`; Conda Python usually cannot import KiCad bindings.
-- Stage only intended generated PCB files. Do not accidentally commit large unrelated PCB archives or local `.kicad_prl` UI-state files.
+- Stage only intended generated PCB files. Do not accidentally commit large unrelated PCB archives, extracted vendor zips, `__MACOSX/`, `.DS_Store`, `fp-info-cache`, or local `.kicad_prl` UI-state files.
+- For research hardware, document the future system intent separately from the immediate board so assumptions do not get buried inside fabrication files.
 
 ## Setup
 
@@ -73,8 +74,18 @@ rg 'gr_circle|gr_rect|footprint|pad|segment|zone' path/to/old/board.kicad_pcb
 
 2. Extract reusable constraints: outline, mounting holes, connector position, layer stack, net names, track widths, clearances, and silkscreen style.
 3. Create a deterministic generator script when changes are repeatable. It should write `.kicad_pro`, `.kicad_pcb`, `.kicad_sch` stub if needed, `fp-lib-table`, local `.pretty` footprints, BOM/CSV, dataset JSON, and README.
-4. Include a project-local `.gitignore` with `*.kicad_prl`.
+4. Include a project-local `.gitignore` with `*.kicad_prl`; for imported PCB reference dumps also ignore local-only archives and extracted folders such as `*.zip`, `__MACOSX/`, and `.DS_Store`.
 5. Keep generated footprints embedded or project-local so the board opens on another machine.
+
+## Research Memory
+
+When the board is part of a larger instrument plan, add a concise roadmap document under the target repo's `docs/` or hardware folder. Include:
+
+- local reference repositories and their relevant files;
+- external source URLs;
+- immediate board scope vs future system architecture;
+- safety constraints, especially high voltage, vacuum, radiation, heat, and detector exposure;
+- staged milestones that can become future PCB or firmware tasks.
 
 ## Validation And Exports
 
@@ -87,11 +98,22 @@ kicad-cli pcb export step --force --include-pads --include-tracks --include-silk
 kicad-cli pcb export gerbers --layers F.Cu,B.Cu,F.SilkS,B.SilkS,F.Mask,B.Mask,Edge.Cuts,F.Fab,B.Fab --precision 6 -o gerber project.kicad_pcb
 kicad-cli pcb export drill --generate-map --map-format svg --generate-report --report-path artifacts/drill-report.txt -o gerber project.kicad_pcb
 xvfb-run -a kicad-cli pcb render --output artifacts/render.png --width 1400 --height 1000 --background opaque --quality high --floor --perspective --rotate 315,0,35 --zoom 2.2 project.kicad_pcb
+xvfb-run -a kicad-cli pcb render --output artifacts/render-full.png --width 1400 --height 1000 --background opaque --quality high --floor --perspective --rotate 315,0,35 --zoom 0.95 project.kicad_pcb
 identify artifacts/render.png
+identify artifacts/render-full.png
 ```
 
 If DRC reports warnings, inspect the JSON and either fix the board or document why an ignored check is intentional. Electrical clearance, copper connectivity, and unconnected items must not be hand-waved.
 
+Gerber completeness checklist:
+
+- front/back copper: `F_Cu.gtl`, `B_Cu.gbl`;
+- front/back mask: `F_Mask.gts`, `B_Mask.gbs`;
+- front/back silkscreen: `F_Silkscreen.gto`, `B_Silkscreen.gbo`;
+- board outline: `Edge_Cuts.gm1`;
+- job file: `*.gbrjob`;
+- drill file and map/report: `*.drl`, drill map, drill report.
+
 ## Final Report
 
-Report the KiCad version, MCP server used, generated board path, dataset path, DRC result, render PNG path, Gerber/STEP outputs, commit hash, and any physical verification still required.
+Report the KiCad version, MCP server used, generated board path, dataset path, DRC/ERC result, close render path, full-board render path, Gerber/drill/STEP outputs, commit hash, push status, and any physical verification still required.
