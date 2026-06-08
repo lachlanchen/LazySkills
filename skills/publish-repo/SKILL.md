@@ -1,11 +1,11 @@
 ---
 name: publish-repo
-description: Publish a local git repository to GitHub from Codex or AgInTi, including profile-style multilingual README generation, LazyingArt banner/support panels, .github/FUNDING.yml, safe commit discipline, remote creation, push, homepage, description, and topics.
+description: Publish a local git repository to GitHub from Codex or AgInTi, including profile-style multilingual README generation, LazyingArt banner/support panels, CITATION.cff repository citation, .github/FUNDING.yml, safe commit discipline, remote creation, push, homepage, description, and topics.
 ---
 
 # Publish Repo
 
-Use this skill when the user asks to publish a local repository to GitHub, add repository metadata, set topics/homepage, write a polished public README, create profile-style multilingual README files, add LazyingArt banner/support panels, add `.github/FUNDING.yml`, or prepare a repo for public release from Codex or AgInTi.
+Use this skill when the user asks to publish a local repository to GitHub, add repository metadata, set topics/homepage, write a polished public README, create profile-style multilingual README files, add LazyingArt banner/support panels, add `CITATION.cff` / a README citation block / GitHub's "Cite this repository" UI, add `.github/FUNDING.yml`, or prepare a repo for public release from Codex or AgInTi.
 
 ## Core Rules
 
@@ -28,6 +28,7 @@ Use this skill when the user asks to publish a local repository to GitHub, add r
 2. Prepare public-facing resources:
    - polished `README.md`;
    - i18n README files when requested;
+   - `CITATION.cff` and README citation block when the repo should be citable;
    - banner/logo assets when useful;
    - resource map to papers, docs, references, demos, scripts, or skills.
 3. Validate local content:
@@ -56,9 +57,21 @@ Read `references/lachlanchen-profile-readme-style.md` before editing. Required o
 - LazyingArt banner from the profile README.
 - Donation panel with Donate, PayPal, and Stripe links.
 - `.github/FUNDING.yml` matching the lachlanchen profile sponsorship pattern.
+- `CITATION.cff` at repository root, plus a citation block in `README.md` and all i18n README files.
 - A concise repo-specific README body: project promise, visual/asset signal, current contents, quick start, validation/build commands, status, and links to key PDFs/docs/assets.
 
 Do not machine-translate blindly if repo-specific terms matter. Preserve project names, command names, file paths, and badge labels. Translate section prose completely for each language, not only the headings.
+
+## Citation Mode
+
+Use this mode when the user asks to make the repository citable, add a citation block, or show a citation below the GitHub About section.
+
+- Add root `CITATION.cff`. GitHub reads this file from the default branch and renders **Cite this repository** in the repo UI.
+- Include at least: `cff-version`, `message`, `type`, `title`, `authors`, `repository-code`, and `url` when available.
+- Prefer `type: software` for code/research workspaces.
+- Add a README `## Citation` section with a BibTeX block and a note that GitHub uses `CITATION.cff`.
+- If i18n READMEs exist, add translated citation sections that link to `../CITATION.cff` and keep the same BibTeX block.
+- Validate with `rg -n "CITATION\\.cff|Cite this repository|@software" README.md i18n CITATION.cff` and `git diff --check`.
 
 ## Helper Script
 
@@ -114,5 +127,6 @@ Report:
 - branch pushed;
 - commit hash;
 - metadata applied: homepage, description, topics;
+- citation support added: `CITATION.cff`, README block, and i18n blocks if applicable;
 - validation commands run;
 - any blocker, such as missing auth or repo visibility failure.

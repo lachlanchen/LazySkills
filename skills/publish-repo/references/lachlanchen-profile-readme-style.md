@@ -60,6 +60,50 @@ custom: [
 ]
 ```
 
+## CITATION.cff
+
+GitHub shows a **Cite this repository** panel when `CITATION.cff` exists on the default branch. Use this template, then adjust title, version, abstract, authors, repository URL, and keywords.
+
+```yaml
+cff-version: 1.2.0
+message: "If you use PROJECT_NAME, please cite this repository."
+type: software
+title: "PROJECT_NAME: SHORT_RESEARCH_OR_SOFTWARE_TITLE"
+version: 0.1.0
+date-released: YYYY-MM-DD
+abstract: "One concise sentence describing the repository."
+authors:
+  - family-names: Chen
+    given-names: Lachlan
+    alias: lachlanchen
+repository-code: "https://github.com/lachlanchen/PROJECT_NAME"
+url: "https://lazying.art"
+keywords:
+  - open source
+  - research
+```
+
+## Citation Block
+
+Root README:
+
+````markdown
+## Citation
+
+If you use PROJECT_NAME in research, cite the repository. GitHub reads [CITATION.cff](CITATION.cff) and shows a **Cite this repository** panel on the repo page.
+
+```bibtex
+@software{chen_projectname_YEAR,
+  author = {Chen, Lachlan},
+  title = {PROJECT_NAME: SHORT_RESEARCH_OR_SOFTWARE_TITLE},
+  year = {YEAR},
+  url = {https://github.com/lachlanchen/PROJECT_NAME}
+}
+```
+````
+
+i18n README files should translate the explanatory sentence and link to `../CITATION.cff`, but keep the BibTeX block stable.
+
 ## README Outline
 
 Use a compact structure:
@@ -76,6 +120,7 @@ Use a compact structure:
 10. Quick start commands.
 11. Research/design baseline or architecture notes.
 12. Build/test/validation commands.
-13. Status and scope note.
+13. Citation section linked to `CITATION.cff`.
+14. Status and scope note.
 
 Translate every section into all 10 i18n files. Keep command blocks, file paths, project names, and badge labels stable.

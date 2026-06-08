@@ -39,7 +39,7 @@
       "path": "skills/publish-repo/SKILL.md",
       "category": "release-engineering",
       "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
-      "description": "Publish a local git repository to GitHub from Codex or AgInTi, including profile-style multilingual README generation, LazyingArt banner/support panels, sponsors, remote creation, push, homepage, description, and topics."
+      "description": "Publish a local git repository to GitHub from Codex or AgInTi, including profile-style multilingual README generation, LazyingArt banner/support panels, sponsors, CITATION.cff, remote creation, push, homepage, description, and topics."
     },
     {
       "id": "media-transcription-report",
