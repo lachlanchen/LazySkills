@@ -71,6 +71,8 @@ The repository is intentionally platform-neutral. A skill should be useful to Ag
 | `kv260-metavision-lab` | Operates and maintains the AMD Kria KV260 + Prophesee Metavision lab, including desktop launchers, custom viewer, recording API, native viewer recovery, Windows X11 control center, and file transfer. | PetaLinux, Prophesee, Metavision, V4L2, X11/Matchbox, SSH X11, event recording |
 | `kv260-windows-arduino` | Coordinates KV260 event recording with the Windows host and USB Arduino light controller, including LAN identity, COM-port checks, future Arduino APIs, and cross-session handoffs. | KV260 API, Windows SSH, Arduino CLI, COM ports, DualLampHI, private session mirrors |
 | `kicad-mcp-pcb-design` | Installs and uses KiCad with MCP/agent automation to inspect old PCB projects, generate boards, save datasets, validate DRC, export Gerbers/STEP, and render previews. | KiCad 10, `kicad-cli`, `pcbnew`, MCP stdio, Gerber/STEP/render export |
+| `dual-led-constant-power` | Calibrates and controls dual Arduino-driven LED branches with MOS modules and INA219 monitoring for smooth constant-power crossfades. | Arduino UNO, YYNMOS MOS, INA219, inverse LUT, CSV/PNG telemetry |
+| `parametric-cad-design` | Designs, revises, validates, documents, and renders mechanical CAD parts with versioned artifacts and measured print-fit compensation. | OpenSCAD, CadQuery/build123d/OCP, FreeCAD, Blender, STEP/STL/DXF/SVG/PDF, mesh checks |
 
 ## Skill Anatomy
 
@@ -153,6 +155,8 @@ cp -R skills/aginti-agentlink ~/.codex/skills/
 cp -R skills/kv260-metavision-lab ~/.codex/skills/
 cp -R skills/kv260-windows-arduino ~/.codex/skills/
 cp -R skills/kicad-mcp-pcb-design ~/.codex/skills/
+cp -R skills/dual-led-constant-power ~/.codex/skills/
+cp -R skills/parametric-cad-design ~/.codex/skills/
 ```
 
 ### Claude, Gemini, Copilot, Generic Agents
@@ -191,6 +195,8 @@ test -f skills/aginti-agentlink/SKILL.md
 test -f skills/kv260-metavision-lab/SKILL.md
 test -f skills/kv260-windows-arduino/SKILL.md
 test -f skills/kicad-mcp-pcb-design/SKILL.md
+test -f skills/dual-led-constant-power/SKILL.md
+test -f skills/parametric-cad-design/SKILL.md
 bash -n skills/kv260-metavision-lab/scripts/kv260_metavision_probe.sh
 bash -n skills/kv260-windows-arduino/scripts/fetch-windows-codex-session.sh
 bash -n skills/kv260-windows-arduino/scripts/kv260-lab-status.sh
@@ -235,6 +241,3 @@ Creative goods: [buy.lazying.art](https://buy.lazying.art)
 | [![Donate](https://img.shields.io/badge/Donate-LazyingArt-0EA5E9?style=for-the-badge&logo=kofi&logoColor=white)](https://chat.lazying.art/donate) | [![PayPal](https://img.shields.io/badge/PayPal-RongzhouChen-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://paypal.me/RongzhouChen) | [![Stripe](https://img.shields.io/badge/Stripe-Donate-635BFF?style=for-the-badge&logo=stripe&logoColor=white)](https://buy.stripe.com/aFadR8gIaflgfQV6T4fw400) |
 
 [![GitHub Sponsors](https://img.shields.io/badge/Sponsor-lachlanchen-ea4aaa?style=for-the-badge&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/lachlanchen)
-
-| `dual-led-constant-power` | Calibrates and controls dual Arduino-driven LED branches with MOS modules and INA219 monitoring for smooth constant-power crossfades. | Arduino UNO, YYNMOS MOS, INA219, inverse LUT, CSV/PNG telemetry |
-

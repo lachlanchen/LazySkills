@@ -110,6 +110,13 @@
       "category": "hardware-control",
       "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
       "description": "Calibrate and control a dual LED Arduino/MOS/INA219 setup with inverse-LUT constant-power crossfades, telemetry capture, and flicker reduction."
+    },
+    {
+      "id": "parametric-cad-design",
+      "path": "skills/parametric-cad-design/SKILL.md",
+      "category": "hardware-design",
+      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "description": "Design, revise, validate, document, and render mechanical CAD parts with OpenSCAD, CadQuery/build123d/OCP, FreeCAD, Blender, STEP/STL/DXF/SVG/PDF exports, print-fit compensation, versioned artifacts, and old STEP reference measurements."
     }
   ]
 }

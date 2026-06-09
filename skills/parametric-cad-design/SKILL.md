@@ -1,0 +1,81 @@
+---
+name: parametric-cad-design
+description: Use when designing, revising, validating, documenting, or rendering mechanical CAD parts with OpenSCAD, CadQuery/build123d/OCP, FreeCAD, Blender, STEP/STL/DXF/SVG/PDF exports, print-fit compensation, versioned artifacts, or old STEP reference measurements.
+---
+
+# Parametric CAD Design
+
+Use this skill for agent-assisted mechanical design where the deliverable should remain editable and reproducible, not just a one-off mesh.
+
+## Core Workflow
+
+1. Inspect existing CAD and references first. Prefer `rg --files`, `find`, STEP labels, and measured bounding boxes over visual guesses.
+2. Keep dimensions in named parameters in the source model. Do not globally scale a whole part to tune fit.
+3. Preserve prior generated outputs in versioned artifact folders, for example `artifacts/v1_.../` and `artifacts/v2_.../`.
+4. Generate printable STL from the parametric source, lightweight/envelope STEP for CAD review, and threaded/detailed STEP when the thread geometry matters.
+5. Render a full-view PNG and an exploded/detail PNG with Blender when the user needs visual inspection.
+6. Validate with mesh and STEP imports before committing.
+
+## Print-Fit Measurement
+
+When adapting old 3D-printed parts:
+
+- Measure old STEP solids by named BRep labels such as `Thread camera 24.4`.
+- Record male and female values separately. A male part that inserts into another part is usually kept smaller; the receiving hole/socket/pocket is enlarged.
+- Maintain a table for all mating fits: threaded parts, slip-fit pockets, square modules, pins, holes, and optical holders.
+- Use a test coupon for uncertain threads before printing large parts.
+
+For helical threads made from a swept triangle, document:
+
+- root diameter and crest diameter;
+- pitch or gap;
+- tooth height;
+- tooth base width;
+- thread hand and viewed-from direction;
+- thread length and unthreaded lead-in length.
+
+## Useful Commands
+
+Generate OpenSCAD STLs:
+
+```bash
+openscad -D 'part="tube"' -o artifacts/v2/tube.stl model.scad
+openscad -D 'part="holder"' -o artifacts/v2/holder.stl model.scad
+```
+
+Generate STEP/drawings with a repo-local CAD Python kernel:
+
+```bash
+cad/.conda/cad-python/bin/python path/to/generate_support_artifacts.py
+```
+
+Render with Blender:
+
+```bash
+blender --background --python path/to/blender_render.py
+```
+
+Validate meshes:
+
+```bash
+cad/.conda/cad-python/bin/python - <<'PY'
+import trimesh
+mesh = trimesh.load("artifacts/v2/assembly.stl", force="mesh")
+print(mesh.is_watertight, len(mesh.split(only_watertight=False)), mesh.bounds[1] - mesh.bounds[0])
+PY
+```
+
+Validate STEP bounds:
+
+```bash
+cad/.conda/cad-python/bin/python - <<'PY'
+import cadquery as cq
+shape = cq.importers.importStep("artifacts/v2/assembly.step")
+bb = shape.val().BoundingBox()
+print(bb.xlen, bb.ylen, bb.zlen)
+PY
+```
+
+## Completion Report
+
+Report the source model path, current artifact folder, STL/STEP/DXF/SVG/PDF/PNG outputs, measured bounds, watertight/component checks, render path, commit hash, push status, and any remaining physical fit checks.
