@@ -16,7 +16,7 @@ This document records the browser-first method used to generate, download, and p
    references uploaded images only as `图1` through `图7`, never as local paths.
 8. Submit from the actual enabled submit button coordinates, not stale toolbar coordinates.
 9. Poll the generation thread until a video appears.
-10. If direct download fails, use browser-context `fetch` on the active `video.currentSrc`; when it returns `200 video/mp4`, trigger an in-page blob download and copy from `~/Downloads`.
+10. If direct download fails, use browser-context `fetch` on the active `video.currentSrc`; when it returns `200 video/mp4`, trigger an in-page blob download and copy from `~/Downloads`. If protected direct/browser fetch still fails but the completed page has a visible `下载` button, click the page's own download button and copy the newest MP4 from `~/Downloads`.
 11. Verify with `ffprobe`, copy to `Videos/`, and copy to Nutstore AutoPublish.
 
 ## Problems Met
@@ -30,6 +30,7 @@ This document records the browser-first method used to generate, download, and p
 - The submit arrow moved after attachments expanded the composer; clicking old coordinates did nothing.
 - Direct watcher downloads from protected `everphoto` URLs returned HTTP errors.
 - A protected `everphoto` URL could still be fetched by the logged-in page with `fetch(..., {credentials: 'include'})`; the browser blob-download fallback solved this.
+- Some completed pages expose a top-right `下载` button even when protected `everphoto` or `365yg` direct URL download fails. Inspect visible buttons and use the page button before retrying external HTTP indefinitely.
 - The Xiaoyunque page sometimes opened blank/infinite-loading; same-tab address reload (`Ctrl+L`, `Enter`) or CDP `navigate` to the same URL fixed it. Opening a new tab was unnecessary and confusing.
 - Nutstore AutoPublish renamed the copied file to a `_COMPLETED.mp4` filename.
 

@@ -24,6 +24,7 @@ references/xyq-browser-video-generation-skill.md
 references/uploaded-images-no-path-workflow.md
 references/xyq-browser-automation-workflow.md
 references/smooth-video-generation-runbook.md
+references/continue-confirm-download-runbook.md
 ```
 
 ## LALACHAN Defaults
@@ -134,6 +135,19 @@ scripts/xyq_cdp_browser.py --cdp-url http://127.0.0.1:9222 type-prompt PAGE_ID r
 
 8. Submit only when the user asked for generation and the pre-submit contract is satisfied.
 
+## Agent Confirmation Pauses
+
+Long-video / Agent workflows may stop after storyboard or reference-material
+creation and ask the user to confirm before generating video. If the page asks
+for continuation, reply in the same thread with a short message such as
+`继续生成视频。`; do not start a new generation. Use `type-prompt` or real browser
+keystrokes so the chat input enables the send button.
+
+```bash
+scripts/xyq_cdp_browser.py type-prompt PAGE_ID outputs/xyq-run/continue.md --wait 0.3
+scripts/xyq_cdp_browser.py click PAGE_ID SEND_BUTTON_X SEND_BUTTON_Y
+```
+
 ## Watch, Download, Copy
 
 Monitor the submitted thread through the browser page:
@@ -152,6 +166,10 @@ scripts/xyq_chrome/watch_thread_dom_download.py \
 Protected `everphoto` URLs may fail from unauthenticated direct HTTP. First test browser-context fetch with `--await-promise`; if it returns `200 video/mp4`, pull the active `video.currentSrc` from the page and download with browser-like `Referer` and `User-Agent` headers.
 The bundled watcher can now use this same browser-context path by triggering an
 in-page blob download and copying the downloaded MP4 from `~/Downloads`.
+If protected URL download still fails but the page is complete and has a visible
+top-right `下载` button, click the page button and then copy the newest MP4 from
+`~/Downloads`. See `references/continue-confirm-download-runbook.md` for the
+full fallback sequence.
 
 ## Completion Check
 
