@@ -103,6 +103,13 @@
       "category": "hardware-design",
       "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
       "description": "Install and use KiCad with MCP/agent automation to inspect existing PCB projects, generate or edit boards, save component datasets, validate DRC, export Gerbers/STEP, and render board previews."
+    },
+    {
+      "id": "dual-led-constant-power",
+      "path": "skills/dual-led-constant-power/SKILL.md",
+      "category": "hardware-control",
+      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "description": "Calibrate and control a dual LED Arduino/MOS/INA219 setup with inverse-LUT constant-power crossfades, telemetry capture, and flicker reduction."
     }
   ]
 }

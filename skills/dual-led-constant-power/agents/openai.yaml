@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dual LED Constant Power"
+  short_description: "Smooth calibrated LED power control"
+  default_prompt: "Use the Dual LED Constant Power skill to diagnose wiring, upload the calibrated LUT firmware, capture telemetry, and keep two LED branches smooth with near-constant total power."

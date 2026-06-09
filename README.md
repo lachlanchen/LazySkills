@@ -1,4 +1,4 @@
-[English](README.md) · [简体中文](i18n/README.zh-CN.md) · [繁體中文](i18n/README.zh-TW.md) · [日本語](i18n/README.ja.md) · [한국어](i18n/README.ko.md) · [Français](i18n/README.fr.md) · [Español](i18n/README.es.md) · [Deutsch](i18n/README.de.md) · [Italiano](i18n/README.it.md) · [Português](i18n/README.pt-BR.md) · [Русский](i18n/README.ru.md) · [العربية](i18n/README.ar.md)
+﻿[English](README.md) Â· [ç®€ä½“ä¸­æ–‡](i18n/README.zh-CN.md) Â· [ç¹é«”ä¸­æ–‡](i18n/README.zh-TW.md) Â· [æ—¥æœ¬èªž](i18n/README.ja.md) Â· [í•œêµ­ì–´](i18n/README.ko.md) Â· [FranÃ§ais](i18n/README.fr.md) Â· [EspaÃ±ol](i18n/README.es.md) Â· [Deutsch](i18n/README.de.md) Â· [Italiano](i18n/README.it.md) Â· [PortuguÃªs](i18n/README.pt-BR.md) Â· [Ð ÑƒÑÑÐºÐ¸Ð¹](i18n/README.ru.md) Â· [Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©](i18n/README.ar.md)
 
 # LazySkills
 
@@ -235,3 +235,6 @@ Creative goods: [buy.lazying.art](https://buy.lazying.art)
 | [![Donate](https://img.shields.io/badge/Donate-LazyingArt-0EA5E9?style=for-the-badge&logo=kofi&logoColor=white)](https://chat.lazying.art/donate) | [![PayPal](https://img.shields.io/badge/PayPal-RongzhouChen-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://paypal.me/RongzhouChen) | [![Stripe](https://img.shields.io/badge/Stripe-Donate-635BFF?style=for-the-badge&logo=stripe&logoColor=white)](https://buy.stripe.com/aFadR8gIaflgfQV6T4fw400) |
 
 [![GitHub Sponsors](https://img.shields.io/badge/Sponsor-lachlanchen-ea4aaa?style=for-the-badge&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/lachlanchen)
+
+| `dual-led-constant-power` | Calibrates and controls dual Arduino-driven LED branches with MOS modules and INA219 monitoring for smooth constant-power crossfades. | Arduino UNO, YYNMOS MOS, INA219, inverse LUT, CSV/PNG telemetry |
+
