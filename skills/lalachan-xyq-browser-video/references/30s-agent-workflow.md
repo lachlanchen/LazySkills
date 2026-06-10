@@ -11,9 +11,11 @@ Use this when the user asks for a 30-second Xiaoyunque video and the `沉浸式�
 5. Submit from the enabled Agent send button.
 6. Monitor the new `integrated-agent` thread with `watch_thread_dom_download.py`.
 7. If the Agent pauses for confirmation after storyboard/material creation, answer in the same thread with `继续生成视频。`
+8. After using the page `下载` fallback, verify the fresh file in `~/Downloads` by modified time, size, `ffprobe`, and SHA256 before copying. Do not reuse a stale `final_video (*.mp4)`.
 
 ## Do Not
 
 - Do not force `沉浸式短片` to 30s when its visible duration control remains `15秒`.
 - Do not paste local file paths into the prompt.
 - Do not add long repeated negative constraints; keep the prompt readable.
+- Do not copy a downloaded MP4 until it is proven to be from the current run.
