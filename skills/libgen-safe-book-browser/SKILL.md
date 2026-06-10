@@ -45,6 +45,23 @@ for b in books[:20]:
 PY
 ```
 
+If direct Python HTTP receives `403 Forbidden`, switch to browser-context API
+search through Chrome/CDP. This runs `fetch()` inside an already loaded LibGen
+tab and returns the hidden book IDs behind Vue result cards:
+
+```bash
+python3 skills/libgen-safe-book-browser/scripts/libgen_browser_context_search.py \
+  --cdp-url http://127.0.0.1:9222 \
+  --language jpn \
+  --title-term "レ・ミゼラブル" \
+  --author-term "ユーゴー" \
+  "レ・ミゼラブル"
+```
+
+Use the scored `https://libgen.pw/book/<id>` output as the candidate detail
+page. Avoid relying on DOM `.click()` for LibGen result cards; the cards may not
+have direct anchors and programmatic clicks may not trigger Vue routing.
+
 Open selected detail URLs with the bundled redirect guard:
 
 ```bash
@@ -74,6 +91,19 @@ google-chrome \
 
 If tabs are already hijacked, run the redirect guard anyway. It closes known
 Trip/ad targets before opening fresh guarded tabs.
+
+## Known Japanese Test Outcomes
+
+For the five-book Japanese LibGen check, exact detail candidates were found for:
+
+```text
+嵐が丘（上）: https://libgen.pw/book/98203289
+レ・ミゼラブル 全巻セット: https://libgen.pw/book/107073063
+```
+
+No strong exact Japanese detail candidate was found for `百年の孤独`,
+`モンテ・クリスト伯`, or `ノートルダム・ド・パリ`; open the exact Japanese
+search pages instead of unrelated results.
 
 ## Completion Evidence
 
