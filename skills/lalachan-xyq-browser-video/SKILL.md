@@ -25,6 +25,7 @@ references/uploaded-images-no-path-workflow.md
 references/xyq-browser-automation-workflow.md
 references/smooth-video-generation-runbook.md
 references/continue-confirm-download-runbook.md
+references/30s-agent-workflow.md
 ```
 
 ## LALACHAN Defaults
@@ -86,6 +87,12 @@ Ratio: 4:3 unless the user requests otherwise
 Prompt language: mainly Chinese
 Always include: 不要字幕，不要生成任何字幕、说明文字、下三分之一文字或画面文字。
 ```
+
+For 30-second requests, do not force the `沉浸式短片` controls if they are stuck
+on `15秒` or a VIP model. Use the `创作 Agent` / integrated-agent composer,
+upload references directly, put `30 秒` in the first sentence of a compact
+prompt, submit through the Agent send button, then monitor the resulting
+thread. See `references/30s-agent-workflow.md`.
 
 ## Credit-Budget Rule
 
