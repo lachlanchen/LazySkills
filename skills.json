@@ -70,6 +70,13 @@
       "description": "Correct scanned/OCR books into page-aware Markdown, booklike TeX, and validated PDFs while preserving figures, captions, and TOC structure."
     },
     {
+      "id": "libgen-safe-book-browser",
+      "path": "skills/libgen-safe-book-browser/SKILL.md",
+      "category": "books",
+      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "description": "Open LibGen book search/detail pages through Chrome/CDP while blocking Trip.com and ad redirects, select candidates by exact metadata and PDF > EPUB > other format preference, and report safe detail-page evidence."
+    },
+    {
       "id": "pocketpolyglot-bookmaker",
       "path": "skills/pocketpolyglot-bookmaker/SKILL.md",
       "category": "multilingual-books",

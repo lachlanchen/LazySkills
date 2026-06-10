@@ -20,6 +20,7 @@ There is no application build step. Validate scripts directly:
 ```bash
 python3 scripts/lazyskills.py validate
 python3 scripts/lazyskills.py list --json
+python3 skills/libgen-safe-book-browser/scripts/libgen_no_redirect_open.py --help
 python3 skills/lalachan-xyq-browser-video/scripts/xyq_cdp_browser.py --help
 python3 skills/lalachan-xyq-browser-video/scripts/xyq_chrome/watch_thread_dom_download.py --help
 sed -n '1,40p' skills/lazyedit-publish-workflow/SKILL.md

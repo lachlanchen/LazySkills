@@ -1,0 +1,229 @@
+#!/usr/bin/env python3
+"""Open LibGen detail pages while blocking ad redirects through Chrome CDP."""
+
+from __future__ import annotations
+
+import argparse
+import json
+import queue
+import threading
+import time
+import urllib.error
+import urllib.parse
+import urllib.request
+from dataclasses import dataclass
+from typing import Any
+
+
+DEFAULT_AD_WORDS = [
+    "trip.com",
+    "tripcdn",
+    "ctrip",
+    "pipaffiliates",
+    "realizationnewestfangs",
+    "evaluatestormypawn",
+    "preferencenail",
+    "storageimagedisplay",
+    "googlesyndication",
+    "doubleclick",
+    "googleadservices",
+    "pagead2",
+    "taboola",
+    "outbrain",
+    "popads",
+    "propeller",
+]
+
+INIT_SCRIPT = r"""
+(() => {
+  const bad = /trip\.com|tripcdn|ctrip|pipaffiliates|realizationnewestfangs|evaluatestormypawn|preferencenail|storageimagedisplay|googlesyndication|doubleclick|googleadservices|pagead2|taboola|outbrain|popads|propeller/i;
+  const block = (url) => bad.test(String(url || ""));
+  const originalOpen = window.open;
+  window.open = function(url, target, features) {
+    if (block(url)) return null;
+    if (url && !String(url).startsWith("https://libgen.pw") && !String(url).startsWith("/")) return null;
+    return originalOpen.call(window, url, target, features);
+  };
+  document.addEventListener("click", (event) => {
+    const a = event.target && event.target.closest ? event.target.closest("a[href]") : null;
+    if (a && block(a.href)) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }
+  }, true);
+})();
+"""
+
+
+@dataclass(frozen=True)
+class OpenResult:
+    label: str
+    status: str
+    url: str
+    title: str = ""
+    final_url: str = ""
+    text_sample: str = ""
+    error: str = ""
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("urls", nargs="+", help="LibGen detail/search URLs to open")
+    parser.add_argument("--cdp-url", default="http://127.0.0.1:9222", help="Chrome CDP HTTP endpoint")
+    parser.add_argument("--guard-seconds", type=int, default=600, help="Seconds to keep redirect guard attached")
+    parser.add_argument("--allowed-host", action="append", default=["libgen.pw"], help="Allowed host; repeat as needed")
+    parser.add_argument("--label", action="append", default=[], help="Optional labels matching positional URLs")
+    parser.add_argument("--no-close-ad-targets", action="store_true", help="Do not close existing ad targets first")
+    parser.add_argument("--json", action="store_true", help="Emit JSON lines")
+    return parser.parse_args()
+
+
+def http_json(cdp_url: str, path: str, *, method: str = "GET") -> Any:
+    request = urllib.request.Request(cdp_url.rstrip("/") + path, method=method)
+    with urllib.request.urlopen(request, timeout=10) as response:
+        return json.loads(response.read().decode("utf-8"))
+
+
+def http_text(cdp_url: str, path: str, *, method: str = "GET") -> str:
+    request = urllib.request.Request(cdp_url.rstrip("/") + path, method=method)
+    with urllib.request.urlopen(request, timeout=10) as response:
+        return response.read().decode("utf-8", "replace")
+
+
+def new_tab(cdp_url: str, url: str) -> dict[str, Any]:
+    path = "/json/new?" + urllib.parse.quote(url, safe=":/?&=%")
+    try:
+        return http_json(cdp_url, path, method="PUT")
+    except urllib.error.HTTPError:
+        return http_json(cdp_url, path, method="GET")
+
+
+def host_allowed(url: str, allowed_hosts: set[str]) -> bool:
+    parsed = urllib.parse.urlparse(url)
+    host = (parsed.hostname or "").lower()
+    if parsed.scheme in {"about", "data", "blob"}:
+        return True
+    if host in allowed_hosts:
+        return True
+    return any(host.endswith("." + allowed) for allowed in allowed_hosts)
+
+
+def is_ad_target(tab: dict[str, Any], ad_words: list[str]) -> bool:
+    text = f"{tab.get('type', '')} {tab.get('title', '')} {tab.get('url', '')}".lower()
+    return any(word in text for word in ad_words)
+
+
+def close_ad_targets(cdp_url: str, ad_words: list[str]) -> list[dict[str, str]]:
+    closed: list[dict[str, str]] = []
+    for tab in http_json(cdp_url, "/json"):
+        if not is_ad_target(tab, ad_words):
+            continue
+        try:
+            http_text(cdp_url, "/json/close/" + tab["id"])
+            closed.append({"type": tab.get("type", ""), "title": tab.get("title", ""), "url": tab.get("url", "")})
+        except Exception:
+            continue
+    return closed
+
+
+def cdp_call(ws: Any, counter: list[int], method: str, params: dict[str, Any] | None = None) -> dict[str, Any]:
+    counter[0] += 1
+    message_id = counter[0]
+    ws.send(json.dumps({"id": message_id, "method": method, "params": params or {}}))
+    while True:
+        message = json.loads(ws.recv())
+        if message.get("id") == message_id:
+            return message
+        if message.get("method") == "Fetch.requestPaused":
+            handle_paused_request(ws, counter, message, allowed_hosts={"libgen.pw"})
+
+
+def handle_paused_request(ws: Any, counter: list[int], message: dict[str, Any], *, allowed_hosts: set[str]) -> None:
+    params = message["params"]
+    request_id = params["requestId"]
+    request_url = params["request"]["url"]
+    if host_allowed(request_url, allowed_hosts):
+        method = "Fetch.continueRequest"
+        payload = {"requestId": request_id}
+    else:
+        method = "Fetch.failRequest"
+        payload = {"requestId": request_id, "errorReason": "Aborted"}
+    counter[0] += 1
+    ws.send(json.dumps({"id": counter[0], "method": method, "params": payload}))
+
+
+def guard_tab(cdp_url: str, label: str, target_url: str, allowed_hosts: set[str], guard_seconds: int, result_queue: queue.Queue[OpenResult]) -> None:
+    try:
+        import websocket  # type: ignore
+    except Exception as exc:
+        result_queue.put(OpenResult(label, "error", target_url, error=f"websocket-client missing: {exc}"))
+        return
+    try:
+        tab = new_tab(cdp_url, "about:blank")
+        ws = websocket.create_connection(tab["webSocketDebuggerUrl"], timeout=10)
+        ws.settimeout(1)
+        counter = [0]
+        cdp_call(ws, counter, "Fetch.enable", {"patterns": [{"urlPattern": "*", "requestStage": "Request"}]})
+        cdp_call(ws, counter, "Page.enable")
+        cdp_call(ws, counter, "Page.addScriptToEvaluateOnNewDocument", {"source": INIT_SCRIPT})
+        cdp_call(ws, counter, "Page.navigate", {"url": target_url})
+        time.sleep(1.0)
+        sample = cdp_call(
+            ws,
+            counter,
+            "Runtime.evaluate",
+            {"expression": "({title:document.title,url:location.href,text:document.body?document.body.innerText.slice(0,240):''})", "returnByValue": True},
+        )
+        value = sample.get("result", {}).get("result", {}).get("value", {}) or {}
+        result_queue.put(OpenResult(label, "opened", target_url, value.get("title", ""), value.get("url", ""), (value.get("text", "") or "").replace("\n", " | ")))
+        deadline = time.time() + max(0, guard_seconds)
+        while time.time() < deadline:
+            try:
+                message = json.loads(ws.recv())
+            except websocket.WebSocketTimeoutException:  # type: ignore[attr-defined]
+                continue
+            except Exception:
+                break
+            if message.get("method") == "Fetch.requestPaused":
+                handle_paused_request(ws, counter, message, allowed_hosts=allowed_hosts)
+        ws.close()
+    except Exception as exc:
+        result_queue.put(OpenResult(label, "error", target_url, error=f"{type(exc).__name__}: {exc}"))
+
+
+def main() -> int:
+    args = parse_args()
+    labels = args.label or [f"url-{index + 1}" for index in range(len(args.urls))]
+    if len(labels) != len(args.urls):
+        raise SystemExit("--label count must match URL count")
+    if not args.no_close_ad_targets:
+        closed = close_ad_targets(args.cdp_url, DEFAULT_AD_WORDS)
+        if args.json:
+            print(json.dumps({"event": "closed_ad_targets", "count": len(closed), "targets": closed}, ensure_ascii=False))
+        else:
+            print(f"closed_ad_targets={len(closed)}")
+    allowed_hosts = {host.lower() for host in args.allowed_host}
+    result_queue: queue.Queue[OpenResult] = queue.Queue()
+    threads: list[threading.Thread] = []
+    for label, url in zip(labels, args.urls):
+        thread = threading.Thread(target=guard_tab, args=(args.cdp_url, label, url, allowed_hosts, args.guard_seconds, result_queue), daemon=False)
+        thread.start()
+        threads.append(thread)
+        time.sleep(0.15)
+    for _ in threads:
+        result = result_queue.get(timeout=30)
+        if args.json:
+            print(json.dumps(result.__dict__, ensure_ascii=False))
+        else:
+            print(f"{result.label}\t{result.status}\t{result.title}\t{result.final_url or result.url}")
+            if result.error:
+                print(f"  error: {result.error}")
+    if not args.json:
+        print(f"redirect_guard_seconds={args.guard_seconds}")
+    for thread in threads:
+        thread.join()
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
