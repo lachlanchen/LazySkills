@@ -72,7 +72,7 @@ rg -n '/home|ProjectsLFS|artifacts|\.png|\.jpg|\.jpeg' references/prompts/PROMPT
 Submit only after proving:
 
 - `沉浸式短片`
-- normal/non-VIP `Seedance 2.0 Fast` unless requested otherwise
+- normal/non-VIP `Seedance 2.0`, not Fast, unless Fast is explicitly requested
 - `15秒`
 - `4:3` unless requested otherwise
 - all seven images attached successfully

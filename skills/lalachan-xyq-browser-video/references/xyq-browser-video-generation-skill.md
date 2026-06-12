@@ -62,7 +62,7 @@ reliable fix for the Xiaoyunque blank-loading state.
 For ordinary LALACHAN short videos:
 
 - Mode: `沉浸式短片`.
-- Model: `Seedance 2.0 Fast`, normal/non-VIP unless explicitly requested.
+- Model: `Seedance 2.0`, normal/non-VIP, not Fast unless explicitly requested.
 - Duration: `15s`.
 - Ratio: `4:3` unless explicitly requested otherwise.
 - Language: mainly Chinese, with short English/Japanese phrases only if useful.
@@ -122,7 +122,7 @@ important.
    If the current thread is stale or completed, use the page `创作` / new-session
    button in the same controlled tab, then record the new thread URL.
 4. Select `沉浸式短片`.
-5. Select `Seedance 2.0 Fast`, not VIP, unless the user asks for VIP.
+5. Select `Seedance 2.0`, not Fast and not VIP, unless the user explicitly asks for Fast or VIP.
 6. Set duration to `15秒`; current UI may use a slider.
 7. Set ratio to `4:3`; open the ratio menu or take a screenshot if the compact toolbar only shows `比例`.
 8. Upload and verify the seven images:

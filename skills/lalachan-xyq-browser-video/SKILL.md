@@ -81,7 +81,7 @@ Default short-video setup:
 
 ```text
 Mode: 沉浸式短片
-Model: Seedance 2.0 Fast normal/non-VIP, or Seedance 2.0 normal/non-VIP for lower credit budgets
+Model: Seedance 2.0 normal/non-VIP, not Fast, unless the user explicitly asks for Fast
 Duration: 15s
 Ratio: 4:3 unless the user requests otherwise
 Prompt language: mainly Chinese
@@ -98,7 +98,8 @@ thread. See `references/30s-agent-workflow.md`.
 
 - If the user mentions a low budget, "last night model", "no VIP", or about 200 points, use `沉浸式短片`.
 - Inspect the model dropdown and avoid any option containing `VIP`.
-- If `Seedance 2.0` normal/non-VIP is available and the toolbar shows about `8/S`, prefer it for 15s because it costs about 120 points.
+- Prefer `Seedance 2.0` normal/non-VIP over `Seedance 2.0 Fast` for future 15s LALACHAN videos. `Fast` is only for explicit user requests or when normal `Seedance 2.0` is unavailable.
+- If `Seedance 2.0` normal/non-VIP is available and the toolbar shows about `8/S`, use it for 15s even though it may cost more than Fast.
 - Do not continue an `智能长视频` / Agent render if the final video cost exceeds the user's budget; switch to short-video workflow or report the blocker.
 - For `4:3`, verify the opened ratio menu checkmark or screenshot because the compact toolbar may still show only `比例`.
 
