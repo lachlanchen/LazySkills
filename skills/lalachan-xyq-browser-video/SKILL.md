@@ -81,7 +81,7 @@ Default short-video setup:
 
 ```text
 Mode: 沉浸式短片
-Model: Seedance 2.0 normal/non-VIP, not Fast, unless the user explicitly asks for Fast
+Model: Seedance 2.0 Fast non-VIP by default for low-credit LALACHAN videos
 Duration: 15s
 Ratio: 4:3 unless the user requests otherwise
 Prompt language: mainly Chinese
@@ -90,16 +90,16 @@ Always include: 不要字幕，不要生成任何字幕、说明文字、下三�
 
 For 30-second requests, do not force the `沉浸式短片` controls if they are stuck
 on `15秒` or a VIP model. Use the `创作 Agent` / integrated-agent composer,
-upload references directly, put `30 秒` in the first sentence of a compact
-prompt, submit through the Agent send button, then monitor the resulting
-thread. See `references/30s-agent-workflow.md`.
+select `Seedance 2.0 Fast` when available, upload references directly, put
+`30 秒` in the first sentence of a compact prompt, submit through the Agent send
+button, then monitor the resulting thread. See `references/30s-agent-workflow.md`.
 
 ## Credit-Budget Rule
 
-- If the user mentions a low budget, "last night model", "no VIP", or about 200 points, use `沉浸式短片`.
+- If the user mentions a low budget, "least credits", "last night model", "no VIP", or about 200 points, use `Seedance 2.0 Fast` non-VIP.
 - Inspect the model dropdown and avoid any option containing `VIP`.
-- Prefer `Seedance 2.0` normal/non-VIP over `Seedance 2.0 Fast` for future 15s LALACHAN videos. `Fast` is only for explicit user requests or when normal `Seedance 2.0` is unavailable.
-- If `Seedance 2.0` normal/non-VIP is available and the toolbar shows about `8/S`, use it for 15s even though it may cost more than Fast.
+- Prefer `Seedance 2.0 Fast` non-VIP as the default low-credit model; toolbar cost has shown about `5/S`.
+- Use normal `Seedance 2.0` only when the user explicitly asks for non-Fast or higher quality over credit savings.
 - Do not continue an `智能长视频` / Agent render if the final video cost exceeds the user's budget; switch to short-video workflow or report the blocker.
 - For `4:3`, verify the opened ratio menu checkmark or screenshot because the compact toolbar may still show only `比例`.
 
