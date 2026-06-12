@@ -176,8 +176,10 @@ The bundled watcher can now use this same browser-context path by triggering an
 in-page blob download and copying the downloaded MP4 from `~/Downloads`.
 If protected URL download still fails but the page is complete and has a visible
 top-right `下载` button, click the page button and then copy the newest MP4 from
-`~/Downloads`. See `references/continue-confirm-download-runbook.md` for the
-full fallback sequence.
+`~/Downloads`. Quote the file path or use null-delimited `find -print0` patterns
+because Xiaoyunque may save names such as `final_video (5).mp4`. See
+`references/continue-confirm-download-runbook.md` for the full fallback
+sequence.
 
 ## Completion Check
 
