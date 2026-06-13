@@ -73,6 +73,15 @@ Words-card rule:
 - Use either method, or both, as long as the final video has the fresh words card. Prefer pre-generation when text accuracy matters.
 - The card is a real prop in the scene, not a subtitle overlay.
 
+Story writing rule:
+
+- Write stories in natural, understandable Chinese first. The viewer should understand the action, joke, and emotion without reading production notes.
+- Keep one clear cause-and-effect chain per short video: problem, response, twist, payoff.
+- Dialogue should sound like friends talking. Avoid pseudo-code, abstract slogans, machine-like phrases, over-explained lore, and strange translated wording.
+- Use simple concrete nouns and actions. Prefer "培养皿在显微镜下慢慢亮起来" over vague phrases like "生命数据完成同步".
+- If a concept is educational or technical, show it through a visible action and one plain sentence, not a lecture.
+- For lab scenes, keep the lab clean and believable: gloves, sterile bench, incubator, microscope, pipette, petri dish, and careful movement. Dance can happen as small safe steps, shoulder moves, or rhythm while working, not reckless lab behavior.
+
 Never paste local filesystem paths into the Xiaoyunque prompt. Paths are only
 for the browser file upload command. The prompt should say `图1` through `图7`
 and explicitly ask not to draw file names or paths into the video.

@@ -36,7 +36,8 @@ conda activate lazyedit
 
 - Do not publish to real platforms just to debug packaging, subtitles, or logo output. Use `--no-publish` first, inspect the generated ZIP/final MP4, then publish exactly once when the package is correct.
 - Real publishes should use polished/corrected subtitles and the configured LazyEdit Studio logo unless the user explicitly asks otherwise. Verify logo settings with `curl -fsS http://127.0.0.1:18787/api/ui-settings/logo_settings | jq .`; normal logo outputs end in `_subtitles_logo.mp4`.
-- For LALACHAN/RARACHAN generated videos, use the corresponding story/prompt/script as subtitle-correction and metadata context. Treat it as a reference, not a verbatim transcript: fix clear ASR errors and broken phrases without inventing unsupported dialogue.
+- For LALACHAN/RARACHAN generated videos, use the full story/prompt/script for subtitle correction only. Treat it as a reference, not a verbatim transcript: fix clear ASR errors and broken phrases without inventing unsupported dialogue.
+- Do not pass a full video script as metadata context. Metadata must be concise and viewer-facing, not a storyboard dump. Prefer `--correction-prompt-file FULL_SCRIPT.md` plus `--metadata-prompt-file temp/METADATA_BRIEF.md`, where the metadata brief contains only hook, characters, tone, payoff, keywords, and platform notes.
 - If correction is expected to recover missing generated-video dialogue, inspect `DATA/VIDEO_FOLDER/*_mixed_polished.md` before publish so missed or over-recovered subtitles are caught before any platform post.
 - When copying through Nutstore, use one stable `_COMPLETED` filename and watch AutoPubMonitor panes before recopying. Avoid creating duplicate source files just to retrigger the watcher.
 
@@ -54,13 +55,14 @@ conda activate lazyedit
 
 ## Common Commands
 
-Process with a one-off context prompt, then publish:
+Process with separate subtitle-correction and metadata context, then publish:
 
 ```bash
 python scripts/lazyedit_publish.py \
   --video-id VIDEO_ID \
   --use-current-settings \
-  --prompt-file temp/video_context.md \
+  --correction-prompt-file /home/lachlan/ProjectsLFS/LALACHAN/references/prompts/FULL_SCRIPT.md \
+  --metadata-prompt-file temp/metadata_brief.md \
   --no-correct-subtitles \
   --steps keyframes,caption,transcribe,polish,translate,burn,metadata_zh,metadata_en,cover \
   --platforms shipinhao,youtube,instagram \
@@ -72,7 +74,7 @@ python scripts/lazyedit_publish.py \
   --publish-timeout 7200
 ```
 
-Use this for existing videos with no subtitles yet when the user provides background context. The prompt is passed as `polish_notes` and metadata notes, so the pipeline can transcribe first and then polish/correct with context. Delete temporary prompt wrappers after the run.
+Use this for existing videos with no subtitles yet when the user provides background context. The full script is passed as `polish_notes`; the short metadata brief is passed as metadata notes. Do not reuse the full script as the metadata file. Delete temporary metadata briefs after the run unless the user asks to preserve them.
 
 Publish an already finished output:
 
@@ -144,14 +146,15 @@ tmux capture-pane -pt autopub-monitor:0.2 -S -100 | tail -n 100
 curl -fsS http://127.0.0.1:18787/api/videos | jq '.videos[:20] | map({id,title,created_at,file_path})'
 ```
 
-For direct upload with correction and metadata prompt:
+For direct upload with correction and a concise metadata brief:
 
 ```bash
 python scripts/lazyedit_publish.py \
   --video /home/lachlan/ProjectsLFS/LALACHAN/Videos/VIDEO.mp4 \
   --title TITLE_COMPLETED \
   --use-current-settings \
-  --prompt-file /home/lachlan/ProjectsLFS/LALACHAN/references/prompts/PROMPT.md \
+  --correction-prompt-file /home/lachlan/ProjectsLFS/LALACHAN/references/prompts/PROMPT.md \
+  --metadata-prompt-file temp/metadata_brief.md \
   --correct-subtitles \
   --correction-source polished \
   --platforms shipinhao,youtube,instagram \
@@ -159,9 +162,11 @@ python scripts/lazyedit_publish.py \
   --poll-seconds 10
 ```
 
-Use the LALACHAN story/prompt/script as both subtitle-correction background and metadata background. For subtitle correction, treat the script as a reference, not a verbatim source. Use a human middle path: do not over-edit, and do not stay too conservative when the ASR is obviously abnormal, broken, or mismatched with the context. Read neighboring lines, check whether the sentence makes sense, compare it with the audio/Whisper text and the story context, then infer the most likely intended wording. Fix recognition errors, names, objects, and broken phrases while preserving timing and line structure where possible. The final corrected subtitles do not need to be identical to the script if the audio or generated video differs, and they should not invent unsupported content.
+Use the LALACHAN story/prompt/script as subtitle-correction background. For subtitle correction, treat the script as a reference, not a verbatim source. Use a human middle path: do not over-edit, and do not stay too conservative when the ASR is obviously abnormal, broken, or mismatched with the context. Read neighboring lines, check whether the sentence makes sense, compare it with the audio/Whisper text and the story context, then infer the most likely intended wording. Fix recognition errors, names, objects, and broken phrases while preserving timing and line structure where possible. The final corrected subtitles do not need to be identical to the script if the audio or generated video differs, and they should not invent unsupported content.
 
-If the prompt needs extra guardrails, create a temporary context wrapper in `temp/`, pass it as `--prompt-file`, then delete it after the run. Do not commit temporary prompt wrappers, generated ZIPs, or runtime media.
+For metadata, write a short temporary brief before running the CLI. Include hook, characters, setting, central joke or emotion, final payoff, and 8 to 15 keywords/hashtags. Add the explicit instruction: do not reveal every scene beat or line of dialogue.
+
+If the correction prompt needs extra guardrails, create a temporary correction wrapper in `temp/` and pass it as `--correction-prompt-file`. If metadata needs guardrails, create a temporary metadata brief and pass it as `--metadata-prompt-file`. Avoid `--prompt-file` for full generated-video scripts because it feeds the same long text to both subtitle correction and metadata. Do not commit temporary prompt wrappers, generated ZIPs, or runtime media.
 
 If the user requests no rerun, use `--no-process`.
 
@@ -271,7 +276,7 @@ python scripts/lazyedit_publish.py \
   --poll-seconds 10
 ```
 
-If subtitles or metadata should use the transcript context, create a temporary prompt/context file from the transcript and section notes, pass it with `--prompt-file`, and remove it after the run unless the user asks to keep it.
+If subtitles or metadata should use transcript context, create short temporary context files from the transcript and section notes. Pass subtitle context with `--correction-prompt-file` and public-facing metadata context with `--metadata-prompt-file`. Remove temporary files after the run unless the user asks to keep them.
 
 For section clips generated from a private source, public metadata should describe only the section content. Do not mention the source recording, private processing notes, or agent workflow unless the user explicitly asks.
 
