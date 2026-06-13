@@ -21,6 +21,13 @@
       "description": "Prepare, generate, monitor, download, and publish LALACHAN Xiaoyunque videos through the logged-in browser UI with evidence checks."
     },
     {
+      "id": "lalachan-story-critic",
+      "path": "skills/lalachan-story-critic/SKILL.md",
+      "category": "writing",
+      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "description": "Critique and repair LALACHAN/RaraXia/AyaChan/SasaKun story drafts, dialogue, and Xiaoyunque prompts so they read naturally, avoid AI-like language, and keep props, causality, duration, and character voices clear."
+    },
+    {
       "id": "lazyedit-publish-workflow",
       "path": "skills/lazyedit-publish-workflow/SKILL.md",
       "category": "publishing",

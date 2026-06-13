@@ -82,6 +82,7 @@ Story writing rule:
 - Use simple concrete nouns and actions. Prefer "培养皿在显微镜下慢慢亮起来" over vague phrases like "生命数据完成同步".
 - If a concept is educational or technical, show it through a visible action and one plain sentence, not a lecture.
 - For lab scenes, keep the lab clean and believable: gloves, sterile bench, incubator, microscope, pipette, petri dish, and careful movement. Dance can happen as small safe steps, shoulder moves, or rhythm while working, not reckless lab behavior.
+- Before turning a new story into a Xiaoyunque prompt, run a critic pass using `lalachan-story-critic` when available. Fix exact awkward lines first, then write the final prompt.
 
 Never paste local filesystem paths into the Xiaoyunque prompt. Paths are only
 for the browser file upload command. The prompt should say `图1` through `图7`
