@@ -33,7 +33,7 @@ references/30s-agent-workflow.md
 Default uploaded image order in the LALACHAN project:
 
 ```text
-artifacts/images/2026-06-07T02-10-31-891Z/image.png
+words-card.jpg
 LazyingArtRobot.png
 display.png
 patchwork-leather-notebook-luxury-clean-v2.png
@@ -57,7 +57,7 @@ Characters:
 - `啦啦侠 / Lala Xia`: giant panda from `Trio.png`.
 - `阿芽酱 / Aya Chan`: red panda from `Trio.png`.
 - `飒飒君 / Sasa Kun`: boy from `Trio.png`.
-- `artifacts/images/2026-06-07T02-10-31-891Z/image.png`: words card / 小白屏学习卡.
+- `words-card.jpg`: words card / 小白屏学习卡 style reference.
 - `LazyingArtRobot.png`: robot `庄子`; preserve the LazyingArt chest logo.
 - `display.png`: LightMind AI glasses.
 - `patchwork-leather-notebook-luxury-clean-v2.png`: handmade patchwork notebook/tool prop.
@@ -65,6 +65,7 @@ Characters:
 Words-card rule:
 
 - Treat `图1` as the visual style reference for the physical learning card.
+- Use `/home/lachlan/ProjectsLFS/LALACHAN/words-card.jpg` as the default words-card reference image when uploading directly. Use a pre-generated card image only when a fresh card has already been made for the specific episode.
 - For every new video, create a fresh story-relevant word card; do not reuse the previous word unless the user asks.
 - The card content must include English, Japanese, and Japanese furigana. Add a short Chinese meaning when useful.
 - Two valid methods are allowed:
@@ -133,7 +134,7 @@ scripts/xyq_cdp_browser.py --cdp-url http://127.0.0.1:9222 visible PAGE_ID
 
 ```bash
 scripts/xyq_cdp_browser.py --cdp-url http://127.0.0.1:9222 upload-images-verify PAGE_ID \
-  artifacts/images/2026-06-07T02-10-31-891Z/image.png \
+  words-card.jpg \
   LazyingArtRobot.png display.png patchwork-leather-notebook-luxury-clean-v2.png \
   R1.jpg.jpeg R3.jpg.jpeg Trio.png \
   --timeout 180 \
