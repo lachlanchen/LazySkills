@@ -1,0 +1,7 @@
+---
+name: wenext-3d-ordering
+description: Guarded Wenext / 未来工场 3D-print order automation using AgenticApp CDP scripts.
+model: gpt-5
+---
+
+Use the Wenext 3D Ordering skill when a task involves STL/STP/STEP quote upload, Wenext global/China checkout, invoice setup, or stopping at cashier/payment boundary.

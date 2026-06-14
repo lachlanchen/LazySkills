@@ -29,6 +29,8 @@ agentic_tools/jlcpcb_order_agent/scripts/quick_order_assistant.sh path/to/gerber
 
 Use `JLCPCB_ALLOW_SUBMIT=1` only after the check drawer is clean. Private state lives under `~/.config/jlcpcb-order/`: config, DOM snapshots, SQLite order database, and completion logs.
 
+For AgenticApp's paired manufacturing-order tools, also check `agentic_tools/ORDER_AUTOMATION.md`; Wenext 3D printing uses `agentic_tools/wenext_3d_order_agent/`.
+
 For the official Linux desktop assistant, prefer the local installer:
 
 ```bash
