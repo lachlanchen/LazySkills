@@ -210,7 +210,7 @@ scripts/xyq_chrome/watch_thread_dom_download.py \
   --page-id PAGE_ID \
   --thread-url "https://xyq.jianying.com/home?tab_name=integrated-agent&thread_id=THREAD_ID&agent_name=pippit_video_part_agent" \
   --output-dir outputs/xyq-run \
-  --filename result_15s.mp4 \
+  --filename result_30s.mp4 \
   --copy-to Videos \
   --copy-to "/home/lachlan/Nutstore Files/AutoPublish/AutoPublish"
 ```
@@ -370,6 +370,8 @@ scripts/xyq_cdp_browser.py list-pages
 PAGE_ID=A9FBAB250CD9E5D028CD0171B5168B03
 ```
 
+Historical explicit-15s / low-credit example only:
+
 Select `沉浸式短片` from the home composer:
 
 ```bash
@@ -407,8 +409,10 @@ Expected result:
 }
 ```
 
-Set duration to `15秒`. If the slider is open, set it by clicking near the far
-right of the slider. Confirm with:
+For this explicit 15s example, set duration to `15秒`. Do not use this as the
+default for ordinary LALACHAN requests; default requests target `30秒` through a
+30s-capable Agent/integrated workflow. If the slider is open, set it by clicking
+near the far right of the slider. Confirm with:
 
 ```bash
 scripts/xyq_cdp_browser.py eval "$PAGE_ID" \

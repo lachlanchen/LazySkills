@@ -8,7 +8,7 @@ the Xiaoyunque prompt.
 
 | Label | File | Meaning |
 | --- | --- | --- |
-| 图1 | `artifacts/images/2026-06-07T02-10-31-891Z/image.png` | words card / 小白屏学习卡; show a fresh English/Japanese/furigana word each episode |
+| 图1 | `words-card.jpg` | words card / 小白屏学习卡 style reference; show a fresh English/Japanese/furigana word each episode |
 | 图2 | `LazyingArtRobot.png` | robot `庄子`; keep LazyingArt chest logo |
 | 图3 | `display.png` | LightMind AI glasses |
 | 图4 | `patchwork-leather-notebook-luxury-clean-v2.png` | handmade patchwork notebook |
@@ -20,7 +20,7 @@ the Xiaoyunque prompt.
 
 ```bash
 scripts/xyq_cdp_browser.py upload-images-verify PAGE_ID \
-  artifacts/images/2026-06-07T02-10-31-891Z/image.png \
+  words-card.jpg \
   LazyingArtRobot.png \
   display.png \
   patchwork-leather-notebook-luxury-clean-v2.png \
@@ -40,7 +40,9 @@ but the prompt must still say `图1`, not the temporary path.
 Use wording like:
 
 ```text
-参考图顺序：图1 是小白屏学习卡，每集显示新的主题词；图2 是机器人庄子；图3 是 LightMind AI 眼镜；
+参考图顺序：图1 是小白屏学习卡风格参考，可作为场景边缘、桌面、道具架或实验台上的小道具，
+卡片内容是 English: WORD；Japanese: 日本語；Furigana: ふりがな；中文：中文含义。
+它只是场景里的真实道具，不是字幕。图2 是机器人庄子；图3 是 LightMind AI 眼镜；
 图4 是拼皮笔记本；图5 是啦啦侠服装参考；图6 是飒飒君服装参考；
 图7 是啦啦侠、阿芽酱、飒飒君三人角色参考。请只根据这些已经上传的图片参考，
 不要把任何文件名或路径画进视频。
@@ -71,10 +73,11 @@ rg -n '/home|ProjectsLFS|artifacts|\.png|\.jpg|\.jpeg' references/prompts/PROMPT
 
 Submit only after proving:
 
-- `沉浸式短片`
-- normal/non-VIP `Seedance 2.0`, not Fast, unless Fast is explicitly requested
-- `15秒`
+- target duration is `30秒` by default
+- if `沉浸式短片` is visibly capped at `15秒`, switch to a 30s-capable Agent/integrated workflow
+- use `15秒` only when the user explicitly asks for 15s, quick test, cheapest/least credits, or accepts the short-film cap
+- use a normal/non-VIP model that supports the requested duration; do not choose a VIP model unless the user explicitly asks
 - `4:3` unless requested otherwise
 - all seven images attached successfully
 - prompt contains no local paths
-- no subtitles or generated screen text requested
+- no subtitles or extra generated screen text beyond intentional in-scene props such as the words card, `AgInTi`, or `LightMind`

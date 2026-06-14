@@ -26,6 +26,7 @@ references/xyq-browser-automation-workflow.md
 references/smooth-video-generation-runbook.md
 references/continue-confirm-download-runbook.md
 references/30s-agent-workflow.md
+references/words-card-30s-default.md
 ```
 
 ## LALACHAN Defaults
@@ -68,6 +69,8 @@ Words-card rule:
 - Use `/home/lachlan/ProjectsLFS/LALACHAN/words-card.jpg` as the default words-card reference image when uploading directly. Use a pre-generated card image only when a fresh card has already been made for the specific episode.
 - For every new video, create a fresh story-relevant word card; do not reuse the previous word unless the user asks.
 - The card content must include English, Japanese, and Japanese furigana. Add a short Chinese meaning when useful.
+- Use the successful in-scene prompt pattern by default: `图1 是小白屏学习卡风格参考，可作为场景边缘/桌面/道具架上的小道具，卡片内容是 English: WORD；Japanese: 日本語；Furigana: ふりがな；中文：中文含义。它只是场景里的真实道具，不是字幕。`
+- Choose a word that matches the episode theme, for example battle/courage scenes can use `courage / 勇気 / ゆうき / 勇气`.
 - Two valid methods are allowed:
   - Pre-generate a new words-card image first with AgInTi/image generation, then upload that generated card as `图1`.
   - Upload the existing words-card as a style/example reference, then give Xiaoyunque the exact English/Japanese/furigana content and make it responsible for rendering the new card in the scene.
@@ -88,22 +91,30 @@ Never paste local filesystem paths into the Xiaoyunque prompt. Paths are only
 for the browser file upload command. The prompt should say `图1` through `图7`
 and explicitly ask not to draw file names or paths into the video.
 
-Default short-video setup:
+Default video setup:
 
 ```text
-Mode: 沉浸式短片
+Mode: 30s-capable 创作 Agent / integrated-agent workflow by default
 Model: Seedance 2.0 Fast non-VIP by default for low-credit LALACHAN videos
-Duration: 15s
+Duration target: 30s by default
 Ratio: 4:3 unless the user requests otherwise
 Prompt language: mainly Chinese
 Always include: 不要字幕，不要生成任何字幕、说明文字、下三分之一文字或画面文字。
 ```
 
-For 30-second requests, do not force the `沉浸式短片` controls if they are stuck
-on `15秒` or a VIP model. Use the `创作 Agent` / integrated-agent composer,
-select `Seedance 2.0 Fast` when available, upload references directly, put
-`30 秒` in the first sentence of a compact prompt, submit through the Agent send
-button, then monitor the resulting thread. See `references/30s-agent-workflow.md`.
+For default work, target `30秒` rather than silently compressing to `15秒`.
+Do not force the `沉浸式短片` controls if they are stuck on `15秒` or a VIP model.
+Use the `创作 Agent` / integrated-agent composer, select the lowest non-VIP
+model that supports the duration when available, upload references directly,
+put `30 秒` in the first sentence of a compact prompt, submit through the Agent
+send button, then monitor the resulting thread. See
+`references/30s-agent-workflow.md`.
+
+Use `15秒` only when the user explicitly asks for `15s`, `cheapest`, `least
+credits`, `quick test`, or accepts the `沉浸式短片` duration cap. If the user asks
+for cheapest but also says future/default 30s, explain the tradeoff before
+submitting.
+In those explicit 15s/cheap cases, `沉浸式短片` is the preferred mode.
 
 ## Credit-Budget Rule
 
@@ -177,7 +188,7 @@ scripts/xyq_chrome/watch_thread_dom_download.py \
   --page-id PAGE_ID \
   --thread-url "THREAD_URL" \
   --output-dir outputs/xyq-run \
-  --filename result_15s.mp4 \
+  --filename result_30s.mp4 \
   --copy-to Videos \
   --copy-to "/home/lachlan/Nutstore Files/AutoPublish/AutoPublish"
 ```

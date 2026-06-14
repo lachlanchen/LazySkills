@@ -57,13 +57,14 @@ scripts/xyq_cdp_browser.py visible PAGE_ID
 Avoid opening a new tab for this recovery. The same-tab address reload is the
 reliable fix for the Xiaoyunque blank-loading state.
 
-## Standard Short Video Contract
+## Standard Video Contract
 
 For ordinary LALACHAN short videos:
 
-- Mode: `沉浸式短片`.
-- Model: `Seedance 2.0`, normal/non-VIP, not Fast unless explicitly requested.
-- Duration: `15s`.
+- Mode: 30s-capable `创作 Agent` / integrated-agent workflow by default.
+- Mode exception: use `沉浸式短片` only when the user explicitly asks for `15s`, quick test, cheapest / least credits, or accepts the short-film cap.
+- Model: lowest non-VIP model that supports the requested duration; use Fast only for low-credit/quick requests or when explicitly requested.
+- Duration: `30s` by default.
 - Ratio: `4:3` unless explicitly requested otherwise.
 - Language: mainly Chinese, with short English/Japanese phrases only if useful.
 - Prompt must include: `不要字幕，不要生成任何字幕、说明文字、下三分之一文字或画面文字。`
@@ -71,7 +72,7 @@ For ordinary LALACHAN short videos:
 Default uploaded image order:
 
 ```text
-artifacts/images/2026-06-07T02-10-31-891Z/image.png
+words-card.jpg
 LazyingArtRobot.png
 display.png
 patchwork-leather-notebook-luxury-clean-v2.png
@@ -116,20 +117,20 @@ important.
 
 ## Submit Flow
 
-1. Save the story prompt in `references/prompts/YYYY-MM-DD-topic-15s.md`.
-2. Save the exact Xiaoyunque submit prompt in `references/prompts/YYYY-MM-DD-topic-submit-15s.md`.
+1. Save the story prompt in `references/prompts/YYYY-MM-DD-topic-30s.md`.
+2. Save the exact Xiaoyunque submit prompt in `references/prompts/YYYY-MM-DD-topic-submit-30s.md`.
 3. Open or reuse a Xiaoyunque `integrated-agent` tab.
    If the current thread is stale or completed, use the page `创作` / new-session
    button in the same controlled tab, then record the new thread URL.
-4. Select `沉浸式短片`.
-5. Select `Seedance 2.0`, not Fast and not VIP, unless the user explicitly asks for Fast or VIP.
-6. Set duration to `15秒`; current UI may use a slider.
+4. Use the 30s-capable `创作 Agent` / integrated-agent workflow by default. Use `沉浸式短片` only for explicit 15s/cheap requests.
+5. Select a non-VIP model that supports the requested duration.
+6. Make the prompt first sentence state `30秒` by default.
 7. Set ratio to `4:3`; open the ratio menu or take a screenshot if the compact toolbar only shows `比例`.
 8. Upload and verify the seven images:
 
 ```bash
 scripts/xyq_cdp_browser.py upload-images-verify PAGE_ID \
-  artifacts/images/2026-06-07T02-10-31-891Z/image.png \
+  words-card.jpg \
   LazyingArtRobot.png \
   display.png \
   patchwork-leather-notebook-luxury-clean-v2.png \
@@ -142,7 +143,7 @@ scripts/xyq_cdp_browser.py upload-images-verify PAGE_ID \
 9. Fill prompt with user-like typing:
 
 ```bash
-scripts/xyq_cdp_browser.py type-prompt PAGE_ID references/prompts/YYYY-MM-DD-topic-submit-15s.md
+scripts/xyq_cdp_browser.py type-prompt PAGE_ID references/prompts/YYYY-MM-DD-topic-submit-30s.md
 ```
 
 10. Verify page state before submit: mode, model, ratio, duration, prompt, seven filenames, and no local paths in the prompt.
@@ -158,7 +159,7 @@ scripts/xyq_chrome/watch_thread_dom_download.py \
   --page-id PAGE_ID \
   --thread-url 'THREAD_URL' \
   --output-dir outputs/xyq-run \
-  --filename result_15s.mp4 \
+  --filename result_30s.mp4 \
   --copy-to Videos \
   --copy-to '/home/lachlan/Nutstore Files/AutoPublish/AutoPublish' \
   --interval 30 --max-polls 240 --reload-every 300 \
