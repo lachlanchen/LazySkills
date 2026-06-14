@@ -126,6 +126,13 @@
       "description": "Prepare, check, submit, and document guarded JLCPCB/JiaLiChuang PCB orders from Gerber ZIPs through China, global, and assistant workflows without leaking private data or paying automatically."
     },
     {
+      "id": "jlceda-mcp-automation",
+      "path": "skills/jlceda-mcp-automation/SKILL.md",
+      "category": "hardware-design",
+      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "description": "Install, activate, launch, and wire JLCEDA/LCEDA Pro with MCP bridge automation, including local Electron CDP launch, jlc-bridge extension setup, gateway checks, and MCP validation."
+    },
+    {
       "id": "dual-led-constant-power",
       "path": "skills/dual-led-constant-power/SKILL.md",
       "category": "hardware-control",

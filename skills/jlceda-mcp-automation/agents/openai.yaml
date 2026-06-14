@@ -1,0 +1,4 @@
+interface:
+  display_name: "JLCEDA MCP Automation"
+  short_description: "Prepare LCEDA Pro for MCP PCB agents"
+  default_prompt: "Use $jlceda-mcp-automation to install LCEDA Pro, build the JLCEDA MCP bridge, and validate PCB agent control."

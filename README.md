@@ -72,6 +72,7 @@ The repository is intentionally platform-neutral. A skill should be useful to Ag
 | `kv260-metavision-lab` | Operates and maintains the AMD Kria KV260 + Prophesee Metavision lab, including desktop launchers, custom viewer, recording API, native viewer recovery, Windows X11 control center, and file transfer. | PetaLinux, Prophesee, Metavision, V4L2, X11/Matchbox, SSH X11, event recording |
 | `kv260-windows-arduino` | Coordinates KV260 event recording with the Windows host and USB Arduino light controller, including LAN identity, COM-port checks, future Arduino APIs, and cross-session handoffs. | KV260 API, Windows SSH, Arduino CLI, COM ports, DualLampHI, private session mirrors |
 | `kicad-mcp-pcb-design` | Installs and uses KiCad with MCP/agent automation to inspect old PCB projects, generate boards, save datasets, validate DRC, export Gerbers/STEP, and render previews. | KiCad 10, `kicad-cli`, `pcbnew`, MCP stdio, Gerber/STEP/render export |
+| `jlceda-mcp-automation` | Installs, activates, launches, and wires JLCEDA/LCEDA Pro with MCP bridge automation for agent-controlled PCB design. | LCEDA Pro, Electron CDP, `hyl64/jlcmcp`, `jlc-bridge.eext`, gateway WebSocket, MCP validation |
 | `dual-led-constant-power` | Calibrates and controls dual Arduino-driven LED branches with MOS modules and INA219 monitoring for smooth constant-power crossfades. | Arduino UNO, YYNMOS MOS, INA219, inverse LUT, CSV/PNG telemetry |
 | `parametric-cad-design` | Designs, revises, validates, documents, and renders mechanical CAD parts with versioned artifacts and measured print-fit compensation. | OpenSCAD, CadQuery/build123d/OCP, FreeCAD, Blender, STEP/STL/DXF/SVG/PDF, mesh checks |
 
@@ -156,6 +157,7 @@ cp -R skills/aginti-agentlink ~/.codex/skills/
 cp -R skills/kv260-metavision-lab ~/.codex/skills/
 cp -R skills/kv260-windows-arduino ~/.codex/skills/
 cp -R skills/kicad-mcp-pcb-design ~/.codex/skills/
+cp -R skills/jlceda-mcp-automation ~/.codex/skills/
 cp -R skills/dual-led-constant-power ~/.codex/skills/
 cp -R skills/parametric-cad-design ~/.codex/skills/
 ```
@@ -196,6 +198,7 @@ test -f skills/aginti-agentlink/SKILL.md
 test -f skills/kv260-metavision-lab/SKILL.md
 test -f skills/kv260-windows-arduino/SKILL.md
 test -f skills/kicad-mcp-pcb-design/SKILL.md
+test -f skills/jlceda-mcp-automation/SKILL.md
 test -f skills/dual-led-constant-power/SKILL.md
 test -f skills/parametric-cad-design/SKILL.md
 bash -n skills/kv260-metavision-lab/scripts/kv260_metavision_probe.sh
