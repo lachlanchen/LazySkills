@@ -1,0 +1,4 @@
+interface:
+  display_name: "JLCPCB Ordering"
+  short_description: "Fast, guarded JLCPCB order submission"
+  default_prompt: "Use $jlcpcb-ordering to prepare a JLCPCB Gerber order, check fees, and stop before payment."
