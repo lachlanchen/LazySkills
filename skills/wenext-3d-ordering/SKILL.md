@@ -21,12 +21,14 @@ Use this skill to turn STL/STP/STEP files into a guarded Wenext 3D-print order w
 When working in AgenticApp, prefer the maintained CDP tool:
 
 ```bash
+python3 agentic_tools/order_assistant.py --provider wenext --site china status
+python3 agentic_tools/order_assistant.py --provider wenext --site china --allow-submit place
 agentic_tools/wenext_3d_order_agent/scripts/quick_order_global.sh upload --navigate
 agentic_tools/wenext_3d_order_agent/scripts/quick_order_china.sh upload --navigate
 agentic_tools/wenext_3d_order_agent/scripts/quick_order_china.sh china-flow --allow-submit
 ```
 
-Private state lives under `~/.config/wenext-3d-order/`: config, DOM snapshots, SQLite order database, and submission logs.
+Private state lives under `~/.config/wenext-3d-order/`: config, DOM snapshots, SQLite order database, and submission logs. The unified wrapper writes blocker handoff packets to `~/.config/manufacturing-order-assistant/packets/`.
 
 ## China Flow
 

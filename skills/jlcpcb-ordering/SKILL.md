@@ -21,13 +21,15 @@ Use this skill to turn a checked Gerber ZIP into a guarded JLC order workflow. K
 When working in AgenticApp, prefer the maintained CDP tool:
 
 ```bash
+python3 agentic_tools/order_assistant.py --provider jlc --site china status
+python3 agentic_tools/order_assistant.py --provider jlc --site china --allow-submit place path/to/gerber.zip
 agentic_tools/jlcpcb_order_agent/scripts/launch_shared_chrome.sh
 agentic_tools/jlcpcb_order_agent/scripts/quick_order_china.sh path/to/gerber.zip
 agentic_tools/jlcpcb_order_agent/scripts/quick_order_global.sh path/to/gerber.zip
 agentic_tools/jlcpcb_order_agent/scripts/quick_order_assistant.sh path/to/gerber.zip
 ```
 
-Use `JLCPCB_ALLOW_SUBMIT=1` only after the check drawer is clean. Private state lives under `~/.config/jlcpcb-order/`: config, DOM snapshots, SQLite order database, and completion logs.
+Use `JLCPCB_ALLOW_SUBMIT=1` only after the check drawer is clean. Private state lives under `~/.config/jlcpcb-order/`: config, DOM snapshots, SQLite order database, and completion logs. The unified wrapper writes blocker handoff packets to `~/.config/manufacturing-order-assistant/packets/`.
 
 For AgenticApp's paired manufacturing-order tools, also check `agentic_tools/ORDER_AUTOMATION.md`; Wenext 3D printing uses `agentic_tools/wenext_3d_order_agent/`.
 
