@@ -29,6 +29,21 @@ agentic_tools/jlcpcb_order_agent/scripts/quick_order_assistant.sh path/to/gerber
 
 Use `JLCPCB_ALLOW_SUBMIT=1` only after the check drawer is clean. Private state lives under `~/.config/jlcpcb-order/`: config, DOM snapshots, SQLite order database, and completion logs.
 
+For the official Linux desktop assistant, prefer the local installer:
+
+```bash
+agentic_tools/jlcpcb_order_agent/scripts/install_assistant_local.sh \
+  ~/Downloads/JLCPcAssit-linux-x64-5.0.69.zip
+```
+
+It creates `~/.local/bin/jlc-assistant`; do not commit `~/.config/jlc-assistant`.
+
+Start it through the detached, health-checked launcher rather than a foreground terminal:
+
+```bash
+agentic_tools/jlcpcb_order_agent/scripts/launch_assistant_local.sh --restart
+```
+
 ## Workflow
 
 1. Validate the board package first: KiCad DRC/ERC, Gerber ZIP, drill files, board size, and preview.

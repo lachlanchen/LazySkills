@@ -4,7 +4,7 @@
 
 - China web order: `https://www.jlc.com/newOrder/#/pcb/newOnlinePlaceOrder?spm=jlc-pc.newcenterpage.business`
 - Global quote: `https://cart.jlcpcb.com/quote?spm=jlcpcb.Public.2006`
-- China desktop assistant: `/opt/jlc-assistant/jlc-assistant`
+- China desktop assistant: prefer `~/.local/bin/jlc-assistant`; legacy system install may be `/opt/jlc-assistant/jlc-assistant`
 - Private config: `~/.config/jlcpcb-order/private.json`
 - Private database: `~/.config/jlcpcb-order/orders.sqlite3`
 - Private DOM snapshots: `~/.config/jlcpcb-order/dom/`
@@ -91,7 +91,23 @@ Success text: `Your order has been submitted.` Stop before payment.
 
 ## Desktop Assistant
 
-Use the assistant only as a handoff unless separately automated. The assistant can show a cheaper price, but requires a desktop-app continuation and fresh CAM preview review.
+Install locally from the official ZIP:
+
+```bash
+agentic_tools/jlcpcb_order_agent/scripts/install_assistant_local.sh \
+  ~/Downloads/JLCPcAssit-linux-x64-5.0.69.zip
+```
+
+The app is unpacked under `~/.local/opt/jlc-assistant-5.0.69/`, wrapped by `~/.local/bin/jlc-assistant`, and stores its own private login/session in `~/.config/jlc-assistant`.
+
+Use the stable launcher:
+
+```bash
+agentic_tools/jlcpcb_order_agent/scripts/launch_assistant_local.sh --restart
+agentic_tools/jlcpcb_order_agent/scripts/launch_assistant_local.sh --status
+```
+
+Use the assistant only as a handoff unless separately automated. The assistant can show a cheaper price, but requires a desktop-app continuation and fresh CAM preview review. In remote Ubuntu desktops, the normal Electron sandbox may fail even with a setuid helper; the launcher starts the app in a separate `setsid` session, defaults to no-sandbox plus `--disable-gpu`, logs under `~/.cache/jlcpcb-order/assistant/`, and checks that the app stays alive. Keep extra Chromium flags empty unless debugging because the assistant can crash in its own command-line parser. If CDP is needed, set `JLCPCB_ASSISTANT_DEBUG_PORT=51369` and use raw page-level CDP; avoid Playwright browser-level attach for this Electron build.
 
 ## Database And Logs
 
