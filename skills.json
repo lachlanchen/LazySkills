@@ -145,6 +145,13 @@
       "category": "hardware-design",
       "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
       "description": "Design, revise, validate, document, and render mechanical CAD parts with OpenSCAD, CadQuery/build123d/OCP, FreeCAD, Blender, STEP/STL/DXF/SVG/PDF exports, print-fit compensation, versioned artifacts, and old STEP reference measurements."
+    },
+    {
+      "id": "remote-gui-virtual-desktop",
+      "path": "skills/remote-gui-virtual-desktop/SKILL.md",
+      "category": "desktop-automation",
+      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "description": "Launch, control, debug, and clean up remote Linux GUI apps through clean Xvfb desktops, localhost x11vnc/noVNC bridges, browser app windows, SSH-local ports, and camera/GUI process isolation."
     }
   ]
 }
