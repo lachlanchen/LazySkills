@@ -76,8 +76,9 @@ words-card.jpg
 LazyingArtRobot.png
 display.png
 patchwork-leather-notebook-luxury-clean-v2.png
-R1.jpg.jpeg
-R3.jpg.jpeg
+raraxia.jpeg
+ayachan.png
+sasakun.jpeg
 Trio.png
 ```
 
@@ -87,11 +88,12 @@ Use these prompt labels after upload:
 - 图2: `LazyingArtRobot.png`, robot `庄子`; keep the LazyingArt logo on chest.
 - 图3: LightMind AI glasses.
 - 图4: handmade patchwork notebook.
-- 图5: 啦啦侠 clothing reference.
-- 图6: 飒飒君 clothing reference.
-- 图7: three-character identity reference.
+- 图5: `raraxia.jpeg`, individual 啦啦侠 / Rara Xia reference.
+- 图6: `ayachan.png`, individual 阿芽酱 / Aya Chan reference.
+- 图7: `sasakun.jpeg`, individual 飒飒君 / Sasa Kun reference.
+- 图8: `Trio.png`, three-character group identity reference.
 
-Use `Trio.png` / 图7 as the role identity reference:
+Use `Trio.png` / 图8 as the role identity reference:
 
 - 啦啦侠 / Lala Xia: giant panda.
 - 阿芽酱 / Aya Chan: red panda.
@@ -99,7 +101,7 @@ Use `Trio.png` / 图7 as the role identity reference:
 
 Never paste local filesystem paths into the Xiaoyunque prompt. Paths are only
 for browser upload commands. In the prompt, refer to uploaded references as
-`图1`, `图2`, ..., in this exact order.
+`图1`, `图2`, ..., `图8` in this exact order.
 
 For `图1`, generate a new word or concept for each new video. The card content
 must include English, Japanese, and furigana. The card should look like a real
@@ -126,7 +128,7 @@ important.
 5. Select a non-VIP model that supports the requested duration.
 6. Make the prompt first sentence state `30秒` by default.
 7. Set ratio to `4:3`; open the ratio menu or take a screenshot if the compact toolbar only shows `比例`.
-8. Upload and verify the seven images:
+8. Upload and verify the eight images:
 
 ```bash
 scripts/xyq_cdp_browser.py upload-images-verify PAGE_ID \
@@ -134,8 +136,9 @@ scripts/xyq_cdp_browser.py upload-images-verify PAGE_ID \
   LazyingArtRobot.png \
   display.png \
   patchwork-leather-notebook-luxury-clean-v2.png \
-  R1.jpg.jpeg \
-  R3.jpg.jpeg \
+  raraxia.jpeg \
+  ayachan.png \
+  sasakun.jpeg \
   Trio.png \
   --screenshot outputs/xyq-run/after-upload.png
 ```
@@ -146,7 +149,7 @@ scripts/xyq_cdp_browser.py upload-images-verify PAGE_ID \
 scripts/xyq_cdp_browser.py type-prompt PAGE_ID references/prompts/YYYY-MM-DD-topic-submit-30s.md
 ```
 
-10. Verify page state before submit: mode, model, ratio, duration, prompt, seven filenames, and no local paths in the prompt.
+10. Verify page state before submit: mode, model, ratio, duration, prompt, eight filenames, and no local paths in the prompt.
 11. Submit only if requested. Record thread URL, page id, screenshot, and charged credits.
 
 ## Watch Flow

@@ -1,6 +1,6 @@
 # Uploaded Images, No Local Paths
 
-Use this when preparing LALACHAN Xiaoyunque videos with the current seven-image
+Use this when preparing LALACHAN Xiaoyunque videos with the current eight-image
 reference set. The paths below are upload inputs only. Do not paste them into
 the Xiaoyunque prompt.
 
@@ -12,9 +12,10 @@ the Xiaoyunque prompt.
 | 图2 | `LazyingArtRobot.png` | robot `庄子`; keep LazyingArt chest logo |
 | 图3 | `display.png` | LightMind AI glasses |
 | 图4 | `patchwork-leather-notebook-luxury-clean-v2.png` | handmade patchwork notebook |
-| 图5 | `R1.jpg.jpeg` | 啦啦侠 clothing reference |
-| 图6 | `R3.jpg.jpeg` | 飒飒君 clothing reference |
-| 图7 | `Trio.png` | 啦啦侠, 阿芽酱, 飒飒君 identity reference |
+| 图5 | `raraxia.jpeg` | individual 啦啦侠 / Rara Xia reference |
+| 图6 | `ayachan.png` | individual 阿芽酱 / Aya Chan reference |
+| 图7 | `sasakun.jpeg` | individual 飒飒君 / Sasa Kun reference |
+| 图8 | `Trio.png` | 啦啦侠, 阿芽酱, 飒飒君 group identity reference |
 
 ## Upload
 
@@ -24,11 +25,12 @@ scripts/xyq_cdp_browser.py upload-images-verify PAGE_ID \
   LazyingArtRobot.png \
   display.png \
   patchwork-leather-notebook-luxury-clean-v2.png \
-  R1.jpg.jpeg \
-  R3.jpg.jpeg \
+  raraxia.jpeg \
+  ayachan.png \
+  sasakun.jpeg \
   Trio.png \
   --timeout 180 \
-  --screenshot outputs/xyq-run/after-upload-seven.png
+  --screenshot outputs/xyq-run/after-upload-eight.png
 ```
 
 Wait until every upload item is `success`. If one image stalls, remove that chip
@@ -43,8 +45,8 @@ Use wording like:
 参考图顺序：图1 是小白屏学习卡风格参考，可作为场景边缘、桌面、道具架或实验台上的小道具，
 卡片内容是 English: WORD；Japanese: 日本語；Furigana: ふりがな；中文：中文含义。
 它只是场景里的真实道具，不是字幕。图2 是机器人庄子；图3 是 LightMind AI 眼镜；
-图4 是拼皮笔记本；图5 是啦啦侠服装参考；图6 是飒飒君服装参考；
-图7 是啦啦侠、阿芽酱、飒飒君三人角色参考。请只根据这些已经上传的图片参考，
+图4 是拼皮笔记本；图5 是啦啦侠单人参考；图6 是阿芽酱单人参考；
+图7 是飒飒君单人参考；图8 是啦啦侠、阿芽酱、飒飒君三人角色参考。请只根据这些已经上传的图片参考，
 不要把任何文件名或路径画进视频。
 ```
 
@@ -78,6 +80,6 @@ Submit only after proving:
 - use `15秒` only when the user explicitly asks for 15s, quick test, cheapest/least credits, or accepts the short-film cap
 - use a normal/non-VIP model that supports the requested duration; do not choose a VIP model unless the user explicitly asks
 - `4:3` unless requested otherwise
-- all seven images attached successfully
+- all eight images attached successfully
 - prompt contains no local paths
 - no subtitles or extra generated screen text beyond intentional in-scene props such as the words card, `AgInTi`, or `LightMind`

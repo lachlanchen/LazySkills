@@ -161,7 +161,8 @@ Upload local image reference files into the visible composer:
 
 ```bash
 scripts/xyq_cdp_browser.py upload-images-verify PAGE_ID \
-  display.png patchwork-leather-notebook-luxury-clean-v2.png R1.jpg.jpeg R3.jpg.jpeg Trio.png \
+  words-card.jpg LazyingArtRobot.png display.png patchwork-leather-notebook-luxury-clean-v2.png \
+  raraxia.jpeg ayachan.png sasakun.jpeg Trio.png \
   --screenshot outputs/xyq-run/after_upload.png
 ```
 
@@ -353,13 +354,16 @@ Saved prompt:
 references/prompts/2026-05-12-episode03-xingyao-dinosaur-duanpian-15s.md
 ```
 
-Default five local photos for this run:
+Current default local image set for future runs:
 
 ```text
+/home/lachlan/ProjectsLFS/LALACHAN/words-card.jpg
+/home/lachlan/ProjectsLFS/LALACHAN/LazyingArtRobot.png
 /home/lachlan/ProjectsLFS/LALACHAN/display.png
 /home/lachlan/ProjectsLFS/LALACHAN/patchwork-leather-notebook-luxury-clean-v2.png
-/home/lachlan/ProjectsLFS/LALACHAN/R1.jpg.jpeg
-/home/lachlan/ProjectsLFS/LALACHAN/R3.jpg.jpeg
+/home/lachlan/ProjectsLFS/LALACHAN/raraxia.jpeg
+/home/lachlan/ProjectsLFS/LALACHAN/ayachan.png
+/home/lachlan/ProjectsLFS/LALACHAN/sasakun.jpeg
 /home/lachlan/ProjectsLFS/LALACHAN/Trio.png
 ```
 
@@ -446,17 +450,21 @@ is ambiguous:
 scripts/xyq_cdp_browser.py screenshot "$PAGE_ID" /tmp/xyq_asset_picker.png
 ```
 
-Upload the five local photos directly through the hidden composer upload input.
+Upload the current eight local images directly through the hidden composer upload
+input.
 Prefer `upload-images-verify` for new runs because it uploads, polls visible
 thumbnail evidence, matches filenames, and writes a screenshot in one step:
 
 ```bash
 scripts/xyq_cdp_browser.py upload-images-verify "$PAGE_ID" \
+  words-card.jpg \
+  LazyingArtRobot.png \
   display.png \
   patchwork-leather-notebook-luxury-clean-v2.png \
+  raraxia.jpeg \
+  ayachan.png \
+  sasakun.jpeg \
   Trio.png \
-  R1.jpg.jpeg \
-  R3.jpg.jpeg \
   --screenshot outputs/xyq-upload-training/upload-verification.png
 ```
 
@@ -465,25 +473,31 @@ browser accepted the files. Always follow it with DOM verification:
 
 ```bash
 scripts/xyq_cdp_browser.py set-file-input "$PAGE_ID" \
+  words-card.jpg \
+  LazyingArtRobot.png \
   display.png \
   patchwork-leather-notebook-luxury-clean-v2.png \
+  raraxia.jpeg \
+  ayachan.png \
+  sasakun.jpeg \
   Trio.png \
-  R1.jpg.jpeg \
-  R3.jpg.jpeg \
   --index 0
 
 scripts/xyq_cdp_browser.py verify-attachments "$PAGE_ID"
 ```
 
-For a correct five-image upload, the DOM should show `assetCount` as `5/10` and
+For a correct eight-image upload, the DOM should show `assetCount` as `8/10` and
 filename evidence for:
 
 ```text
+words-card.jpg
+LazyingArtRobot.png
 display.png
 patchwork-leather-notebook-luxury-clean-v2.png
+raraxia.jpeg
+ayachan.png
+sasakun.jpeg
 Trio.png
-R1.jpg.jpeg
-R3.jpg.jpeg
 ```
 
 If DOM verification succeeds but the user cannot see the images, you probably
@@ -537,15 +551,18 @@ scripts/xyq_cdp_browser.py eval "$PAGE_ID" \
 Expected attachment list for this run:
 
 ```text
+words-card.jpg
+LazyingArtRobot.png
 display.png
 patchwork-leather-notebook-luxury-clean-v2.png
+raraxia.jpeg
+ayachan.png
+sasakun.jpeg
 Trio.png
-R1.jpg.jpeg
-R3.jpg.jpeg
 comet_shortfilm.mp4 0:15
 ```
 
-If an accidental extra asset-library image appears before the five photos,
+If an accidental extra asset-library image appears before the eight photos,
 remove it using the small remove button on its thumbnail. Today the first
 thumbnail remove button was around:
 

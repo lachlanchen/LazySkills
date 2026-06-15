@@ -38,8 +38,9 @@ words-card.jpg
 LazyingArtRobot.png
 display.png
 patchwork-leather-notebook-luxury-clean-v2.png
-R1.jpg.jpeg
-R3.jpg.jpeg
+raraxia.jpeg
+ayachan.png
+sasakun.jpeg
 Trio.png
 ```
 
@@ -49,9 +50,10 @@ Prompt labels after upload:
 - 图2: `LazyingArtRobot.png`, robot `庄子`; keep the LazyingArt logo on chest.
 - 图3: LightMind AI glasses.
 - 图4: handmade patchwork notebook.
-- 图5: 啦啦侠 clothing reference.
-- 图6: 飒飒君 clothing reference.
-- 图7: three-character identity reference.
+- 图5: `raraxia.jpeg`, individual 啦啦侠 / Rara Xia reference.
+- 图6: `ayachan.png`, individual 阿芽酱 / Aya Chan reference.
+- 图7: `sasakun.jpeg`, individual 飒飒君 / Sasa Kun reference.
+- 图8: `Trio.png`, three-character group identity reference.
 
 Characters:
 
@@ -62,6 +64,9 @@ Characters:
 - `LazyingArtRobot.png`: robot `庄子`; preserve the LazyingArt chest logo.
 - `display.png`: LightMind AI glasses.
 - `patchwork-leather-notebook-luxury-clean-v2.png`: handmade patchwork notebook/tool prop.
+- `raraxia.jpeg`: individual 啦啦侠 / Rara Xia reference.
+- `ayachan.png`: individual 阿芽酱 / Aya Chan reference.
+- `sasakun.jpeg`: individual 飒飒君 / Sasa Kun reference.
 
 Words-card rule:
 
@@ -88,7 +93,7 @@ Story writing rule:
 - Before turning a new story into a Xiaoyunque prompt, run a critic pass using `lalachan-story-critic` when available. Fix exact awkward lines first, then write the final prompt.
 
 Never paste local filesystem paths into the Xiaoyunque prompt. Paths are only
-for the browser file upload command. The prompt should say `图1` through `图7`
+for the browser file upload command. The prompt should say `图1` through `图8`
 and explicitly ask not to draw file names or paths into the video.
 
 Default video setup:
@@ -148,7 +153,7 @@ scripts/xyq_cdp_browser.py --cdp-url http://127.0.0.1:9222 visible PAGE_ID
 scripts/xyq_cdp_browser.py --cdp-url http://127.0.0.1:9222 upload-images-verify PAGE_ID \
   words-card.jpg \
   LazyingArtRobot.png display.png patchwork-leather-notebook-luxury-clean-v2.png \
-  R1.jpg.jpeg R3.jpg.jpeg Trio.png \
+  raraxia.jpeg ayachan.png sasakun.jpeg Trio.png \
   --timeout 180 \
   --screenshot outputs/xyq-run/after-upload.png
 ```

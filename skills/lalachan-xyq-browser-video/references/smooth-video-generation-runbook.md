@@ -14,7 +14,7 @@ Before clicking generate, prove these facts from the visible page or DOM:
 - requested ratio, currently default `4:3` for LALACHAN;
 - prompt contains the no-subtitle/no-screen-text requirement;
 - prompt contains no local filesystem paths or filenames; references should be
-  described by uploaded image order such as `图1` through `图7`;
+  described by uploaded image order such as `图1` through `图8`;
 - all reference images or videos are attached and no upload item is still
   `uploading`;
 - submit button exists and is enabled.
@@ -54,7 +54,7 @@ Avoid accumulating extra tabs.
 scripts/xyq_cdp_browser.py upload-images-verify PAGE_ID \
   words-card.jpg \
   LazyingArtRobot.png display.png patchwork-leather-notebook-luxury-clean-v2.png \
-  R1.jpg.jpeg R3.jpg.jpeg Trio.png \
+  raraxia.jpeg ayachan.png sasakun.jpeg Trio.png \
   --timeout 180 \
   --screenshot outputs/run/after-upload.png
 ```

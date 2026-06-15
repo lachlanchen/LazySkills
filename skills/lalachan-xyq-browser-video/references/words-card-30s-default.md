@@ -1,6 +1,6 @@
 # Words Card and 30s Default
 
-Use this when preparing LALACHAN Xiaoyunque prompts with the seven-image
+Use this when preparing LALACHAN Xiaoyunque prompts with the eight-image
 reference set.
 
 ## Duration
