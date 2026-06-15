@@ -25,6 +25,9 @@ Use conservative bare-PCB defaults unless the user asks otherwise:
 - FR-4, 2 layers, quantity 5, 1.6 mm, 1 oz, green solder mask, white silkscreen.
 - Surface finish: OSP only if valid for the board size; otherwise use a supported finish such as lead-free HASL after review.
 - Standard compensation: `按标准合同常规处理`.
+- Explicit dimensions: fill `长` and `宽` in centimeters when the order-check drawer shows `板子尺寸 去填写`.
+- Delivery format: `出货方式 -> 单片` for one-board Gerber jobs.
+- Board mark/customer code: select `标志增加方式 -> 每个单片内增加`, then `板上加标志 -> 加嘉立创客编（免费）`; handle the `加客编` modal by selecting `每个单片内增加` and clicking `确认`.
 - No SMT: `是否SMT贴片 -> 不需要`.
 - No stencil: `是否开钢网 -> 不需要`.
 - No edge polishing: `是否需要磨边 -> 不需要`.
@@ -58,6 +61,10 @@ Block submission when the drawer contains `检测到您的订单还有`, `去填
 | Courier missing or changed | Drawer shows `快递方式 去填写` or wrong carrier | Select exact text `顺丰电商标快`. |
 | Combined shipping conflict | SF rejects `并单发货` | Use `不同交期订单不一起发货`. |
 | Ambiguous post-submit state | Form remains open briefly after click | Detect `pcbPlaceSuccess` and `订单提交成功，请等待审核`. |
+| Board size missing | Drawer shows `板子尺寸 去填写` | Fill `input[placeholder='长']` and `input[placeholder='宽']` from the board config, in centimeters. |
+| Wrong remembered material/layer | Drawer shows retained old material or 1-layer state | Reapply `板材类别`, `板子层数`, and `出货方式` every run by row label. |
+| Customer code missing | Drawer shows `板上加标志 去填写` | Choose free customer code, then confirm the `加客编` modal. |
+| Existing address blocks rerun | Address iframe or dialog intercepts earlier clicks | Accept the already-selected main-page address when contact/address text is present; close leftover address dialogs before refilling settings. |
 
 ## Script Methods
 
@@ -68,6 +75,8 @@ When adapting the AgenticApp tool, preserve these methods:
 - `visible_price_text()`: check the price panel for `品质赔付费`.
 - `assert_clean_for_submit()`: central submit gate.
 - `click_option_near_label()`: click row-local options such as SMT/stencil/edge polish.
+- `fill_board_dimensions()`: writes board size in centimeters when JLC does not parse Gerber dimensions.
+- `handle_customer_code_modal()`: confirms the `加客编` modal after selecting the free customer-code mark.
 - `select_courier()`: enforce the configured courier default.
 - `record_order()` and `post_submit_log()`: private audit trail after check/submit.
 

@@ -24,6 +24,7 @@ When working in AgenticApp, prefer the maintained CDP tool:
 python3 agentic_tools/order_assistant.py --provider jlc --site china status
 python3 agentic_tools/order_assistant.py --provider jlc --site china --allow-submit place path/to/gerber.zip
 agentic_tools/jlcpcb_order_agent/scripts/launch_shared_chrome.sh
+python3 -u agentic_tools/jlcpcb_order_agent/scripts/submit_board_order.py --config path/to/jlcpcb_order/order-settings.json --site china place
 agentic_tools/jlcpcb_order_agent/scripts/quick_order_china.sh path/to/gerber.zip
 agentic_tools/jlcpcb_order_agent/scripts/quick_order_global.sh path/to/gerber.zip
 agentic_tools/jlcpcb_order_agent/scripts/quick_order_assistant.sh path/to/gerber.zip
@@ -50,11 +51,11 @@ agentic_tools/jlcpcb_order_agent/scripts/launch_assistant_local.sh --restart
 
 ## Workflow
 
-1. Validate the board package first: KiCad DRC/ERC, Gerber ZIP, drill files, board size, and preview.
+1. Validate the board package first: KiCad DRC/ERC, Gerber ZIP, drill files, board size, and preview. Prefer `submit_board_order.py` when the repo has a public `jlcpcb_order/order-settings.json`.
 2. Launch the shared logged-in Chrome profile through CDP; do not create throwaway browser profiles for ordering.
-3. Upload Gerbers and fill conservative bare-PCB defaults: FR-4, low quantity, no SMT, no stencil, manual confirmation, standard compensation.
+3. Upload Gerbers and fill conservative bare-PCB defaults: FR-4, correct layer count, explicit board size in centimeters when JLC misses it, low quantity, no SMT, no stencil, manual confirmation, standard compensation.
 4. If OSP is rejected because any side is under `7 cm`, choose a supported finish such as lead-free HASL or stop for review.
-5. Run `检查订单`, clear all missing fields, record a private snapshot, then submit only to review/payment boundary when authorized.
+5. Run `检查订单`, clear all missing fields including board mark/customer-code fields, record a private snapshot, then submit only to review/payment boundary when authorized.
 6. After success, record `pcbPlaceSuccess` or global order-success pages in the private database and stop before payment.
 
 Read `references/jlcpcb-ordering-runbook.md` for live DOM selectors, terms, and the China/global/assistant submission paths.
