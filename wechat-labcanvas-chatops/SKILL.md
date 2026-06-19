@@ -71,6 +71,12 @@ from crashes or transient errors.
 in tmux. Treat the requested web port as preferred; the web app may move to the
 next free port and print the actual URL.
 
+For multiple monitored groups, create one ignored direct config per group and
+set `WECHAT_DIRECT_CONFIGS` in `.private/wechat_supervisor.local.env`. Each
+config must have a distinct `state_path`; otherwise local message IDs from
+different groups will collide. Add `send_target` or a private send-target
+registry so replies open the correct group before sending.
+
 Install a user convenience wrapper only if requested:
 
 ```bash
