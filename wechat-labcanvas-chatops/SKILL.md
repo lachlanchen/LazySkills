@@ -68,7 +68,10 @@ for the virtual desktop, one decrypt refresh loop, one fast monitor per group,
 the worker loop, and media sync. Direct monitors should normally use
 `--no-decrypt` and read the refreshed cache. Monitor, worker, and media panes
 should run through a restart wrapper so they recover from crashes or transient
-errors.
+errors. For responsive chatops, use `WECHAT_DIRECT_POLL_SECONDS=0.8`,
+`WECHAT_DIRECT_CATCHUP_POLL_SECONDS=0.1`, and
+`WECHAT_DECRYPT_REFRESH_INTERVAL=1`. Keep the fast chat agent on `gpt-5.5` with
+low reasoning and a short timeout; route slow tasks to the worker queue.
 
 `labcanvas wechat stack start` should also start the LabCanvas web control panel
 in tmux. Treat the requested web port as preferred; the web app may move to the
@@ -86,7 +89,8 @@ Serialize all GUI sends with one local lock such as
 against the same WeChat desktop. Use `fallback_clicks` in private send targets
 when WeChat search results shift between rows, and rerun
 `labcanvas wechat health --json` after changing monitor configs to verify state
-catch-up, title guards, and self-message ignores.
+catch-up, title guards, self-message ignores, poll settings, Codex model, and
+last-loop timings.
 
 Use purpose-specific configs instead of one global personality. A research group
 such as `懒人科研` should keep `chat_purpose: "research"` and respond only to
