@@ -51,20 +51,24 @@ labcanvas wechat init-config --chat '<CHAT_NAME>'
 labcanvas wechat desktop start
 labcanvas wechat monitor start
 labcanvas wechat hold start
+labcanvas wechat queue --json
 labcanvas wechat send --message 'Bridge online.'
 labcanvas wechat send --file '<ARTIFACT>.pdf'
 labcanvas wechat worker enqueue '<SLOW_TASK>'
 labcanvas wechat worker once --send
-labcanvas wechat media-sync --chat '<CHAT_NAME>' --source '<MEDIA_DIR>'
+labcanvas wechat media-sync --chat '<CHAT_NAME>' --auto-source
 ```
 
 `labcanvas wechat hold start` should create or reuse a tmux session with panes
-for the virtual desktop, fast monitor, worker loop, and optional media sync.
+for the virtual desktop, fast monitor, worker loop, and media sync. Monitor,
+worker, and media panes should run through a restart wrapper so they recover
+from crashes or transient errors.
 Install a user convenience wrapper only if requested:
 
 ```bash
 labcanvas wechat install-user-scripts
 ~/scripts/labcanvas-wechat-hold.sh start
+~/scripts/create-labcanvas-wechat-tmux.sh
 ```
 
 Web app controls, when available, should call the same CLI/backend layer and not
@@ -208,12 +212,17 @@ artifact or a redacted status.
    media directory, and allowed chat names.
 3. Decrypt or refresh message DB copies into a private workdir.
 4. Update the SQLite mirror with new allowed messages.
-5. Let the fast chat agent output `CHAT`, `ACK+TASK`, or `NO_REPLY`.
+5. Let the fast chat agent output `CHAT`, `ACK+TASK`, or `NO_REPLY`; for obvious
+   slow work, send a configured ACK immediately and enqueue the backend task
+   before calling a slower reasoning model.
 6. Enqueue `TASK` work into a private JSONL queue and send the ACK immediately.
 7. Let the worker agent run LabCanvas tasks and write artifacts.
-8. Verify artifacts locally, then send text/PDF/files/images back through WeChat.
+8. If the worker needs an important decision, send a confirmation question and
+   mark the task `waiting_confirmation`; otherwise verify artifacts locally and
+   send text/PDF/files/images back through WeChat.
 9. Mark messages and tasks handled in the mirror to prevent duplicate sends.
-10. Periodically sync downloaded media and prune private temporary data.
+10. Periodically sync downloaded media with auto-discovered `xwechat_files`
+    folders, copying only new/changed files and pruning private temporary data.
 
 ## Failure Handling
 
