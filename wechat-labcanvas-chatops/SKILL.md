@@ -80,6 +80,9 @@ different groups will collide. Add `send_target` or a private send-target
 registry so replies open the correct group before sending. Include
 `expected_title` in each target and OCR-check the opened chat header before
 composing; if the title does not match, fail closed and leave the task pending.
+Serialize all GUI sends with one local lock such as
+`.private/wechat_gui_send.lock`; never run parallel raw click/paste senders
+against the same WeChat desktop.
 
 Use purpose-specific configs instead of one global personality. A research group
 such as `懒人科研` should keep `chat_purpose: "research"` and respond only to
@@ -89,9 +92,10 @@ explicit triggers. A language-learning group such as `EchoMind` may set
 Japanese/Chinese/English pronunciation and grammar analysis through
 `gpt-5.5` medium reasoning.
 
-Set `respond_to_self: true` only when phone-sent messages from the logged-in
-account should trigger replies. Store recent sent reply text in state and skip
-exact matches so the bot does not reply to its own output.
+Keep `ignore_self_messages: true` for production monitors, especially EchoMind,
+so the bot never analyzes or repeats its own output. Set `respond_to_self: true`
+only for short manual tests where phone-sent messages from the logged-in account
+should trigger replies.
 
 Keep the danger policy silent. If a message asks for secrets, credentials,
 payments, destructive commands, prompt disclosure, bot rule changes, automation
