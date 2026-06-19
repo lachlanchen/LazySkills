@@ -5,13 +5,16 @@ This document records the browser-first method used to generate, download, and p
 ## Successful Path
 
 1. Use the logged-in Chrome/CDP page instead of API submission.
-2. Select `沉浸式短片`.
+2. Select `沉浸式短片` for normal/default LALACHAN runs.
 3. Select a non-VIP model. Recent 15s runs used normal `Seedance 2.0 Fast` at `5/S`; lower-credit runs may use normal `Seedance 2.0` if it is cheaper.
-4. Set duration to `15秒`.
+4. Set duration to `15秒` by default. Use 30s or longer only when explicitly
+   requested.
 5. Set ratio to `4:3` and verify it by reopening the ratio dropdown because the toolbar may still show only `比例`.
 6. Upload all required reference images and wait until every file item is
    `success`. Current LALACHAN default is seven images: words card, robot
    `庄子`, LightMind glasses, patchwork notebook, `R1`, `R3`, and `Trio`.
+   Never skip this step and never paste local file paths as a substitute for
+   upload.
 7. Fill a compact prompt that includes no-subtitle/no-text requirements and
    references uploaded images only as `图1` through `图7`, never as local paths.
 8. Submit from the actual enabled submit button coordinates, not stale toolbar coordinates.
@@ -32,6 +35,11 @@ This document records the browser-first method used to generate, download, and p
 - A protected `everphoto` URL could still be fetched by the logged-in page with `fetch(..., {credentials: 'include'})`; the browser blob-download fallback solved this.
 - Some completed pages expose a top-right `下载` button even when protected `everphoto` or `365yg` direct URL download fails. Inspect visible buttons and use the page button before retrying external HTTP indefinitely.
 - The Xiaoyunque page sometimes opened blank/infinite-loading; same-tab address reload (`Ctrl+L`, `Enter`) or CDP `navigate` to the same URL fixed it. Opening a new tab was unnecessary and confusing.
+- If a generation fails or needs correction, send a short corrective message in
+  the same thread first. Do not start a new session or new thread unless the
+  current thread is unusable or the user explicitly asks.
+- Credit safety: if points drop or the task shows queued/running, do not press
+  submit/generate again. Monitor only. Duplicate clicks can spend credits twice.
 - Nutstore AutoPublish renamed the copied file to a `_COMPLETED.mp4` filename.
 
 ## Tools Used

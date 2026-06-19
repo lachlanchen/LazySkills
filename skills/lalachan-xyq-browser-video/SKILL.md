@@ -96,39 +96,45 @@ Never paste local filesystem paths into the Xiaoyunque prompt. Paths are only
 for the browser file upload command. The prompt should say `图1` through `图8`
 and explicitly ask not to draw file names or paths into the video.
 
+Always upload the actual reference image files before generation. Do not treat
+typed local paths, pasted filenames, or prompt-only image descriptions as a
+substitute for upload. Before any paid submit, verify visible attachment
+evidence for every required reference image. If image upload fails or cannot be
+proved, stop and fix/report the blocker instead of submitting.
+
 Default video setup:
 
 ```text
-Mode: 30s-capable 创作 Agent / integrated-agent workflow by default
-Model: Seedance 2.0 Fast non-VIP by default for low-credit LALACHAN videos
-Duration target: 30s by default
+Mode: 沉浸式短片 by default for normal LALACHAN video generation
+Model: Seedance 2.0 Fast by default for LALACHAN videos
+Duration target: 15s by default
 Ratio: 4:3 unless the user requests otherwise
 Prompt language: mainly Chinese
 Always include: 不要字幕，不要生成任何字幕、说明文字、下三分之一文字或画面文字。
 ```
 
-For default work, target `30秒` rather than silently compressing to `15秒`.
-Do not force the `沉浸式短片` controls if they are stuck on `15秒` or a VIP model.
-Use the `创作 Agent` / integrated-agent composer, select the lowest non-VIP
-model that supports the duration when available, upload references directly,
-put `30 秒` in the first sentence of a compact prompt, submit through the Agent
-send button, then monitor the resulting thread. See
-`references/30s-agent-workflow.md`.
+For default work, target `15秒` and prefer `沉浸式短片` with non-VIP
+`Seedance 2.0 Fast`. Use `创作 Agent` / integrated-agent only when the user asks
+for a longer video, when the current active thread is already an Agent thread,
+or when short-film controls cannot satisfy the task. If a generation fails,
+continue in the same current thread by sending a short corrective message; do
+not start a new session or new thread just to retry unless the current thread is
+unusable and the user accepts that cost/risk.
 
-Use `15秒` only when the user explicitly asks for `15s`, `cheapest`, `least
-credits`, `quick test`, or accepts the `沉浸式短片` duration cap. If the user asks
-for cheapest but also says future/default 30s, explain the tradeoff before
-submitting.
-In those explicit 15s/cheap cases, `沉浸式短片` is the preferred mode.
+Use `30秒` or longer only when the user explicitly asks for it.
 
 ## Credit-Budget Rule
 
-- If the user mentions a low budget, "least credits", "last night model", "no VIP", or about 200 points, use `Seedance 2.0 Fast` non-VIP.
+- Default to `Seedance 2.0 Fast` for LALACHAN video generation.
 - Inspect the model dropdown and avoid any option containing `VIP`.
-- Prefer `Seedance 2.0 Fast` non-VIP as the default low-credit model; toolbar cost has shown about `5/S`.
+- Do not choose `Seedance 2.0 Mini` by default; the user found Mini expensive. Use Mini only when the user explicitly requests Mini or accepts it after seeing the cost.
 - Use normal `Seedance 2.0` only when the user explicitly asks for non-Fast or higher quality over credit savings.
+- If the user asks for cheapest, inspect the visible point cost first and report the tradeoff; do not silently switch away from requested/default Fast.
 - Do not continue an `智能长视频` / Agent render if the final video cost exceeds the user's budget; switch to short-video workflow or report the blocker.
 - For `4:3`, verify the opened ratio menu checkmark or screenshot because the compact toolbar may still show only `比例`.
+- Never waste credits on avoidable retries: do not click `生成视频`, `提交`, or
+  any paid action twice unless the page proves the first attempt failed without
+  charging. If points drop or the task shows queued/running, monitor only.
 
 ## Browser Workflow
 
@@ -166,7 +172,10 @@ scripts/xyq_cdp_browser.py --cdp-url http://127.0.0.1:9222 type-prompt PAGE_ID r
 
 6. If the submit button stays disabled, inspect upload item classes. Wait until every uploaded file item is `success`; a single `uploading` reference blocks submission.
 
-7. If the current thread is stale, completed, or in the wrong workflow, use the page `创作` / new-session button in the same controlled tab, then record the new thread URL.
+7. If the current thread pauses, fails, or needs a correction, first send a
+   short message in the same thread. Avoid new sessions because they can waste
+   credits and confuse the user. Use `创作` / new-session only when the current
+   thread is truly unusable or the user explicitly asks.
 
 8. Submit only when the user asked for generation and the pre-submit contract is satisfied.
 
