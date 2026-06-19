@@ -46,6 +46,7 @@ individual scripts by memory:
 
 ```bash
 labcanvas wechat status
+labcanvas wechat health --json
 labcanvas wechat doctor
 labcanvas wechat init-config --chat '<CHAT_NAME>'
 labcanvas wechat desktop start
@@ -82,7 +83,10 @@ registry so replies open the correct group before sending. Include
 composing; if the title does not match, fail closed and leave the task pending.
 Serialize all GUI sends with one local lock such as
 `.private/wechat_gui_send.lock`; never run parallel raw click/paste senders
-against the same WeChat desktop.
+against the same WeChat desktop. Use `fallback_clicks` in private send targets
+when WeChat search results shift between rows, and rerun
+`labcanvas wechat health --json` after changing monitor configs to verify state
+catch-up, title guards, and self-message ignores.
 
 Use purpose-specific configs instead of one global personality. A research group
 such as `懒人科研` should keep `chat_purpose: "research"` and respond only to
