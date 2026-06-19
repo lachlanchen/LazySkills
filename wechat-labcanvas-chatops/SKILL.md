@@ -51,7 +51,10 @@ labcanvas wechat init-config --chat '<CHAT_NAME>'
 labcanvas wechat desktop start
 labcanvas wechat monitor start
 labcanvas wechat hold start
+labcanvas wechat stack start --web-port 19474
 labcanvas wechat queue --json
+labcanvas wechat approve '<TASK_ID>' --note '<APPROVAL_NOTE>'
+labcanvas wechat reject '<TASK_ID>' --note '<REJECTION_NOTE>'
 labcanvas wechat send --message 'Bridge online.'
 labcanvas wechat send --file '<ARTIFACT>.pdf'
 labcanvas wechat worker enqueue '<SLOW_TASK>'
@@ -63,16 +66,25 @@ labcanvas wechat media-sync --chat '<CHAT_NAME>' --auto-source
 for the virtual desktop, fast monitor, worker loop, and media sync. Monitor,
 worker, and media panes should run through a restart wrapper so they recover
 from crashes or transient errors.
+
+`labcanvas wechat stack start` should also start the LabCanvas web control panel
+in tmux. Treat the requested web port as preferred; the web app may move to the
+next free port and print the actual URL.
+
 Install a user convenience wrapper only if requested:
 
 ```bash
 labcanvas wechat install-user-scripts
 ~/scripts/labcanvas-wechat-hold.sh start
 ~/scripts/create-labcanvas-wechat-tmux.sh
+~/scripts/create-labcanvas-wechat-stack.sh
 ```
 
 Web app controls, when available, should call the same CLI/backend layer and not
-reimplement separate browser-only behavior.
+reimplement separate browser-only behavior. Useful controls are status
+auto-refresh, start stack, open noVNC desktop, process one worker task,
+approve/reject the newest waiting confirmation, and send a short explicit
+message to the visible chat.
 
 ## Isolated WeChat GUI
 
@@ -188,12 +200,15 @@ For PDFs and generated LabCanvas artifacts:
 ## Downloaded Media Sync
 
 Sync incoming files, images, and PDFs from WeChat download folders into a private
-workspace before handing them to the worker agent:
+workspace before handing them to the worker agent. In LabCanvas prefer:
 
 ```bash
-rsync -a --ignore-existing '<WECHAT_PROFILE>/xwechat_files/<WXID>/file/' '<MEDIA_DIR>/files/'
-rsync -a --ignore-existing '<WECHAT_PROFILE>/xwechat_files/<WXID>/image/' '<MEDIA_DIR>/images/'
+labcanvas wechat media-sync --chat '<CHAT_NAME>' --auto-source --since-minutes 60
 ```
+
+Use the private layout `<dest>/<chat>/<wechat-profile>/<category>/<file>` so
+files from different WeChat profiles do not collide. A plain `rsync` fallback is
+acceptable only when the LabCanvas helper is unavailable.
 
 Track each imported item with:
 
@@ -218,8 +233,10 @@ artifact or a redacted status.
 6. Enqueue `TASK` work into a private JSONL queue and send the ACK immediately.
 7. Let the worker agent run LabCanvas tasks and write artifacts.
 8. If the worker needs an important decision, send a confirmation question and
-   mark the task `waiting_confirmation`; otherwise verify artifacts locally and
-   send text/PDF/files/images back through WeChat.
+   mark the task `waiting_confirmation`. Resume with `labcanvas wechat approve`
+   or cancel with `labcanvas wechat reject`; without a task id, the newest
+   waiting task is used. Otherwise verify artifacts locally and send
+   text/PDF/files/images back through WeChat.
 9. Mark messages and tasks handled in the mirror to prevent duplicate sends.
 10. Periodically sync downloaded media with auto-discovered `xwechat_files`
     folders, copying only new/changed files and pruning private temporary data.
