@@ -227,18 +227,23 @@ artifact or a redacted status.
    media directory, and allowed chat names.
 3. Decrypt or refresh message DB copies into a private workdir.
 4. Update the SQLite mirror with new allowed messages.
-5. Let the fast chat agent output `CHAT`, `ACK+TASK`, or `NO_REPLY`; for obvious
+5. When a trigger is found, load recent full chat history from the direct
+   database around that trigger, not just the newest polling batch. Treat a bare
+   mention as referring to the last meaningful user request.
+6. Let the fast chat agent output `CHAT`, `ACK+TASK`, or `NO_REPLY`; for obvious
    slow work, send a configured ACK immediately and enqueue the backend task
    before calling a slower reasoning model.
-6. Enqueue `TASK` work into a private JSONL queue and send the ACK immediately.
-7. Let the worker agent run LabCanvas tasks and write artifacts.
-8. If the worker needs an important decision, send a confirmation question and
+7. Enqueue `TASK` work into a private JSONL queue and include recent synced file
+   paths from `.private/downloads` so phrases like "this PDF" or "the image
+   above" can be resolved by the worker.
+8. Let the worker agent run LabCanvas tasks and write artifacts.
+9. If the worker needs an important decision, send a confirmation question and
    mark the task `waiting_confirmation`. Resume with `labcanvas wechat approve`
    or cancel with `labcanvas wechat reject`; without a task id, the newest
    waiting task is used. Otherwise verify artifacts locally and send
    text/PDF/files/images back through WeChat.
-9. Mark messages and tasks handled in the mirror to prevent duplicate sends.
-10. Periodically sync downloaded media with auto-discovered `xwechat_files`
+10. Mark messages and tasks handled in the mirror to prevent duplicate sends.
+11. Periodically sync downloaded media with auto-discovered `xwechat_files`
     folders, copying only new/changed files and pruning private temporary data.
 
 ## Failure Handling
