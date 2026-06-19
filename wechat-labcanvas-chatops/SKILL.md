@@ -1,0 +1,227 @@
+---
+name: wechat-labcanvas-chatops
+description: Use when automating WeChat chatops for LabCanvas or AgInTi through an isolated Linux GUI, direct xwechat_files database reads, private decrypt workflows, SQLite mirrors, media sync, and split fast-chat/worker-agent operations without exposing secrets or chat logs.
+---
+
+# WeChat LabCanvas ChatOps
+
+Use this skill when WeChat is the control channel for LabCanvas, AgInTi, or a
+local agent workflow and the automation must bridge GUI sending, downloaded
+files, and direct message ingestion.
+
+## Safety Rules
+
+- Never commit WeChat profiles, decrypted databases, keys, chat logs, media, QR
+  codes, cookies, screenshots with private chats, or account-specific paths.
+- Use placeholders such as `<WECHAT_PROFILE>`, `<WXID>`, `<CHAT_NAME>`,
+  `<PRIVATE_KEY_FILE>`, `<MIRROR_DB>`, and `<MEDIA_DIR>` in docs and scripts.
+- Keep private config under ignored local files, for example `.env`,
+  `.aginti/private/`, or another repo-approved private path.
+- Bind remote GUI ports to `127.0.0.1`; use SSH tunneling or authenticated
+  access for remote viewing.
+- Dry-run outbound messages and file sends before enabling live chatops.
+- Treat decrypted DBs and mirrors as sensitive working copies; rotate or delete
+  them when the task is done.
+
+## Architecture
+
+Use two cooperating agents:
+
+- Fast chat agent: watches WeChat messages, performs lightweight routing,
+  acknowledges requests, sends final replies, and avoids long blocking work.
+- Worker agent: performs slower LabCanvas tasks such as rendering, CAD export,
+  PDF generation, figure assembly, tests, and artifact validation.
+
+Use a queue or local state file between them:
+
+```text
+WeChat GUI/direct DB -> fast chat agent -> task queue -> worker agent
+worker output/artifacts -> fast chat agent -> WeChat reply/files
+```
+
+## LabCanvas CLI Surface
+
+When working in AgInTi LabCanvas, prefer the reusable CLI instead of calling
+individual scripts by memory:
+
+```bash
+labcanvas wechat status
+labcanvas wechat doctor
+labcanvas wechat init-config --chat '<CHAT_NAME>'
+labcanvas wechat desktop start
+labcanvas wechat monitor start
+labcanvas wechat hold start
+labcanvas wechat send --message 'Bridge online.'
+labcanvas wechat send --file '<ARTIFACT>.pdf'
+labcanvas wechat worker enqueue '<SLOW_TASK>'
+labcanvas wechat worker once --send
+labcanvas wechat media-sync --chat '<CHAT_NAME>' --source '<MEDIA_DIR>'
+```
+
+`labcanvas wechat hold start` should create or reuse a tmux session with panes
+for the virtual desktop, fast monitor, worker loop, and optional media sync.
+Install a user convenience wrapper only if requested:
+
+```bash
+labcanvas wechat install-user-scripts
+~/scripts/labcanvas-wechat-hold.sh start
+```
+
+Web app controls, when available, should call the same CLI/backend layer and not
+reimplement separate browser-only behavior.
+
+## Isolated WeChat GUI
+
+Run WeChat in a dedicated Xvfb desktop so the user and agent can inspect or
+control it without touching the main desktop.
+
+```bash
+Xvfb :98 -screen 0 1920x1080x24 -ac
+DISPLAY=:98 XAUTHORITY= wechat
+x11vnc -display :98 -localhost -nopw -forever -shared -rfbport 5908
+websockify -D --web=/usr/share/novnc 127.0.0.1:6099 127.0.0.1:5908
+```
+
+Open:
+
+```text
+http://127.0.0.1:6099/vnc_lite.html?host=127.0.0.1&port=6099&autoconnect=1&resize=remote
+```
+
+Verify the desktop before automating clicks or keystrokes:
+
+```bash
+DISPLAY=:98 XAUTHORITY= xdpyinfo | rg 'dimensions|depth of root window'
+DISPLAY=:98 XAUTHORITY= xwininfo -root -tree | head -n 80
+ss -ltnp | rg ':5908|:6099'
+```
+
+Use GUI automation only for actions that require the official client, such as
+login, selecting chats, sending attachments, or confirming ambiguous UI state.
+
+## Direct Database Read Path
+
+For fast ingestion, read from the local WeChat data directory instead of screen
+scraping. The encrypted databases are usually under a direct path like:
+
+```text
+<WECHAT_PROFILE>/xwechat_files/<WXID>/msg/
+<WECHAT_PROFILE>/xwechat_files/<WXID>/file/
+```
+
+Do not publish the real `<WXID>` or account directory. Store those values only
+in private config.
+
+## Private Decrypt Workflow
+
+Keep the decrypt key and decrypted outputs private:
+
+```bash
+wechat-decrypt \
+  --input '<WECHAT_PROFILE>/xwechat_files/<WXID>/msg/<ENCRYPTED_DB>' \
+  --key-file '<PRIVATE_KEY_FILE>' \
+  --output '<PRIVATE_WORKDIR>/decrypted/<DB_NAME>.sqlite'
+```
+
+Rules:
+
+- Do not print the key, key derivation output, or full private DB paths.
+- Restrict decrypted DB permissions to the current user.
+- Put decrypted DBs under an ignored private workdir.
+- Prefer incremental decrypt or copy-on-read so the live client is not disturbed.
+
+## SQLite Mirror
+
+Build a sanitized local mirror for the fast chat agent. The mirror should contain
+only fields needed for routing and deduplication:
+
+```sql
+CREATE TABLE IF NOT EXISTS messages (
+  source_id TEXT PRIMARY KEY,
+  chat_name TEXT,
+  sender TEXT,
+  sent_at INTEGER,
+  msg_type TEXT,
+  text TEXT,
+  media_path TEXT,
+  handled_at INTEGER
+);
+```
+
+Mirror rules:
+
+- Keep the mirror in a private ignored path such as `<PRIVATE_WORKDIR>/mirror.sqlite`.
+- Store stable IDs and timestamps so restarts do not resend old replies.
+- Redact or omit unrelated chats.
+- Record artifact references, not bulky generated files, unless local policy
+  allows caching them.
+
+## Sending Replies and Artifacts
+
+Send short text replies through the GUI or a trusted local bridge:
+
+```bash
+wechat-send --chat '<CHAT_NAME>' --text 'Task accepted: <TASK_ID>'
+```
+
+Send files with explicit paths and MIME-aware handling:
+
+```bash
+wechat-send --chat '<CHAT_NAME>' --file '<ARTIFACT>.pdf'
+wechat-send --chat '<CHAT_NAME>' --file '<REPORT>.txt'
+wechat-send --chat '<CHAT_NAME>' --image '<PREVIEW>.png'
+wechat-send --chat '<CHAT_NAME>' --file '<DATA>.zip'
+```
+
+For PDFs and generated LabCanvas artifacts:
+
+- Verify the file exists and is non-empty before sending.
+- Prefer a preview image plus the source PDF when the chat client compresses or
+  previews poorly.
+- Keep source manifests and editable LabCanvas artifacts in the project; only
+  send exported deliverables to WeChat.
+
+## Downloaded Media Sync
+
+Sync incoming files, images, and PDFs from WeChat download folders into a private
+workspace before handing them to the worker agent:
+
+```bash
+rsync -a --ignore-existing '<WECHAT_PROFILE>/xwechat_files/<WXID>/file/' '<MEDIA_DIR>/files/'
+rsync -a --ignore-existing '<WECHAT_PROFILE>/xwechat_files/<WXID>/image/' '<MEDIA_DIR>/images/'
+```
+
+Track each imported item with:
+
+```text
+source message id, chat, sender, received time, original filename, private local path, checksum
+```
+
+Do not expose downloaded media in commits or public logs. When a worker needs a
+file, pass the private path through the task queue and return only the derived
+artifact or a redacted status.
+
+## Operating Loop
+
+1. Start the isolated WeChat GUI and confirm the target chat is visible.
+2. Load private config for `<WECHAT_PROFILE>`, `<WXID>`, decrypt key, mirror DB,
+   media directory, and allowed chat names.
+3. Decrypt or refresh message DB copies into a private workdir.
+4. Update the SQLite mirror with new allowed messages.
+5. Let the fast chat agent output `CHAT`, `ACK+TASK`, or `NO_REPLY`.
+6. Enqueue `TASK` work into a private JSONL queue and send the ACK immediately.
+7. Let the worker agent run LabCanvas tasks and write artifacts.
+8. Verify artifacts locally, then send text/PDF/files/images back through WeChat.
+9. Mark messages and tasks handled in the mirror to prevent duplicate sends.
+10. Periodically sync downloaded media and prune private temporary data.
+
+## Failure Handling
+
+- If WeChat login expires, stop automation and ask the user to re-authenticate in
+  the noVNC desktop.
+- If decrypt fails, fall back to GUI-visible evidence and do not guess message
+  contents.
+- If a file send is uncertain, verify in the GUI before retrying to avoid
+  duplicate attachments.
+- If the worker is slow, send a short progress reply from the fast chat agent and
+  keep the long task outside the WeChat UI loop.
