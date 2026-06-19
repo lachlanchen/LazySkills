@@ -71,7 +71,16 @@ should run through a restart wrapper so they recover from crashes or transient
 errors. For responsive chatops, use `WECHAT_DIRECT_POLL_SECONDS=0.8`,
 `WECHAT_DIRECT_CATCHUP_POLL_SECONDS=0.1`, and
 `WECHAT_DECRYPT_REFRESH_INTERVAL=1`. Keep the fast chat agent on `gpt-5.5` with
-low reasoning and a short timeout; route slow tasks to the worker queue.
+low reasoning and a short timeout; route slow tasks to the worker queue. Idle
+polling should only read local DB/files and must not call Codex. Spend model
+tokens only when a new message needs a route decision, immediate reply, or
+worker execution.
+
+The worker should select effort before running: low for simple follow-ups,
+medium for paper/PDF/search/research/figure tasks, and high for CAD, PCB,
+Blender/OpenSCAD, installs, GitHub, ordering, or full execution tasks. If the
+first worker output is a timeout, empty/too-short answer, or explicit failure,
+retry once at the next effort level. Do not blindly rerun high-cost workers.
 
 `labcanvas wechat stack start` should also start the LabCanvas web control panel
 in tmux. Treat the requested web port as preferred; the web app may move to the
@@ -84,6 +93,10 @@ different groups will collide. Add `send_target` or a private send-target
 registry so replies open the correct group before sending. Include
 `expected_title` in each target and OCR-check the opened chat header before
 composing; if the title does not match, fail closed and leave the task pending.
+Wait for WeChat loading states before OCR, retry the title guard, and fall back
+to full-page OCR if the header crop is unreliable. A send failure should mark
+the task `send_failed` with the error and evidence path rather than crashing the
+worker or retrying forever.
 Serialize all GUI sends with one local lock such as
 `.private/wechat_gui_send.lock`; never run parallel raw click/paste senders
 against the same WeChat desktop. Use `fallback_clicks` in private send targets
@@ -278,7 +291,8 @@ artifact or a redacted status.
 7. Enqueue `TASK` work into a private JSONL queue and include recent synced file
    paths from `.private/downloads` so phrases like "this PDF" or "the image
    above" can be resolved by the worker.
-8. Let the worker agent run LabCanvas tasks and write artifacts.
+8. Let the worker agent choose the effort policy, run LabCanvas tasks, write
+   artifacts, and escalate one step only when the first result clearly fails.
 9. If the worker needs an important decision, send a confirmation question and
    mark the task `waiting_confirmation`. Resume with `labcanvas wechat approve`
    or cancel with `labcanvas wechat reject`; without a task id, the newest
@@ -296,5 +310,8 @@ artifact or a redacted status.
   contents.
 - If a file send is uncertain, verify in the GUI before retrying to avoid
   duplicate attachments.
+- If a task is `send_failed`, inspect the stored send error and screenshot, fix
+  the private `send_target` or title guard, and rerun deliberately rather than
+  allowing an infinite retry loop.
 - If the worker is slow, send a short progress reply from the fast chat agent and
   keep the long task outside the WeChat UI loop.

@@ -1,0 +1,4 @@
+interface:
+  display_name: "WeChat LabCanvas ChatOps"
+  short_description: "Run guarded WeChat chatops with fast routing and worker agents"
+  default_prompt: "Use $wechat-labcanvas-chatops to monitor a WeChat group, route messages, run backend work, and send guarded replies."

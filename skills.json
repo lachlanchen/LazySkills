@@ -98,6 +98,13 @@
       "description": "Coordinate multiple agent sessions across machines, repos, tools, and runtimes using safe handoff packets, peer identity maps, private session mirrors, status probes, and action contracts."
     },
     {
+      "id": "wechat-labcanvas-chatops",
+      "path": "skills/wechat-labcanvas-chatops/SKILL.md",
+      "category": "chatops",
+      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "description": "Run guarded WeChat chatops for LabCanvas and AgInTi through an isolated Linux GUI, direct DB monitor, fast router, worker queue, media sync, and private send targets."
+    },
+    {
       "id": "kv260-metavision-lab",
       "path": "skills/kv260-metavision-lab/SKILL.md",
       "category": "embedded-vision",
