@@ -126,10 +126,12 @@ different groups will collide. Add `send_target` or a private send-target
 registry so replies open the correct group before sending. Include
 `expected_title` in each target and OCR-check the opened chat header before
 composing; if the title does not match, fail closed and leave the task pending.
-Wait for WeChat loading states before OCR, retry the title guard, and fall back
-to full-page OCR if the header crop is unreliable. A send failure should mark
-the task `send_failed` with the error and evidence path rather than crashing the
-worker or retrying forever.
+Wait for WeChat loading states before OCR, retry the title guard, and prefer
+native X window title matching for popup chat windows before falling back to OCR
+crops. A send failure should mark the task `send_failed` with the error and
+evidence path rather than crashing the worker or retrying forever. If backend
+work is already done, use `wechat_task_worker.py --resend <task-id>` to resend
+the stored result without rerunning the task.
 Serialize all GUI sends with one local lock such as
 `.private/wechat_gui_send.lock`; never run parallel raw click/paste senders
 against the same WeChat desktop. Use `fallback_clicks` in private send targets
@@ -343,6 +345,9 @@ artifact or a redacted status.
   contents.
 - If a file send is uncertain, verify in the GUI before retrying to avoid
   duplicate attachments.
+- Keep text-like artifacts such as `.md`, `.txt`, `.json`, and `.csv` as saved
+  paths in the WeChat message by default; use GUI attachment sends mainly for
+  media/PDF/ZIP artifacts or when explicitly required.
 - If a task is `send_failed`, inspect the stored send error and screenshot, fix
   the private `send_target` or title guard, and rerun deliberately rather than
   allowing an infinite retry loop.
