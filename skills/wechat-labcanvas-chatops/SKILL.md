@@ -132,6 +132,12 @@ crops. A send failure should mark the task `send_failed` with the error and
 evidence path rather than crashing the worker or retrying forever. If backend
 work is already done, use `wechat_task_worker.py --resend <task-id>` to resend
 the stored result without rerunning the task.
+If the official client is locked, do not attempt packet capture, decompilation,
+traffic/session decryption, or private-protocol replay. Treat `WECHAT_LOCKED`
+as a normal deferred-outbox state: completed tasks should become
+`send_deferred_locked`, backend work should continue, and
+`wechat_task_worker.py --flush-deferred` or the worker loop can resend after the
+normal phone-side unlock.
 Serialize all GUI sends with one local lock such as
 `.private/wechat_gui_send.lock`; never run parallel raw click/paste senders
 against the same WeChat desktop. Use `fallback_clicks` in private send targets
