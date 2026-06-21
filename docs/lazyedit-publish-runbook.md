@@ -4,22 +4,36 @@ Date: 2026-06-03
 
 ## Systems
 
-- LazyEdit repo: `/home/lachlan/DiskMech/Projects/lazyedit`
-- LazyEdit Studio: `http://127.0.0.1:18791/editor`
-- LazyEdit API: `http://127.0.0.1:18787`
+Set these variables for the local machine before running examples:
+
+```bash
+export LAZYEDIT_ROOT="${LAZYEDIT_ROOT:-/path/to/lazyedit}"
+export LALACHAN_ROOT="${LALACHAN_ROOT:-/path/to/LALACHAN}"
+export AUTOPUB_MONITOR_ROOT="${AUTOPUB_MONITOR_ROOT:-/path/to/autopub-monitor}"
+export NUTSTORE_AUTOPUBLISH="${NUTSTORE_AUTOPUBLISH:-/path/to/AutoPublish}"
+export LAZYEDIT_STUDIO="${LAZYEDIT_STUDIO:-http://127.0.0.1:18791/editor}"
+export LAZYEDIT_API="${LAZYEDIT_API:-http://127.0.0.1:18787}"
+export AUTOPUBLISH_SSH="${AUTOPUBLISH_SSH:-user@autopublish-host}"
+export AUTOPUBLISH_QUEUE_URL="${AUTOPUBLISH_QUEUE_URL:-http://autopublish-host:8081/publish/queue}"
+export AUTOPUBLISH_ROOT="${AUTOPUBLISH_ROOT:-/path/to/remote/autopub}"
+```
+
+- LazyEdit repo: `$LAZYEDIT_ROOT`
+- LazyEdit Studio: `$LAZYEDIT_STUDIO`
+- LazyEdit API: `$LAZYEDIT_API`
 - CLI: `scripts/lazyedit_publish.py`
-- AutoPubMonitor: `/home/lachlan/DiskMech/Projects/autopub-monitor`
-- Nutstore import folder: `/home/lachlan/Nutstore Files/AutoPublish/AutoPublish`
-- Remote AutoPublish host: `lazyingart`
-- Remote AutoPublish repo: `/home/lachlan/Projects/autopub`
-- Remote queue API: `http://lazyingart:8081/publish/queue`
+- AutoPubMonitor: `$AUTOPUB_MONITOR_ROOT`
+- Nutstore import folder: `$NUTSTORE_AUTOPUBLISH`
+- Remote AutoPublish host: `$AUTOPUBLISH_SSH`
+- Remote AutoPublish repo: `$AUTOPUBLISH_ROOT`
+- Remote queue API: `$AUTOPUBLISH_QUEUE_URL`
 
 ## Direct Publish
 
 Use current Studio settings and publish an existing finished output:
 
 ```bash
-cd /home/lachlan/DiskMech/Projects/lazyedit
+cd $LAZYEDIT_ROOT
 source ~/miniconda3/etc/profile.d/conda.sh
 conda activate lazyedit
 python scripts/lazyedit_publish.py \
@@ -40,11 +54,11 @@ Generated video scripts are reference material for subtitle correction. They hel
 Recommended Nutstore import path:
 
 ```bash
-cp -f /home/lachlan/ProjectsLFS/LALACHAN/Videos/VIDEO.mp4 \
-  "/home/lachlan/Nutstore Files/AutoPublish/AutoPublish/VIDEO_COMPLETED.mp4"
+cp -f $LALACHAN_ROOT/Videos/VIDEO.mp4 \
+  "$NUTSTORE_AUTOPUBLISH/VIDEO_COMPLETED.mp4"
 tmux capture-pane -pt autopub-monitor:0.1 -S -100 | tail -n 100
 tmux capture-pane -pt autopub-monitor:0.2 -S -100 | tail -n 100
-curl -fsS http://127.0.0.1:18787/api/videos | jq '.videos[:20] | map({id,title,created_at,file_path})'
+curl -fsS $LAZYEDIT_API/api/videos | jq '.videos[:20] | map({id,title,created_at,file_path})'
 ```
 
 ```bash
@@ -56,7 +70,7 @@ python scripts/lazyedit_publish.py \
   --correction-source polished \
   --platforms shipinhao,youtube,instagram \
   --guided-monitor \
-  --remote-log-command "ssh lachlan@lazyingart 'tmux capture-pane -pt autopub:0 -S -140 | tail -n 140'" \
+  --remote-log-command "ssh $AUTOPUBLISH_SSH 'tmux capture-pane -pt autopub:0 -S -140 | tail -n 140'" \
   --wait \
   --poll-seconds 10
 ```
@@ -68,19 +82,19 @@ If the generated prompt needs stronger instructions, create a temporary context 
 LazyEdit queue:
 
 ```bash
-curl -fsS http://127.0.0.1:18787/api/autopublish/queue | jq '.jobs[:8]'
+curl -fsS $LAZYEDIT_API/api/autopublish/queue | jq '.jobs[:8]'
 ```
 
 Remote queue:
 
 ```bash
-curl -fsS http://lazyingart:8081/publish/queue | jq '.jobs[:8]'
+curl -fsS $AUTOPUBLISH_QUEUE_URL | jq '.jobs[:8]'
 ```
 
 Remote browser logs:
 
 ```bash
-ssh lachlan@lazyingart 'tmux capture-pane -pt autopub:0 -S -120 | tail -n 120'
+ssh $AUTOPUBLISH_SSH 'tmux capture-pane -pt autopub:0 -S -120 | tail -n 120'
 ```
 
 AutoPubMonitor panes:
@@ -95,8 +109,8 @@ tmux capture-pane -pt autopub-monitor:0.3 -S -120 | tail -n 120
 Final evidence checks:
 
 ```bash
-curl -fsS http://127.0.0.1:18787/api/autopublish/queue | jq '.jobs[:5] | map({id,video_id,status,platforms,remote_status,remote_job_id,error,updated_at})'
-curl -fsS http://lazyingart:8081/publish/queue | jq '.jobs[-5:] | map({id,status,platforms,filename,error,updated_at})'
+curl -fsS $LAZYEDIT_API/api/autopublish/queue | jq '.jobs[:5] | map({id,video_id,status,platforms,remote_status,remote_job_id,error,updated_at})'
+curl -fsS $AUTOPUBLISH_QUEUE_URL | jq '.jobs[-5:] | map({id,status,platforms,filename,error,updated_at})'
 git status --short --untracked-files=no
 ```
 
@@ -113,7 +127,7 @@ Command:
 python scripts/lazyedit_publish.py \
   --video-id 348 \
   --use-current-settings \
-  --prompt-file /home/lachlan/ProjectsLFS/LALACHAN/references/prompts/2026-06-03-typhoon-pingpong-shark-duanpian-15s-4x3-budget200.md \
+  --prompt-file $LALACHAN_ROOT/references/prompts/2026-06-03-typhoon-pingpong-shark-duanpian-15s-4x3-budget200.md \
   --correct-subtitles \
   --correction-source polished \
   --platforms shipinhao,youtube,instagram \
@@ -152,13 +166,13 @@ Final status:
 
 Video:
 
-- `/home/lachlan/ProjectsLFS/LALACHAN/Videos/firefly_cave_cicada_rain_4x3_15s.mp4`
-- Nutstore copy: `/home/lachlan/Nutstore Files/AutoPublish/AutoPublish/firefly_cave_cicada_rain_4x3_15s_COMPLETED.mp4`
+- `$LALACHAN_ROOT/Videos/firefly_cave_cicada_rain_4x3_15s.mp4`
+- Nutstore copy: `$NUTSTORE_AUTOPUBLISH/firefly_cave_cicada_rain_4x3_15s_COMPLETED.mp4`
 - LazyEdit `video_id=352`
 
 Prompt context:
 
-- `/home/lachlan/ProjectsLFS/LALACHAN/references/prompts/2026-06-06-firefly-cave-cicada-rain-duanpian-15s.md`
+- `$LALACHAN_ROOT/references/prompts/2026-06-06-firefly-cave-cicada-rain-duanpian-15s.md`
 - A temporary wrapper added correction guardrails: treat the script as story context, use a human middle path between over-editing and under-correcting, fix likely ASR errors, preserve timing/line structure, and generate metadata about a warm fantasy firefly-cave short.
 
 Command pattern:
@@ -172,7 +186,7 @@ python scripts/lazyedit_publish.py \
   --correction-source polished \
   --platforms shipinhao,youtube,instagram \
   --guided-monitor \
-  --remote-log-command "ssh lachlan@lazyingart 'tmux capture-pane -pt autopub:0 -S -140 | tail -n 140'" \
+  --remote-log-command "ssh $AUTOPUBLISH_SSH 'tmux capture-pane -pt autopub:0 -S -140 | tail -n 140'" \
   --wait \
   --poll-seconds 10 \
   --process-timeout 3600 \

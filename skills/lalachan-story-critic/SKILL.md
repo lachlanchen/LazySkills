@@ -102,7 +102,7 @@ If a prop has no job, leave it as background or remove it from the story.
 Default reference image:
 
 ```text
-/home/lachlan/ProjectsLFS/LALACHAN/words-card.jpg
+$LALACHAN_ROOT/words-card.jpg
 ```
 
 For each new story, choose a fresh word connected to the story. Include:

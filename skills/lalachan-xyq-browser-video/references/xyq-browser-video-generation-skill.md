@@ -7,14 +7,14 @@ This is the reusable local workflow for LALACHAN video generation through the Xi
 Work in:
 
 ```bash
-cd /home/lachlan/ProjectsLFS/LALACHAN
+cd $LALACHAN_ROOT
 ```
 
 Use the controlled Chrome profile:
 
 ```text
-CDP: http://127.0.0.1:9222
-Profile: /home/lachlan/.cache/xyq-chrome
+CDP: $XYQ_CDP_URL
+Profile: $HOME/.cache/xyq-chrome
 Launch: scripts/xyq_chrome/launch_chrome.sh
 Page helper: scripts/xyq_cdp_browser.py
 Watcher: scripts/xyq_chrome/watch_thread_dom_download.py
@@ -35,7 +35,7 @@ Before using any Xiaoyunque browser helper, confirm the controlled Chrome
 endpoint is really alive:
 
 ```bash
-curl -fsS http://127.0.0.1:9222/json/list
+curl -fsS $XYQ_CDP_URL/json/list
 ```
 
 If Chrome is visibly open but `9222` refuses connections, the tab is not the
@@ -63,7 +63,9 @@ For ordinary LALACHAN short videos:
 
 - Mode: 30s-capable `创作 Agent` / integrated-agent workflow by default.
 - Mode exception: use `沉浸式短片` only when the user explicitly asks for `15s`, quick test, cheapest / least credits, or accepts the short-film cap.
-- Model: lowest non-VIP model that supports the requested duration; use Fast only for low-credit/quick requests or when explicitly requested.
+- Model: non-VIP `Seedance 2.0 Fast` by default. Do not choose `Seedance 2.0 Mini` by default because the user found Mini expensive; use Mini only when explicitly requested or accepted after checking visible cost.
+- VIP is a hard blocker: do not click submit/continue/render if the selected
+  model, confirmation, or visible cost/ledger text says `VIP`.
 - Duration: `30s` by default.
 - Ratio: `4:3` unless explicitly requested otherwise.
 - Language: mainly Chinese, with short English/Japanese phrases only if useful.
@@ -125,7 +127,8 @@ important.
    If the current thread is stale or completed, use the page `创作` / new-session
    button in the same controlled tab, then record the new thread URL.
 4. Use the 30s-capable `创作 Agent` / integrated-agent workflow by default. Use `沉浸式短片` only for explicit 15s/cheap requests.
-5. Select a non-VIP model that supports the requested duration.
+5. Select a non-VIP model that supports the requested duration. If the UI only
+   exposes VIP choices, stop and fix the model/workflow before any paid action.
 6. Make the prompt first sentence state `30秒` by default.
 7. Set ratio to `4:3`; open the ratio menu or take a screenshot if the compact toolbar only shows `比例`.
 8. Upload and verify the eight images:
@@ -157,16 +160,39 @@ scripts/xyq_cdp_browser.py type-prompt PAGE_ID references/prompts/YYYY-MM-DD-top
 Use browser/CDP watch, not API:
 
 ```bash
-tmux new-session -d -s xyq_watch "cd /home/lachlan/ProjectsLFS/LALACHAN && \
+tmux new-session -d -s xyq_watch "cd $LALACHAN_ROOT && \
 scripts/xyq_chrome/watch_thread_dom_download.py \
   --page-id PAGE_ID \
   --thread-url 'THREAD_URL' \
   --output-dir outputs/xyq-run \
   --filename result_30s.mp4 \
   --copy-to Videos \
-  --copy-to '/home/lachlan/Nutstore Files/AutoPublish/AutoPublish' \
+  --copy-to '$NUTSTORE_AUTOPUBLISH' \
   --interval 30 --max-polls 240 --reload-every 300 \
   2>&1 | tee -a outputs/xyq-run/watch.log"
+```
+
+After the final MP4 is downloaded, always verify it with `ffprobe`, copy it to
+`Videos/`, and hand it to LazyEdit. Prefer direct LazyEdit CLI upload; use
+Nutstore AutoPublish import as a fallback. If the user did not explicitly ask
+to publish to a real platform, run LazyEdit with `--no-publish` so the video is
+imported/processed but not posted.
+
+Direct handoff pattern:
+
+```bash
+cd $LAZYEDIT_ROOT
+python scripts/lazyedit_publish.py \
+  --video $LALACHAN_ROOT/Videos/VIDEO.mp4 \
+  --title VIDEO_COMPLETED \
+  --use-current-settings \
+  --correction-prompt-file $LALACHAN_ROOT/references/prompts/PROMPT.md \
+  --metadata-prompt-file temp/METADATA_BRIEF.md \
+  --correct-subtitles \
+  --correction-source polished \
+  --no-publish \
+  --wait \
+  --poll-seconds 10
 ```
 
 Check progress:
@@ -194,13 +220,13 @@ If Xiaoyunque exposes the result but direct download fails, use browser/manual d
 
 ```bash
 find ~/Downloads -maxdepth 1 -type f -name '*.mp4' -printf '%T@ %s %p\n' | sort -nr | head
-cp -v ~/Downloads/FILE.mp4 "/home/lachlan/Nutstore Files/AutoPublish/AutoPublish/"
+cp -v ~/Downloads/FILE.mp4 "$NUTSTORE_AUTOPUBLISH/"
 ```
 
 For two newest downloads:
 
 ```bash
-DEST="/home/lachlan/Nutstore Files/AutoPublish/AutoPublish"
+DEST="$NUTSTORE_AUTOPUBLISH"
 find ~/Downloads -maxdepth 1 -type f -name '*.mp4' -printf '%T@ %p\n' \
   | sort -nr | head -2 | cut -d' ' -f2- \
   | while IFS= read -r f; do cp -v "$f" "$DEST/"; done

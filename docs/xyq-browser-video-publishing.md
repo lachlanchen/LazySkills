@@ -83,7 +83,7 @@ skills/lalachan-xyq-browser-video/scripts/xyq_chrome/watch_thread_dom_download.p
   --output-dir outputs/run \
   --filename result.mp4 \
   --copy-to Videos \
-  --copy-to "/home/lachlan/Nutstore Files/AutoPublish/AutoPublish"
+  --copy-to "$NUTSTORE_AUTOPUBLISH"
 ```
 
 Protected URL fallback:
@@ -104,7 +104,7 @@ Browser-context fallback check:
 
 ```bash
 skills/lalachan-xyq-browser-video/scripts/xyq_cdp_browser.py \
-  --cdp-url http://127.0.0.1:9222 eval PAGE_ID --await-promise \
+  --cdp-url $XYQ_CDP_URL eval PAGE_ID --await-promise \
   '(async () => {
     const v = document.querySelector("video");
     const src = v && (v.currentSrc || v.src);

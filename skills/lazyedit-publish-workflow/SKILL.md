@@ -1,6 +1,6 @@
 ---
 name: lazyedit-publish-workflow
-description: Use when publishing videos through LazyEdit, AutoPubMonitor, AutoPublish on the lazyingart Raspberry Pi, Shipinhao, YouTube, Instagram, or LALACHAN-generated videos; covers direct CLI/API publishing, current-run reuse, one-shot settings overrides, subtitle correction prompts, Nutstore AutoPublish import, and monitoring/debugging the distributed publish workflow.
+description: Use when publishing videos through LazyEdit, AutoPubMonitor, a remote AutoPublish host, Shipinhao, YouTube, Instagram, or LALACHAN-generated videos; covers direct CLI/API publishing, current-run reuse, one-shot settings overrides, subtitle correction prompts, Nutstore AutoPublish import, and monitoring/debugging the distributed publish workflow.
 ---
 
 # LazyEdit Publish Workflow
@@ -9,16 +9,31 @@ Use this skill for normal LazyEdit publish tasks and for AI-generated videos fro
 
 ## Runtime Map
 
-- LazyEdit repo/backend: `/home/lachlan/DiskMech/Projects/lazyedit`
-- Studio app: `http://127.0.0.1:18791/editor`
-- LazyEdit API: `http://127.0.0.1:18787`
+- LazyEdit repo/backend: `$LAZYEDIT_ROOT`
+- Studio app: `$LAZYEDIT_STUDIO`
+- LazyEdit API: `$LAZYEDIT_API`
 - Publish CLI: `scripts/lazyedit_publish.py`
-- AutoPubMonitor repo: `/home/lachlan/DiskMech/Projects/autopub-monitor`
-- Nutstore import folder: `/home/lachlan/Nutstore Files/AutoPublish/AutoPublish`
-- Remote AutoPublish host: `ssh lachlan@lazyingart`
-- Remote AutoPublish repo: `/home/lachlan/Projects/autopub`
-- Remote publish API: `http://lazyingart:8081/publish`
+- AutoPubMonitor repo: `$AUTOPUB_MONITOR_ROOT`
+- Nutstore import folder: `$NUTSTORE_AUTOPUBLISH`
+- Remote AutoPublish host: `ssh $AUTOPUBLISH_SSH`
+- Remote AutoPublish repo: `$AUTOPUBLISH_ROOT`
+- Remote publish API: `$AUTOPUBLISH_API`
 - Remote tmux session: `autopub`
+
+Set these variables for the local machine before using command examples:
+
+```bash
+export LAZYEDIT_ROOT="${LAZYEDIT_ROOT:-/path/to/lazyedit}"
+export LALACHAN_ROOT="${LALACHAN_ROOT:-/path/to/LALACHAN}"
+export AUTOPUB_MONITOR_ROOT="${AUTOPUB_MONITOR_ROOT:-/path/to/autopub-monitor}"
+export NUTSTORE_AUTOPUBLISH="${NUTSTORE_AUTOPUBLISH:-/path/to/AutoPublish}"
+export LAZYEDIT_STUDIO="${LAZYEDIT_STUDIO:-http://127.0.0.1:18791/editor}"
+export LAZYEDIT_API="${LAZYEDIT_API:-http://127.0.0.1:18787}"
+export AUTOPUBLISH_SSH="${AUTOPUBLISH_SSH:-user@autopublish-host}"
+export AUTOPUBLISH_API="${AUTOPUBLISH_API:-http://autopublish-host:8081/publish}"
+export AUTOPUBLISH_QUEUE_URL="${AUTOPUBLISH_QUEUE_URL:-$AUTOPUBLISH_API/queue}"
+export AUTOPUBLISH_ROOT="${AUTOPUBLISH_ROOT:-/path/to/remote/autopub}"
+```
 
 ## Core Rule
 
@@ -27,7 +42,7 @@ Prefer the LazyEdit CLI over manual browser work. It creates normal LazyEdit job
 Activate the environment first:
 
 ```bash
-cd /home/lachlan/DiskMech/Projects/lazyedit
+cd "$LAZYEDIT_ROOT"
 source ~/miniconda3/etc/profile.d/conda.sh
 conda activate lazyedit
 ```
@@ -35,10 +50,11 @@ conda activate lazyedit
 ## Safety Rules
 
 - Do not publish to real platforms just to debug packaging, subtitles, or logo output. Use `--no-publish` first, inspect the generated ZIP/final MP4, then publish exactly once when the package is correct.
-- Real publishes should use polished/corrected subtitles and the configured LazyEdit Studio logo unless the user explicitly asks otherwise. Verify logo settings with `curl -fsS http://127.0.0.1:18787/api/ui-settings/logo_settings | jq .`; normal logo outputs end in `_subtitles_logo.mp4`.
+- Real publishes should use polished/corrected subtitles and the configured LazyEdit Studio logo unless the user explicitly asks otherwise. Verify logo settings with `curl -fsS $LAZYEDIT_API/api/ui-settings/logo_settings | jq .`; normal logo outputs end in `_subtitles_logo.mp4`.
 - For LALACHAN/RARACHAN generated videos, use the full story/prompt/script for subtitle correction only. Treat it as a reference, not a verbatim transcript: fix clear ASR errors and broken phrases without inventing unsupported dialogue.
 - Do not pass a full video script as metadata context. Metadata must be concise and viewer-facing, not a storyboard dump. Prefer `--correction-prompt-file FULL_SCRIPT.md` plus `--metadata-prompt-file temp/METADATA_BRIEF.md`, where the metadata brief contains only hook, characters, tone, payoff, keywords, and platform notes.
 - If correction is expected to recover missing generated-video dialogue, inspect `DATA/VIDEO_FOLDER/*_mixed_polished.md` before publish so missed or over-recovered subtitles are caught before any platform post.
+- If missing-language recovery creates plain subtitle text, do not restore grammar colors with a per-video patch. Fix or use the shared `lazyedit/subtitle_tokens.py` normalization path so plain text, ruby markup, `word`/`reading` tokens, and speaker-helper rows all render through grammar-typed palette tokens.
 - When copying through Nutstore, use one stable `_COMPLETED` filename and watch AutoPubMonitor panes before recopying. Avoid creating duplicate source files just to retrigger the watcher.
 
 ## Setting Semantics
@@ -49,7 +65,7 @@ conda activate lazyedit
 - `--languages` is bottom-to-top subtitle order.
 - Use polished/corrected subtitles for real publishes and debug publishes unless the user explicitly requests original subtitles.
 - Burn the existing LazyEdit webapp logo on real publishes unless the user explicitly says no logo. Use the configured Studio logo; do not upload or invent a new asset.
-- Required logo state is `enabled: true`, `logoPath` present, and `position: "top-left"`. Check it before CLI/API publishes with `curl -fsS http://127.0.0.1:18787/api/ui-settings/logo_settings | jq .`.
+- Required logo state is `enabled: true`, `logoPath` present, and `position: "top-left"`. Check it before CLI/API publishes with `curl -fsS $LAZYEDIT_API/api/ui-settings/logo_settings | jq .`.
 - `--no-process` reuses an already completed output. Use it when the user says "last run", "same version", or "already finished run".
 - `--publication-session-id ID` targets a specific run. Omit it for the current output.
 
@@ -61,13 +77,13 @@ Process with separate subtitle-correction and metadata context, then publish:
 python scripts/lazyedit_publish.py \
   --video-id VIDEO_ID \
   --use-current-settings \
-  --correction-prompt-file /home/lachlan/ProjectsLFS/LALACHAN/references/prompts/FULL_SCRIPT.md \
+  --correction-prompt-file $LALACHAN_ROOT/references/prompts/FULL_SCRIPT.md \
   --metadata-prompt-file temp/metadata_brief.md \
   --no-correct-subtitles \
   --steps keyframes,caption,transcribe,polish,translate,burn,metadata_zh,metadata_en,cover \
   --platforms shipinhao,youtube,instagram \
   --guided-monitor \
-  --remote-log-command "ssh lachlan@lazyingart 'tmux capture-pane -pt autopub:0 -S -140 | tail -n 140'" \
+  --remote-log-command "ssh $AUTOPUBLISH_SSH 'tmux capture-pane -pt autopub:0 -S -140 | tail -n 140'" \
   --wait \
   --poll-seconds 10 \
   --process-timeout 3600 \
@@ -114,7 +130,7 @@ python scripts/lazyedit_publish.py \
   --use-current-settings \
   --platforms youtube,instagram \
   --guided-monitor \
-  --remote-log-command "ssh lachlan@lazyingart 'tmux capture-pane -pt autopub:0 -S -80 | tail -n 80'" \
+  --remote-log-command "ssh $AUTOPUBLISH_SSH 'tmux capture-pane -pt autopub:0 -S -80 | tail -n 80'" \
   --wait \
   --poll-seconds 10
 ```
@@ -131,11 +147,18 @@ python scripts/lazyedit_publish.py --video-id VIDEO_ID --use-current-settings --
 
 ## LALACHAN / AI-Generated Video
 
+Default post-generation rule: when a LALACHAN/Xiaoyunque video has finished,
+auto-download it, verify duration/size with `ffprobe`, copy it to
+`$LALACHAN_ROOT/Videos`, and submit it to LazyEdit. Direct
+CLI upload is preferred; Nutstore AutoPublish import is acceptable. If the user
+did not explicitly request real platform publishing, pass `--no-publish` so the
+video is imported and processed in LazyEdit but not posted.
+
 If a generated video should go through the normal import path, copy it to Nutstore with a stable `_COMPLETED` name:
 
 ```bash
-cp -f /home/lachlan/ProjectsLFS/LALACHAN/Videos/VIDEO.mp4 \
-  "/home/lachlan/Nutstore Files/AutoPublish/AutoPublish/VIDEO_COMPLETED.mp4"
+cp -f $LALACHAN_ROOT/Videos/VIDEO.mp4 \
+  "$NUTSTORE_AUTOPUBLISH/VIDEO_COMPLETED.mp4"
 ```
 
 Then watch AutoPubMonitor and find the imported LazyEdit video id:
@@ -143,17 +166,17 @@ Then watch AutoPubMonitor and find the imported LazyEdit video id:
 ```bash
 tmux capture-pane -pt autopub-monitor:0.1 -S -100 | tail -n 100
 tmux capture-pane -pt autopub-monitor:0.2 -S -100 | tail -n 100
-curl -fsS http://127.0.0.1:18787/api/videos | jq '.videos[:20] | map({id,title,created_at,file_path})'
+curl -fsS $LAZYEDIT_API/api/videos | jq '.videos[:20] | map({id,title,created_at,file_path})'
 ```
 
 For direct upload with correction and a concise metadata brief:
 
 ```bash
 python scripts/lazyedit_publish.py \
-  --video /home/lachlan/ProjectsLFS/LALACHAN/Videos/VIDEO.mp4 \
+  --video $LALACHAN_ROOT/Videos/VIDEO.mp4 \
   --title TITLE_COMPLETED \
   --use-current-settings \
-  --correction-prompt-file /home/lachlan/ProjectsLFS/LALACHAN/references/prompts/PROMPT.md \
+  --correction-prompt-file $LALACHAN_ROOT/references/prompts/PROMPT.md \
   --metadata-prompt-file temp/metadata_brief.md \
   --correct-subtitles \
   --correction-source polished \
@@ -234,7 +257,7 @@ If all downstream outputs exist except cover, extract cover directly:
 ```bash
 curl -m 180 -fsS -H 'Content-Type: application/json' \
   -d '{"lang":"zh"}' \
-  http://127.0.0.1:18787/api/videos/VIDEO_ID/cover | jq .
+  $LAZYEDIT_API/api/videos/VIDEO_ID/cover | jq .
 ```
 
 Then publish without rerunning processing or correction:
@@ -247,7 +270,7 @@ python scripts/lazyedit_publish.py \
   --no-process \
   --platforms shipinhao,youtube,instagram \
   --guided-monitor \
-  --remote-log-command "ssh lachlan@lazyingart 'tmux capture-pane -pt autopub:0 -S -140 | tail -n 140'" \
+  --remote-log-command "ssh $AUTOPUBLISH_SSH 'tmux capture-pane -pt autopub:0 -S -140 | tail -n 140'" \
   --wait \
   --poll-seconds 10
 ```
@@ -268,7 +291,7 @@ Example direct publish for a local section clip:
 
 ```bash
 python scripts/lazyedit_publish.py \
-  --video /home/lachlan/ProjectsLFS/Audio2Text/artifacts/panda_face_swap/output/v2_large_panda/sections/01_detection-decision-data-generation.mp4 \
+  --video /path/to/video.mp4 \
   --title "Detection, decision making, and automated data generation" \
   --use-current-settings \
   --platforms shipinhao,youtube,instagram \
@@ -285,19 +308,19 @@ For section clips generated from a private source, public metadata should descri
 Local LazyEdit queue:
 
 ```bash
-curl -fsS http://127.0.0.1:18787/api/autopublish/queue | jq '.jobs[:8]'
+curl -fsS $LAZYEDIT_API/api/autopublish/queue | jq '.jobs[:8]'
 ```
 
 Remote AutoPublish queue:
 
 ```bash
-curl -fsS http://lazyingart:8081/publish/queue | jq '.jobs[:8]'
+curl -fsS $AUTOPUBLISH_QUEUE_URL | jq '.jobs[:8]'
 ```
 
 Remote browser automation:
 
 ```bash
-ssh lachlan@lazyingart 'tmux capture-pane -pt autopub:0 -S -120 | tail -n 120'
+ssh $AUTOPUBLISH_SSH 'tmux capture-pane -pt autopub:0 -S -120 | tail -n 120'
 ```
 
 AutoPubMonitor import/session:
@@ -319,7 +342,7 @@ tmux capture-pane -pt autopub-monitor:0.3 -S -120 | tail -n 120
 
 ## AutoPubMonitor Notes
 
-- Nutstore files copied into `/home/lachlan/Nutstore Files/AutoPublish/AutoPublish` are synced/imported by AutoPubMonitor.
+- Nutstore files copied into `$NUTSTORE_AUTOPUBLISH` are synced/imported by AutoPubMonitor.
 - If a file is renamed while monitor is active, check the tmux panes and queue file before assuming it imported.
 - If LazyEdit is down, AutoPubMonitor wrapper must preserve nonzero exit codes so queued files are not silently dropped.
 
@@ -328,8 +351,8 @@ tmux capture-pane -pt autopub-monitor:0.3 -S -120 | tail -n 120
 Before final response, verify:
 
 ```bash
-curl -fsS http://127.0.0.1:18787/api/autopublish/queue | jq '.jobs[:8] | map({id,video_id,status,platforms,remote_status,remote_job_id,error})'
-curl -fsS http://lazyingart:8081/publish/queue | jq '.jobs[:8] | map({id,status,platforms,filename,error,updated_at})'
+curl -fsS $LAZYEDIT_API/api/autopublish/queue | jq '.jobs[:8] | map({id,video_id,status,platforms,remote_status,remote_job_id,error})'
+curl -fsS $AUTOPUBLISH_QUEUE_URL | jq '.jobs[:8] | map({id,status,platforms,filename,error,updated_at})'
 ```
 
 Report the LazyEdit job id, remote job id, platforms, status, and whether processing was reused or rerun.
@@ -347,7 +370,7 @@ Method:
 python scripts/lazyedit_publish.py \
   --video-id 348 \
   --use-current-settings \
-  --prompt-file /home/lachlan/ProjectsLFS/LALACHAN/references/prompts/2026-06-03-typhoon-pingpong-shark-duanpian-15s-4x3-budget200.md \
+  --prompt-file $LALACHAN_ROOT/references/prompts/2026-06-03-typhoon-pingpong-shark-duanpian-15s-4x3-budget200.md \
   --correct-subtitles \
   --correction-source polished \
   --platforms shipinhao,youtube,instagram \
@@ -368,7 +391,7 @@ Tools used:
 
 - `scripts/lazyedit_publish.py` for API/CLI orchestration.
 - `curl` + `jq` for LazyEdit and remote AutoPublish queue checks.
-- `ssh lachlan@lazyingart` and `tmux capture-pane -pt autopub:0` for remote browser automation logs.
+- `ssh $AUTOPUBLISH_SSH` and `tmux capture-pane -pt autopub:0` for remote browser automation logs.
 - `tmux capture-pane -pt autopub-monitor:*` for Nutstore/import checks.
 - `rg` on the Pi after installing `ripgrep` for faster code/log searches.
 
@@ -383,15 +406,15 @@ Final result:
 
 Request:
 
-- Copy `/home/lachlan/ProjectsLFS/LALACHAN/Videos/firefly_cave_cicada_rain_4x3_15s.mp4` to Nutstore.
-- Use `/home/lachlan/ProjectsLFS/LALACHAN/references/prompts/2026-06-06-firefly-cave-cicada-rain-duanpian-15s.md` as subtitle/metadata context.
+- Copy `$LALACHAN_ROOT/Videos/firefly_cave_cicada_rain_4x3_15s.mp4` to Nutstore.
+- Use `$LALACHAN_ROOT/references/prompts/2026-06-06-firefly-cave-cicada-rain-duanpian-15s.md` as subtitle/metadata context.
 - Publish to `shipinhao`, `youtube`, and `instagram`.
 
 Method:
 
 ```bash
-cp -f /home/lachlan/ProjectsLFS/LALACHAN/Videos/firefly_cave_cicada_rain_4x3_15s.mp4 \
-  "/home/lachlan/Nutstore Files/AutoPublish/AutoPublish/firefly_cave_cicada_rain_4x3_15s_COMPLETED.mp4"
+cp -f $LALACHAN_ROOT/Videos/firefly_cave_cicada_rain_4x3_15s.mp4 \
+  "$NUTSTORE_AUTOPUBLISH/firefly_cave_cicada_rain_4x3_15s_COMPLETED.mp4"
 
 python scripts/lazyedit_publish.py \
   --video-id 352 \
@@ -401,7 +424,7 @@ python scripts/lazyedit_publish.py \
   --correction-source polished \
   --platforms shipinhao,youtube,instagram \
   --guided-monitor \
-  --remote-log-command "ssh lachlan@lazyingart 'tmux capture-pane -pt autopub:0 -S -140 | tail -n 140'" \
+  --remote-log-command "ssh $AUTOPUBLISH_SSH 'tmux capture-pane -pt autopub:0 -S -140 | tail -n 140'" \
   --wait \
   --poll-seconds 10 \
   --process-timeout 3600 \

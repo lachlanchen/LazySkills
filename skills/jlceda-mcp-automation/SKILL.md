@@ -58,7 +58,7 @@ Add an MCP entry like:
   "mcpServers": {
     "jlceda": {
       "command": "node",
-      "args": ["/home/lachlan/.local/share/appautoaction/mcp/jlcmcp/dist/index.js"],
+      "args": ["$HOME/.local/share/appautoaction/mcp/jlcmcp/dist/index.js"],
       "env": {
         "GATEWAY_WS_URL": "ws://127.0.0.1:18800/ws/bridge"
       }

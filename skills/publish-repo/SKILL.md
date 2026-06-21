@@ -90,7 +90,7 @@ skills/publish-repo/scripts/publish_repo.sh \
 If installed as a Codex user skill or loaded from LazySkills, run the script by absolute path while keeping the working directory at the repository root:
 
 ```bash
-/home/lachlan/ProjectsLFS/LazySkills/skills/publish-repo/scripts/publish_repo.sh \
+$LAZYSKILLS_ROOT/skills/publish-repo/scripts/publish_repo.sh \
   --owner lachlanchen \
   --repo GaugeHand \
   --visibility public \

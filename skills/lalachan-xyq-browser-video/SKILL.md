@@ -9,6 +9,17 @@ description: Use when generating, preparing, monitoring, downloading, or publish
 
 Prefer the logged-in Xiaoyunque browser UI over the Xiaoyunque API unless the user explicitly asks for API usage. Validate visible page state before submitting: mode, model, duration, ratio, prompt, attachments, and credit estimate.
 
+For portable docs/examples, use environment variables instead of personal
+absolute paths:
+
+```bash
+export LALACHAN_ROOT="${LALACHAN_ROOT:-/path/to/LALACHAN}"
+export LAZYSKILLS_ROOT="${LAZYSKILLS_ROOT:-/path/to/LazySkills}"
+export LAZYEDIT_ROOT="${LAZYEDIT_ROOT:-/path/to/lazyedit}"
+export NUTSTORE_AUTOPUBLISH="${NUTSTORE_AUTOPUBLISH:-/path/to/AutoPublish}"
+export XYQ_CDP_URL="${XYQ_CDP_URL:-http://127.0.0.1:9222}"
+```
+
 Use the bundled scripts first:
 
 ```text
@@ -27,6 +38,14 @@ references/smooth-video-generation-runbook.md
 references/continue-confirm-download-runbook.md
 references/30s-agent-workflow.md
 references/words-card-30s-default.md
+```
+
+For a complete WeChat/operator handoff covering story writing, prompt saving,
+browser generation, download, and LazyEdit publishing, see:
+
+```text
+$LALACHAN_ROOT/references/lalachan-story-video-handoff-for-wechat.md
+$LAZYSKILLS_ROOT/docs/lalachan-story-video-generation-handoff.md
 ```
 
 ## LALACHAN Defaults
@@ -71,7 +90,7 @@ Characters:
 Words-card rule:
 
 - Treat `图1` as the visual style reference for the physical learning card.
-- Use `/home/lachlan/ProjectsLFS/LALACHAN/words-card.jpg` as the default words-card reference image when uploading directly. Use a pre-generated card image only when a fresh card has already been made for the specific episode.
+- Use `$LALACHAN_ROOT/words-card.jpg` as the default words-card reference image when uploading directly. Use a pre-generated card image only when a fresh card has already been made for the specific episode.
 - For every new video, create a fresh story-relevant word card; do not reuse the previous word unless the user asks.
 - The card content must include English, Japanese, and Japanese furigana. Add a short Chinese meaning when useful.
 - Use the successful in-scene prompt pattern by default: `图1 是小白屏学习卡风格参考，可作为场景边缘/桌面/道具架上的小道具，卡片内容是 English: WORD；Japanese: 日本語；Furigana: ふりがな；中文：中文含义。它只是场景里的真实道具，不是字幕。`
@@ -111,6 +130,7 @@ Duration target: 15s by default
 Ratio: 4:3 unless the user requests otherwise
 Prompt language: mainly Chinese
 Always include: 不要字幕，不要生成任何字幕、说明文字、下三分之一文字或画面文字。
+Post-generation: always auto-download the finished MP4, copy it to Videos/, and submit it to LazyEdit.
 ```
 
 For default work, target `15秒` and prefer `沉浸式短片` with non-VIP
@@ -127,10 +147,15 @@ Use `30秒` or longer only when the user explicitly asks for it.
 
 - Default to `Seedance 2.0 Fast` for LALACHAN video generation.
 - Inspect the model dropdown and avoid any option containing `VIP`.
+- `VIP` is a hard blocker. Do not click any paid action if the selected model,
+  toolbar, confirmation text, cost preview, or model row contains `VIP`
+  (`Seedance2.0Fast VIP`, `Fast VIP`, `VIP通道`, etc.). Stop and switch to a
+  verified non-VIP model/workflow, or ask before spending credits if the UI
+  offers only VIP choices.
 - Do not choose `Seedance 2.0 Mini` by default; the user found Mini expensive. Use Mini only when the user explicitly requests Mini or accepts it after seeing the cost.
 - Use normal `Seedance 2.0` only when the user explicitly asks for non-Fast or higher quality over credit savings.
 - If the user asks for cheapest, inspect the visible point cost first and report the tradeoff; do not silently switch away from requested/default Fast.
-- Do not continue an `智能长视频` / Agent render if the final video cost exceeds the user's budget; switch to short-video workflow or report the blocker.
+- Do not continue an `智能长视频` / Agent render if the final video cost exceeds the user's budget or the confirmation says the render will use a VIP tier; switch workflow/model or report the blocker.
 - For `4:3`, verify the opened ratio menu checkmark or screenshot because the compact toolbar may still show only `比例`.
 - Never waste credits on avoidable retries: do not click `生成视频`, `提交`, or
   any paid action twice unless the page proves the first attempt failed without
@@ -138,17 +163,17 @@ Use `30秒` or longer only when the user explicitly asks for it.
 
 ## Browser Workflow
 
-1. Attach to an existing logged-in Chrome CDP endpoint, usually `http://127.0.0.1:9222` or another active port:
+1. Attach to an existing logged-in Chrome CDP endpoint, usually `$XYQ_CDP_URL` or another active port:
 
 ```bash
-scripts/xyq_cdp_browser.py --cdp-url http://127.0.0.1:9222 list-pages
+scripts/xyq_cdp_browser.py --cdp-url "$XYQ_CDP_URL" list-pages
 ```
 
 2. Bring the Xiaoyunque page forward and inspect visible controls:
 
 ```bash
-scripts/xyq_cdp_browser.py --cdp-url http://127.0.0.1:9222 bring-to-front PAGE_ID
-scripts/xyq_cdp_browser.py --cdp-url http://127.0.0.1:9222 visible PAGE_ID
+scripts/xyq_cdp_browser.py --cdp-url "$XYQ_CDP_URL" bring-to-front PAGE_ID
+scripts/xyq_cdp_browser.py --cdp-url "$XYQ_CDP_URL" visible PAGE_ID
 ```
 
 3. Select mode/model/duration/ratio by browser UI. Do not submit until the page proves the requested mode, non-VIP model, duration, ratio, and point cost.
@@ -156,7 +181,7 @@ scripts/xyq_cdp_browser.py --cdp-url http://127.0.0.1:9222 visible PAGE_ID
 4. Upload and verify reference images:
 
 ```bash
-scripts/xyq_cdp_browser.py --cdp-url http://127.0.0.1:9222 upload-images-verify PAGE_ID \
+scripts/xyq_cdp_browser.py --cdp-url "$XYQ_CDP_URL" upload-images-verify PAGE_ID \
   words-card.jpg \
   LazyingArtRobot.png display.png patchwork-leather-notebook-luxury-clean-v2.png \
   raraxia.jpeg ayachan.png sasakun.jpeg Trio.png \
@@ -167,7 +192,7 @@ scripts/xyq_cdp_browser.py --cdp-url http://127.0.0.1:9222 upload-images-verify 
 5. Fill the saved prompt:
 
 ```bash
-scripts/xyq_cdp_browser.py --cdp-url http://127.0.0.1:9222 type-prompt PAGE_ID references/prompts/example.md --wait 2
+scripts/xyq_cdp_browser.py --cdp-url "$XYQ_CDP_URL" type-prompt PAGE_ID references/prompts/example.md --wait 2
 ```
 
 6. If the submit button stays disabled, inspect upload item classes. Wait until every uploaded file item is `success`; a single `uploading` reference blocks submission.
@@ -198,13 +223,45 @@ Monitor the submitted thread through the browser page:
 
 ```bash
 scripts/xyq_chrome/watch_thread_dom_download.py \
-  --cdp-url http://127.0.0.1:9222 \
+  --cdp-url "$XYQ_CDP_URL" \
   --page-id PAGE_ID \
   --thread-url "THREAD_URL" \
   --output-dir outputs/xyq-run \
   --filename result_30s.mp4 \
   --copy-to Videos \
-  --copy-to "/home/lachlan/Nutstore Files/AutoPublish/AutoPublish"
+  --copy-to "$NUTSTORE_AUTOPUBLISH"
+```
+
+After every successful Xiaoyunque generation, do not stop at the browser result.
+Download the final MP4 automatically, verify it with `ffprobe`, copy it to
+`Videos/`, then submit it to LazyEdit. Direct LazyEdit CLI upload is preferred
+when available; Nutstore AutoPublish import is an acceptable fallback. If the
+user did not explicitly request platform publishing, use LazyEdit with
+`--no-publish` so the video is imported/processed but not posted to YouTube,
+Instagram, Shipinhao, or other real platforms.
+
+Direct LazyEdit handoff pattern:
+
+```bash
+cd "$LAZYEDIT_ROOT"
+python scripts/lazyedit_publish.py \
+  --video "$LALACHAN_ROOT/Videos/VIDEO.mp4" \
+  --title VIDEO_COMPLETED \
+  --use-current-settings \
+  --correction-prompt-file "$LALACHAN_ROOT/references/prompts/PROMPT.md" \
+  --metadata-prompt-file temp/METADATA_BRIEF.md \
+  --correct-subtitles \
+  --correction-source polished \
+  --no-publish \
+  --wait \
+  --poll-seconds 10
+```
+
+Nutstore fallback pattern:
+
+```bash
+cp -f "$LALACHAN_ROOT/Videos/VIDEO.mp4" \
+  "$NUTSTORE_AUTOPUBLISH/VIDEO_COMPLETED.mp4"
 ```
 
 Protected `everphoto` URLs may fail from unauthenticated direct HTTP. First test browser-context fetch with `--await-promise`; if it returns `200 video/mp4`, pull the active `video.currentSrc` from the page and download with browser-like `Referer` and `User-Agent` headers.
@@ -227,3 +284,5 @@ Before final response, report only verified facts:
 - prompt verified to contain no local image paths;
 - credit charge or blocker observed;
 - local MP4 path, `ffprobe` dimensions/duration, and copy targets.
+- LazyEdit handoff status: video id for direct CLI upload, or Nutstore
+  `_COMPLETED` path/import evidence for folder handoff.

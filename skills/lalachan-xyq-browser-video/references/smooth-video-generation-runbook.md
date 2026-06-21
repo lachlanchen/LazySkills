@@ -24,7 +24,7 @@ Before clicking generate, prove these facts from the visible page or DOM:
 Use the logged-in CDP browser instead of an API call:
 
 ```bash
-curl -fsS http://127.0.0.1:9222/json/list
+curl -fsS $XYQ_CDP_URL/json/list
 scripts/xyq_cdp_browser.py list-pages
 ```
 

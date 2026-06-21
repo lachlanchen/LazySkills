@@ -46,7 +46,7 @@ It launches Chrome with:
 
 ```bash
 --remote-debugging-port=9222
---remote-allow-origins=http://127.0.0.1:9222
+--remote-allow-origins=$XYQ_CDP_URL
 --user-data-dir=$HOME/.cache/xyq-chrome
 ```
 
@@ -57,8 +57,8 @@ The `--user-data-dir` preserves login state for future automated sessions.
 For later Xiaoyunque work, reuse the same controlled driver instead of opening a normal Chrome tab:
 
 ```text
-CDP endpoint: http://127.0.0.1:9222
-Profile: /home/lachlan/.cache/xyq-chrome
+CDP endpoint: $XYQ_CDP_URL
+Profile: $HOME/.cache/xyq-chrome
 Launch script: scripts/xyq_chrome/launch_chrome.sh
 Attach helper: scripts/xyq_chrome/xyq_cdp.py
 ```
@@ -66,7 +66,7 @@ Attach helper: scripts/xyq_chrome/xyq_cdp.py
 Check whether the driver is still alive:
 
 ```bash
-curl -fsS http://127.0.0.1:9222/json/version
+curl -fsS $XYQ_CDP_URL/json/version
 scripts/xyq_chrome/xyq_cdp.py --state
 ps -eo pid,ppid,stat,etime,cmd | rg 'remote-debugging-port=9222|xyq-chrome'
 ```
@@ -78,7 +78,7 @@ scripts/xyq_chrome/launch_chrome.sh \
   "https://xyq.jianying.com/home?tab_name=integrated-agent"
 ```
 
-Log in once in this profile. The login is stored under `/home/lachlan/.cache/xyq-chrome`, so later CDP runs can attach directly.
+Log in once in this profile. The login is stored under `$HOME/.cache/xyq-chrome`, so later CDP runs can attach directly.
 
 ## Reusable CDP Tool
 
@@ -213,7 +213,7 @@ scripts/xyq_chrome/watch_thread_dom_download.py \
   --output-dir outputs/xyq-run \
   --filename result_30s.mp4 \
   --copy-to Videos \
-  --copy-to "/home/lachlan/Nutstore Files/AutoPublish/AutoPublish"
+  --copy-to "$NUTSTORE_AUTOPUBLISH"
 ```
 
 This watcher recognizes normal queue, VIP priority queue, generation, and
@@ -309,7 +309,7 @@ This is useful for inspection, but CDP is the preferred method for robust prompt
 ## Recommended Future Workflow
 
 1. Launch 小云雀 with `scripts/xyq_chrome/launch_chrome.sh`.
-2. Confirm `http://127.0.0.1:9222/json/list` responds. If it does not, the visible Chrome is not the controlled driver browser.
+2. Confirm `$XYQ_CDP_URL/json/list` responds. If it does not, the visible Chrome is not the controlled driver browser.
 3. Log in once in that controlled profile if needed.
 4. If the Xiaoyunque page is blank or `visible PAGE_ID` returns no usable text, recover the same tab by re-entering the address (`Ctrl+L`, `Enter`) or by CDP `navigate` to the same URL. Do not open a new tab for this.
 5. Use `scripts/xyq_chrome/xyq_cdp.py --state` to confirm the page and editable fields.
@@ -357,14 +357,14 @@ references/prompts/2026-05-12-episode03-xingyao-dinosaur-duanpian-15s.md
 Current default local image set for future runs:
 
 ```text
-/home/lachlan/ProjectsLFS/LALACHAN/words-card.jpg
-/home/lachlan/ProjectsLFS/LALACHAN/LazyingArtRobot.png
-/home/lachlan/ProjectsLFS/LALACHAN/display.png
-/home/lachlan/ProjectsLFS/LALACHAN/patchwork-leather-notebook-luxury-clean-v2.png
-/home/lachlan/ProjectsLFS/LALACHAN/raraxia.jpeg
-/home/lachlan/ProjectsLFS/LALACHAN/ayachan.png
-/home/lachlan/ProjectsLFS/LALACHAN/sasakun.jpeg
-/home/lachlan/ProjectsLFS/LALACHAN/Trio.png
+$LALACHAN_ROOT/words-card.jpg
+$LALACHAN_ROOT/LazyingArtRobot.png
+$LALACHAN_ROOT/display.png
+$LALACHAN_ROOT/patchwork-leather-notebook-luxury-clean-v2.png
+$LALACHAN_ROOT/raraxia.jpeg
+$LALACHAN_ROOT/ayachan.png
+$LALACHAN_ROOT/sasakun.jpeg
+$LALACHAN_ROOT/Trio.png
 ```
 
 List tabs and choose the existing Xiaoyunque page:

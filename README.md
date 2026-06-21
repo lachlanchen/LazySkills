@@ -14,6 +14,9 @@ LazySkills is a reusable skill library by [lachlanchen](https://github.com/lachl
 
 Website: [lachlanchen.github.io/LazySkills](https://lachlanchen.github.io/LazySkills/)
 
+LALACHAN daily story/video operators can start from
+[docs/lalachan-story-video-generation-handoff.md](docs/lalachan-story-video-generation-handoff.md).
+
 ## Fast Start
 
 ```bash
@@ -102,7 +105,8 @@ This structure keeps the skill itself concise while still preserving the tools a
 Preferred no-copy external pack use:
 
 ```bash
-export AGINTIFLOW_SKILL_PACKS="/home/lachlan/ProjectsLFS/LazySkills"
+export LAZYSKILLS_ROOT="${LAZYSKILLS_ROOT:-/path/to/LazySkills}"
+export AGINTIFLOW_SKILL_PACKS="$LAZYSKILLS_ROOT"
 aginti skills "npm publishing"
 aginti skills "PocketPolyglot"
 ```
@@ -111,14 +115,16 @@ Project-local copy when a single project needs pinned/customized skills:
 
 ```bash
 cd /path/to/project
-python3 /home/lachlan/ProjectsLFS/LazySkills/scripts/lazyskills.py install --platform aginti --scope project npm-publishing
+python3 $LAZYSKILLS_ROOT/scripts/lazyskills.py install --platform aginti --scope project npm-publishing
 aginti skills "npm publishing"
 ```
 
 SkillMesh import still works when you want reviewed/enabled SkillMesh copies. Example for `npm-publishing`:
 
 ```bash
-cd /home/lachlan/ProjectsLFS/Agent/AgInTiFlow
+export LAZYSKILLS_ROOT="${LAZYSKILLS_ROOT:-/path/to/LazySkills}"
+export AGINTIFLOW_ROOT="${AGINTIFLOW_ROOT:-/path/to/AgInTiFlow}"
+cd $AGINTIFLOW_ROOT
 node --input-type=module - <<'NODE'
 import fs from "node:fs/promises";
 import {
@@ -127,7 +133,9 @@ import {
   installSkillPack,
 } from "./src/skillmesh.js";
 
-const content = await fs.readFile("/home/lachlan/ProjectsLFS/LazySkills/skills/npm-publishing/SKILL.md", "utf8");
+const skillsRoot = process.env.LAZYSKILLS_ROOT;
+if (!skillsRoot) throw new Error("Set LAZYSKILLS_ROOT before running this example.");
+const content = await fs.readFile(`${skillsRoot}/skills/npm-publishing/SKILL.md`, "utf8");
 const pack = await buildSkillPackFromMarkdown(content, { valueScore: 92 });
 await installSkillPack(pack, { enabled: true });
 await enableSkillMeshSkill("npm-publishing", true);

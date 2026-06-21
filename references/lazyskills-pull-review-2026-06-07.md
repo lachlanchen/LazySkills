@@ -1,9 +1,9 @@
 # LazySkills Pull Review
 
-Date: 2026-06-07  
-Reviewer: Codex  
-Repository: `/home/lachlan/ProjectsLFS/LazySkills`  
-Review baseline: `c0e2832 Enable GitHub Pages deployment`  
+Date: 2026-06-07
+Reviewer: Codex
+Repository: `$LAZYSKILLS_ROOT`
+Review baseline: `c0e2832 Enable GitHub Pages deployment`
 Reviewed HEAD: `8947f70 Add KV260 Metavision lab skills`
 
 ## Purpose

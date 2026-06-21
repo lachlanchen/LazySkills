@@ -55,9 +55,9 @@ MCP client command:
 ```json
 {
   "type": "stdio",
-  "command": "/home/lachlan/.local/share/appautoaction/mcp/kicad-mcp-server/.venv/bin/python",
+  "command": "$HOME/.local/share/appautoaction/mcp/kicad-mcp-server/.venv/bin/python",
   "args": ["-m", "kicad_mcp_server"],
-  "cwd": "/home/lachlan/.local/share/appautoaction/mcp/kicad-mcp-server"
+  "cwd": "$HOME/.local/share/appautoaction/mcp/kicad-mcp-server"
 }
 ```
 

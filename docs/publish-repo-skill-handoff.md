@@ -9,13 +9,13 @@ The `publish-repo` skill was synced from the GaugeHand project into LazySkills s
 Canonical LazySkills location:
 
 ```text
-/home/lachlan/ProjectsLFS/LazySkills/skills/publish-repo/
+$LAZYSKILLS_ROOT/skills/publish-repo/
 ```
 
 Original GaugeHand source location:
 
 ```text
-/home/lachlan/ProjectsLFS/GaugeHand/skills/publish-repo/
+$GAUGEHAND_ROOT/skills/publish-repo/
 ```
 
 ## What The Skill Does
@@ -59,7 +59,7 @@ skills/publish-repo/scripts/publish_repo.sh \
 For LazySkills-installed use, keep the working directory at the target repository root but call the helper by absolute path:
 
 ```bash
-/home/lachlan/ProjectsLFS/LazySkills/skills/publish-repo/scripts/publish_repo.sh \
+$LAZYSKILLS_ROOT/skills/publish-repo/scripts/publish_repo.sh \
   --owner lachlanchen \
   --repo ExampleRepo \
   --visibility public \
@@ -71,7 +71,7 @@ For LazySkills-installed use, keep the working directory at the target repositor
 Install into Codex:
 
 ```bash
-cd /home/lachlan/ProjectsLFS/LazySkills
+cd $LAZYSKILLS_ROOT
 python3 scripts/lazyskills.py install --platform codex publish-repo
 ```
 
@@ -80,7 +80,7 @@ python3 scripts/lazyskills.py install --platform codex publish-repo
 Preferred external pack mode:
 
 ```bash
-export AGINTIFLOW_SKILL_PACKS=/home/lachlan/ProjectsLFS/LazySkills
+export AGINTIFLOW_SKILL_PACKS=$LAZYSKILLS_ROOT
 aginti skills "publish repo"
 ```
 
@@ -88,7 +88,7 @@ Project-local copy mode:
 
 ```bash
 cd /path/to/project
-python3 /home/lachlan/ProjectsLFS/LazySkills/scripts/lazyskills.py install \
+python3 $LAZYSKILLS_ROOT/scripts/lazyskills.py install \
   --platform aginti \
   --scope project \
   publish-repo

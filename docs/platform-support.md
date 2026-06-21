@@ -76,8 +76,8 @@ The helper intentionally avoids third-party Python dependencies so it works in f
 AgInTiFlow `0.20.191+` can load LazySkills directly as an external pack:
 
 ```bash
-AGINTIFLOW_SKILL_PACKS=/home/lachlan/ProjectsLFS/LazySkills aginti skills
-AGINTIFLOW_SKILL_PACKS=/home/lachlan/ProjectsLFS/LazySkills aginti skills "OCR scanned book"
+AGINTIFLOW_SKILL_PACKS=$LAZYSKILLS_ROOT aginti skills
+AGINTIFLOW_SKILL_PACKS=$LAZYSKILLS_ROOT aginti skills "OCR scanned book"
 ```
 
 It can also import Codex-style `SKILL.md` files that use `name:` and `description:` frontmatter. It normalizes them to SkillMesh `id:` and `label:` metadata during import.
@@ -85,8 +85,8 @@ It can also import Codex-style `SKILL.md` files that use `name:` and `descriptio
 Install one LazySkills skill as a local-reviewed enabled SkillMesh skill:
 
 ```bash
-cd /home/lachlan/ProjectsLFS/Agent/AgInTiFlow
-export SKILL_PATH="/home/lachlan/ProjectsLFS/LazySkills/skills/npm-publishing/SKILL.md"
+cd $AGINTIFLOW_ROOT
+export SKILL_PATH="$LAZYSKILLS_ROOT/skills/npm-publishing/SKILL.md"
 export SKILL_ID="npm-publishing"
 node --input-type=module - <<'NODE'
 import fs from "node:fs/promises";

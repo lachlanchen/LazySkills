@@ -51,7 +51,7 @@ tab and returns the hidden book IDs behind Vue result cards:
 
 ```bash
 python3 skills/libgen-safe-book-browser/scripts/libgen_browser_context_search.py \
-  --cdp-url http://127.0.0.1:9222 \
+  --cdp-url $XYQ_CDP_URL \
   --language jpn \
   --title-term "レ・ミゼラブル" \
   --author-term "ユーゴー" \
@@ -66,7 +66,7 @@ Open selected detail URLs with the bundled redirect guard:
 
 ```bash
 python3 skills/libgen-safe-book-browser/scripts/libgen_no_redirect_open.py \
-  --cdp-url http://127.0.0.1:9222 \
+  --cdp-url $XYQ_CDP_URL \
   --guard-seconds 600 \
   --label "Les Miserables EN" https://libgen.pw/book/113160300
 ```
@@ -76,7 +76,7 @@ python3 skills/libgen-safe-book-browser/scripts/libgen_no_redirect_open.py \
 Use an existing Chrome only if it has a CDP endpoint:
 
 ```bash
-curl http://127.0.0.1:9222/json/version
+curl $XYQ_CDP_URL/json/version
 ```
 
 Otherwise launch a controlled browser:
