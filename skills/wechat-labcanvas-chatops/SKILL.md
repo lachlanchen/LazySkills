@@ -39,6 +39,33 @@ WeChat GUI/direct DB -> fast chat agent -> task queue -> worker agent
 worker output/artifacts -> fast chat agent -> WeChat reply/files
 ```
 
+## Full Control Manual
+
+In the AgInTi LabCanvas repo, the complete operator map is:
+
+```text
+agentic_tools/wechat_gui_agent/docs/FULL_CONTROL_MANUAL.md
+```
+
+Read or update that manual when changing WeChat automation behavior. It
+documents the CLI, tmux supervisor, scripts, private state files, media sync,
+worker queue, route contracts, title guards, tests, and safety boundaries.
+
+Hard requirements for future agents:
+
+- use the LabCanvas CLI and existing scripts before writing ad hoc `xdotool`
+  or raw GUI commands;
+- keep one config/state file per chat or DM;
+- preserve the queued task `route` contract with source chat, message table,
+  send target, and expected title;
+- validate `task.chat`, `source.chat`, `route.chat`, send target, and OCR title
+  before any live send;
+- use `expected_title_aliases` for OCR issues and keep relaxed title fallback
+  dry-run only unless a single-chat workflow explicitly opts into live fallback;
+- source-limit media/files to the same chat and exact source/reference rows;
+- use browser assist or `waiting_confirmation` for login, CAPTCHA, payment,
+  public posting, deletion, or other irreversible actions.
+
 ## LabCanvas CLI Surface
 
 When working in AgInTi LabCanvas, prefer the reusable CLI instead of calling
