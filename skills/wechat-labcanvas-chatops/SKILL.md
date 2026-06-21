@@ -108,6 +108,12 @@ medium for paper/PDF/search/research/figure tasks, and high for CAD, PCB,
 Blender/OpenSCAD, installs, GitHub, ordering, or full execution tasks. If the
 first worker output is a timeout, empty/too-short answer, or explicit failure,
 retry once at the next effort level. Do not blindly rerun high-cost workers.
+Requests mentioning LALACHAN/RaraXia/AyaChan/SasaKun, 啦啦侠/阿芽酱/飒飒君,
+小云雀/XYQ/Seedance, and story/video generation should route to the worker as a
+LALACHAN story-video workflow: write and save the Chinese story, save the
+Xiaoyunque prompt, upload the eight default LALACHAN reference images in order,
+verify non-VIP Seedance 2.0 Fast, download and ffprobe the MP4, and publish via
+LazyEdit only if the user requested publishing.
 
 `labcanvas wechat stack start` should also start the LabCanvas web control panel
 in tmux. Treat the requested web port as preferred; the web app may move to the
