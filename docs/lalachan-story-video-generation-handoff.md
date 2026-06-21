@@ -17,16 +17,15 @@ Use this note when a WeChat-monitored agent needs to create a daily LALACHAN sto
 
 ## Source Repositories and Paths
 
-Set these variables for the local machine before running command examples:
+Keep local paths outside git. From the LazySkills repo, copy the example config,
+edit it for the machine, then source it before running command examples:
 
 ```bash
-export LALACHAN_ROOT="${LALACHAN_ROOT:-/path/to/LALACHAN}"
-export LAZYEDIT_ROOT="${LAZYEDIT_ROOT:-/path/to/lazyedit}"
-export NUTSTORE_AUTOPUBLISH="${NUTSTORE_AUTOPUBLISH:-/path/to/AutoPublish}"
-export XYQ_CDP_URL="${XYQ_CDP_URL:-http://127.0.0.1:9222}"
-export LAZYEDIT_API="${LAZYEDIT_API:-http://127.0.0.1:18787}"
-export AUTOPUBLISH_QUEUE_URL="${AUTOPUBLISH_QUEUE_URL:-http://autopublish-host:8081/publish/queue}"
-export AUTOPUBLISH_SSH="${AUTOPUBLISH_SSH:-user@autopublish-host}"
+cp .config/lazyskills.env.example .config/lazyskills.local.env
+$EDITOR .config/lazyskills.local.env
+set -a
+. .config/lazyskills.local.env
+set +a
 ```
 
 - LALACHAN repo: `$LALACHAN_ROOT`

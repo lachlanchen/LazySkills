@@ -102,10 +102,19 @@ This structure keeps the skill itself concise while still preserving the tools a
 
 ### AgInTiFlow
 
+Local paths should live in an ignored local config file:
+
+```bash
+cp .config/lazyskills.env.example .config/lazyskills.local.env
+$EDITOR .config/lazyskills.local.env
+set -a
+. .config/lazyskills.local.env
+set +a
+```
+
 Preferred no-copy external pack use:
 
 ```bash
-export LAZYSKILLS_ROOT="${LAZYSKILLS_ROOT:-/path/to/LazySkills}"
 export AGINTIFLOW_SKILL_PACKS="$LAZYSKILLS_ROOT"
 aginti skills "npm publishing"
 aginti skills "PocketPolyglot"
@@ -122,8 +131,6 @@ aginti skills "npm publishing"
 SkillMesh import still works when you want reviewed/enabled SkillMesh copies. Example for `npm-publishing`:
 
 ```bash
-export LAZYSKILLS_ROOT="${LAZYSKILLS_ROOT:-/path/to/LazySkills}"
-export AGINTIFLOW_ROOT="${AGINTIFLOW_ROOT:-/path/to/AgInTiFlow}"
 cd $AGINTIFLOW_ROOT
 node --input-type=module - <<'NODE'
 import fs from "node:fs/promises";

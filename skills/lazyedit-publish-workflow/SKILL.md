@@ -20,19 +20,15 @@ Use this skill for normal LazyEdit publish tasks and for AI-generated videos fro
 - Remote publish API: `$AUTOPUBLISH_API`
 - Remote tmux session: `autopub`
 
-Set these variables for the local machine before using command examples:
+Keep local paths outside git. From the LazySkills repo, copy the example config,
+edit it for the machine, then source it before using command examples:
 
 ```bash
-export LAZYEDIT_ROOT="${LAZYEDIT_ROOT:-/path/to/lazyedit}"
-export LALACHAN_ROOT="${LALACHAN_ROOT:-/path/to/LALACHAN}"
-export AUTOPUB_MONITOR_ROOT="${AUTOPUB_MONITOR_ROOT:-/path/to/autopub-monitor}"
-export NUTSTORE_AUTOPUBLISH="${NUTSTORE_AUTOPUBLISH:-/path/to/AutoPublish}"
-export LAZYEDIT_STUDIO="${LAZYEDIT_STUDIO:-http://127.0.0.1:18791/editor}"
-export LAZYEDIT_API="${LAZYEDIT_API:-http://127.0.0.1:18787}"
-export AUTOPUBLISH_SSH="${AUTOPUBLISH_SSH:-user@autopublish-host}"
-export AUTOPUBLISH_API="${AUTOPUBLISH_API:-http://autopublish-host:8081/publish}"
-export AUTOPUBLISH_QUEUE_URL="${AUTOPUBLISH_QUEUE_URL:-$AUTOPUBLISH_API/queue}"
-export AUTOPUBLISH_ROOT="${AUTOPUBLISH_ROOT:-/path/to/remote/autopub}"
+cp .config/lazyskills.env.example .config/lazyskills.local.env
+$EDITOR .config/lazyskills.local.env
+set -a
+. .config/lazyskills.local.env
+set +a
 ```
 
 ## Core Rule

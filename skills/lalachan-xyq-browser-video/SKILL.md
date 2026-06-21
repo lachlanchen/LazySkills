@@ -9,15 +9,15 @@ description: Use when generating, preparing, monitoring, downloading, or publish
 
 Prefer the logged-in Xiaoyunque browser UI over the Xiaoyunque API unless the user explicitly asks for API usage. Validate visible page state before submitting: mode, model, duration, ratio, prompt, attachments, and credit estimate.
 
-For portable docs/examples, use environment variables instead of personal
+For portable docs/examples, use an ignored local config instead of personal
 absolute paths:
 
 ```bash
-export LALACHAN_ROOT="${LALACHAN_ROOT:-/path/to/LALACHAN}"
-export LAZYSKILLS_ROOT="${LAZYSKILLS_ROOT:-/path/to/LazySkills}"
-export LAZYEDIT_ROOT="${LAZYEDIT_ROOT:-/path/to/lazyedit}"
-export NUTSTORE_AUTOPUBLISH="${NUTSTORE_AUTOPUBLISH:-/path/to/AutoPublish}"
-export XYQ_CDP_URL="${XYQ_CDP_URL:-http://127.0.0.1:9222}"
+cp .config/lazyskills.env.example .config/lazyskills.local.env
+$EDITOR .config/lazyskills.local.env
+set -a
+. .config/lazyskills.local.env
+set +a
 ```
 
 Use the bundled scripts first:
