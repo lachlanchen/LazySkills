@@ -209,6 +209,11 @@ as a normal deferred-outbox state: completed tasks should become
 `send_deferred_locked`, backend work should continue, and
 `wechat_task_worker.py --flush-deferred` or the worker loop can resend after the
 normal phone-side unlock.
+Fast chat replies and organizer acknowledgements are also outbox items: if a
+simple reply cannot be sent because WeChat is locked, enqueue it as
+`send_deferred_locked` instead of dropping it. Organizer/link-inbox smoke-test
+messages such as `ping`, `test`, `best`, `在吗`, or `测试` should produce a short
+health acknowledgement or a deferred outbox task.
 Serialize all GUI sends with one local lock such as
 `.private/wechat_gui_send.lock`; never run parallel raw click/paste senders
 against the same WeChat desktop. Use `fallback_clicks` in private send targets
