@@ -434,8 +434,10 @@ artifact or a redacted status.
   the noVNC desktop.
 - If decrypt fails, fall back to GUI-visible evidence and do not guess message
   contents.
-- If a file send is uncertain, verify in the GUI before retrying to avoid
-  duplicate attachments.
+- If a file send is uncertain, verify in the GUI or mirror DB before retrying to
+  avoid duplicate attachments. A file-picker click is not delivery proof; the
+  bridge must preflight/post-check the WeChat surface and emit `WECHAT_LOCKED`
+  or a send failure when the client did not accept the attachment.
 - Keep text-like artifacts such as `.md`, `.txt`, `.json`, and `.csv` as saved
   paths in the WeChat message by default; use GUI attachment sends mainly for
   media/PDF/ZIP artifacts or when explicitly required.
