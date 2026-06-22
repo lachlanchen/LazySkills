@@ -172,6 +172,11 @@ story/video generation, WeChat send-back, LazyEdit import/process, and public
 publish are separate booleans derived from the current request only. Old history
 can provide story/subtitle context but must not authorize LazyEdit or public
 posting.
+Generation is not publication. A generation request creates/downloads/verifies
+the video and sends artifacts back to the source chat; it does not authorize
+LazyEdit import, AutoPublish, Shipinhao, YouTube, Instagram, or any public
+posting. Uploading reference images/assets into Xiaoyunque is generation-stage
+input handling, not publication.
 Also persist and follow `orchestration_routine`: route contract, story/prompt,
 Xiaoyunque submit/resume, deterministic monitor, WeChat artifact delivery gate,
 LazyEdit poststage, and public publish. The agent should supervise these fixed
