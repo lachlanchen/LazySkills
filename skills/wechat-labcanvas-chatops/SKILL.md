@@ -142,6 +142,11 @@ story/video generation, WeChat send-back, LazyEdit import/process, and public
 publish are separate booleans derived from the current request only. Old history
 can provide story/subtitle context but must not authorize LazyEdit or public
 posting.
+If the current request explicitly asks to generate and publish, the automated
+system owns the whole chain: generate/monitor, download, verify, return the MP4
+to WeChat, submit to LazyEdit, and publish exactly once to the requested
+platforms such as SPH/Shipinhao, Instagram, and YouTube. Do not rely on a human
+operator manually running equivalent terminal commands outside the worker.
 Treat WeChat as a mirror command box for the persistent worker. The durable
 agent is the monitor, queue, session registry, and worker supervisor: messages
 become queue tasks, Codex worker turns resume per exact chat/role when reasoning
