@@ -9,7 +9,9 @@ agents that can run shell commands and control a logged-in Chrome/CDP browser.
 Before clicking generate, prove these facts from the visible page or DOM:
 
 - correct mode, usually `沉浸式短片` for short videos;
-- non-VIP model unless the user explicitly asks for VIP;
+- relatively cheap suitable Seedance model; Mini体验版/vipnew at a visible cheap
+  rate such as `单秒限时低至4积分` is preferred, and Fast/Fast VIP/another Seedance
+  row is acceptable when it is the relatively cheaper suitable option;
 - requested duration, usually `15秒`;
 - requested ratio, currently default `4:3` for LALACHAN;
 - prompt contains the no-subtitle/no-screen-text requirement;

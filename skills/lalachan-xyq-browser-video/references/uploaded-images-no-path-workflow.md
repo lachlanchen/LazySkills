@@ -78,7 +78,7 @@ Submit only after proving:
 - target duration is `30秒` by default
 - if `沉浸式短片` is visibly capped at `15秒`, switch to a 30s-capable Agent/integrated workflow
 - use `15秒` only when the user explicitly asks for 15s, quick test, cheapest/least credits, or accepts the short-film cap
-- use a normal/non-VIP model that supports the requested duration; do not choose a VIP model unless the user explicitly asks
+- use a relatively cheap suitable model that supports the requested duration; Mini体验版/vipnew at a visible cheap rate such as `单秒限时低至4积分` is preferred, and Fast/Fast VIP/another Seedance row is acceptable when it is the relatively cheaper suitable option
 - `4:3` unless requested otherwise
 - all eight images attached successfully
 - prompt contains no local paths

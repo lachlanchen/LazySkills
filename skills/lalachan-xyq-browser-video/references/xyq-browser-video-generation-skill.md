@@ -63,9 +63,13 @@ For ordinary LALACHAN short videos:
 
 - Mode: 30s-capable `创作 Agent` / integrated-agent workflow by default.
 - Mode exception: use `沉浸式短片` only when the user explicitly asks for `15s`, quick test, cheapest / least credits, or accepts the short-film cap.
-- Model: non-VIP `Seedance 2.0 Fast` by default. Do not choose `Seedance 2.0 Mini` by default because the user found Mini expensive; use Mini only when explicitly requested or accepted after checking visible cost.
-- VIP is a hard blocker: do not click submit/continue/render if the selected
-  model, confirmation, or visible cost/ledger text says `VIP`.
+- Model: choose a relatively cheap suitable Seedance option by default.
+  Prefer `Seedance 2.0 Mini 体验版` / `vipnew` when the UI shows a cheap rate
+  such as `单秒限时低至4积分`. If it is unavailable, choose the relatively cheaper
+  suitable `Seedance 2.0 Fast`, `Fast VIP`, or available Seedance row and continue.
+- Model selection must not block the task. Pause only for real non-model
+  blockers such as no credits, recharge/payment approval, disabled submit,
+  login, CAPTCHA, or an explicit user budget limit.
 - Duration: `30s` by default.
 - Ratio: `4:3` unless explicitly requested otherwise.
 - Language: mainly Chinese, with short English/Japanese phrases only if useful.
@@ -127,8 +131,9 @@ important.
    If the current thread is stale or completed, use the page `创作` / new-session
    button in the same controlled tab, then record the new thread URL.
 4. Use the 30s-capable `创作 Agent` / integrated-agent workflow by default. Use `沉浸式短片` only for explicit 15s/cheap requests.
-5. Select a non-VIP model that supports the requested duration. If the UI only
-   exposes VIP choices, stop and fix the model/workflow before any paid action.
+5. Select a relatively cheap suitable model that supports the requested
+   duration. Mini体验版/vipnew at about 4 credits/sec is preferred; otherwise use
+   a relatively cheaper Fast/Fast VIP/Seedance row and continue.
 6. Make the prompt first sentence state `30秒` by default.
 7. Set ratio to `4:3`; open the ratio menu or take a screenshot if the compact toolbar only shows `比例`.
 8. Upload and verify the eight images:

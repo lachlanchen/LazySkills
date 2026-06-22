@@ -384,17 +384,20 @@ scripts/xyq_chrome/xyq_cdp.py \
   --select-mode duanpian
 ```
 
-Set the model to non-VIP `Seedance 2.0 Fast`:
+Set the model to a relatively cheap suitable Seedance option. Prefer
+`Seedance 2.0 Mini 体验版` / `vipnew` when the UI shows a cheap rate such as
+`单秒限时低至4积分`; otherwise choose the relatively cheaper suitable
+`Seedance 2.0 Fast`, `Fast VIP`, or available Seedance row and continue:
 
 ```bash
 # Inspect model dropdown contents after opening it.
 scripts/xyq_cdp_browser.py visible "$PAGE_ID"
 
-# Today the non-VIP row was visible around this point after the dropdown opened.
+# Inspect the dropdown row and cost preview before selecting; coordinates may move.
 scripts/xyq_cdp_browser.py click "$PAGE_ID" 815 683
 ```
 
-Confirm the page says non-VIP Fast, not `Fast VIP`:
+Confirm the page shows the exact selected model row and visible cost:
 
 ```bash
 scripts/xyq_cdp_browser.py eval "$PAGE_ID" \
@@ -408,8 +411,8 @@ Expected result:
 
 ```json
 {
-  "model": "2.0 Fast",
-  "credit": "沉浸式短片 Seedance 2.0 Fast 按 1 秒 5 积分扣除"
+  "model": "Seedance 2.0 Mini 体验版",
+  "credit": "单秒限时低至4积分"
 }
 ```
 
@@ -579,8 +582,10 @@ scripts/xyq_cdp_browser.py click "$PAGE_ID" 1186 753
 
 Notes from this run:
 
-- The top banner may advertise `Seedance 2.0 Fast VIP`; ignore the banner.
-- The actual model is the toolbar model selector. It must read `2.0 Fast`.
+- The top banner may advertise a different model; use the toolbar model selector
+  and cost preview as the evidence.
+- The actual model should be a relatively cheap suitable row, such as
+  Mini体验版/vipnew, Fast, Fast VIP, or another available Seedance option.
 - With a reference video attached, the credit line changed to `带参考视频` and
   `1 秒 10 积分`.
 - The UI displays attached files with `@` marks even when they were attached

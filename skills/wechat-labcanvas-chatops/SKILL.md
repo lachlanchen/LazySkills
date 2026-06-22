@@ -76,6 +76,18 @@ Hard requirements for future agents:
 - source-limit media/files to the same chat and exact source/reference rows;
 - route ambiguous requests through a fast route agent, then make the worker
   re-check the route against the current request before execution;
+- keep route classification agent-first for monitored chats. Deterministic
+  keyword and attachment checks are auxiliary fallback/safety gates; they must
+  not become the primary capability map or shrink broad requests into a smaller
+  hardcoded action.
+- keep `immediate_route_enabled=true` for chats that should enqueue backend
+  work. Use `immediate_ack_enabled=false` only to suppress the visible ack; it
+  must not disable routing.
+- let every monitored chat, including EchoMind, send explicit backend/tool/
+  artifact instructions such as CAD/PCB, image generation, video generation,
+  video publication, writing, Markdown, LaTeX, PDF, and file handling.
+  EchoMind remains language-learning by default only for ordinary language
+  practice.
 - never let old chat history authorize public publishing. Shipinhao, YouTube,
   Instagram, LazyEdit/AutoPublish public queues, purchases, deletion, and other
   irreversible actions require explicit current-message intent;
@@ -133,7 +145,7 @@ Requests mentioning LALACHAN/RaraXia/AyaChan/SasaKun, 啦啦侠/阿芽酱/飒飒
 小云雀/XYQ/Seedance, and story/video generation should route to the worker as a
 LALACHAN story-video workflow: write and save the Chinese story, save the
 Xiaoyunque prompt, upload the eight default LALACHAN reference images in order,
-verify non-VIP Seedance 2.0 Fast, download and ffprobe the MP4, and publish via
+choose a relatively cheap suitable Seedance model, download and ffprobe the MP4, and publish via
 LazyEdit only if the user requested publishing. For `route_kind=generate_video`,
 write a generated-video route contract in the task artifact directory and make
 any subsequent Codex/browser agent re-check that contract before acting. The
@@ -149,6 +161,12 @@ are separate current-message permissions; do not infer them from old history. If
 the agent times out before returning monitor state, discover active Xiaoyunque
 `thread_id` pages through Chrome CDP and resume monitoring instead of reporting
 the timeout as final.
+For generated-video tasks, model selection must not block the task: prefer
+`Seedance 2.0 Mini 体验版` / `vipnew` with a visible cheap rate such as
+`单秒限时低至4积分`, otherwise choose the relatively cheaper suitable `Seedance 2.0
+Fast`, `Fast VIP`, or available Seedance row and continue. Pause only for real
+non-model blockers such as no credits, recharge/payment approval, disabled
+submit, login, CAPTCHA, or an explicit user budget limit.
 For generated-video tasks, persist `stage_permissions` in the route contract:
 story/video generation, WeChat send-back, LazyEdit import/process, and public
 publish are separate booleans derived from the current request only. Old history
@@ -438,9 +456,11 @@ artifact or a redacted status.
   avoid duplicate attachments. A file-picker click is not delivery proof; the
   bridge must preflight/post-check the WeChat surface and emit `WECHAT_LOCKED`
   or a send failure when the client did not accept the attachment.
-- Keep text-like artifacts such as `.md`, `.txt`, `.json`, and `.csv` as saved
-  paths in the WeChat message by default; use GUI attachment sends mainly for
-  media/PDF/ZIP artifacts or when explicitly required.
+- Send all safe generated or fetched artifacts back to the source chat by
+  default, not only paths. This includes story Markdown, `.txt`, `.json`,
+  `.csv`, LaTeX/source files, PDFs, images, renders, CAD/PCB exports,
+  manifests, archives, videos, and audio. If attachment delivery fails, leave
+  the task in a deferred/blocked state for retry instead of marking it done.
 - If a task is `send_failed`, inspect the stored send error and screenshot, fix
   the private `send_target` or title guard, and rerun deliberately rather than
   allowing an infinite retry loop.

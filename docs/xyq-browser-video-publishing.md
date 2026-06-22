@@ -6,7 +6,7 @@ This document records the browser-first method used to generate, download, and p
 
 1. Use the logged-in Chrome/CDP page instead of API submission.
 2. Select `沉浸式短片` for normal/default LALACHAN runs.
-3. Select a non-VIP model. Recent 15s runs used normal `Seedance 2.0 Fast` at `5/S`; lower-credit runs may use normal `Seedance 2.0` if it is cheaper.
+3. Select a relatively cheap suitable model. `Seedance 2.0 Mini 体验版` / `vipnew` at `单秒限时低至4积分` is preferred for cheap fast runs; if unavailable, choose the relatively cheaper suitable `Seedance 2.0 Fast`, `Fast VIP`, or available Seedance row and continue.
 4. Set duration to `15秒` by default. Use 30s or longer only when explicitly
    requested.
 5. Set ratio to `4:3` and verify it by reopening the ratio dropdown because the toolbar may still show only `比例`.

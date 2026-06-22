@@ -125,7 +125,7 @@ Default video setup:
 
 ```text
 Mode: 沉浸式短片 by default for normal LALACHAN video generation
-Model: Seedance 2.0 Fast by default for LALACHAN videos
+Model: relatively cheap suitable Seedance option by default
 Duration target: 15s by default
 Ratio: 4:3 unless the user requests otherwise
 Prompt language: mainly Chinese
@@ -133,8 +133,8 @@ Always include: 不要字幕，不要生成任何字幕、说明文字、下三�
 Post-generation: always auto-download the finished MP4, verify it, copy it to Videos/, and send it back to the requesting chat. Submit to LazyEdit only when the current request explicitly asks for LazyEdit/import/process or public publishing.
 ```
 
-For default work, target `15秒` and prefer `沉浸式短片` with non-VIP
-`Seedance 2.0 Fast`. Use `创作 Agent` / integrated-agent only when the user asks
+For default work, target `15秒` and prefer `沉浸式短片` with a relatively cheap
+suitable Seedance option. Use `创作 Agent` / integrated-agent only when the user asks
 for a longer video, when the current active thread is already an Agent thread,
 or when short-film controls cannot satisfy the task. If a generation fails,
 continue in the same current thread by sending a short corrective message; do
@@ -145,17 +145,13 @@ Use `30秒` or longer only when the user explicitly asks for it.
 
 ## Credit-Budget Rule
 
-- Default to `Seedance 2.0 Fast` for LALACHAN video generation.
-- Inspect the model dropdown and avoid any option containing `VIP`.
-- `VIP` is a hard blocker. Do not click any paid action if the selected model,
-  toolbar, confirmation text, cost preview, or model row contains `VIP`
-  (`Seedance2.0Fast VIP`, `Fast VIP`, `VIP通道`, etc.). Stop and switch to a
-  verified non-VIP model/workflow, or ask before spending credits if the UI
-  offers only VIP choices.
-- Do not choose `Seedance 2.0 Mini` by default; the user found Mini expensive. Use Mini only when the user explicitly requests Mini or accepts it after seeing the cost.
+- Default to a relatively cheap suitable Seedance model for LALACHAN video generation.
+- Model selection must not block the task. Preferred cheap/fast option: `Seedance 2.0 Mini 体验版` / `vipnew` when the UI shows a cheap rate such as `单秒限时低至4积分`.
+- If Mini体验版/vipnew is unavailable, choose the relatively cheaper suitable `Seedance 2.0 Fast`, `Fast VIP`, or available Seedance row and continue.
+- Do not treat the `VIP` label, missing preferred model, or missing exact cost text as a blocker. Pause only for real non-model blockers such as no credits, recharge/payment approval, disabled submit, login, CAPTCHA, or an explicit user budget limit.
 - Use normal `Seedance 2.0` only when the user explicitly asks for non-Fast or higher quality over credit savings.
-- If the user asks for cheapest, inspect the visible point cost first and report the tradeoff; do not silently switch away from requested/default Fast.
-- Do not continue an `智能长视频` / Agent render if the final video cost exceeds the user's budget or the confirmation says the render will use a VIP tier; switch workflow/model or report the blocker.
+- If the user asks for cheapest, inspect visible options when possible and choose a relatively cheaper suitable model instead of a fixed default.
+- Do not continue an `智能长视频` / Agent render only when it hits a real blocker such as insufficient credits, recharge/payment confirmation, or explicit budget conflict.
 - For `4:3`, verify the opened ratio menu checkmark or screenshot because the compact toolbar may still show only `比例`.
 - Never waste credits on avoidable retries: do not click `生成视频`, `提交`, or
   any paid action twice unless the page proves the first attempt failed without
@@ -176,7 +172,7 @@ scripts/xyq_cdp_browser.py --cdp-url "$XYQ_CDP_URL" bring-to-front PAGE_ID
 scripts/xyq_cdp_browser.py --cdp-url "$XYQ_CDP_URL" visible PAGE_ID
 ```
 
-3. Select mode/model/duration/ratio by browser UI. Do not submit until the page proves the requested mode, non-VIP model, duration, ratio, and point cost.
+3. Select mode/model/duration/ratio by browser UI. Verify the requested mode, selected model row, duration, ratio, upload success, and any visible point cost/VIP/vipnew state as far as the UI allows. Do not block only because the exact preferred model or exact cost text is unavailable.
 
 4. Upload and verify reference images:
 

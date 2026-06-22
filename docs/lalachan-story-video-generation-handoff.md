@@ -9,7 +9,7 @@ Use this note when a WeChat-monitored agent needs to create a daily LALACHAN sto
 1. 先写一个自然、好懂、有趣的中文故事，角色是啦啦侠、阿芽酱、飒飒君、庄子机器人。
 2. 保存故事到 $LALACHAN_ROOT/references/stories/。
 3. 改成小云雀可用提示词，保存到 $LALACHAN_ROOT/references/prompts/。
-4. 用浏览器 UI，不要用小云雀 API。上传参考图，选择沉浸式短片，Seedance 2.0 Fast 非 VIP，15s 默认，4:3 默认。
+4. 用浏览器 UI，不要用小云雀 API。上传参考图，选择沉浸式短片，默认用相对便宜且满足任务的 Seedance 模型；优先用 `Seedance 2.0 Mini 体验版` / `vipnew` 单秒约 4 积分，不可用时选相对便宜合适的 `Fast`、`Fast VIP` 或其它 Seedance 选项并继续。15s 默认，4:3 默认。
 5. 提交后监控到视频完成，下载到 Videos/，用 ffprobe 检查。
 6. 如果我要求发布，提交到 LazyEdit 并发布到指定平台。
 执行时每一步都验证，不要重复点击生成，不要浪费积分。
@@ -86,7 +86,7 @@ Never include:
 
 - Local paths such as `$HOME/...`
 - File names as visible scene text.
-- VIP model requests unless the user explicitly accepts cost.
+- Real platform blockers such as no credits, recharge/payment approval, disabled submit, login, CAPTCHA, or an explicit user budget limit.
 
 ## Xiaoyunque Browser Workflow
 
@@ -95,7 +95,7 @@ Use browser UI, not API, unless explicitly requested.
 Default:
 
 - Mode: `沉浸式短片`
-- Model: `Seedance 2.0 Fast` non-VIP
+- Model: relatively cheap suitable Seedance option; prefer Mini体验版/vipnew, otherwise choose a relatively cheaper suitable Fast/Fast VIP/Seedance row
 - Duration: `15s` unless user requested 30s or another duration
 - Ratio: `4:3`
 - Reference source: plus button, upload local images directly; for reference videos use `从资产库选择`
@@ -129,7 +129,7 @@ Before paid submit, verify:
 
 - The current tab is the correct Xiaoyunque thread.
 - Mode, model, duration, ratio, and cost are visible and correct.
-- No `VIP` label is selected.
+- Selected model is a relatively cheap suitable Seedance option; exact cost text is useful but not required if the page allows submission.
 - All required uploaded images show success.
 - The prompt says no subtitles.
 - The submit button is enabled.
@@ -227,7 +227,7 @@ Report these fields back to the WeChat group or user:
 - Do not click submit twice if credits may already be spent.
 - Do not create a new Xiaoyunque session unless the current thread is broken.
 - Do not skip image upload. Typed paths are not image uploads.
-- Avoid `Seedance 2.0 Mini` and any VIP model unless the user asks.
+- Prefer Mini体验版/vipnew; if unavailable, use a relatively cheaper suitable Fast/Fast VIP/Seedance option instead of blocking on model selection.
 - Default to 15s; use 30s only when requested.
 - Default to 4:3 unless requested otherwise.
 - Use `AgInTi` capitalization exactly.
