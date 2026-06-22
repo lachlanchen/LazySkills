@@ -142,6 +142,11 @@ story/video generation, WeChat send-back, LazyEdit import/process, and public
 publish are separate booleans derived from the current request only. Old history
 can provide story/subtitle context but must not authorize LazyEdit or public
 posting.
+Treat WeChat as a mirror command box for the persistent worker. The durable
+agent is the monitor, queue, session registry, and worker supervisor: messages
+become queue tasks, Codex worker turns resume per exact chat/role when reasoning
+is needed, and long Xiaoyunque waits are held by deterministic queue state plus
+CDP probes instead of one fragile multi-hour model call.
 Generated-video MP4 delivery is mandatory by default: send the verified MP4
 before the completion text, record successful sends in `sent_file_paths`, and
 leave the task in `send_deferred_artifact` or `send_deferred_locked` if the GUI
