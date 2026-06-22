@@ -63,6 +63,11 @@ Hard requirements for future agents:
 - use `expected_title_aliases` for OCR issues and keep relaxed title fallback
   dry-run only unless a single-chat workflow explicitly opts into live fallback;
 - source-limit media/files to the same chat and exact source/reference rows;
+- route ambiguous requests through a fast route agent, then make the worker
+  re-check the route against the current request before execution;
+- never let old chat history authorize public publishing. Shipinhao, YouTube,
+  Instagram, LazyEdit/AutoPublish public queues, purchases, deletion, and other
+  irreversible actions require explicit current-message intent;
 - use browser assist or `waiting_confirmation` for login, CAPTCHA, payment,
   public posting, deletion, or other irreversible actions.
 
@@ -104,18 +109,25 @@ tokens only when a new message needs a route decision, immediate reply, or
 worker execution.
 
 The worker should select effort from the current user request before running,
-not from the long reusable queue playbook: medium for simple follow-ups and
-paper/PDF/search/research/figure tasks, high for CAD, PCB, Blender/OpenSCAD,
-installs, GitHub, ordering, or tool execution tasks, and xhigh only for full
-autonomous end-to-end tasks. If the first worker output is a timeout,
-empty/too-short answer, or explicit failure, retry once at the next effort
-level. Do not blindly rerun high-cost workers.
+not from the long reusable queue playbook: medium for simple follow-ups,
+paper/PDF/search/research/figure tasks, and generated-video browser work; high
+for CAD, PCB, Blender/OpenSCAD, installs, GitHub, ordering, or tool execution
+tasks; and xhigh only for full autonomous end-to-end tasks. If the first worker
+output is a timeout, empty answer, or explicit failure, retry once at the next
+effort level. Do not blindly rerun high-cost workers, and do not escalate a
+generated-video task when the worker has already reported submitted/queued/
+running/blocked browser status.
 Requests mentioning LALACHAN/RaraXia/AyaChan/SasaKun, 啦啦侠/阿芽酱/飒飒君,
 小云雀/XYQ/Seedance, and story/video generation should route to the worker as a
 LALACHAN story-video workflow: write and save the Chinese story, save the
 Xiaoyunque prompt, upload the eight default LALACHAN reference images in order,
 verify non-VIP Seedance 2.0 Fast, download and ffprobe the MP4, and publish via
-LazyEdit only if the user requested publishing.
+LazyEdit only if the user requested publishing. For `route_kind=generate_video`,
+write a generated-video route contract in the task artifact directory and make
+any subsequent Codex/browser agent re-check that contract before acting. The
+final worker result must include a new MP4 path or an explicit
+submitted/running/blocked Xiaoyunque status; old WeChat MP4 files, LazyEdit
+videos, and AutoPublish files are not valid outputs for a generate-video route.
 
 `labcanvas wechat stack start` should also start the LabCanvas web control panel
 in tmux. Treat the requested web port as preferred; the web app may move to the
