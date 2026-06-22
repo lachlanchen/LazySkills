@@ -175,6 +175,10 @@ before the completion text, record successful sends in `sent_file_paths`, and
 leave the task in `send_deferred_artifact` or `send_deferred_locked` if the GUI
 file send cannot complete. Do not mark a generated-video task done until the
 source chat has received the MP4 or delivery is explicitly deferred for retry.
+If the MP4/PDF/image/file is sent but the follow-up text or confirmation fails,
+keep `sent_file_paths`, store `post_artifact_send_errors`, and leave the task in
+`send_deferred_locked` for retry. The next flush should skip already delivered
+files and retry only the missing user-facing text/confirmation.
 LazyEdit import/process and public publishing must be queued as
 `generation_poststage_pending` only after `sent_file_paths` proves MP4 delivery;
 timeouts or running LazyEdit jobs should requeue the poststage instead of
@@ -191,6 +195,11 @@ different groups will collide. Add `send_target` or a private send-target
 registry so replies open the correct group before sending. Include
 `expected_title` in each target and OCR-check the opened chat header before
 composing; if the title does not match, fail closed and leave the task pending.
+Keep `wechat_chat_sync_loop.py` running under the supervisor for multi-group
+monitoring. It dry-opens configured chats through the guarded GUI sender without
+`--send`, which prompts Linux WeChat to materialize fresh DB rows for inactive
+groups such as device inboxes. Use `WECHAT_CHAT_SYNC_PRIORITY` in private
+supervisor env for chats that must be visited first.
 When the account owner sends commands from the same logged-in mobile account,
 use `allow_human_self_messages=true` and `self_message_policy=human_commands`
 while keeping `ignore_self_messages=true`, `respond_to_self=false`,
