@@ -137,6 +137,11 @@ are separate current-message permissions; do not infer them from old history. If
 the agent times out before returning monitor state, discover active Xiaoyunque
 `thread_id` pages through Chrome CDP and resume monitoring instead of reporting
 the timeout as final.
+Generated-video MP4 delivery is mandatory by default: send the verified MP4
+before the completion text, record successful sends in `sent_file_paths`, and
+leave the task in `send_deferred_artifact` or `send_deferred_locked` if the GUI
+file send cannot complete. Do not mark a generated-video task done until the
+source chat has received the MP4 or delivery is explicitly deferred for retry.
 
 `labcanvas wechat stack start` should also start the LabCanvas web control panel
 in tmux. Treat the requested web port as preferred; the web app may move to the
