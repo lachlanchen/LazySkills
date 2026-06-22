@@ -49,11 +49,15 @@ agentic_tools/wechat_gui_agent/docs/FULL_CONTROL_MANUAL.md
 
 Read or update that manual when changing WeChat automation behavior. It
 documents the CLI, tmux supervisor, scripts, private state files, media sync,
-worker queue, route contracts, title guards, tests, and safety boundaries.
+worker queue, route contracts, routine contracts, title guards, tests, and safety boundaries.
 Also read and update
 `agentic_tools/wechat_gui_agent/docs/ROBUST_EFFICIENT_OPERATIONS.md`; it is the
 reliability contract for per-chat isolation, token-efficient routing, queue
 states, artifact delivery gates, recovery playbooks, and change checklists.
+Also read and update
+`agentic_tools/wechat_gui_agent/docs/ROUTINE_ORCHESTRATOR.md`; it documents
+`wechat_routines.py`, the routine registry that maps route decisions to fixed
+stage contracts.
 
 Hard requirements for future agents:
 
@@ -62,6 +66,9 @@ Hard requirements for future agents:
 - keep one config/state file per chat or DM;
 - preserve the queued task `route` contract with source chat, message table,
   send target, and expected title;
+- preserve `task.routine` for every backend task; workers must write
+  `routine_contract.json` and `.md` and supervise that routine before invoking
+  tool-specific reasoning;
 - validate `task.chat`, `source.chat`, `route.chat`, send target, and OCR title
   before any live send;
 - use `expected_title_aliases` for OCR issues and keep relaxed title fallback
@@ -84,6 +91,7 @@ individual scripts by memory:
 labcanvas wechat status
 labcanvas wechat health --json
 labcanvas wechat doctor
+labcanvas wechat routines --json
 labcanvas wechat init-config --chat '<CHAT_NAME>'
 labcanvas wechat desktop start
 labcanvas wechat monitor start
