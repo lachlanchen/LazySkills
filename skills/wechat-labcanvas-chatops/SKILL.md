@@ -137,6 +137,11 @@ are separate current-message permissions; do not infer them from old history. If
 the agent times out before returning monitor state, discover active Xiaoyunque
 `thread_id` pages through Chrome CDP and resume monitoring instead of reporting
 the timeout as final.
+For generated-video tasks, persist `stage_permissions` in the route contract:
+story/video generation, WeChat send-back, LazyEdit import/process, and public
+publish are separate booleans derived from the current request only. Old history
+can provide story/subtitle context but must not authorize LazyEdit or public
+posting.
 Generated-video MP4 delivery is mandatory by default: send the verified MP4
 before the completion text, record successful sends in `sent_file_paths`, and
 leave the task in `send_deferred_artifact` or `send_deferred_locked` if the GUI

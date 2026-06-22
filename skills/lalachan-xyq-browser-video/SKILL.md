@@ -130,7 +130,7 @@ Duration target: 15s by default
 Ratio: 4:3 unless the user requests otherwise
 Prompt language: mainly Chinese
 Always include: 不要字幕，不要生成任何字幕、说明文字、下三分之一文字或画面文字。
-Post-generation: always auto-download the finished MP4, copy it to Videos/, and submit it to LazyEdit.
+Post-generation: always auto-download the finished MP4, verify it, copy it to Videos/, and send it back to the requesting chat. Submit to LazyEdit only when the current request explicitly asks for LazyEdit/import/process or public publishing.
 ```
 
 For default work, target `15秒` and prefer `沉浸式短片` with non-VIP
@@ -234,11 +234,12 @@ scripts/xyq_chrome/watch_thread_dom_download.py \
 
 After every successful Xiaoyunque generation, do not stop at the browser result.
 Download the final MP4 automatically, verify it with `ffprobe`, copy it to
-`Videos/`, then submit it to LazyEdit. Direct LazyEdit CLI upload is preferred
-when available; Nutstore AutoPublish import is an acceptable fallback. If the
-user did not explicitly request platform publishing, use LazyEdit with
-`--no-publish` so the video is imported/processed but not posted to YouTube,
-Instagram, Shipinhao, or other real platforms.
+`Videos/`, and send it back to the requesting chat. Only submit it to LazyEdit
+when the current request explicitly asks for LazyEdit/import/process or public
+publishing. Direct LazyEdit CLI upload is preferred when available; Nutstore
+AutoPublish import is an acceptable fallback. For LazyEdit-only requests, use
+`--no-publish`; for public publish requests, publish exactly once to the
+requested platforms.
 
 Direct LazyEdit handoff pattern:
 

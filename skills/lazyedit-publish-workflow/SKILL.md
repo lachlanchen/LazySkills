@@ -145,10 +145,12 @@ python scripts/lazyedit_publish.py --video-id VIDEO_ID --use-current-settings --
 
 Default post-generation rule: when a LALACHAN/Xiaoyunque video has finished,
 auto-download it, verify duration/size with `ffprobe`, copy it to
-`$LALACHAN_ROOT/Videos`, and submit it to LazyEdit. Direct
-CLI upload is preferred; Nutstore AutoPublish import is acceptable. If the user
-did not explicitly request real platform publishing, pass `--no-publish` so the
-video is imported and processed in LazyEdit but not posted.
+`$LALACHAN_ROOT/Videos`, and send the verified MP4 back to the requesting chat.
+Submit to LazyEdit only when the current user request explicitly asks for
+LazyEdit/import/process or public publishing. For a LazyEdit-only request, use
+direct CLI upload with `--no-publish`; Nutstore AutoPublish import is an
+acceptable fallback. For a public publish request, run the normal LazyEdit
+publish workflow exactly once for the requested platforms.
 
 If a generated video should go through the normal import path, copy it to Nutstore with a stable `_COMPLETED` name:
 
