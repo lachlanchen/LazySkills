@@ -98,16 +98,18 @@ should run through a restart wrapper so they recover from crashes or transient
 errors. For responsive chatops, use `WECHAT_DIRECT_POLL_SECONDS=0.8`,
 `WECHAT_DIRECT_CATCHUP_POLL_SECONDS=0.1`, and
 `WECHAT_DECRYPT_REFRESH_INTERVAL=1`. Keep the fast chat agent on `gpt-5.5` with
-low reasoning and a short timeout; route slow tasks to the worker queue. Idle
+medium reasoning and a short timeout; route slow tasks to the worker queue. Idle
 polling should only read local DB/files and must not call Codex. Spend model
 tokens only when a new message needs a route decision, immediate reply, or
 worker execution.
 
-The worker should select effort before running: low for simple follow-ups,
-medium for paper/PDF/search/research/figure tasks, and high for CAD, PCB,
-Blender/OpenSCAD, installs, GitHub, ordering, or full execution tasks. If the
-first worker output is a timeout, empty/too-short answer, or explicit failure,
-retry once at the next effort level. Do not blindly rerun high-cost workers.
+The worker should select effort from the current user request before running,
+not from the long reusable queue playbook: medium for simple follow-ups and
+paper/PDF/search/research/figure tasks, high for CAD, PCB, Blender/OpenSCAD,
+installs, GitHub, ordering, or tool execution tasks, and xhigh only for full
+autonomous end-to-end tasks. If the first worker output is a timeout,
+empty/too-short answer, or explicit failure, retry once at the next effort
+level. Do not blindly rerun high-cost workers.
 Requests mentioning LALACHAN/RaraXia/AyaChan/SasaKun, 啦啦侠/阿芽酱/飒飒君,
 小云雀/XYQ/Seedance, and story/video generation should route to the worker as a
 LALACHAN story-video workflow: write and save the Chinese story, save the
