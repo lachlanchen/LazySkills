@@ -183,6 +183,12 @@ different groups will collide. Add `send_target` or a private send-target
 registry so replies open the correct group before sending. Include
 `expected_title` in each target and OCR-check the opened chat header before
 composing; if the title does not match, fail closed and leave the task pending.
+When the account owner sends commands from the same logged-in mobile account,
+use `allow_human_self_messages=true` and `self_message_policy=human_commands`
+while keeping `ignore_self_messages=true`, `respond_to_self=false`,
+`self_messages_text_only=true`, and `ignore_probable_bot_self_replies=true`.
+This treats same-account text as human commands but still ignores bot replies
+and self-origin files that could create loops.
 Wait for WeChat loading states before OCR, retry the title guard, and prefer
 native X window title matching for popup chat windows before falling back to OCR
 crops. A send failure should mark the task `send_failed` with the error and
