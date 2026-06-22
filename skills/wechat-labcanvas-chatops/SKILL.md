@@ -50,6 +50,10 @@ agentic_tools/wechat_gui_agent/docs/FULL_CONTROL_MANUAL.md
 Read or update that manual when changing WeChat automation behavior. It
 documents the CLI, tmux supervisor, scripts, private state files, media sync,
 worker queue, route contracts, title guards, tests, and safety boundaries.
+Also read and update
+`agentic_tools/wechat_gui_agent/docs/ROBUST_EFFICIENT_OPERATIONS.md`; it is the
+reliability contract for per-chat isolation, token-efficient routing, queue
+states, artifact delivery gates, recovery playbooks, and change checklists.
 
 Hard requirements for future agents:
 
