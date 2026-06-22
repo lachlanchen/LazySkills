@@ -128,6 +128,12 @@ any subsequent Codex/browser agent re-check that contract before acting. The
 final worker result must include a new MP4 path or an explicit
 submitted/running/blocked Xiaoyunque status; old WeChat MP4 files, LazyEdit
 videos, and AutoPublish files are not valid outputs for a generate-video route.
+Submitted Xiaoyunque jobs should stay as resumable queue work: store thread/page
+monitor state, run short deterministic status-probe cycles, derive the next poll
+from visible status such as `还需 N 分钟`, `排队`, or `生成中`, and suppress routine
+progress messages unless explicitly enabled. When the MP4 is verified, send it
+back to the source WeChat chat. LazyEdit import/process and public publishing
+are separate current-message permissions; do not infer them from old history.
 
 `labcanvas wechat stack start` should also start the LabCanvas web control panel
 in tmux. Treat the requested web port as preferred; the web app may move to the
