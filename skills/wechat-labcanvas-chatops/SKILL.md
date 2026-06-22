@@ -142,6 +142,12 @@ story/video generation, WeChat send-back, LazyEdit import/process, and public
 publish are separate booleans derived from the current request only. Old history
 can provide story/subtitle context but must not authorize LazyEdit or public
 posting.
+Also persist and follow `orchestration_routine`: route contract, story/prompt,
+Xiaoyunque submit/resume, deterministic monitor, WeChat artifact delivery gate,
+LazyEdit poststage, and public publish. The agent should supervise these fixed
+routines and resolve blockers; it should not invent a fresh workflow when a
+routine entrypoint already exists. In AgInTi LabCanvas, keep
+`agentic_tools/wechat_gui_agent/docs/GENERATED_VIDEO_ROUTINES.md` synchronized.
 If the current request explicitly asks to generate and publish, the automated
 system owns the whole chain: generate/monitor, download, verify, return the MP4
 to WeChat, submit to LazyEdit, and publish exactly once to the requested
@@ -157,6 +163,10 @@ before the completion text, record successful sends in `sent_file_paths`, and
 leave the task in `send_deferred_artifact` or `send_deferred_locked` if the GUI
 file send cannot complete. Do not mark a generated-video task done until the
 source chat has received the MP4 or delivery is explicitly deferred for retry.
+LazyEdit import/process and public publishing must be queued as
+`generation_poststage_pending` only after `sent_file_paths` proves MP4 delivery;
+timeouts or running LazyEdit jobs should requeue the poststage instead of
+closing the task.
 
 `labcanvas wechat stack start` should also start the LabCanvas web control panel
 in tmux. Treat the requested web port as preferred; the web app may move to the
