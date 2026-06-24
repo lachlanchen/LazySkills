@@ -88,6 +88,13 @@ Hard requirements for future agents:
   video publication, writing, Markdown, LaTeX, PDF, and file handling.
   EchoMind remains language-learning by default only for ordinary language
   practice.
+- treat WeChat voice messages as text when `message/media_0.db` is decrypted:
+  use `labcanvas wechat voice-transcribe --config <DIRECT_CONFIG> --local-id N`
+  or `wechat_voice_transcribe.py` to read `VoiceInfo`, decode SILK with `pilk`,
+  transcribe with `faster_whisper`, and cache under ignored `.private/`. Do not
+  pass raw `aeskey` or `voiceurl` XML into prompts. In EchoMind, ordinary
+  transcribed voice stays in the direct language-learning path unless the
+  transcript explicitly asks for backend tools/artifacts.
 - never let old chat history authorize public publishing. Shipinhao, YouTube,
   Instagram, LazyEdit/AutoPublish public queues, purchases, deletion, and other
   irreversible actions require explicit current-message intent;
@@ -117,6 +124,7 @@ labcanvas wechat send --file '<ARTIFACT>.pdf'
 labcanvas wechat worker enqueue '<SLOW_TASK>'
 labcanvas wechat worker once --send
 labcanvas wechat media-sync --chat '<CHAT_NAME>' --auto-source
+labcanvas wechat voice-transcribe --config '<DIRECT_CONFIG>' --local-id 121 --json
 ```
 
 `labcanvas wechat hold start` should create or reuse a tmux session with panes
