@@ -91,14 +91,17 @@ Hard requirements for future agents:
 - treat WeChat voice messages as text when `message/media_0.db` is decrypted:
   use `labcanvas wechat voice-transcribe --config <DIRECT_CONFIG> --local-id N`
   or `wechat_voice_transcribe.py` to read `VoiceInfo`, decode SILK with `pilk`,
-  transcribe with `faster_whisper`, and cache under ignored `.private/`. Do not
-  pass raw `aeskey` or `voiceurl` XML into prompts. In EchoMind, ordinary
-  transcribed voice stays in the direct language-learning path unless the
-  transcript explicitly asks for backend tools/artifacts. If the message row
-  arrives before `VoiceInfo`, store it in a pending-voice backlog and retry on
-  backoff; do not lose the row just because the normal cursor advances. The
-  monitor can run in the decrypt venv, but the transcription subprocess must
-  use a main Python with `faster_whisper` installed.
+  transcribe with OpenAI `whisper` or `faster_whisper`, and cache under ignored
+  `.private/`. Prefer a dedicated multilingual ASR environment such as
+  `~/miniconda3/envs/whisper/bin/python`; override with
+  `WECHAT_VOICE_TRANSCRIBE_PYTHON`, and force OpenAI Whisper with
+  `WECHAT_VOICE_WHISPER_BACKEND=whisper`. Do not pass raw `aeskey` or
+  `voiceurl` XML into prompts. In EchoMind, ordinary transcribed voice stays in
+  the direct language-learning path unless the transcript explicitly asks for
+  backend tools/artifacts. If the message row arrives before `VoiceInfo`, store
+  it in a pending-voice backlog and retry on backoff; do not lose the row just
+  because the normal cursor advances. The monitor can run in the decrypt venv,
+  but the transcription subprocess must use an ASR Python outside that venv.
 - never let old chat history authorize public publishing. Shipinhao, YouTube,
   Instagram, LazyEdit/AutoPublish public queues, purchases, deletion, and other
   irreversible actions require explicit current-message intent;
