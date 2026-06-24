@@ -95,8 +95,8 @@ Hard requirements for future agents:
   pass raw `aeskey` or `voiceurl` XML into prompts. In EchoMind, ordinary
   transcribed voice stays in the direct language-learning path unless the
   transcript explicitly asks for backend tools/artifacts. If the message row
-  arrives before `VoiceInfo`, keep the cursor pending and retry the voice row
-  instead of advancing past it as unsupported.
+  arrives before `VoiceInfo`, store it in a pending-voice backlog and retry on
+  backoff; do not lose the row just because the normal cursor advances.
 - never let old chat history authorize public publishing. Shipinhao, YouTube,
   Instagram, LazyEdit/AutoPublish public queues, purchases, deletion, and other
   irreversible actions require explicit current-message intent;
