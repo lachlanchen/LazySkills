@@ -96,7 +96,9 @@ Hard requirements for future agents:
   transcribed voice stays in the direct language-learning path unless the
   transcript explicitly asks for backend tools/artifacts. If the message row
   arrives before `VoiceInfo`, store it in a pending-voice backlog and retry on
-  backoff; do not lose the row just because the normal cursor advances.
+  backoff; do not lose the row just because the normal cursor advances. The
+  monitor can run in the decrypt venv, but the transcription subprocess must
+  use a main Python with `faster_whisper` installed.
 - never let old chat history authorize public publishing. Shipinhao, YouTube,
   Instagram, LazyEdit/AutoPublish public queues, purchases, deletion, and other
   irreversible actions require explicit current-message intent;
