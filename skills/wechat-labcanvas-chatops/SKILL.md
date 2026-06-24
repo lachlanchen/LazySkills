@@ -261,13 +261,20 @@ simple reply cannot be sent because WeChat is locked, enqueue it as
 `send_deferred_locked` instead of dropping it. Organizer/link-inbox smoke-test
 messages such as `ping`, `test`, `best`, `在吗`, or `测试` should produce a short
 health acknowledgement or a deferred outbox task.
+`labcanvas wechat health --json` distinguishes `caught_up` from `ready`.
+`caught_up=true` only means the monitor reached the newest decrypted DB row;
+`ready=true` also requires `source_stale=false`. When audio is reported as
+ignored, check `source_stale`, latest-row age, and chat-sync logs before
+debugging Whisper. If the Linux WeChat source has not materialized the new row,
+the direct DB monitor cannot see the audio at all.
+
 Serialize all GUI sends with one local lock such as
 `.private/wechat_gui_send.lock`; never run parallel raw click/paste senders
 against the same WeChat desktop. Use `fallback_clicks` in private send targets
 when WeChat search results shift between rows, and rerun
-`labcanvas wechat health --json` after changing monitor configs to verify state
-catch-up, title guards, self-message ignores, poll settings, Codex model, and
-last-loop timings.
+`labcanvas wechat health --json` after changing monitor configs to verify
+readiness, source freshness, title guards, self-message ignores, poll settings,
+Codex model, and last-loop timings.
 
 Use purpose-specific configs instead of one global personality. A research group
 such as `懒人科研` should keep `chat_purpose: "research"` and respond only to
