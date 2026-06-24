@@ -94,7 +94,9 @@ Hard requirements for future agents:
   transcribe with `faster_whisper`, and cache under ignored `.private/`. Do not
   pass raw `aeskey` or `voiceurl` XML into prompts. In EchoMind, ordinary
   transcribed voice stays in the direct language-learning path unless the
-  transcript explicitly asks for backend tools/artifacts.
+  transcript explicitly asks for backend tools/artifacts. If the message row
+  arrives before `VoiceInfo`, keep the cursor pending and retry the voice row
+  instead of advancing past it as unsupported.
 - never let old chat history authorize public publishing. Shipinhao, YouTube,
   Instagram, LazyEdit/AutoPublish public queues, purchases, deletion, and other
   irreversible actions require explicit current-message intent;
