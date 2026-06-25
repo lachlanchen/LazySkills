@@ -107,11 +107,14 @@ Hard requirements for future agents:
   repos, papers/PDF/DOI/arXiv links, YouTube/Bilibili links, images, videos, and
   files as source material to summarize by default. Use the `research_summary`
   routine, return concise highlights, and attach Markdown/PDF reports when
-  useful. If mp.weixin direct fetch returns `环境异常` or `完成验证后继续访问`, use the
-  visible noVNC browser route:
-  `labcanvas wechat browser-assist --url '<mp.weixin URL>' --reuse-window --wait-seconds 8 --capture --wait-readable-seconds 60 --json`.
-  Leave the browser open for visible verification when needed; close it only
-  after readable text is captured or the task is cancelled.
+  useful. If mp.weixin direct fetch returns `环境异常` or `完成验证后继续访问`, do not
+  open an external Chrome/browser by default because it can steal focus from the
+  official WeChat client and make the desktop appear locked. Prefer the native
+  WeChat article/webview session or an already verified readable capture. If
+  verification is needed, return `waiting_confirmation`, ask the owner to
+  verify/open the page in WeChat, then resume capture. External browser-assist
+  for mp.weixin requires an explicit user request or
+  `WECHAT_ALLOW_EXTERNAL_BROWSER_FOR_MP_WEIXIN=1`.
 - never let old chat history authorize public publishing. Shipinhao, YouTube,
   Instagram, LazyEdit/AutoPublish public queues, purchases, deletion, and other
   irreversible actions require explicit current-message intent;
