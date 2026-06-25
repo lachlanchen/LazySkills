@@ -102,6 +102,16 @@ Hard requirements for future agents:
   it in a pending-voice backlog and retry on backoff; do not lose the row just
   because the normal cursor advances. The monitor can run in the decrypt venv,
   but the transcription subprocess must use an ASR Python outside that venv.
+- for link/read-later inbox chats such as `鏈接`, treat shared URLs, forwarded
+  cards, mp.weixin/Gongzhonghao articles, Shipinhao/视频号/Finder shares, GitHub
+  repos, papers/PDF/DOI/arXiv links, YouTube/Bilibili links, images, videos, and
+  files as source material to summarize by default. Use the `research_summary`
+  routine, return concise highlights, and attach Markdown/PDF reports when
+  useful. If mp.weixin direct fetch returns `环境异常` or `完成验证后继续访问`, use the
+  visible noVNC browser route:
+  `labcanvas wechat browser-assist --url '<mp.weixin URL>' --reuse-window --wait-seconds 8 --capture --wait-readable-seconds 60 --json`.
+  Leave the browser open for visible verification when needed; close it only
+  after readable text is captured or the task is cancelled.
 - never let old chat history authorize public publishing. Shipinhao, YouTube,
   Instagram, LazyEdit/AutoPublish public queues, purchases, deletion, and other
   irreversible actions require explicit current-message intent;
