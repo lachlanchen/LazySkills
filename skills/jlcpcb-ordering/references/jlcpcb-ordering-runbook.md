@@ -8,6 +8,8 @@
 - Private config: `~/.config/jlcpcb-order/private.json`
 - Private database: `~/.config/jlcpcb-order/orders.sqlite3`
 - Private DOM snapshots: `~/.config/jlcpcb-order/dom/`
+- AgenticApp tungsten 5V 400mA run handoff:
+  `/home/lachlan/ProjectsLFS/AgenticApp/agentic_tools/jlcpcb_order_agent/docs/TUNGSTEN_5V_400MA_ORDER_HANDOFF.md`
 
 ## Live Terms
 
