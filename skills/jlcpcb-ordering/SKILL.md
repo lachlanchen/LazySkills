@@ -13,6 +13,7 @@ Use this skill to turn a checked Gerber ZIP into a guarded JLC order workflow. K
 
 - Treat submit/payment controls as real-world actions. Do not click final submit without explicit user intent, and never click recharge, wallet, or payment buttons unless the user explicitly asks.
 - Stop if the order-check drawer shows `检测到您的订单还有`, `去填写`, `系统未检测到`, `余额不足`, `充值`, an OSP-size warning, or a paid `品质赔付费`.
+- Submit only from a visible, clean order-check drawer. Do not use the whole page body as proof, because stale tabs and unselected option labels can create false positives.
 - For bare PCBs, use `按标准合同常规处理`; do not select `元器件移植全额赔付`.
 - Default China courier is `顺丰电商标快`; default shipping mode is `不同交期订单不一起发货`.
 
@@ -55,7 +56,10 @@ agentic_tools/jlcpcb_order_agent/scripts/launch_assistant_local.sh --restart
 2. Launch the shared logged-in Chrome profile through CDP; do not create throwaway browser profiles for ordering.
 3. Upload Gerbers and fill conservative bare-PCB defaults: FR-4, correct layer count, explicit board size in centimeters when JLC misses it, low quantity, no SMT, no stencil, manual confirmation, standard compensation.
 4. If OSP is rejected because any side is under `7 cm`, choose a supported finish such as lead-free HASL or stop for review.
-5. Run `检查订单`, clear all missing fields including board mark/customer-code fields, record a private snapshot, then submit only to review/payment boundary when authorized.
-6. After success, record `pcbPlaceSuccess` or global order-success pages in the private database and stop before payment.
+5. If a matching legacy uploaded row already exists, use that row's `立即下单`/`pcbFileId` instead of uploading another copy. Avoid duplicate uploads unless the existing row is absent or invalid.
+6. Run `检查订单`. If JLC opens `请选择本单是否需要SMT贴片`, choose `确定，不需要SMT`, then run `检查订单` again.
+7. Clear all missing fields including board mark/customer-code fields. Select `确认订单方式` and `发货方式` by their field labels, not generic button text.
+8. Record a private snapshot, then submit only to review/payment boundary when authorized.
+9. After submit, prefer the `pcbPlaceSuccess` tab for database/log snapshots; stale order tabs can remain open.
 
 Read `references/jlcpcb-ordering-runbook.md` for live DOM selectors, terms, and the China/global/assistant submission paths.

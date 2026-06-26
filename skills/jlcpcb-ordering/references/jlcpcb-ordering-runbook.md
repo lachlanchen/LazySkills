@@ -40,15 +40,17 @@ Use conservative bare-PCB defaults unless the user asks otherwise:
 
 - Upload input: first `input[type=file]`.
 - Uploaded-file action: `立即下单`.
+- Existing uploaded row: match the Gerber ZIP stem and use that row's `立即下单`/`pcbFileId`; do not upload another copy unless the legacy row is absent or invalid.
 - Order form URL contains `pcbPlaceOrder`.
 - Success URL contains `pcbPlaceSuccess`.
 - Order-check drawer: `.selectedParamsCompCheck` or visible `.el-drawer`.
 - Price panel: `#rightcontent` or `.rightcontentBox`.
 - Order-check button: `检查订单`.
 - Submit from clean drawer: `确认并提交`.
+- SMT confirmation modal after check: `请选择本单是否需要SMT贴片` -> `确定，不需要SMT`, then rerun `检查订单`.
 - Success text: `订单提交成功，请等待审核`.
 
-Block submission when the drawer contains `检测到您的订单还有`, `去填写`, `系统未检测到`, `余额不足`, or `充值`.
+Block submission when the drawer is closed or contains `检测到您的订单还有`, `去填写`, `系统未检测到`, `余额不足`, or `充值`. Do not use the whole form body as submit evidence.
 
 ## Problems And Fixes
 
@@ -65,18 +67,23 @@ Block submission when the drawer contains `检测到您的订单还有`, `去填
 | Wrong remembered material/layer | Drawer shows retained old material or 1-layer state | Reapply `板材类别`, `板子层数`, and `出货方式` every run by row label. |
 | Customer code missing | Drawer shows `板上加标志 去填写` | Choose free customer code, then confirm the `加客编` modal. |
 | Existing address blocks rerun | Address iframe or dialog intercepts earlier clicks | Accept the already-selected main-page address when contact/address text is present; close leftover address dialogs before refilling settings. |
+| Legacy upload should be reused | User says the PCB is legacy/old and asks not to submit a new one | Use the existing uploaded row and its `pcbFileId`; do not upload a duplicate ZIP. |
+| SMT modal blocks order check | `检查订单` opens `请选择本单是否需要SMT贴片` | Click `确定，不需要SMT`, then click `检查订单` again. |
+| Confirm/shipping still missing | Drawer shows `确认订单方式 去填写` or `发货方式 去填写` | Select `确认订单方式 -> 手动确认订单` and `发货方式 -> 不同交期订单不一起发货` by label-local click. |
+| Duplicate/stale JLC tabs | Guard sees old order state or unselected material labels | Prefer the tab with a visible clean order-check drawer for submit; prefer `pcbPlaceSuccess` for post-submit logs. |
 
 ## Script Methods
 
 When adapting the AgenticApp tool, preserve these methods:
 
-- `connect_page()`: prefer open `pcbPlaceOrder`, then `pcbPlaceSuccess`.
+- `connect_page()`: score duplicate JLC tabs; prefer a visible clean order-check drawer for form work and `pcbPlaceSuccess` for post-submit logs.
 - `selected_order_check_text()`: read selected values from the visible drawer.
 - `visible_price_text()`: check the price panel for `品质赔付费`.
 - `assert_clean_for_submit()`: central submit gate.
 - `click_option_near_label()`: click row-local options such as SMT/stencil/edge polish.
 - `fill_board_dimensions()`: writes board size in centimeters when JLC does not parse Gerber dimensions.
 - `handle_customer_code_modal()`: confirms the `加客编` modal after selecting the free customer-code mark.
+- `handle_smt_required_modal()`: confirms `确定，不需要SMT` when JLC asks again during order check.
 - `select_courier()`: enforce the configured courier default.
 - `record_order()` and `post_submit_log()`: private audit trail after check/submit.
 
