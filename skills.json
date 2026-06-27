@@ -35,6 +35,13 @@
       "description": "Publish LazyEdit and LALACHAN/RARACHAN videos through LazyEdit, AutoPubMonitor, AutoPublish, and platform queues."
     },
     {
+      "id": "musai-song-localization",
+      "path": "skills/musai-song-localization/SKILL.md",
+      "category": "audio-music",
+      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "description": "Analyze songs with Musai, extract bass/drums/vocals/other stems, lyrics, beats, and chords, adapt lyrics for target languages, and prepare same-music singing localization artifacts."
+    },
+    {
       "id": "npm-publishing",
       "path": "skills/npm-publishing/SKILL.md",
       "category": "release-engineering",
