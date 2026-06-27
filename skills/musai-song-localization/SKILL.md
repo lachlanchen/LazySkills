@@ -89,7 +89,24 @@ output = localized_vocal_zh-CN.wav
 then mix localized_vocal_zh-CN.wav + stems/instrumental.wav
 ```
 
+## Local Quality Backend Setup
+
+The Musai repo contains helper scripts for large optional backends. Keep weights, envs, and caches local and ignored by git:
+
+```bash
+bash scripts/download_quality_backends.sh all
+bash scripts/install_quality_envs.sh all
+```
+
+Validated local helpers:
+
+```bash
+bash scripts/run_soulx_env.sh .conda/soulxsinger/bin/python -c "import soulxsinger; print('soulx ok')"
+bash scripts/run_moss_music_env.sh .conda/moss-music/bin/python -c "import torchcodec; print('torchcodec ok')"
+```
+
+When quality is poor, prioritize a short 20-40 second chorus/verse render through SoulX-Singer or a professional synth workflow before attempting a full song. Accept a render only if the vocal is clearly sung, audible, natural in the target language, and aligned to the original phrase rhythm.
+
 ## References
 
 - Read `references/workflow.md` for the detailed workflow, quality gates, and failure modes.
-
