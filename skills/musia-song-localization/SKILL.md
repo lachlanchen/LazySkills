@@ -1,13 +1,13 @@
 ---
-name: musai-song-localization
-description: Use when working on Musai, AI song localization, song-to-Chinese or cross-language re-singing, extracting bass/drums/vocals/other stems, lyrics, beats, chords, phrase timing, singable lyric adaptation, YingMusic-Singer-Plus or SoulX-Singer synthesis preparation, creating same-music translated singing artifacts, or fixing Fun Lazying Art per-vocal lyric/timing JSON.
+name: musia-song-localization
+description: Use when working on Musia, AI song localization, song-to-Chinese or cross-language re-singing, extracting bass/drums/vocals/other stems, lyrics, beats, chords, phrase timing, singable lyric adaptation, YingMusic-Singer-Plus or SoulX-Singer synthesis preparation, creating same-music translated singing artifacts, or fixing Fun Lazying Art per-vocal lyric/timing JSON.
 ---
 
-# Musai Song Localization
+# Musia Song Localization
 
 ## Purpose
 
-Use this skill for Musai-style music localization: keep the song arrangement, rhythm, beats, chords, and melody, while adapting lyrics into another language and preparing singing synthesis artifacts.
+Use this skill for Musia-style music localization: keep the song arrangement, rhythm, beats, chords, and melody, while adapting lyrics into another language and preparing singing synthesis artifacts.
 
 ## Non-Negotiables
 
@@ -20,18 +20,18 @@ Use this skill for Musai-style music localization: keep the song arrangement, rh
 - Do not reuse one vocal render's lyric timeline for another render unless listening/ASR confirms the renders truly match.
 - Planned/reference lyrics are correction evidence, not the published truth. The published lyric timing must follow the actual audible vocal.
 
-## Local Musai Repo Workflow
+## Local Musia Repo Workflow
 
 Default repo path:
 
 ```text
-/home/lachlan/ProjectsLFS/Musai
+/home/lachlan/ProjectsLFS/Musia
 ```
 
 Run local analysis:
 
 ```bash
-PYTHONNOUSERSITE=1 conda run -n musai python scripts/run_pipeline.py INPUT_AUDIO \
+PYTHONNOUSERSITE=1 conda run -n musia python scripts/run_pipeline.py INPUT_AUDIO \
   --run-name RUN_NAME \
   --max-duration 120 \
   --asr-model base.en \
@@ -59,11 +59,11 @@ data/runs/RUN_NAME/manifest.json
 For high-quality Chinese localization, create a package before synthesis:
 
 ```bash
-python /home/lachlan/.codex/skills/musai-song-localization/scripts/create_localization_pack.py \
-  --run-dir /home/lachlan/ProjectsLFS/Musai/data/runs/RUN_NAME \
+python /home/lachlan/.codex/skills/musia-song-localization/scripts/create_localization_pack.py \
+  --run-dir /home/lachlan/ProjectsLFS/Musia/data/runs/RUN_NAME \
   --target-language zh-CN \
   --target-lines TARGET_LINES.txt \
-  --output-dir /home/lachlan/ProjectsLFS/Musai/data/runs/RUN_NAME/localization/zh-CN
+  --output-dir /home/lachlan/ProjectsLFS/Musia/data/runs/RUN_NAME/localization/zh-CN
 ```
 
 The package should include:
@@ -93,7 +93,7 @@ then mix localized_vocal_zh-CN.wav + stems/instrumental.wav
 
 ## Local Quality Backend Setup
 
-The Musai repo contains helper scripts for large optional backends. Keep weights, envs, and caches local and ignored by git:
+The Musia repo contains helper scripts for large optional backends. Keep weights, envs, and caches local and ignored by git:
 
 ```bash
 bash scripts/download_quality_backends.sh all
@@ -143,11 +143,11 @@ Shared `textTracks[]` are acceptable only for strict same-timeline media.
 For public Fun player videos, keep the website frame clean: two-line KTV lyric carousel, visible current-chord highlighting, native-language labels, and no bottom full-lyrics section in capture mode. Use:
 
 ```bash
-musai fun-record --media-id <media-id> --skip-intro
+musia fun-record --media-id <media-id> --skip-intro
 ```
 
 ## References
 
 - Read `references/workflow.md` for the detailed localization workflow, quality gates, and failure modes.
-- In the Musai repo, read `references/musai-song-generation-and-website-runbook.md` for song-generation and website publishing rules.
-- In the Musai repo, read `references/musai-website-json-format.md` before editing website lyric JSON.
+- In the Musia repo, read `references/musia-song-generation-and-website-runbook.md` for song-generation and website publishing rules.
+- In the Musia repo, read `references/musia-website-json-format.md` before editing website lyric JSON.

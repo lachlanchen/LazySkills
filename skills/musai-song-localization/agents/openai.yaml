@@ -1,6 +1,0 @@
-interface:
-  display_name: "Musai Song Localization"
-  short_description: "Localize songs with Musai"
-  default_prompt: "Use $musai-song-localization to analyze a song, adapt lyrics, prepare same-music localization artifacts, and keep website lyric timing faithful to the actual vocal render."
-policy:
-  allow_implicit_invocation: true

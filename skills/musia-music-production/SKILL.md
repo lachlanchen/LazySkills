@@ -1,16 +1,16 @@
 ---
-name: musai-music-production
-description: Use when generating, correcting, reviewing, documenting, publishing, or handing off original music in Musai, including idea-to-song, lyrics-to-song, melody/chord-controlled songs, ACE-Step/YuE/SoulX route selection, vocal quality checks, song review reports, Fun Lazying Art website publishing, per-vocal lyric sets, and LALACHAN song-first video handoffs.
+name: musia-music-production
+description: Use when generating, correcting, reviewing, documenting, publishing, or handing off original music in Musia, including idea-to-song, lyrics-to-song, melody/chord-controlled songs, ACE-Step/YuE/SoulX route selection, vocal quality checks, song review reports, Fun Lazying Art website publishing, per-vocal lyric sets, and LALACHAN song-first video handoffs.
 ---
 
-# Musai Music Production
+# Musia Music Production
 
-Use this skill for original song creation and review. For strict same-song localization, also use `musai-song-localization`.
+Use this skill for original song creation and review. For strict same-song localization, also use `musia-song-localization`.
 
 ## Default Repo
 
 ```text
-/home/lachlan/ProjectsLFS/Musai
+/home/lachlan/ProjectsLFS/Musia
 ```
 
 ## Core Rule
@@ -45,7 +45,7 @@ Prefer fewer stronger lines over dense poetry. For Chinese/Japanese, reduce pron
 Create a song package:
 
 ```bash
-musai song init \
+musia song init \
   --title "Song Title" \
   --idea "short concept" \
   --vocal-language ja \
@@ -72,7 +72,7 @@ If the review shows quiet vocals, wrong language, clipped endings, or poor lyric
 Correct:
 
 ```bash
-musai song correct \
+musia song correct \
   --project-dir data/creative_projects/<song-id> \
   --issues "vocal unclear or endings clipped" \
   --caption-extra "clearer vocal, fewer words per line" \
@@ -82,7 +82,7 @@ musai song correct \
 Handoff to LALACHAN:
 
 ```bash
-musai song handoff \
+musia song handoff \
   --project-dir data/creative_projects/<song-id> \
   --audio data/creative_projects/<song-id>/final/selected.mp3 \
   --cover data/creative_projects/<song-id>/assets/cover-16x9.png
@@ -93,7 +93,7 @@ musai song handoff \
 Primary script:
 
 ```text
-scripts/musai_song_workbench.py
+scripts/musia_song_workbench.py
 ```
 
 It supports:
@@ -141,7 +141,7 @@ The active vocal owns timing and exact word highlighting. Other languages in the
 The Fun player should keep public song playback clean: native-language dropdown labels, a two-line KTV lyric carousel, visible current-chord highlighting, and capture mode for videos. To record a share clip with the original audio muxed directly, run:
 
 ```bash
-musai fun-record --media-id <media-id> --skip-intro
+musia fun-record --media-id <media-id> --skip-intro
 ```
 
 For a mixed-language vocal, use:
@@ -158,10 +158,10 @@ lyrics/mixed-vocal/ja.json
 Read only as needed:
 
 ```text
-references/musai-song-generation-and-website-runbook.md
-references/musai-song-workbench.md
+references/musia-song-generation-and-website-runbook.md
+references/musia-song-workbench.md
 references/lalachan-song-first-video-workflow.md
-references/musai-full-capability-guide.md
-references/musai-creative-studio.md
-references/musai-website-json-format.md
+references/musia-full-capability-guide.md
+references/musia-creative-studio.md
+references/musia-website-json-format.md
 ```

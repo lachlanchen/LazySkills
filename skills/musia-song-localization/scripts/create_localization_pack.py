@@ -29,7 +29,7 @@ def read_chords(run_dir: Path) -> list[dict]:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Create a Musai target-language localization package.")
+    parser = argparse.ArgumentParser(description="Create a Musia target-language localization package.")
     parser.add_argument("--run-dir", type=Path, required=True)
     parser.add_argument("--target-language", default="zh-CN")
     parser.add_argument("--target-lines", type=Path, required=True)

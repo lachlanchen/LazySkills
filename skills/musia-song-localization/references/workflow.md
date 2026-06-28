@@ -1,4 +1,4 @@
-# Musai Song Localization Workflow
+# Musia Song Localization Workflow
 
 ## Quality Target
 
@@ -17,7 +17,7 @@ A real localized song keeps:
 ## Local Analysis Steps
 
 1. Confirm the user has rights or is using public-domain/open/owned material.
-2. Run Musai pipeline to produce stems, lyrics, beats, chords, and manifest.
+2. Run Musia pipeline to produce stems, lyrics, beats, chords, and manifest.
 3. Use `stems/vocals.wav` for ASR and melody reference.
 4. Use `stems/instrumental.wav` for chord/beat analysis and final mix.
 5. Use `analysis/lyrics.json` word/segment timings when reliable; otherwise use user reference lyrics.
@@ -73,7 +73,7 @@ The active vocal language owns timing and word highlighting. Other tracks in tha
 
 ## Backend Notes
 
-YingMusic-Singer-Plus is the best fit for same-melody lyric editing because it is designed for lyric manipulation with melody preservation. It needs its own environment and model weights. Do not install it into the lightweight `musai` analysis env unless the user explicitly accepts dependency churn; prefer a separate `yingmusic` conda env.
+YingMusic-Singer-Plus is the best fit for same-melody lyric editing because it is designed for lyric manipulation with melody preservation. It needs its own environment and model weights. Do not install it into the lightweight `musia` analysis env unless the user explicitly accepts dependency churn; prefer a separate `yingmusic` conda env.
 
 SoulX-Singer is strong for zero-shot singing and F0/MIDI conditioning, but custom-song synthesis requires metadata and sometimes manual alignment correction.
 
