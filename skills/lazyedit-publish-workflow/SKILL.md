@@ -59,6 +59,7 @@ conda activate lazyedit
 - One-shot flags such as `--platforms`, `--languages`, `--subtitle-lift-ratio`, and `--no-burn-subtitles` do not change Studio settings.
 - Only `--persist-settings` writes CLI options back to the webapp preferences.
 - `--languages` is bottom-to-top subtitle order.
+- If Studio logo settings are enabled, `--no-burn-subtitles` still creates a processed logo-only output ending in `_logo.mp4` and publishes that output. Translation is skipped because subtitles are disabled.
 - Use polished/corrected subtitles for real publishes and debug publishes unless the user explicitly requests original subtitles.
 - Burn the existing LazyEdit webapp logo on real publishes unless the user explicitly says no logo. Use the configured Studio logo; do not upload or invent a new asset.
 - Required logo state is `enabled: true`, `logoPath` present, and `position: "top-left"`. Check it before CLI/API publishes with `curl -fsS $LAZYEDIT_API/api/ui-settings/logo_settings | jq .`.
@@ -140,6 +141,61 @@ Override languages for one run without changing Studio defaults:
 ```bash
 python scripts/lazyedit_publish.py --video-id VIDEO_ID --use-current-settings --languages zh-Hant,ja,en --platforms youtube,instagram --wait
 ```
+
+Create a no-subtitle video while keeping the configured Studio logo:
+
+```bash
+python scripts/lazyedit_publish.py --video-id VIDEO_ID --use-current-settings --no-burn-subtitles --platforms youtube,instagram --wait
+```
+
+Pure music/audio packaging should go through LazyEdit first, mirroring the
+video ZIP contract. LazyEdit creates the metadata, lyrics, audio copy, manifest,
+and cover candidates; AutoPublish only consumes the ZIP with
+`publish_shipinhao_music=true`.
+
+```bash
+python scripts/lazyedit_music_package.py \
+  --audio /path/to/song.mp3 \
+  --title "Song Title" \
+  --author "Musia 慕莎" \
+  --language 中文 \
+  --genre Pop \
+  --story "Short music story for 音乐人说." \
+  --lyrics-json /path/to/musia/lyrics/mixed-vocal/mul.json \
+  --cover /path/to/artwork.png \
+  --cover-video /path/to/related-video.mp4 \
+  --cover-count 9 \
+  --output-slug song-title-music
+```
+
+The equivalent API is:
+
+```bash
+curl -fsS http://127.0.0.1:18787/api/music/package \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "audio": "/path/to/song.mp3",
+    "title": "Song Title",
+    "author": "Musia 慕莎",
+    "language": "中文",
+    "lyrics_json": "/path/to/lyrics.json",
+    "cover": "/path/to/artwork.png",
+    "cover_video": "/path/to/related-video.mp4",
+    "cover_count": 9,
+    "slug": "song-title-music"
+  }'
+```
+
+Set `--post` or JSON `"post": true` only after inspecting the package. Use
+`--test` until the live Shipinhao desktop route is visually confirmed. As of
+2026-06-29, the desktop Shipinhao session exposes the music management page and
+`发表音乐`, but no verified audio upload form; do not retry real music publish
+blindly until that route or account eligibility changes.
+
+When cover art is not fully prepared, pass one curated cover plus
+`--cover-video` and `--cover-count 9`; LazyEdit will extract enough frame covers
+to fill the nine-background-image package. If AgInTi generates better covers,
+pass those as repeated `--cover` arguments instead.
 
 ## LALACHAN / AI-Generated Video
 
