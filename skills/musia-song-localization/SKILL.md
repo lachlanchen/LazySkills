@@ -16,6 +16,9 @@ Use this skill for Musia-style music localization: keep the song arrangement, rh
 - Treat the four Demucs stems as `bass`, `drums`, `vocals`, and `other`.
 - For Chinese output, adapt for singability: phrase duration, syllable/character count, rhyme, natural Chinese, emotional meaning, and tone-melody comfort.
 - Same melody is not worth a bad song. If strict same-score localization makes the vocal unclear, robotic, badly pronounced, or musically weak, keep the artifact as experimental and regenerate a higher-quality independent version instead.
+- Do not overfill the melody with translated meaning. Use 留白, held notes,
+rests, and simpler hooks when the phrase needs musical space. Some phrases can
+be sparse and some can be fuller; fit the song rather than cramming words.
 - If singing model weights are not installed, produce a complete localization package and clearly mark vocal synthesis as blocked, not completed.
 - Avoid cloning or imitating a real singer unless the user owns or has consent for that voice.
 - Do not reuse one vocal render's lyric timeline for another render unless listening/ASR confirms the renders truly match.
@@ -117,6 +120,7 @@ best available LLM path: OpenAI, DeepSeek, or a strong Codex/GPT-5.5 xhigh
 reasoning pass. Ask for a compact score and specific rewrites for:
 
 - phrase rhythm and breath points against the melody/timing;
+- musical space / 留白: where to hold vowels, leave rests, or simplify instead of adding words;
 - rhyme / 押韵, including slant rhyme where exact rhyme sounds forced;
 - English stress and singable end words;
 - Mandarin natural wording, character count, rhyme group, and tone-melody comfort;

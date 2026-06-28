@@ -46,11 +46,17 @@ Before generating, write a compact producer brief with:
 
 Prefer fewer stronger lines over dense poetry. For Chinese/Japanese, reduce pronunciation risk by using natural, short phrases and correcting after ASR/listening.
 
+Do not cram words into the song just to preserve every detail. Use musical
+space: 留白, held vowels, rests, repeated hooks, and breath-friendly pauses.
+Some lines should be sparse and some can be fuller; the goal is a proper fit
+to the melody and emotion, not the fewest words and not the most words.
+
 Before generating or accepting EN/JP/ZH lyrics, do an LLM lyric-quality pass
 when an API/model is available. Use OpenAI, DeepSeek, or a strong Codex/GPT-5.5
 reasoning pass to check:
 
 - rhythm fit: short singable phrases, line length, phrase stress, and likely breath points;
+- musical space / 留白: whether a line should hold notes, leave rests, or repeat a simple hook instead of adding more words;
 - rhyme / 押韵: English end rhyme or slant rhyme, Chinese rhyme groups, Japanese vowel/mora echoes;
 - language-specific fit: English stress, Chinese tone comfort and natural wording, Japanese mora flow and particles;
 - emotional clarity: the lyric should say something concrete and singable, not just be poetic filler.
