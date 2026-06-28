@@ -140,6 +140,12 @@ If a local model fails to sing native CJK script reliably in a mixed render, use
 
 Shared `textTracks[]` are acceptable only for strict same-timeline media.
 
+For public Fun player videos, keep the website frame clean: two-line KTV lyric carousel, visible current-chord highlighting, native-language labels, and no bottom full-lyrics section in capture mode. Use:
+
+```bash
+musai fun-record --media-id <media-id> --skip-intro
+```
+
 ## References
 
 - Read `references/workflow.md` for the detailed localization workflow, quality gates, and failure modes.

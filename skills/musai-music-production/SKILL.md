@@ -138,6 +138,12 @@ lyrics/ja-vocal/ja.json
 
 The active vocal owns timing and exact word highlighting. Other languages in the same set are translations of that vocal's actual sung lines and may rough-highlight corresponding tokens inside the same current `line.id`.
 
+The Fun player should keep public song playback clean: native-language dropdown labels, a two-line KTV lyric carousel, visible current-chord highlighting, and capture mode for videos. To record a share clip with the original audio muxed directly, run:
+
+```bash
+musai fun-record --media-id <media-id> --skip-intro
+```
+
 For a mixed-language vocal, use:
 
 ```text
