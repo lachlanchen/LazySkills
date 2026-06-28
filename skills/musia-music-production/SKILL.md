@@ -146,7 +146,7 @@ data/creative_projects/<song-id>/
 
 ## Website Publishing Rule
 
-For `fun.lazying.art`, use shared `textTracks[]` only when all playable vocals truly sing the same line structure. If English, Chinese, and Japanese renders are independent or imperfect, create per-vocal `lyricSets[]`:
+For `fun.lazying.art`, use the `musia-fun-website-item` publication workflow before calling a website item finished. Use shared `textTracks[]` only when all playable vocals truly sing the same line structure. If English, Chinese, and Japanese renders are independent or imperfect, create per-vocal `lyricSets[]`:
 
 ```text
 lyrics/en-vocal/en.json
@@ -161,6 +161,12 @@ lyrics/ja-vocal/ja.json
 ```
 
 The active vocal owns timing and exact word highlighting. Other languages in the same set are translations of that vocal's actual sung lines and may rough-highlight corresponding tokens inside the same current `line.id`.
+
+Correct every public lyric set from at least two evidence sources: ASR/STT from the actual vocal plus input/reference lyrics, second ASR, or manual listening. Add pinyin for Mandarin, furigana readings for Japanese kanji, and Jyutping readings for Cantonese. Run the publication audit:
+
+```bash
+musia fun-audit --media-id <media-id>
+```
 
 The Fun player should keep public song playback clean: native-language dropdown labels, a two-line KTV lyric carousel, visible current-chord highlighting, and capture mode for videos. To record a share clip with the original audio muxed directly, run:
 
@@ -183,6 +189,7 @@ Read only as needed:
 
 ```text
 references/musia-song-generation-and-website-runbook.md
+references/fun-website-item-preparation.md
 references/musia-song-workbench.md
 references/lalachan-song-first-video-workflow.md
 references/musia-full-capability-guide.md

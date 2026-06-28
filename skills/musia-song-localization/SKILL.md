@@ -132,7 +132,7 @@ that a vocal model can pronounce clearly.
 
 ## Website Lyric Protocol
 
-For `fun.lazying.art`, use per-vocal `lyricSets[]` when generated or localized vocals differ by language, phrase count, repeated lines, or timing:
+For `fun.lazying.art`, use the `musia-fun-website-item` publication workflow before calling a website item finished. Use per-vocal `lyricSets[]` when generated or localized vocals differ by language, phrase count, repeated lines, or timing:
 
 ```text
 lyrics/en-vocal/en.json
@@ -147,6 +147,13 @@ lyrics/ja-vocal/ja.json
 ```
 
 Each playable audio asset must set `lyricSetId`. The active vocal language owns timing and exact current-word highlighting. Other languages in the same set translate that active vocal's real sung lines and may rough-highlight corresponding tokens inside the same current `line.id`. If the vocal misses, changes, or repeats a planned line, reflect that fact.
+
+Correct every public lyric set from at least two evidence sources: ASR/STT from the actual vocal plus input/reference lyrics, second ASR, or manual listening. Add pinyin for Mandarin, furigana readings for Japanese kanji, and Jyutping readings for Cantonese. Run:
+
+```bash
+npm run website:validate
+musia fun-audit --media-id <media-id>
+```
 
 For mixed-language vocals, use one active sung/phonetic track plus translation tracks:
 
@@ -171,4 +178,5 @@ musia fun-record --media-id <media-id> --skip-intro
 
 - Read `references/workflow.md` for the detailed localization workflow, quality gates, and failure modes.
 - In the Musia repo, read `references/musia-song-generation-and-website-runbook.md` for song-generation and website publishing rules.
+- In the Musia repo, read `references/fun-website-item-preparation.md` for the detailed website-item quality gate.
 - In the Musia repo, read `references/musia-website-json-format.md` before editing website lyric JSON.
