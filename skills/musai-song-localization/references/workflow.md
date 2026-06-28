@@ -21,6 +21,7 @@ A real localized song keeps:
 3. Use `stems/vocals.wav` for ASR and melody reference.
 4. Use `stems/instrumental.wav` for chord/beat analysis and final mix.
 5. Use `analysis/lyrics.json` word/segment timings when reliable; otherwise use user reference lyrics.
+6. Treat planned lyrics as correction evidence. Final published timing must follow the actual audible vocal.
 
 ## Chinese Adaptation Heuristics
 
@@ -56,6 +57,20 @@ Use these names consistently:
 - `localized_vocal_complete`: target-language sung vocal exists.
 - `final_mix_complete`: localized vocal is mixed with original instrumental.
 
+## Website Lyric Sets
+
+Use shared website `textTracks[]` only when all playable vocals share the same line structure and timing.
+
+Use per-vocal `lyricSets[]` when English, Chinese, Japanese, or other vocals are independent renders or imperfect localizations. Each vocal gets its own trilingual group:
+
+```text
+en-vocal: en + zh-Hans + ja tracks based on the English vocal
+zh-vocal: zh-Hans + en + ja tracks based on the Mandarin vocal
+ja-vocal: ja + zh-Hans + en tracks based on the Japanese vocal
+```
+
+The active vocal language owns timing and word highlighting. Other tracks in that set are translations of the active vocal's real sung lines. If a line is missing, repeated, or changed in the audio, reflect the audio.
+
 ## Backend Notes
 
 YingMusic-Singer-Plus is the best fit for same-melody lyric editing because it is designed for lyric manipulation with melody preservation. It needs its own environment and model weights. Do not install it into the lightweight `musai` analysis env unless the user explicitly accepts dependency churn; prefer a separate `yingmusic` conda env.
@@ -73,4 +88,4 @@ Always tell the user:
 - which artifacts are complete
 - whether the Chinese sung vocal exists or synthesis is still blocked
 - which exact command would complete synthesis once weights/backend are ready
-
+- whether website lyrics are shared `textTracks[]` or per-vocal `lyricSets[]`

@@ -1,6 +1,6 @@
 ---
 name: musai-music-production
-description: Use when generating, correcting, reviewing, or handing off original music in Musai, including idea-to-song, lyrics-to-song, melody/chord-controlled songs, ACE-Step/YuE/SoulX route selection, vocal quality checks, song review reports, and LALACHAN song-first video handoffs.
+description: Use when generating, correcting, reviewing, documenting, publishing, or handing off original music in Musai, including idea-to-song, lyrics-to-song, melody/chord-controlled songs, ACE-Step/YuE/SoulX route selection, vocal quality checks, song review reports, Fun Lazying Art website publishing, per-vocal lyric sets, and LALACHAN song-first video handoffs.
 ---
 
 # Musai Music Production
@@ -24,7 +24,21 @@ Do not accept a generated song just because a WAV exists. A usable song needs:
 - review report;
 - human listening pass when the result matters.
 
+Planned lyrics are intent, not truth. After generation, use listening and ASR/STT evidence to decide what the render actually sang. If the rendered vocal differs from the planned lyric, document the mismatch and publish lyrics/timing that match the audio.
+
 Avoid real singer imitation or voice cloning unless the user owns or has explicit consent.
+
+## Beautiful Song Standard
+
+Before generating, write a compact producer brief with:
+
+- emotional arc;
+- short singable lyric lines;
+- duration, language, key/BPM when known;
+- arrangement and vocal direction;
+- negative instructions such as no clipped endings, no buried vocal, and no real-singer imitation.
+
+Prefer fewer stronger lines over dense poetry. For Chinese/Japanese, reduce pronunciation risk by using natural, short phrases and correcting after ASR/listening.
 
 ## Fast Workflow
 
@@ -52,6 +66,8 @@ Review:
 ```bash
 data/creative_projects/<song-id>/commands.sh review
 ```
+
+If the review shows quiet vocals, wrong language, clipped endings, or poor lyric recovery, do not publish as final. Run a correction pass or label it as experimental.
 
 Correct:
 
@@ -103,13 +119,33 @@ data/creative_projects/<song-id>/
 - Strict source-song localization: Demucs/analysis plus YingMusic/SoulX prep, not full-song generation.
 - If Japanese/Chinese lyric accuracy is poor: shorten lines, reduce kanji ambiguity, increase vocal clarity in caption, try new seed/model, or use a specialized vocal workflow.
 
+## Website Publishing Rule
+
+For `fun.lazying.art`, use shared `textTracks[]` only when all playable vocals truly sing the same line structure. If English, Chinese, and Japanese renders are independent or imperfect, create per-vocal `lyricSets[]`:
+
+```text
+lyrics/en-vocal/en.json
+lyrics/en-vocal/zh-Hans.json
+lyrics/en-vocal/ja.json
+lyrics/zh-vocal/en.json
+lyrics/zh-vocal/zh-Hans.json
+lyrics/zh-vocal/ja.json
+lyrics/ja-vocal/en.json
+lyrics/ja-vocal/zh-Hans.json
+lyrics/ja-vocal/ja.json
+```
+
+The active vocal owns timing and word highlighting. Other languages in the same set are translations of that vocal's actual sung lines.
+
 ## References
 
 Read only as needed:
 
 ```text
+references/musai-song-generation-and-website-runbook.md
 references/musai-song-workbench.md
 references/lalachan-song-first-video-workflow.md
 references/musai-full-capability-guide.md
 references/musai-creative-studio.md
+references/musai-website-json-format.md
 ```

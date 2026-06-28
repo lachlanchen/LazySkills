@@ -1,6 +1,6 @@
 ---
 name: musai-song-localization
-description: Use when working on Musai, AI song localization, song-to-Chinese or cross-language re-singing, extracting bass/drums/vocals/other stems, lyrics, beats, chords, phrase timing, singable lyric adaptation, YingMusic-Singer-Plus or SoulX-Singer synthesis preparation, or creating same-music translated singing artifacts.
+description: Use when working on Musai, AI song localization, song-to-Chinese or cross-language re-singing, extracting bass/drums/vocals/other stems, lyrics, beats, chords, phrase timing, singable lyric adaptation, YingMusic-Singer-Plus or SoulX-Singer synthesis preparation, creating same-music translated singing artifacts, or fixing Fun Lazying Art per-vocal lyric/timing JSON.
 ---
 
 # Musai Song Localization
@@ -17,6 +17,8 @@ Use this skill for Musai-style music localization: keep the song arrangement, rh
 - For Chinese output, adapt for singability: phrase duration, syllable/character count, rhyme, natural Chinese, emotional meaning, and tone-melody comfort.
 - If singing model weights are not installed, produce a complete localization package and clearly mark vocal synthesis as blocked, not completed.
 - Avoid cloning or imitating a real singer unless the user owns or has consent for that voice.
+- Do not reuse one vocal render's lyric timeline for another render unless listening/ASR confirms the renders truly match.
+- Planned/reference lyrics are correction evidence, not the published truth. The published lyric timing must follow the actual audible vocal.
 
 ## Local Musai Repo Workflow
 
@@ -107,6 +109,28 @@ bash scripts/run_moss_music_env.sh .conda/moss-music/bin/python -c "import torch
 
 When quality is poor, prioritize a short 20-40 second chorus/verse render through SoulX-Singer or a professional synth workflow before attempting a full song. Accept a render only if the vocal is clearly sung, audible, natural in the target language, and aligned to the original phrase rhythm.
 
+## Website Lyric Protocol
+
+For `fun.lazying.art`, use per-vocal `lyricSets[]` when generated or localized vocals differ by language, phrase count, repeated lines, or timing:
+
+```text
+lyrics/en-vocal/en.json
+lyrics/en-vocal/zh-Hans.json
+lyrics/en-vocal/ja.json
+lyrics/zh-vocal/en.json
+lyrics/zh-vocal/zh-Hans.json
+lyrics/zh-vocal/ja.json
+lyrics/ja-vocal/en.json
+lyrics/ja-vocal/zh-Hans.json
+lyrics/ja-vocal/ja.json
+```
+
+Each playable audio asset must set `lyricSetId`. The active vocal language owns timing and current-word highlighting. Other languages in the same set translate that active vocal's real sung lines. If the vocal misses, changes, or repeats a planned line, reflect that fact.
+
+Shared `textTracks[]` are acceptable only for strict same-timeline media.
+
 ## References
 
-- Read `references/workflow.md` for the detailed workflow, quality gates, and failure modes.
+- Read `references/workflow.md` for the detailed localization workflow, quality gates, and failure modes.
+- In the Musai repo, read `references/musai-song-generation-and-website-runbook.md` for song-generation and website publishing rules.
+- In the Musai repo, read `references/musai-website-json-format.md` before editing website lyric JSON.

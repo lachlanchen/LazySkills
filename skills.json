@@ -39,14 +39,14 @@
       "path": "skills/musai-song-localization/SKILL.md",
       "category": "audio-music",
       "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
-      "description": "Analyze songs with Musai, extract bass/drums/vocals/other stems, lyrics, beats, and chords, adapt lyrics for target languages, and prepare same-music singing localization artifacts."
+      "description": "Analyze songs with Musai, extract bass/drums/vocals/other stems, lyrics, beats, and chords, adapt lyrics for target languages, prepare same-music singing localization artifacts, and fix Fun Lazying Art per-vocal lyric timing."
     },
     {
       "id": "musai-music-production",
       "path": "skills/musai-music-production/SKILL.md",
       "category": "audio-music",
       "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
-      "description": "Generate, correct, review, and hand off original Musai songs, including ACE-Step full-song projects, vocal QA, correction passes, and LALACHAN song-first video workflows."
+      "description": "Generate, correct, review, publish, and hand off original Musai songs, including ACE-Step full-song projects, vocal QA, correction passes, Fun Lazying Art website publishing, per-vocal lyric sets, and LALACHAN song-first video workflows."
     },
     {
       "id": "npm-publishing",
