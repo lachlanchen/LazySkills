@@ -15,6 +15,7 @@ Use this skill for Musia-style music localization: keep the song arrangement, rh
 - Preserve the original music path whenever possible: `bass`, `drums`, `other` form `instrumental`; `vocals` or `human_sound` provide melody/timbre reference.
 - Treat the four Demucs stems as `bass`, `drums`, `vocals`, and `other`.
 - For Chinese output, adapt for singability: phrase duration, syllable/character count, rhyme, natural Chinese, emotional meaning, and tone-melody comfort.
+- Same melody is not worth a bad song. If strict same-score localization makes the vocal unclear, robotic, badly pronounced, or musically weak, keep the artifact as experimental and regenerate a higher-quality independent version instead.
 - If singing model weights are not installed, produce a complete localization package and clearly mark vocal synthesis as blocked, not completed.
 - Avoid cloning or imitating a real singer unless the user owns or has consent for that voice.
 - Do not reuse one vocal render's lyric timeline for another render unless listening/ASR confirms the renders truly match.
@@ -108,6 +109,22 @@ bash scripts/run_moss_music_env.sh .conda/moss-music/bin/python -c "import torch
 ```
 
 When quality is poor, prioritize a short 20-40 second chorus/verse render through SoulX-Singer or a professional synth workflow before attempting a full song. Accept a render only if the vocal is clearly sung, audible, natural in the target language, and aligned to the original phrase rhythm.
+
+## LLM Prosody And Rhyme Check
+
+Before finalizing EN/JP/ZH target lyrics, run a lyric-quality review with the
+best available LLM path: OpenAI, DeepSeek, or a strong Codex/GPT-5.5 xhigh
+reasoning pass. Ask for a compact score and specific rewrites for:
+
+- phrase rhythm and breath points against the melody/timing;
+- rhyme / 押韵, including slant rhyme where exact rhyme sounds forced;
+- English stress and singable end words;
+- Mandarin natural wording, character count, rhyme group, and tone-melody comfort;
+- Japanese mora flow, vowel endings, particles, and rhyme-like vowel echoes;
+- meaning preservation and emotional force.
+
+Do not let the LLM make the lyric verbose. Prefer short, concrete, singable lines
+that a vocal model can pronounce clearly.
 
 ## Website Lyric Protocol
 

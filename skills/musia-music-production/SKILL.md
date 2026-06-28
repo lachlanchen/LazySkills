@@ -24,6 +24,12 @@ Do not accept a generated song just because a WAV exists. A usable song needs:
 - review report;
 - human listening pass when the result matters.
 
+Quality comes before same-melody control. If a same-score/same-F0 route makes
+the vocal, pronunciation, phrasing, or arrangement worse, label that render
+experimental and leave it out of the public/final path. Regenerate with the
+best full-song model instead, even if EN/JP/ZH end up as independent high-quality
+versions rather than one perfectly shared melody.
+
 Planned lyrics are intent, not truth. After generation, use listening and ASR/STT evidence to decide what the render actually sang. If the rendered vocal differs from the planned lyric, document the mismatch and publish lyrics/timing that match the audio.
 
 Avoid real singer imitation or voice cloning unless the user owns or has explicit consent.
@@ -39,6 +45,17 @@ Before generating, write a compact producer brief with:
 - negative instructions such as no clipped endings, no buried vocal, and no real-singer imitation.
 
 Prefer fewer stronger lines over dense poetry. For Chinese/Japanese, reduce pronunciation risk by using natural, short phrases and correcting after ASR/listening.
+
+Before generating or accepting EN/JP/ZH lyrics, do an LLM lyric-quality pass
+when an API/model is available. Use OpenAI, DeepSeek, or a strong Codex/GPT-5.5
+reasoning pass to check:
+
+- rhythm fit: short singable phrases, line length, phrase stress, and likely breath points;
+- rhyme / 押韵: English end rhyme or slant rhyme, Chinese rhyme groups, Japanese vowel/mora echoes;
+- language-specific fit: English stress, Chinese tone comfort and natural wording, Japanese mora flow and particles;
+- emotional clarity: the lyric should say something concrete and singable, not just be poetic filler.
+
+Revise lyrics before generation if the LLM flags awkward rhythm, weak rhyme, overlong lines, or unnatural CJK wording.
 
 ## Fast Workflow
 
@@ -117,6 +134,7 @@ data/creative_projects/<song-id>/
 - Idea/lyrics to full song: ACE-Step 1.5 first.
 - Vocal-only controlled short hook: SoulX if language metadata is supported.
 - Strict source-song localization: Demucs/analysis plus YingMusic/SoulX prep, not full-song generation.
+- Same melody is optional when it hurts quality. Prefer high-quality independent ACE/YuE language renders over low-quality same-score vocals.
 - If Japanese/Chinese lyric accuracy is poor: shorten lines, reduce kanji ambiguity, increase vocal clarity in caption, try new seed/model, or use a specialized vocal workflow.
 - For mixed EN/ZH/JP full-song demos on local open models, prefer one active `mul` sung/phonetic lyric track. If native CJK script collapses or garbles, use pinyin/romaji in the sung input and display native Chinese/Japanese as translations with pinyin/furigana. Document this as a phonetic render, not native-script singing.
 
