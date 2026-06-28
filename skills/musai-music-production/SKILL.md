@@ -118,6 +118,7 @@ data/creative_projects/<song-id>/
 - Vocal-only controlled short hook: SoulX if language metadata is supported.
 - Strict source-song localization: Demucs/analysis plus YingMusic/SoulX prep, not full-song generation.
 - If Japanese/Chinese lyric accuracy is poor: shorten lines, reduce kanji ambiguity, increase vocal clarity in caption, try new seed/model, or use a specialized vocal workflow.
+- For mixed EN/ZH/JP full-song demos on local open models, prefer one active `mul` sung/phonetic lyric track. If native CJK script collapses or garbles, use pinyin/romaji in the sung input and display native Chinese/Japanese as translations with pinyin/furigana. Document this as a phonetic render, not native-script singing.
 
 ## Website Publishing Rule
 
@@ -135,7 +136,16 @@ lyrics/ja-vocal/zh-Hans.json
 lyrics/ja-vocal/ja.json
 ```
 
-The active vocal owns timing and word highlighting. Other languages in the same set are translations of that vocal's actual sung lines.
+The active vocal owns timing and exact word highlighting. Other languages in the same set are translations of that vocal's actual sung lines and may rough-highlight corresponding tokens inside the same current `line.id`.
+
+For a mixed-language vocal, use:
+
+```text
+lyrics/mixed-vocal/mul.json
+lyrics/mixed-vocal/en.json
+lyrics/mixed-vocal/zh-Hans.json
+lyrics/mixed-vocal/ja.json
+```
 
 ## References
 

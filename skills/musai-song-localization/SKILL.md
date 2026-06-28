@@ -125,7 +125,18 @@ lyrics/ja-vocal/zh-Hans.json
 lyrics/ja-vocal/ja.json
 ```
 
-Each playable audio asset must set `lyricSetId`. The active vocal language owns timing and current-word highlighting. Other languages in the same set translate that active vocal's real sung lines. If the vocal misses, changes, or repeats a planned line, reflect that fact.
+Each playable audio asset must set `lyricSetId`. The active vocal language owns timing and exact current-word highlighting. Other languages in the same set translate that active vocal's real sung lines and may rough-highlight corresponding tokens inside the same current `line.id`. If the vocal misses, changes, or repeats a planned line, reflect that fact.
+
+For mixed-language vocals, use one active sung/phonetic track plus translation tracks:
+
+```text
+lyrics/mixed-vocal/mul.json
+lyrics/mixed-vocal/en.json
+lyrics/mixed-vocal/zh-Hans.json
+lyrics/mixed-vocal/ja.json
+```
+
+If a local model fails to sing native CJK script reliably in a mixed render, use pinyin/romaji for the sung input and display native Chinese/Japanese in translation tracks with pinyin/furigana. Document the compromise instead of claiming native-script singing.
 
 Shared `textTracks[]` are acceptable only for strict same-timeline media.
 
