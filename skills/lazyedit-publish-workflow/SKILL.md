@@ -58,6 +58,7 @@ conda activate lazyedit
 - For Bilibili, optional SMS verification after upload is only for completion notifications; close it and continue. If the page shows `请完成短信验证` while the upload is stuck at `0.0MB/0.0MB`, it is a hard SMS gate, not GeeTest. Click `获取验证码`, get the SMS code from the user, and do not retry upload loops without it. Cover upload is best-effort, so a missing cover dialog should not cause a full reupload.
 - If Bilibili shows `0.0MB/0.0MB` and browser-side `preupload` returns code `601` with `您上传视频过快，请您稍作休息后再继续`, stop retrying and wait for cooldown. Repeated upload retries extend the block.
 - To add a missing platform to an already-processed LazyEdit output, reuse the existing ZIP if it contains the correct rendered MP4. Re-submit the same ZIP with only the missing platform flags. Repackage only when the existing ZIP points at the wrong output.
+- AutoPublish derives the extracted metadata directory from the ZIP filename stem. Do not rename a prepared ZIP to add suffixes like `-topright` unless the internal metadata filename and directory contract are regenerated to match.
 
 ## Setting Semantics
 
@@ -69,7 +70,7 @@ conda activate lazyedit
 - Use polished/corrected subtitles for real publishes and debug publishes unless the user explicitly requests original subtitles.
 - Publish category defaults: personal phone/self recordings use `simplelife`; LazyingArt brand/product posts use `lazyingart`; pure music/art-track posts use `musia`; LALACHAN story videos use `lalachan`; LALACHAN character music videos use `lalamv`. Instagram has no stable per-post category/playlist in the desktop web upload flow, so AutoPublish only logs the inferred category there and uses normal captions/tags. LazyEdit metadata generation asks the model for `publish_category` (`simplelife`, `lazyingart`, `musia`, `lalachan`, or `lalamv`) and the router falls back to source-path/keyword inference. `music` is only a backwards-compatible alias for `musia`. Use `--publish-category lalamv`, `--youtube-playlist LalaMV`, or `--shipinhao-collection LalaMV` for MV overrides.
 - Burn the existing LazyEdit webapp logo on real publishes unless the user explicitly says no logo. Use the configured Studio logo; do not upload or invent a new asset.
-- Required logo state is `enabled: true`, `logoPath` present, and the requested position set. Current LALACHAN/MV default is `position: "top-right"`. Check it before CLI/API publishes with `curl -fsS $LAZYEDIT_API/api/ui-settings/logo_settings | jq .`.
+- Required logo state is `enabled: true`, `logoPath` present, and the requested position set. Current Musia/LALACHAN/MV default is `position: "top-right"`. Check it before CLI/API publishes with `curl -fsS $LAZYEDIT_API/api/ui-settings/logo_settings | jq .`. For no-subtitle logo-only publishes, force a fresh burn when the position changes, extract a sample frame with `ffmpeg`, and visually verify the logo side before submitting to AutoPublish.
 - `--no-process` reuses an already completed output. Use it when the user says "last run", "same version", or "already finished run".
 - `--publication-session-id ID` targets a specific run. Omit it for the current output.
 
@@ -295,7 +296,8 @@ python scripts/lazyedit_music_package.py \
   --proof /path/to/website/manifest.json \
   --source-url "https://fun.lazying.art/#song-id" \
   --output-slug song-title-music \
-  --platforms shipinhao_music,youtube_music
+  --platforms shipinhao_music,youtube_music \
+  --autopublish-url http://lazyingart:8081
 ```
 
 The equivalent API is:
@@ -367,6 +369,10 @@ bitrate MP3 inputs to a package-local `*_shipinhao_320k.mp3` copy. Verify with
 by AutoPublish include title, lyrics, author, singer, lyricist, composer,
 producer, album name, album description, album cover, original-proof ZIP, and
 the `我已阅读《视频号音乐人发表须知》` checkbox.
+Shipinhao's `歌曲曲风` dropdown uses Chinese site labels. AutoPublish maps
+common English genres such as `Bedroom Pop`, `lofi`, and `pop` to `流行`; if a
+new English genre times out, add it to `pub_shipinhao_music.py` instead of
+editing the package by hand.
 
 YouTube Music in this workflow means public YouTube Studio upload of a generated
 music art-track video. LazyEdit writes `youtube_music_video_filename` and
