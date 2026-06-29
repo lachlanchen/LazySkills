@@ -131,7 +131,7 @@ management page in the browser first.
 
 When a 4:3 or horizontal generated video is converted to vertical mobile format, do not accept visible quality loss from repeated normal delivery encodes. Keep the foreground sharp, use a blurred current-frame fill, and leave the lower blurred area for subtitles.
 
-Preferred current path: use LazyEdit's built-in portrait blur-fill feature and normal subtitle/logo reburn. Manual blur-fill scripts are fallback/recovery tools for layout experiments or older runs.
+Preferred current path: use LazyEdit's built-in portrait blur-fill feature and normal subtitle/logo reburn. In LALACHAN mode, LazyEdit targets a lower blurred reserve of about 40% (`bottomSpaceRatio=0.4`) and derives the top margin from the source aspect ratio. Manual blur-fill scripts are fallback/recovery tools for layout experiments or older runs.
 
 Recommended portable pattern from the LALACHAN repo:
 
@@ -139,14 +139,18 @@ Recommended portable pattern from the LALACHAN repo:
 cd "$LALACHAN_ROOT"
 
 scripts/portrait_blurfill_subtitle_space.sh INPUT.mp4 OUTPUT_portrait_hq.mp4 \
-  --fg-y 576 \
+  --fg-y 544 \
   --crf 10 \
   --preset slow \
   --scale-flags lanczos \
   --audio-mode copy
 ```
 
-For `1080x1920` portrait output from a 16:9 MV, `--fg-y 576` usually gives a better top/foreground/bottom balance than the older high-foreground `--fg-y 240`.
+For `1080x1920` portrait output from a 16:9 MV, the built-in `bottomSpaceRatio=0.4` layout is preferred. If falling back to the manual script, `--fg-y 544` roughly matches the same lower-space target for 16:9 material; avoid the older high-foreground `--fg-y 240` unless deliberately reserving a much larger lower area.
+
+In the LazyEdit Publish tab, use the `Calculated layout` card and `View layout`
+modal to inspect source-specific top/foreground/bottom geometry before
+processing.
 
 If LazyEdit's normal subtitle/logo burn visibly reduces quality, create an already-burned high-quality publish master locally. Keep the normal configured logo position and style, usually top-right for current LALACHAN/MV work, and place subtitles mostly in the lower blur area:
 

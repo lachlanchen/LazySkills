@@ -46,19 +46,22 @@ Omit `--no-process` when processing should run before publishing.
 
 ## High-Quality Portrait Masters
 
-For vertical shorts made from 4:3 or horizontal generated videos, prefer LazyEdit's built-in portrait blur-fill and normal subtitle/logo reburn. Use a separate high-quality blur-fill master only as a fallback for older runs, layout experiments, or visible quality regressions.
+For vertical shorts made from 4:3 or horizontal generated videos, prefer LazyEdit's built-in portrait blur-fill and normal subtitle/logo reburn. LALACHAN mode targets about 40% lower blurred reserve (`bottomSpaceRatio=0.4`) and derives the top margin from the source aspect ratio. Use a separate high-quality blur-fill master only as a fallback for older runs, layout experiments, or visible quality regressions.
 
 ```bash
 cd "$LALACHAN_ROOT"
 scripts/portrait_blurfill_subtitle_space.sh INPUT.mp4 OUTPUT_portrait_hq.mp4 \
-  --fg-y 576 \
+  --fg-y 544 \
   --crf 10 \
   --preset slow \
   --scale-flags lanczos \
   --audio-mode copy
 ```
 
-For 16:9 MVs converted to `1080x1920`, `--fg-y 576` usually gives the requested top/foreground/bottom balance better than the older `--fg-y 240` layout.
+For 16:9 MVs converted to `1080x1920`, `--fg-y 544` roughly matches LazyEdit's current 40% bottom reserve. Avoid the older `--fg-y 240` layout unless a much larger lower area is intentional.
+
+Before processing, the LazyEdit Publish tab can show the source-specific
+geometry in `Calculated layout` and a scaled `View layout` modal.
 
 If subtitles should sit mainly in the lower blurred area and the normal LazyEdit burn is too compressed, make an already-burned HQ publish master:
 
