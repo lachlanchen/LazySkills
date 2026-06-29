@@ -92,7 +92,7 @@ See `$LAZYEDIT_ROOT/references/PUBLISH_RUNBOOK_MUSIA_AND_PLATFORM_SMOOTHING_2026
 - Douyin should reuse drafts and use the JS field replacement path.
 - Xiaohongshu needs popovers closed before final publish.
 - Bilibili upload cooldown/SMS gates should stop retries; do not solve SMS gates with GeeTest/Tuling.
-- Shipinhao Music: publish as music/song, not album; use square covers; confirm cover overlays; fill lyrics, story/`音乐人说`, language, genre, author, originality/agreement when visible; use corrected Musia website vocal JSON for the exact selected audio. Before posting, inspect `*_lyrics.txt` in the package and compare it with `website/data/songs/<song>/lyrics/<vocal>/<lang>.json`, not the original prompt lyric or another vocal's translation JSON. If the live language dropdown lacks English/Japanese, publish and report the fallback instead of silently claiming it was selected.
+- Shipinhao Music: publish as music/song, not album; use square covers; confirm cover overlays; fill lyrics, story/`音乐人说`, language, genre, author, originality/agreement when visible; use corrected Musia website vocal JSON for the exact selected audio. Before posting, inspect `*_lyrics.txt` in the package and compare it with `website/data/songs/<song>/lyrics/<vocal>/<lang>.json`, not the original prompt lyric or another vocal's translation JSON. Upload plain corrected lyric lines to Shipinhao Music; do not upload `[mm:ss]` LRC timestamps because the current desktop form rejects them as `表单信息不完整`. If proof upload remains at `0%`, wait, then remove the stuck optional proof instead of submitting a half-uploaded proof. If the live language dropdown lacks English/Japanese, publish and report the fallback instead of silently claiming it was selected.
 
 ## Category Cleanup
 
@@ -311,6 +311,13 @@ language's JSON unless that exact file was corrected against the selected vocal.
 If the music package lyrics disagree with `fun.lazying.art`, rebuild the package
 before publishing. Shipinhao Music should display the same corrected lyrics as
 the website for that vocal.
+
+Shipinhao Music currently wants plain lyric lines. Keep the default
+`--lyrics-format plain` for Shipinhao packages. `--lyrics-format lrc` remains a
+debug/reference option, but a 2026-06-30 test showed the live desktop form
+accepts `[00:00.00]...` text into the textarea and then rejects the submission
+as incomplete. If a proof ZIP stays visible as `0% 删除`, it is not ready; wait
+for completion, or remove the optional proof and submit without it.
 
 ```bash
 python scripts/lazyedit_music_package.py \
