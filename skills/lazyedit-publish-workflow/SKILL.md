@@ -52,6 +52,10 @@ conda activate lazyedit
 - If correction is expected to recover missing generated-video dialogue, inspect `DATA/VIDEO_FOLDER/*_mixed_polished.md` before publish so missed or over-recovered subtitles are caught before any platform post.
 - If missing-language recovery creates plain subtitle text, do not restore grammar colors with a per-video patch. Fix or use the shared `lazyedit/subtitle_tokens.py` normalization path so plain text, ruby markup, `word`/`reading` tokens, and speaker-helper rows all render through grammar-typed palette tokens.
 - When copying through Nutstore, use one stable `_COMPLETED` filename and watch AutoPubMonitor panes before recopying. Avoid creating duplicate source files just to retrigger the watcher.
+- When the source path is already under LazyEdit `DATA/`, use `--video-id` or a non-colliding `--filename`. Do not re-upload `DATA/<stem>/<filename>` with the same filename, because the upload endpoint can truncate the source by writing over it.
+- For XiaoHongShu, close hashtag suggestion popovers with Escape/blur before the final publish click. The red publish control may be inside a custom `xhs-publish-btn`, so use the AutoPublish fallback instead of hand-clicking random page coordinates.
+- For Bilibili, optional SMS verification after upload is only for completion notifications; close it and continue. Cover upload is best-effort, so a missing cover dialog should not cause a full reupload.
+- If Bilibili shows `0.0MB/0.0MB` and browser-side `preupload` returns code `601` with `您上传视频过快，请您稍作休息后再继续`, stop retrying and wait for cooldown. Repeated upload retries extend the block.
 
 ## Setting Semantics
 
