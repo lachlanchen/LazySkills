@@ -41,6 +41,7 @@ Good MV prompts:
 - follow music timing;
 - describe clear scenes and emotions;
 - keep character dialogue short;
+- when the user wants the buddies to feel like performers, say one character is the lead singer and the others lightly echo, sing along, clap, dance, or shout at the chorus;
 - use sound effects lightly;
 - say `不要字幕，不要歌词字幕，不要文件名、路径、说明文字`;
 - never paste local filesystem paths.
@@ -82,6 +83,7 @@ Before generation:
 - required images are uploaded as files;
 - duration and ratio fit the target;
 - visible UI state is checked before paid submit.
+- if Xiaoyunque proposes a storyboard duration that misses the song length, correct it before confirming paid render.
 
 After generation:
 
@@ -90,3 +92,16 @@ After generation:
 - song-locked output is created when needed;
 - LazyEdit publish, if requested, reaches final `done` status on target platforms.
 
+## Artifact-Panel Download Fallback
+
+For Agent-generated full MVs, the final MP4 may appear only in the resource panel rather than as a scrapeable video URL.
+
+Use this path:
+
+1. Click the completed `final_video.mp4` card under `视频 -> 生成结果`.
+2. In the preview panel, click `下载`.
+3. Wait until the browser finishes the MP4 in the downloads folder.
+4. Copy the file to the project `Videos/` folder.
+5. Create a song-locked version with the Musia master audio if needed.
+
+The download button can show `下载中 75%` while Chrome has not yet committed a visible `.mp4` file. Wait for completion instead of reclicking.

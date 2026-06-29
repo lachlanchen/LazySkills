@@ -38,9 +38,11 @@ references/full-vs-chorus-mv.md
 3. Create timestamped segments that follow the song sections.
 4. Write a Xiaoyunque prompt that references uploads as `图1`, `图2`, `音频1`, never local paths.
 5. Keep dialogue short and place it in musical gaps.
-6. Generate the video, download it, and verify duration/audio with `ffprobe`.
-7. If needed, mux the Musia master audio back in.
-8. Publish through normal LazyEdit logic only when public posting is requested.
+6. For character MVs, explicitly state that the characters can perform the song: one lead-singer character, short chorus echo, clapping, dancing, or rally shouts. Keep music primary.
+7. If the generated storyboard duration drifts away from the song duration, correct it before paid render.
+8. Generate the video, download it, and verify duration/audio with `ffprobe`.
+9. If needed, mux the Musia master audio back in.
+10. Publish through normal LazyEdit logic only when public posting is requested.
 
 ## Chorus / Climax Workflow
 
@@ -67,6 +69,7 @@ The generation prompt should include:
 - music timing and mood;
 - scene order;
 - short dialogue and SFX guidance;
+- character performance language when needed, e.g. `阿芽酱是主唱感，其他伙伴在副歌处轻轻跟唱、合唱或回应`;
 - explicit no-subtitle/no-path instruction.
 
 The prompt should not include:
@@ -76,6 +79,24 @@ The prompt should not include:
 - full lyrics as visible text;
 - dense dialogue over vocals;
 - LazyEdit packaging instructions.
+
+## Xiaoyunque Browser Download Fallback
+
+Sometimes the generic DOM watcher does not see a normal `<video>` URL even when the Agent thread is complete. In that case:
+
+1. Open the right-side resource panel.
+2. Find `视频 -> 生成结果 -> final_video.mp4`.
+3. Click `final_video.mp4`.
+4. Click the preview-panel `下载` button.
+5. Wait for the button to progress from `下载中 NN%` to a completed file in the browser downloads folder.
+
+Use a filesystem wait helper or equivalent shell loop to avoid copying a partial download:
+
+```bash
+start="$(date +%s)"
+# click the Xiaoyunque preview download button here
+wait_downloaded_mp4.sh --since-epoch "$start" --min-bytes 1000000 --timeout 300
+```
 
 ## Final Audio Helper
 
@@ -91,4 +112,3 @@ $LAZYSKILLS_ROOT/skills/musia-lalachan-mv-workflow/scripts/mux_musia_audio.sh \
 ## Publish Rule
 
 For public publishing, use the normal LazyEdit publish workflow. Do not manually burn subtitles or logos unless the user explicitly asks for a recovery/custom-master path. Metadata should be concise and viewer-facing, not a storyboard dump.
-
