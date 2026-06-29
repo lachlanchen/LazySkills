@@ -112,3 +112,5 @@ $LAZYSKILLS_ROOT/skills/musia-lalachan-mv-workflow/scripts/mux_musia_audio.sh \
 ## Publish Rule
 
 For public publishing, use the normal LazyEdit publish workflow. Do not manually burn subtitles or logos unless the user explicitly asks for a recovery/custom-master path. Metadata should be concise and viewer-facing, not a storyboard dump.
+
+For LALACHAN character MVs, set `publish_category: lalamv`; target YouTube playlist `LalaMV` and Shipinhao collection `LalaMV` when available. Use LazyEdit's built-in portrait blur-fill and normal subtitle/logo reburn for mobile versions; current MV logo default is top-right. If a platform category UI is unstable or missing, publish should continue and report the category limitation instead of wasting a completed render.

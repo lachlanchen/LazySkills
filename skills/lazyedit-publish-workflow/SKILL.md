@@ -61,9 +61,9 @@ conda activate lazyedit
 - `--languages` is bottom-to-top subtitle order.
 - If Studio logo settings are enabled, `--no-burn-subtitles` still creates a processed logo-only output ending in `_logo.mp4` and publishes that output. Translation is skipped because subtitles are disabled.
 - Use polished/corrected subtitles for real publishes and debug publishes unless the user explicitly requests original subtitles.
-- Publish category defaults: personal phone/self recordings stay in YouTube `SimpleLife` and Shipinhao `简单生活`; LALACHAN/Xiaoyunque story videos go to YouTube `LALACHAN` and Shipinhao `啦啦侠`; music/art-track packages go to `Musia`. Instagram has no stable per-post category/playlist in the desktop web upload flow, so AutoPublish only logs the inferred category there and uses normal captions/tags. LazyEdit metadata generation asks the model for `publish_category` (`simplelife`, `lalachan`, or `music`) and the router falls back to source-path/keyword inference. Use `--publish-category lalachan`, `--youtube-playlist`, or `--shipinhao-collection` for one-shot overrides.
+- Publish category defaults: personal phone/self recordings use `simplelife`; LazyingArt brand/product posts use `lazyingart`; pure music/art-track posts use `musia`; LALACHAN story videos use `lalachan`; LALACHAN character music videos use `lalamv`. Instagram has no stable per-post category/playlist in the desktop web upload flow, so AutoPublish only logs the inferred category there and uses normal captions/tags. LazyEdit metadata generation asks the model for `publish_category` (`simplelife`, `lazyingart`, `musia`, `lalachan`, or `lalamv`) and the router falls back to source-path/keyword inference. `music` is only a backwards-compatible alias for `musia`. Use `--publish-category lalamv`, `--youtube-playlist LalaMV`, or `--shipinhao-collection LalaMV` for MV overrides.
 - Burn the existing LazyEdit webapp logo on real publishes unless the user explicitly says no logo. Use the configured Studio logo; do not upload or invent a new asset.
-- Required logo state is `enabled: true`, `logoPath` present, and `position: "top-left"`. Check it before CLI/API publishes with `curl -fsS $LAZYEDIT_API/api/ui-settings/logo_settings | jq .`.
+- Required logo state is `enabled: true`, `logoPath` present, and the requested position set. Current LALACHAN/MV default is `position: "top-right"`. Check it before CLI/API publishes with `curl -fsS $LAZYEDIT_API/api/ui-settings/logo_settings | jq .`.
 - `--no-process` reuses an already completed output. Use it when the user says "last run", "same version", or "already finished run".
 - `--publication-session-id ID` targets a specific run. Omit it for the current output.
 
@@ -111,6 +111,8 @@ YouTube playlists:
 ssh lachlan@lazyingart 'cd ~/Projects/autopub && /home/lachlan/venvs/autopub/bin/python scripts/manage_y2b_videos.py move-classified --scrolls 20 --lalachan-playlist LALACHAN --music-playlist Musia --output /tmp/youtube_move_plan.json'
 ```
 
+For `lalamv`, target YouTube playlist `LalaMV`. Playlist selection and creation are best effort: if YouTube creates the playlist but does not expose it immediately for selection, continue the publish and report the limitation instead of failing the whole job.
+
 Instagram:
 
 Instagram does not have a comparable per-post category/playlist/collection
@@ -121,6 +123,58 @@ and normal Instagram caption/tags.
 Never bulk-apply a generated plan without inspecting the JSON. If the page is
 logged out, wrong, or the visible row text is weak, stop and open the correct
 management page in the browser first.
+
+## Quality-Preserving Portrait Publish Masters
+
+When a 4:3 or horizontal generated video is converted to vertical mobile format, do not accept visible quality loss from repeated normal delivery encodes. Keep the foreground sharp, use a blurred current-frame fill, and leave the lower blurred area for subtitles.
+
+Preferred current path: use LazyEdit's built-in portrait blur-fill feature and normal subtitle/logo reburn. Manual blur-fill scripts are fallback/recovery tools for layout experiments or older runs.
+
+Recommended portable pattern from the LALACHAN repo:
+
+```bash
+cd "$LALACHAN_ROOT"
+
+scripts/portrait_blurfill_subtitle_space.sh INPUT.mp4 OUTPUT_portrait_hq.mp4 \
+  --fg-y 576 \
+  --crf 10 \
+  --preset slow \
+  --scale-flags lanczos \
+  --audio-mode copy
+```
+
+For `1080x1920` portrait output from a 16:9 MV, `--fg-y 576` usually gives a better top/foreground/bottom balance than the older high-foreground `--fg-y 240`.
+
+If LazyEdit's normal subtitle/logo burn visibly reduces quality, create an already-burned high-quality publish master locally. Keep the normal configured logo position and style, usually top-right for current LALACHAN/MV work, and place subtitles mostly in the lower blur area:
+
+```bash
+scripts/hq_subtitle_logo_master.sh OUTPUT_portrait_hq.mp4 corrected.srt OUTPUT_publish_hq.mp4 \
+  --logo "$LAZYEDIT_LOGO_PATH" \
+  --logo-height 288 \
+  --logo-x 38 \
+  --logo-y 38 \
+  --font-size 44 \
+  --margin-v 280 \
+  --crf 10 \
+  --preset slow \
+  --audio-mode copy
+```
+
+Then import/publish `OUTPUT_publish_hq.mp4` with `--no-burn-subtitles`. This avoids a second burn/re-encode because the MP4 already includes the normal logo and burned subtitles:
+
+```bash
+python scripts/lazyedit_publish.py \
+  --video-id VIDEO_ID \
+  --use-current-settings \
+  --platforms youtube,instagram,shipinhao \
+  --metadata-prompt-file temp/metadata_brief.md \
+  --no-burn-subtitles \
+  --no-process \
+  --guided-monitor \
+  --wait
+```
+
+Use this path only after verifying sample frames prove the subtitles and logo are already present in the MP4. If they are not present, use the normal LazyEdit burn path.
 
 ## Common Commands
 

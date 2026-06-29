@@ -44,6 +44,68 @@ python scripts/lazyedit_publish.py \
 
 Omit `--no-process` when processing should run before publishing.
 
+## High-Quality Portrait Masters
+
+For vertical shorts made from 4:3 or horizontal generated videos, prefer LazyEdit's built-in portrait blur-fill and normal subtitle/logo reburn. Use a separate high-quality blur-fill master only as a fallback for older runs, layout experiments, or visible quality regressions.
+
+```bash
+cd "$LALACHAN_ROOT"
+scripts/portrait_blurfill_subtitle_space.sh INPUT.mp4 OUTPUT_portrait_hq.mp4 \
+  --fg-y 576 \
+  --crf 10 \
+  --preset slow \
+  --scale-flags lanczos \
+  --audio-mode copy
+```
+
+For 16:9 MVs converted to `1080x1920`, `--fg-y 576` usually gives the requested top/foreground/bottom balance better than the older `--fg-y 240` layout.
+
+If subtitles should sit mainly in the lower blurred area and the normal LazyEdit burn is too compressed, make an already-burned HQ publish master:
+
+```bash
+scripts/hq_subtitle_logo_master.sh OUTPUT_portrait_hq.mp4 corrected.srt OUTPUT_publish_hq.mp4 \
+  --logo "$LAZYEDIT_LOGO_PATH" \
+  --logo-height 288 \
+  --logo-x 38 \
+  --logo-y 38 \
+  --font-size 44 \
+  --margin-v 280 \
+  --crf 10 \
+  --preset slow \
+  --audio-mode copy
+```
+
+Then publish with no extra subtitle burn:
+
+```bash
+cd "$LAZYEDIT_ROOT"
+python scripts/lazyedit_publish.py \
+  --video-id VIDEO_ID \
+  --use-current-settings \
+  --platforms youtube,instagram,shipinhao \
+  --metadata-prompt-file temp/metadata_brief.md \
+  --no-burn-subtitles \
+  --no-process \
+  --guided-monitor \
+  --wait
+```
+
+Check frames before publishing. The MP4 must already contain the configured logo and burned subtitles. Current LALACHAN/MV default logo position is top-right. If the MP4 does not already contain subtitles/logo, use the normal LazyEdit burn flow instead.
+
+## Publish Categories
+
+Use canonical categories in LazyEdit metadata and one-shot publish options:
+
+```text
+simplelife
+lazyingart
+musia
+lalachan
+lalamv
+```
+
+Use `lalamv` for LALACHAN character MVs. Route to YouTube `LalaMV` and Shipinhao `LalaMV` when the platform UI exposes those targets. YouTube playlist selection and Shipinhao collection selection are best effort; do not fail a completed publish only because the category UI is missing or unstable.
+
 ## AI-Generated Video Publish
 
 Generated video scripts are reference material for subtitle correction. They help infer likely recognition errors, but the final subtitle text should still follow the actual audio and preserve timing. Use a human middle path: do not over-edit, and do not stay too conservative when ASR is obviously abnormal, broken, strange, or mismatched with context. Read neighboring lines, check whether the sentence makes sense, compare with the audio/Whisper text and story context, then infer the most likely intended wording without inventing unsupported content.
