@@ -46,6 +46,7 @@ conda activate lazyedit
 ## Safety Rules
 
 - Do not publish to real platforms just to debug packaging, subtitles, or logo output. Use `--no-publish` first, inspect the generated ZIP/final MP4, then publish exactly once when the package is correct.
+- For current Musia recording videos, publish with the existing LazyEdit logo at top-right and no LazyEdit subtitles unless the user explicitly asks for subtitles. Use `--no-burn-subtitles --logo --logo-position top-right`, force a fresh logo-only render when the side changes, and inspect a sample frame or the MP4 inside the ZIP before submitting.
 - Real publishes should use polished/corrected subtitles and the configured LazyEdit Studio logo unless the user explicitly asks otherwise. Verify logo settings with `curl -fsS $LAZYEDIT_API/api/ui-settings/logo_settings | jq .`; normal logo outputs end in `_subtitles_logo.mp4`.
 - For Musia pure-music publishes, lyrics must come from the corrected Musia
   website/publish lyric JSON for the exact selected vocal, not from the original
@@ -64,6 +65,7 @@ conda activate lazyedit
 - If Bilibili shows `0.0MB/0.0MB` and browser-side `preupload` returns code `601` with `您上传视频过快，请您稍作休息后再继续`, stop retrying and wait for cooldown. Repeated upload retries extend the block.
 - To add a missing platform to an already-processed LazyEdit output, reuse the existing ZIP if it contains the correct rendered MP4. Re-submit the same ZIP with only the missing platform flags. Repackage only when the existing ZIP points at the wrong output.
 - AutoPublish derives the extracted metadata directory from the ZIP filename stem. Do not rename a prepared ZIP to add suffixes like `-topright` unless the internal metadata filename and directory contract are regenerated to match.
+- Avoid opening many long-lived terminal monitors. Prefer one `scripts/lazyedit_publish.py --guided-monitor --wait` process plus occasional one-shot queue/tmux checks. Close stale sessions before starting another long publish.
 
 ## Setting Semantics
 
@@ -78,6 +80,19 @@ conda activate lazyedit
 - Required logo state is `enabled: true`, `logoPath` present, and the requested position set. Current Musia/LALACHAN/MV default is `position: "top-right"`. Check it before CLI/API publishes with `curl -fsS $LAZYEDIT_API/api/ui-settings/logo_settings | jq .`. For no-subtitle logo-only publishes, force a fresh burn when the position changes, extract a sample frame with `ffmpeg`, and visually verify the logo side before submitting to AutoPublish.
 - `--no-process` reuses an already completed output. Use it when the user says "last run", "same version", or "already finished run".
 - `--publication-session-id ID` targets a specific run. Omit it for the current output.
+
+## 2026-06-30 Musia/Platform Runbook
+
+See `$LAZYEDIT_ROOT/references/PUBLISH_RUNBOOK_MUSIA_AND_PLATFORM_SMOOTHING_2026_06_30.md` for the full incident record. Key rules:
+
+- Confirm the MP4 inside the ZIP is the desired version before real publish.
+- Musia recordings: no LazyEdit subtitles by default; top-right logo; category `musia`; use curated song context for metadata.
+- LALACHAN/generated story videos: use the full script for subtitle correction, but use a short metadata brief so public descriptions do not become storyboard dumps.
+- Shipinhao collection and YouTube playlist selection are best-effort; if the requested collection/playlist is absent or not immediately selectable, publish and report the fallback.
+- Douyin should reuse drafts and use the JS field replacement path.
+- Xiaohongshu needs popovers closed before final publish.
+- Bilibili upload cooldown/SMS gates should stop retries; do not solve SMS gates with GeeTest/Tuling.
+- Shipinhao Music: publish as music/song, not album; use square covers; confirm cover overlays; fill lyrics, story/`音乐人说`, language, genre, author, originality/agreement when visible; use corrected Musia lyric JSON.
 
 ## Category Cleanup
 
