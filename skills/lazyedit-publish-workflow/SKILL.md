@@ -75,10 +75,12 @@ the logged-in browser sessions and are read-only until `--apply`.
 Shipinhao collections:
 
 ```bash
+ssh lachlan@lazyingart 'cd ~/Projects/autopub && /home/lachlan/venvs/autopub/bin/python scripts/manage_shipinhao_videos.py ensure-collection --collection LalaMV --apply'
 ssh lachlan@lazyingart 'cd ~/Projects/autopub && /home/lachlan/venvs/autopub/bin/python scripts/manage_shipinhao_videos.py ensure-collection --collection Musia --apply'
 ssh lachlan@lazyingart 'cd ~/Projects/autopub && /home/lachlan/venvs/autopub/bin/python scripts/manage_shipinhao_videos.py ensure-collection --collection 啦啦侠 --apply'
 ssh lachlan@lazyingart 'cd ~/Projects/autopub && /home/lachlan/venvs/autopub/bin/python scripts/manage_shipinhao_videos.py inventory --scrolls 5 --output /tmp/shipinhao_inventory.json'
-ssh lachlan@lazyingart 'cd ~/Projects/autopub && /home/lachlan/venvs/autopub/bin/python scripts/manage_shipinhao_videos.py move-classified --scrolls 5 --lalachan-collection 啦啦侠 --music-collection Musia --output /tmp/shipinhao_move_plan.json'
+ssh lachlan@lazyingart 'cd ~/Projects/autopub && /home/lachlan/venvs/autopub/bin/python scripts/manage_shipinhao_videos.py move-category --category lalamv --lalamv-collection LalaMV --scrolls 5 --output /tmp/shipinhao_lalamv_plan.json'
+ssh lachlan@lazyingart 'cd ~/Projects/autopub && /home/lachlan/venvs/autopub/bin/python scripts/manage_shipinhao_videos.py move-classified --scrolls 5 --output /tmp/shipinhao_move_plan.json'
 ```
 
 Apply in small batches or by exact visible title fragment:
@@ -108,7 +110,8 @@ the SQLite mirror DB. Inspect every JSON plan before `--apply`.
 YouTube playlists:
 
 ```bash
-ssh lachlan@lazyingart 'cd ~/Projects/autopub && /home/lachlan/venvs/autopub/bin/python scripts/manage_y2b_videos.py move-classified --scrolls 20 --lalachan-playlist LALACHAN --music-playlist Musia --output /tmp/youtube_move_plan.json'
+ssh lachlan@lazyingart 'cd ~/Projects/autopub && /home/lachlan/venvs/autopub/bin/python scripts/manage_y2b_videos.py move-category --category lalamv --lalamv-playlist LalaMV --scrolls 20 --output /tmp/youtube_lalamv_plan.json'
+ssh lachlan@lazyingart 'cd ~/Projects/autopub && /home/lachlan/venvs/autopub/bin/python scripts/manage_y2b_videos.py move-classified --scrolls 20 --output /tmp/youtube_move_plan.json'
 ```
 
 For `lalamv`, target YouTube playlist `LalaMV`. Playlist selection and creation are best effort: if YouTube creates the playlist but does not expose it immediately for selection, continue the publish and report the limitation instead of failing the whole job.
