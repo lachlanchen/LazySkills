@@ -61,6 +61,7 @@ conda activate lazyedit
 - `--languages` is bottom-to-top subtitle order.
 - If Studio logo settings are enabled, `--no-burn-subtitles` still creates a processed logo-only output ending in `_logo.mp4` and publishes that output. Translation is skipped because subtitles are disabled.
 - Use polished/corrected subtitles for real publishes and debug publishes unless the user explicitly requests original subtitles.
+- Publish category defaults: personal phone/self recordings stay in YouTube `SimpleLife` and Shipinhao `简单生活`; LALACHAN/Xiaoyunque story videos go to YouTube `LALACHAN` and Shipinhao `LALACHAN`; music/art-track packages go to `Musia`. Use `--publish-category lalachan`, `--youtube-playlist`, or `--shipinhao-collection` for one-shot overrides.
 - Burn the existing LazyEdit webapp logo on real publishes unless the user explicitly says no logo. Use the configured Studio logo; do not upload or invent a new asset.
 - Required logo state is `enabled: true`, `logoPath` present, and `position: "top-left"`. Check it before CLI/API publishes with `curl -fsS $LAZYEDIT_API/api/ui-settings/logo_settings | jq .`.
 - `--no-process` reuses an already completed output. Use it when the user says "last run", "same version", or "already finished run".
