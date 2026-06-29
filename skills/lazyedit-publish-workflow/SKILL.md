@@ -61,7 +61,7 @@ conda activate lazyedit
 - `--languages` is bottom-to-top subtitle order.
 - If Studio logo settings are enabled, `--no-burn-subtitles` still creates a processed logo-only output ending in `_logo.mp4` and publishes that output. Translation is skipped because subtitles are disabled.
 - Use polished/corrected subtitles for real publishes and debug publishes unless the user explicitly requests original subtitles.
-- Publish category defaults: personal phone/self recordings stay in YouTube `SimpleLife` and Shipinhao `简单生活`; LALACHAN/Xiaoyunque story videos go to YouTube `LALACHAN` and Shipinhao `啦啦侠`; music/art-track packages go to `Musia`. LazyEdit metadata generation asks the model for `publish_category` (`simplelife`, `lalachan`, or `music`) and the router falls back to source-path/keyword inference. Use `--publish-category lalachan`, `--youtube-playlist`, or `--shipinhao-collection` for one-shot overrides.
+- Publish category defaults: personal phone/self recordings stay in YouTube `SimpleLife` and Shipinhao `简单生活`; LALACHAN/Xiaoyunque story videos go to YouTube `LALACHAN` and Shipinhao `啦啦侠`; music/art-track packages go to `Musia`. Instagram has no stable per-post category/playlist in the desktop web upload flow, so AutoPublish only logs the inferred category there and uses normal captions/tags. LazyEdit metadata generation asks the model for `publish_category` (`simplelife`, `lalachan`, or `music`) and the router falls back to source-path/keyword inference. Use `--publish-category lalachan`, `--youtube-playlist`, or `--shipinhao-collection` for one-shot overrides.
 - Burn the existing LazyEdit webapp logo on real publishes unless the user explicitly says no logo. Use the configured Studio logo; do not upload or invent a new asset.
 - Required logo state is `enabled: true`, `logoPath` present, and `position: "top-left"`. Check it before CLI/API publishes with `curl -fsS $LAZYEDIT_API/api/ui-settings/logo_settings | jq .`.
 - `--no-process` reuses an already completed output. Use it when the user says "last run", "same version", or "already finished run".
@@ -108,6 +108,13 @@ YouTube playlists:
 ```bash
 ssh lachlan@lazyingart 'cd ~/Projects/autopub && /home/lachlan/venvs/autopub/bin/python scripts/manage_y2b_videos.py move-classified --scrolls 20 --lalachan-playlist LALACHAN --music-playlist Musia --output /tmp/youtube_move_plan.json'
 ```
+
+Instagram:
+
+Instagram does not have a comparable per-post category/playlist/collection
+target in the current desktop web upload flow. Do not run an Instagram
+category backfill. Keep using metadata category for YouTube/Shipinhao routing
+and normal Instagram caption/tags.
 
 Never bulk-apply a generated plan without inspecting the JSON. If the page is
 logged out, wrong, or the visible row text is weak, stop and open the correct
