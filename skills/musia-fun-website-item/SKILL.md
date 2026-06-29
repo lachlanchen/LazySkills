@@ -140,6 +140,18 @@ python3 -m http.server 9174 --directory website
 musia fun-record --media-id <media-id> --skip-intro
 ```
 
+When a Fun player recording is created, always sync the final MP4 to the
+Nutstore Musia share folder before reporting completion:
+
+```bash
+mkdir -p "/home/lachlan/Nutstore Files/Projects/Musia"
+cp -f RECORDED_VIDEO.mp4 "/home/lachlan/Nutstore Files/Projects/Musia/"
+```
+
+For multi-vocal recordings, render and sync one MP4 per public vocal/language,
+and make sure `--asset-id` matches both the visible website player and the
+muxed audio track.
+
 ## Quality Gate
 
 Before calling an item public-demo quality:
@@ -156,6 +168,8 @@ Before calling an item public-demo quality:
 - confirm pinyin/furigana/Jyutping display once and cleanly;
 - confirm the chord row has a current highlighted chord when chord data exists;
 - confirm title, artist `Musia`, cover, social image, and localized titles are present;
+- confirm every requested recording has a Nutstore copy under
+  `/home/lachlan/Nutstore Files/Projects/Musia/`;
 - document ASR correction decisions and caveats under `references/`.
 
 ## Detailed Reference
