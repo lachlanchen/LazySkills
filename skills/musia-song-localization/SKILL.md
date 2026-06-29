@@ -22,7 +22,11 @@ be sparse and some can be fuller; fit the song rather than cramming words.
 - If singing model weights are not installed, produce a complete localization package and clearly mark vocal synthesis as blocked, not completed.
 - Avoid cloning or imitating a real singer unless the user owns or has consent for that voice.
 - Do not reuse one vocal render's lyric timeline for another render unless listening/ASR confirms the renders truly match.
-- Planned/reference lyrics are correction evidence, not the published truth. The published lyric timing must follow the actual audible vocal.
+- Planned/reference lyrics are correction evidence, not blind truth. The published lyric timing must follow the actual audible vocal, but close ASR word substitutions should be corrected back to the intended lyric when pronunciation, grammar, and phrase structure support the intended word.
+- After generation, every target vocal must be transcribed and listened to
+  independently before public lyrics are written. Prompt lyrics are not enough:
+  if the English, Japanese, Chinese, Cantonese, or mixed render sings something
+  else, correct to the audible line, mark it experimental, or regenerate.
 
 ## Local Musia Repo Workflow
 
@@ -130,6 +134,26 @@ reasoning pass. Ask for a compact score and specific rewrites for:
 Do not let the LLM make the lyric verbose. Prefer short, concrete, singable lines
 that a vocal model can pronounce clearly.
 
+## Master-Companion Handoff
+
+For original multilingual songs where the current full-song and strict
+localization pipelines should remain unchanged, use the opt-in route:
+
+```bash
+musia master-companion \
+  --title "Song Title" \
+  --master-language ja \
+  --master-audio master.mp3 \
+  --run-analysis \
+  --target-languages en zh-Hans \
+  --control-policy quality-first
+```
+
+It creates a phrase map, chord/beat evidence, melody/F0 guide, target-language
+LyricFit packets, soft companion prompts, and strict SVS handoffs. Treat strict
+same-melody output as experimental until listening and ASR prove the vocal is
+natural and clear.
+
 ## Website Lyric Protocol
 
 For `fun.lazying.art`, use the `musia-fun-website-item` publication workflow before calling a website item finished. Use per-vocal `lyricSets[]` when generated or localized vocals differ by language, phrase count, repeated lines, or timing:
@@ -148,7 +172,13 @@ lyrics/ja-vocal/ja.json
 
 Each playable audio asset must set `lyricSetId`. The active vocal language owns timing and exact current-word highlighting. Other languages in the same set translate that active vocal's real sung lines and may rough-highlight corresponding tokens inside the same current `line.id`. If the vocal misses, changes, or repeats a planned line, reflect that fact.
 
-Correct every public lyric set from at least two evidence sources: ASR/STT from the actual vocal plus input/reference lyrics, second ASR, or manual listening. Add pinyin for Mandarin, furigana readings for Japanese kanji, and Jyutping readings for Cantonese. Run:
+Correct every public lyric set from at least two evidence sources: ASR/STT from the actual vocal plus input/reference lyrics, second ASR, or manual listening. When ASR and input disagree only on a close word, keep the input lyric if it is sound-close and makes better sentence/musical sense. Override the input only for real audible structure changes such as skipped, repeated, reordered, garbled, or clearly different lines. Add pinyin for Mandarin, furigana readings for Japanese kanji, and Jyutping readings for Cantonese. Run:
+
+For generated companion vocals, do this per vocal, not per project. The
+Japanese public lyric set must be corrected against the selected Japanese
+audio, the English set against the selected English audio, and the Chinese set
+against the selected Chinese audio. Do not publish prompt-only lyrics or a
+master vocal transcript as if it described another language render.
 
 ```bash
 npm run website:validate

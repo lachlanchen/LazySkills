@@ -32,6 +32,14 @@ versions rather than one perfectly shared melody.
 
 Planned lyrics are intent, not blind truth. After generation, use listening and ASR/STT evidence to decide what the render actually sang. If the rendered vocal repeats, skips, reorders, or clearly changes a phrase, document the mismatch and publish lyrics/timing that match the audio. If ASR only substitutes a nearby word and the planned lyric is phonetically close, grammatically stronger, and supported by manual listening, keep the planned lyric; do not let ASR downgrade `When` to `In` or similar close words just because the recognizer guessed that token.
 
+For multilingual companion renders, run that correction independently for each
+selected audio. A Japanese render needs Japanese ASR/listening evidence; an
+English render needs English ASR/listening evidence; a Chinese render needs
+Chinese ASR/listening evidence. Do not assume a companion vocal matches its
+prompt just because the lyric file was used during generation. If the vocal
+diverges, publish the actual sung lyric, mark the render experimental, or
+regenerate it before website/recording use.
+
 Avoid real singer imitation or voice cloning unless the user owns or has explicit consent.
 
 ## Beautiful Song Standard
@@ -199,6 +207,11 @@ lyrics/ja-vocal/ja.json
 The active vocal owns timing and exact word highlighting. Other languages in the same set are translations of that vocal's actual sung lines and may rough-highlight corresponding tokens inside the same current `line.id`.
 
 Correct every public lyric set from at least two evidence sources: ASR/STT from the actual vocal plus input/reference lyrics, second ASR, or manual listening. For close word conflicts, preserve the input/reference lyric when pronunciation, grammar, and phrase structure support it; use ASR to detect real structural differences, not as an unquestioned transcript. Add pinyin for Mandarin, furigana readings for Japanese kanji, and Jyutping readings for Cantonese. Run the publication audit:
+
+For companion-language songs, this evidence rule applies to each playable
+asset separately. Never reuse the master-language transcript, prompt lyric, or
+another vocal's timing as the public lyric source for EN/JP/ZH/Cantonese unless
+the selected audio's own ASR/listening pass confirms it.
 
 ```bash
 musia fun-audit --media-id <media-id>

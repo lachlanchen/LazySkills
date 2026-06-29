@@ -17,6 +17,22 @@ Use this skill after a song, localization, MV, short film, or vocal render has b
 
 The website must match the real audio. Planned lyrics, prompts, and translations are references; ASR/STT, listening, and phrase timing are evidence. If a vocal repeats, skips, garbles, or changes a line, the published lyric set must reflect that vocal or the vocal should stay experimental.
 
+For generated multilingual songs, treat each playable vocal as its own evidence
+source. A Chinese, English, Japanese, Cantonese, or mixed render may diverge
+from the prompt and from the other language renders, even when they came from
+the same master package. Do not copy another vocal's lyric text, timing, or
+translations into a public lyric set unless ASR/listening proves that exact
+audio actually sings the same structure.
+
+The prompt lyric is only a reference until the selected audio confirms it. If a
+vocal is unclear, garbled, skips words, repeats a line, or sings different text:
+
+- correct the active lyric track to the audible line;
+- mark that vocal experimental and keep it out of public/recorded outputs; or
+- regenerate before publication.
+
+Do not prettify translations into lyrics the audio did not sing.
+
 For every selected Musia song that is not explicitly private or experimental,
 website preparation is part of the definition of done. Always prepare the data
 for `fun.lazying.art` after song creation:
@@ -53,7 +69,8 @@ PYTHONNOUSERSITE=1 conda run -n musia python scripts/run_pipeline.py AUDIO \
 
 2. Correct lyrics using at least two sources:
 
-- ASR/STT from the selected vocal or stem;
+- ASR/STT from that same selected vocal or stem, not only the master render or
+  planned lyric;
 - input/reference lyric, second ASR, or manual listening;
 - phrase timing, separated vocal, and repeated listening when they disagree.
 
@@ -157,6 +174,10 @@ muxed audio track.
 Before calling an item public-demo quality:
 
 - listen to every selected vocal;
+- confirm every public vocal has an active-language lyric track corrected from
+  its own ASR/STT/listening pass;
+- confirm prompt-only lyrics were not used as public EN/JP/ZH/Cantonese lyrics
+  unless the exact selected vocal was verified;
 - confirm each vocal has its own lyric set unless ASR proves shared timing is correct;
 - confirm the first highlighted line begins at the real vocal entrance;
 - confirm active-vocal word highlighting does not jump into another language's future line;
