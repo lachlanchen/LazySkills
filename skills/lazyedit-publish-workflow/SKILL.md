@@ -92,7 +92,7 @@ See `$LAZYEDIT_ROOT/references/PUBLISH_RUNBOOK_MUSIA_AND_PLATFORM_SMOOTHING_2026
 - Douyin should reuse drafts and use the JS field replacement path.
 - Xiaohongshu needs popovers closed before final publish.
 - Bilibili upload cooldown/SMS gates should stop retries; do not solve SMS gates with GeeTest/Tuling.
-- Shipinhao Music: publish as music/song, not album; use square covers; confirm cover overlays; fill lyrics, story/`音乐人说`, language, genre, author, originality/agreement when visible; use corrected Musia lyric JSON.
+- Shipinhao Music: publish as music/song, not album; use square covers; confirm cover overlays; fill lyrics, story/`音乐人说`, language, genre, author, originality/agreement when visible; use corrected Musia website vocal JSON for the exact selected audio. Before posting, inspect `*_lyrics.txt` in the package and compare it with `website/data/songs/<song>/lyrics/<vocal>/<lang>.json`, not the original prompt lyric or another vocal's translation JSON. If the live language dropdown lacks English/Japanese, publish and report the fallback instead of silently claiming it was selected.
 
 ## Category Cleanup
 
