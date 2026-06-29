@@ -17,168 +17,364 @@
       "id": "lalachan-xyq-browser-video",
       "path": "skills/lalachan-xyq-browser-video/SKILL.md",
       "category": "browser-video",
-      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "platforms": [
+        "aginti",
+        "codex",
+        "claude",
+        "gemini",
+        "copilot",
+        "generic"
+      ],
       "description": "Prepare, generate, monitor, download, and publish LALACHAN Xiaoyunque videos through the logged-in browser UI with evidence checks."
     },
     {
       "id": "lalachan-story-critic",
       "path": "skills/lalachan-story-critic/SKILL.md",
       "category": "writing",
-      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "platforms": [
+        "aginti",
+        "codex",
+        "claude",
+        "gemini",
+        "copilot",
+        "generic"
+      ],
       "description": "Critique and repair LALACHAN/RaraXia/AyaChan/SasaKun story drafts, dialogue, and Xiaoyunque prompts so they read naturally, avoid AI-like language, and keep props, causality, duration, and character voices clear."
     },
     {
       "id": "lazyedit-publish-workflow",
       "path": "skills/lazyedit-publish-workflow/SKILL.md",
       "category": "publishing",
-      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "platforms": [
+        "aginti",
+        "codex",
+        "claude",
+        "gemini",
+        "copilot",
+        "generic"
+      ],
       "description": "Publish LazyEdit and LALACHAN/RARACHAN videos through LazyEdit, AutoPubMonitor, AutoPublish, and platform queues."
     },
     {
-      "id": "musai-song-localization",
-      "path": "skills/musai-song-localization/SKILL.md",
+      "id": "musia-song-localization",
+      "path": "skills/musia-song-localization/SKILL.md",
       "category": "audio-music",
-      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
-      "description": "Analyze songs with Musai, extract bass/drums/vocals/other stems, lyrics, beats, and chords, adapt lyrics for target languages, prepare same-music singing localization artifacts, and fix Fun Lazying Art per-vocal lyric timing."
+      "platforms": [
+        "aginti",
+        "codex",
+        "claude",
+        "gemini",
+        "copilot",
+        "generic"
+      ],
+      "description": "Analyze songs with Musia, extract stems, lyrics, beats, and chords, adapt lyrics for target languages, prepare same-music singing localization artifacts, and fix Fun Lazying Art per-vocal lyric timing."
     },
     {
-      "id": "musai-music-production",
-      "path": "skills/musai-music-production/SKILL.md",
+      "id": "musia-music-production",
+      "path": "skills/musia-music-production/SKILL.md",
       "category": "audio-music",
-      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
-      "description": "Generate, correct, review, publish, and hand off original Musai songs, including ACE-Step full-song projects, vocal QA, correction passes, Fun Lazying Art website publishing, per-vocal lyric sets, and LALACHAN song-first video workflows."
+      "platforms": [
+        "aginti",
+        "codex",
+        "claude",
+        "gemini",
+        "copilot",
+        "generic"
+      ],
+      "description": "Generate, correct, review, publish, and hand off original Musia songs, including ACE-Step full-song projects, vocal QA, correction passes, Fun Lazying Art website publishing, per-vocal lyric sets, and LALACHAN song-first video workflows."
+    },
+    {
+      "id": "musia-fun-website-item",
+      "path": "skills/musia-fun-website-item/SKILL.md",
+      "category": "audio-music",
+      "platforms": [
+        "aginti",
+        "codex",
+        "claude",
+        "gemini",
+        "copilot",
+        "generic"
+      ],
+      "description": "Prepare, audit, fix, document, and publish Fun Lazying Art website media items for Musia with ASR-corrected lyrics, multilingual lyric JSON, timing, covers, manifests, validation, and player recording."
+    },
+    {
+      "id": "musia-lalachan-mv-workflow",
+      "path": "skills/musia-lalachan-mv-workflow/SKILL.md",
+      "category": "audio-music",
+      "platforms": [
+        "aginti",
+        "codex",
+        "claude",
+        "gemini",
+        "copilot",
+        "generic"
+      ],
+      "description": "Create song-first LALACHAN/Xiaoyunque MV handoffs from reviewed Musia songs, including full-song story MVs, chorus or climax cuts, upload-label prompts, song-locked audio replacement, and LazyEdit-ready outputs."
     },
     {
       "id": "npm-publishing",
       "path": "skills/npm-publishing/SKILL.md",
       "category": "release-engineering",
-      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "platforms": [
+        "aginti",
+        "codex",
+        "claude",
+        "gemini",
+        "copilot",
+        "generic"
+      ],
       "description": "Prepare, publish, and verify npm packages, including token-safe local auth, 2FA, trusted publishing, provenance, and install smoke tests."
     },
     {
       "id": "publish-repo",
       "path": "skills/publish-repo/SKILL.md",
       "category": "release-engineering",
-      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "platforms": [
+        "aginti",
+        "codex",
+        "claude",
+        "gemini",
+        "copilot",
+        "generic"
+      ],
       "description": "Publish a local git repository to GitHub from Codex or AgInTi, including profile-style multilingual README generation, LazyingArt banner/support panels, sponsors, CITATION.cff, remote creation, push, homepage, description, and topics."
     },
     {
       "id": "media-transcription-report",
       "path": "skills/media-transcription-report/SKILL.md",
       "category": "media-reporting",
-      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "platforms": [
+        "aginti",
+        "codex",
+        "claude",
+        "gemini",
+        "copilot",
+        "generic"
+      ],
       "description": "Transcribe audio or video into timestamped Markdown with optional WhisperX diarization, then produce neutral Markdown, LaTeX, and PDF reports without leaking private source context."
     },
     {
       "id": "video-face-image-replacement",
       "path": "skills/video-face-image-replacement/SKILL.md",
       "category": "video-editing",
-      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "platforms": [
+        "aginti",
+        "codex",
+        "claude",
+        "gemini",
+        "copilot",
+        "generic"
+      ],
       "description": "Replace or cover one or more detected video faces with supplied or generated image assets, including multi-person animal masks with stable identity tracking, keyed-background removal, alpha compositing, and audio-preserving output."
     },
     {
       "id": "transcript-video-section-splitter",
       "path": "skills/transcript-video-section-splitter/SKILL.md",
       "category": "media-clipping",
-      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "platforms": [
+        "aginti",
+        "codex",
+        "claude",
+        "gemini",
+        "copilot",
+        "generic"
+      ],
       "description": "Transcribe a video, derive topic-based section boundaries from the transcript, and split a source or edited video into named clips with a manifest."
     },
     {
       "id": "ocr-book-polisher",
       "path": "skills/ocr-book-polisher/SKILL.md",
       "category": "books",
-      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "platforms": [
+        "aginti",
+        "codex",
+        "claude",
+        "gemini",
+        "copilot",
+        "generic"
+      ],
       "description": "Correct scanned/OCR books into page-aware Markdown, booklike TeX, and validated PDFs while preserving figures, captions, and TOC structure."
     },
     {
       "id": "libgen-safe-book-browser",
       "path": "skills/libgen-safe-book-browser/SKILL.md",
       "category": "books",
-      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "platforms": [
+        "aginti",
+        "codex",
+        "claude",
+        "gemini",
+        "copilot",
+        "generic"
+      ],
       "description": "Open LibGen book search/detail pages through Chrome/CDP while blocking Trip.com and ad redirects, select candidates by exact metadata and PDF > EPUB > other format preference, and report safe detail-page evidence."
     },
     {
       "id": "pocketpolyglot-bookmaker",
       "path": "skills/pocketpolyglot-bookmaker/SKILL.md",
       "category": "multilingual-books",
-      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "platforms": [
+        "aginti",
+        "codex",
+        "claude",
+        "gemini",
+        "copilot",
+        "generic"
+      ],
       "description": "Build LinguaLeaf/PocketPolyglot multilingual interlinear books with JSON chunks, ruby/pinyin/furigana, grammar roles, and bidirectional PDFs."
     },
     {
       "id": "aginti-agentlink",
       "path": "skills/aginti-agentlink/SKILL.md",
       "category": "agent-collaboration",
-      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "platforms": [
+        "aginti",
+        "codex",
+        "claude",
+        "gemini",
+        "copilot",
+        "generic"
+      ],
       "description": "Coordinate multiple agent sessions across machines, repos, tools, and runtimes using safe handoff packets, peer identity maps, private session mirrors, status probes, and action contracts."
     },
     {
       "id": "wechat-labcanvas-chatops",
       "path": "skills/wechat-labcanvas-chatops/SKILL.md",
       "category": "chatops",
-      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "platforms": [
+        "aginti",
+        "codex",
+        "claude",
+        "gemini",
+        "copilot",
+        "generic"
+      ],
       "description": "Run guarded WeChat chatops for LabCanvas and AgInTi through an isolated Linux GUI, direct DB monitor, fast router, worker queue, media sync, and private send targets."
     },
     {
       "id": "kv260-metavision-lab",
       "path": "skills/kv260-metavision-lab/SKILL.md",
       "category": "embedded-vision",
-      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "platforms": [
+        "aginti",
+        "codex",
+        "claude",
+        "gemini",
+        "copilot",
+        "generic"
+      ],
       "description": "Operate and maintain the AMD Kria KV260 Prophesee Metavision lab, including PetaLinux desktop launchers, custom event viewer, recording API, native viewer recovery, Windows X11 control center, and file-transfer GUI."
     },
     {
       "id": "kv260-windows-arduino",
       "path": "skills/kv260-windows-arduino/SKILL.md",
       "category": "embedded-control",
-      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "platforms": [
+        "aginti",
+        "codex",
+        "claude",
+        "gemini",
+        "copilot",
+        "generic"
+      ],
       "description": "Coordinate KV260 Prophesee event recording with the Windows host and USB Arduino light controller, including LAN identity, COM-port checks, recording API use, repo context, and cross-session handoff memory."
     },
     {
       "id": "kicad-mcp-pcb-design",
       "path": "skills/kicad-mcp-pcb-design/SKILL.md",
       "category": "hardware-design",
-      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "platforms": [
+        "aginti",
+        "codex",
+        "claude",
+        "gemini",
+        "copilot",
+        "generic"
+      ],
       "description": "Install and use KiCad with MCP/agent automation to inspect existing PCB projects, generate or edit boards, save component datasets, validate DRC, export Gerbers/STEP, and render board previews."
     },
     {
       "id": "jlcpcb-ordering",
       "path": "skills/jlcpcb-ordering/SKILL.md",
       "category": "hardware-manufacturing",
-      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "platforms": [
+        "aginti",
+        "codex",
+        "claude",
+        "gemini",
+        "copilot",
+        "generic"
+      ],
       "description": "Prepare, check, submit, and document guarded JLCPCB/JiaLiChuang PCB orders from Gerber ZIPs through China, global, and assistant workflows without leaking private data or paying automatically."
     },
     {
       "id": "wenext-3d-ordering",
       "path": "skills/wenext-3d-ordering/SKILL.md",
       "category": "hardware-manufacturing",
-      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "platforms": [
+        "aginti",
+        "codex",
+        "claude",
+        "gemini",
+        "copilot",
+        "generic"
+      ],
       "description": "Prepare, check, submit-to-payment, document, and troubleshoot Wenext / 未来工场 3D-print orders from STL, STP, or STEP files with guarded checkout boundaries."
     },
     {
       "id": "jlceda-mcp-automation",
       "path": "skills/jlceda-mcp-automation/SKILL.md",
       "category": "hardware-design",
-      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "platforms": [
+        "aginti",
+        "codex",
+        "claude",
+        "gemini",
+        "copilot",
+        "generic"
+      ],
       "description": "Install, activate, launch, and wire JLCEDA/LCEDA Pro with MCP bridge automation, including local Electron CDP launch, jlc-bridge extension setup, gateway checks, and MCP validation."
     },
     {
       "id": "dual-led-constant-power",
       "path": "skills/dual-led-constant-power/SKILL.md",
       "category": "hardware-control",
-      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "platforms": [
+        "aginti",
+        "codex",
+        "claude",
+        "gemini",
+        "copilot",
+        "generic"
+      ],
       "description": "Calibrate and control a dual LED Arduino/MOS/INA219 setup with inverse-LUT constant-power crossfades, telemetry capture, and flicker reduction."
     },
     {
       "id": "parametric-cad-design",
       "path": "skills/parametric-cad-design/SKILL.md",
       "category": "hardware-design",
-      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "platforms": [
+        "aginti",
+        "codex",
+        "claude",
+        "gemini",
+        "copilot",
+        "generic"
+      ],
       "description": "Design, revise, validate, document, and render mechanical CAD parts with OpenSCAD, CadQuery/build123d/OCP, FreeCAD, Blender, STEP/STL/DXF/SVG/PDF exports, print-fit compensation, versioned artifacts, and old STEP reference measurements."
     },
     {
       "id": "remote-gui-virtual-desktop",
       "path": "skills/remote-gui-virtual-desktop/SKILL.md",
       "category": "desktop-automation",
-      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "platforms": [
+        "aginti",
+        "codex",
+        "claude",
+        "gemini",
+        "copilot",
+        "generic"
+      ],
       "description": "Launch, control, debug, and clean up remote Linux GUI apps through clean Xvfb desktops, localhost x11vnc/noVNC bridges, browser app windows, SSH-local ports, and camera/GUI process isolation."
     }
   ]
