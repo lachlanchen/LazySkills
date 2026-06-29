@@ -190,6 +190,12 @@ post-song closeout is:
 6. Add a 16:9 cover at `website/assets/covers/<media-id>-16x9.png`.
 7. Run `npm run website:validate`, `musia fun-audit --media-id <media-id>`, `node --check website/app.js`, and `git diff --check`.
 
+If the song will be packaged for LazyEdit/Shipinhao Music or YouTube Music,
+the package must use the corrected active-vocal website lyric JSON as its
+lyrics source. Do not hand off the original prompt lyric, planned translation,
+or master-language transcript to the publisher. The music platform lyrics
+should match the corrected `fun.lazying.art` lyric set for that exact audio.
+
 For `fun.lazying.art`, use the `musia-fun-website-item` publication workflow before calling a website item finished. Use shared `textTracks[]` only when all playable vocals truly sing the same line structure. If English, Chinese, and Japanese renders are independent or imperfect, create per-vocal `lyricSets[]`:
 
 ```text

@@ -180,6 +180,11 @@ audio, the English set against the selected English audio, and the Chinese set
 against the selected Chinese audio. Do not publish prompt-only lyrics or a
 master vocal transcript as if it described another language render.
 
+When handing a localized song to LazyEdit/Shipinhao Music, pass the corrected
+active-vocal website lyric JSON as the publisher lyric source. Do not pass the
+source lyric, target draft, master-language transcript, or another vocal's JSON
+unless it was corrected against the selected audio.
+
 ```bash
 npm run website:validate
 musia fun-audit --media-id <media-id>

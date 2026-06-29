@@ -47,6 +47,11 @@ conda activate lazyedit
 
 - Do not publish to real platforms just to debug packaging, subtitles, or logo output. Use `--no-publish` first, inspect the generated ZIP/final MP4, then publish exactly once when the package is correct.
 - Real publishes should use polished/corrected subtitles and the configured LazyEdit Studio logo unless the user explicitly asks otherwise. Verify logo settings with `curl -fsS $LAZYEDIT_API/api/ui-settings/logo_settings | jq .`; normal logo outputs end in `_subtitles_logo.mp4`.
+- For Musia pure-music publishes, lyrics must come from the corrected Musia
+  website/publish lyric JSON for the exact selected vocal, not from the original
+  prompt lyric, draft lyric, or master-language lyric file. If only a draft is
+  available, stop and run the Musia ASR/listening correction workflow before
+  creating a Shipinhao Music or YouTube Music package.
 - For LALACHAN/RARACHAN generated videos, use the full story/prompt/script for subtitle correction only. Treat it as a reference, not a verbatim transcript: fix clear ASR errors and broken phrases without inventing unsupported dialogue.
 - Do not pass a full video script as metadata context. Metadata must be concise and viewer-facing, not a storyboard dump. Prefer `--correction-prompt-file FULL_SCRIPT.md` plus `--metadata-prompt-file temp/METADATA_BRIEF.md`, where the metadata brief contains only hook, characters, tone, payoff, keywords, and platform notes.
 - If correction is expected to recover missing generated-video dialogue, inspect `DATA/VIDEO_FOLDER/*_mixed_polished.md` before publish so missed or over-recovered subtitles are caught before any platform post.
@@ -277,6 +282,20 @@ video ZIP contract. LazyEdit creates the metadata, lyrics, audio copy, YouTube
 art-track MP4, manifest, original-proof ZIP, and cover candidates; AutoPublish
 only consumes the ZIP with `publish_shipinhao_music=true` and/or
 `publish_youtube_music=true`.
+
+For Musia songs, `--lyrics-json` is a publication-critical field. Point it to
+the final corrected website lyric JSON for the selected audio asset, for
+example:
+
+```text
+/home/lachlan/ProjectsLFS/Musia/website/data/songs/<media-id>/lyrics/<vocal-set>/<active-lang>.json
+```
+
+Do not pass `lyrics.txt`, prompt drafts, planning translations, or a companion
+language's JSON unless that exact file was corrected against the selected vocal.
+If the music package lyrics disagree with `fun.lazying.art`, rebuild the package
+before publishing. Shipinhao Music should display the same corrected lyrics as
+the website for that vocal.
 
 ```bash
 python scripts/lazyedit_music_package.py \

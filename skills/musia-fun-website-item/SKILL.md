@@ -48,6 +48,12 @@ website/data/catalog.json
 
 Then validate both repos before final response.
 
+When the song will also be published through LazyEdit/Shipinhao Music, the
+music package must reuse the corrected website lyric JSON for the selected
+vocal. Pass that exact active-language file as `--lyrics-json`; never hand off
+the original prompt lyric, draft lyric, or another vocal's lyric set as the
+music-platform lyric source.
+
 Do not let ASR override a good intended lyric just because the recognizer chose
 a nearby word. If the input/reference lyric is phonetically close, fits the
 sentence better, and the phrase structure has not changed, preserve the input
@@ -189,6 +195,8 @@ Before calling an item public-demo quality:
 - confirm pinyin/furigana/Jyutping display once and cleanly;
 - confirm the chord row has a current highlighted chord when chord data exists;
 - confirm title, artist `Musia`, cover, social image, and localized titles are present;
+- if publishing to LazyEdit/Shipinhao Music, confirm the package uses the same
+  corrected active-vocal lyric JSON as the website;
 - confirm every requested recording has a Nutstore copy under
   `/home/lachlan/Nutstore Files/Projects/Musia/`;
 - document ASR correction decisions and caveats under `references/`.
