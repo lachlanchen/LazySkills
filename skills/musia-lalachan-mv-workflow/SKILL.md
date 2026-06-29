@@ -44,6 +44,46 @@ references/full-vs-chorus-mv.md
 9. If needed, mux the Musia master audio back in.
 10. Publish through normal LazyEdit logic only when public posting is requested.
 
+## Handoff Package Rule
+
+When the user asks for an MV handoff, research note, or LALACHAN preparation
+from a Musia song, create a concrete package instead of only giving advice.
+For a selected, non-private song, write:
+
+```text
+$MUSIA_ROOT/references/MusiaVideo/<song>-mv-handoff-YYYY-MM-DD.md
+$MUSIA_ROOT/data/creative_projects/<project>/mv/<mv-id>/README.md
+$MUSIA_ROOT/data/creative_projects/<project>/mv/<mv-id>/STORY.md
+$MUSIA_ROOT/data/creative_projects/<project>/mv/<mv-id>/XYQ_PROMPT_FULL_MV.md
+$MUSIA_ROOT/data/creative_projects/<project>/mv/<mv-id>/SEGMENTS.json
+$MUSIA_ROOT/data/creative_projects/<project>/mv/<mv-id>/ASSET_LIST.md
+$MUSIA_ROOT/data/creative_projects/<project>/mv/<mv-id>/SOUND_MIX_NOTES.md
+$MUSIA_ROOT/data/creative_projects/<project>/mv/<mv-id>/PROMPT_SHORT_AGENT_MESSAGE.md
+$MUSIA_ROOT/data/creative_projects/<project>/mv/<mv-id>/MUSIA_LALACHAN_MV_HANDOFF.json
+```
+
+Also mirror the operator-facing note and prompt into LALACHAN when that repo is
+available:
+
+```text
+$LALACHAN_ROOT/references/MusiaVideo/<song>-mv-handoff-YYYY-MM-DD.md
+$LALACHAN_ROOT/references/prompts/YYYY-MM-DD-<song>-full-mv-<duration>s.md
+```
+
+Use local paths in handoff docs and JSON for operators, but never paste local
+paths into the Xiaoyunque prompt. The prompt should use uploaded-asset labels
+such as `图1`, `图2`, and `音频1`.
+
+If the song is a public Fun Lazying Art item, include the public media URL,
+the `MusiaSongs` MP3 URL, and the preferred local MP3 path under
+`../MusiaSongs/audio/`. Prefer the local MP3 for upload; use the public URL for
+reference and reproducibility.
+
+If the song title or hook is teasing, rude in literal translation, or culturally
+ambiguous, rewrite the MV concept so it is affectionate and visually safe. For
+example, `小小猪` should become a cute rest mascot/cloud pig rather than an
+insulting depiction.
+
 ## Chorus / Climax Workflow
 
 1. Locate the strongest 10-30s hook with listening, waveform, lyrics, or analysis artifacts.
