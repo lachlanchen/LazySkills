@@ -30,7 +30,7 @@ experimental and leave it out of the public/final path. Regenerate with the
 best full-song model instead, even if EN/JP/ZH end up as independent high-quality
 versions rather than one perfectly shared melody.
 
-Planned lyrics are intent, not truth. After generation, use listening and ASR/STT evidence to decide what the render actually sang. If the rendered vocal differs from the planned lyric, document the mismatch and publish lyrics/timing that match the audio.
+Planned lyrics are intent, not blind truth. After generation, use listening and ASR/STT evidence to decide what the render actually sang. If the rendered vocal repeats, skips, reorders, or clearly changes a phrase, document the mismatch and publish lyrics/timing that match the audio. If ASR only substitutes a nearby word and the planned lyric is phonetically close, grammatically stronger, and supported by manual listening, keep the planned lyric; do not let ASR downgrade `When` to `In` or similar close words just because the recognizer guessed that token.
 
 Avoid real singer imitation or voice cloning unless the user owns or has explicit consent.
 
@@ -111,6 +111,30 @@ musia song handoff \
   --cover data/creative_projects/<song-id>/assets/cover-16x9.png
 ```
 
+## Master-Companion Pipeline
+
+Use this as a third opt-in route when the existing full-song and strict
+localization pipelines should stay unchanged, but multilingual versions need
+more consistency:
+
+```bash
+musia master-companion \
+  --title "Song Title" \
+  --master-language ja \
+  --master-audio master.mp3 \
+  --run-analysis \
+  --target-languages en zh-Hans \
+  --control-policy quality-first
+```
+
+This route chooses or generates one high-quality master render, extracts beats,
+chords, phrase timing, and melody/F0, then creates target-language lyric
+adaptation packets, soft full-song companion prompts, and strict SVS handoffs.
+
+Default policy: quality first; change lyrics for rhyme/rhythm/naturalness before
+changing melody; allow small melody changes when strict matching hurts the song;
+publish strict same-melody outputs only after listening and ASR checks.
+
 ## Reusable Script
 
 Primary script:
@@ -146,6 +170,18 @@ data/creative_projects/<song-id>/
 
 ## Website Publishing Rule
 
+For any selected Musia song that is not explicitly private or experimental,
+prepare the Fun website item before calling the song finished. The default
+post-song closeout is:
+
+1. Copy or transcode selected audio to `../MusiaSongs/audio/`.
+2. Regenerate `../MusiaSongs/audio.json` and commit/push that repo when publishing.
+3. Create or update `website/data/songs/<media-id>/manifest.json`.
+4. Create per-vocal lyric JSON with ruby/pinyin/furigana and timing.
+5. Add or update the song entry in `website/data/catalog.json`.
+6. Add a 16:9 cover at `website/assets/covers/<media-id>-16x9.png`.
+7. Run `npm run website:validate`, `musia fun-audit --media-id <media-id>`, `node --check website/app.js`, and `git diff --check`.
+
 For `fun.lazying.art`, use the `musia-fun-website-item` publication workflow before calling a website item finished. Use shared `textTracks[]` only when all playable vocals truly sing the same line structure. If English, Chinese, and Japanese renders are independent or imperfect, create per-vocal `lyricSets[]`:
 
 ```text
@@ -162,7 +198,7 @@ lyrics/ja-vocal/ja.json
 
 The active vocal owns timing and exact word highlighting. Other languages in the same set are translations of that vocal's actual sung lines and may rough-highlight corresponding tokens inside the same current `line.id`.
 
-Correct every public lyric set from at least two evidence sources: ASR/STT from the actual vocal plus input/reference lyrics, second ASR, or manual listening. Add pinyin for Mandarin, furigana readings for Japanese kanji, and Jyutping readings for Cantonese. Run the publication audit:
+Correct every public lyric set from at least two evidence sources: ASR/STT from the actual vocal plus input/reference lyrics, second ASR, or manual listening. For close word conflicts, preserve the input/reference lyric when pronunciation, grammar, and phrase structure support it; use ASR to detect real structural differences, not as an unquestioned transcript. Add pinyin for Mandarin, furigana readings for Japanese kanji, and Jyutping readings for Cantonese. Run the publication audit:
 
 ```bash
 musia fun-audit --media-id <media-id>

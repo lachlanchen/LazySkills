@@ -17,6 +17,28 @@ Use this skill after a song, localization, MV, short film, or vocal render has b
 
 The website must match the real audio. Planned lyrics, prompts, and translations are references; ASR/STT, listening, and phrase timing are evidence. If a vocal repeats, skips, garbles, or changes a line, the published lyric set must reflect that vocal or the vocal should stay experimental.
 
+For every selected Musia song that is not explicitly private or experimental,
+website preparation is part of the definition of done. Always prepare the data
+for `fun.lazying.art` after song creation:
+
+```text
+selected audio -> ../MusiaSongs/audio/*.mp3
+../MusiaSongs/audio.json
+website/data/songs/<media-id>/manifest.json
+website/data/songs/<media-id>/lyrics/<vocal-set>/<lang>.json
+website/assets/covers/<media-id>-16x9.png
+website/data/catalog.json
+```
+
+Then validate both repos before final response.
+
+Do not let ASR override a good intended lyric just because the recognizer chose
+a nearby word. If the input/reference lyric is phonetically close, fits the
+sentence better, and the phrase structure has not changed, preserve the input
+lyric. Use ASR to catch real omissions, repeats, order changes, and garbling,
+not to downgrade plausible words such as `When` into `In` when listening and
+context support `When`.
+
 ## Workflow
 
 1. Run or collect analysis for every public vocal:
@@ -35,11 +57,16 @@ PYTHONNOUSERSITE=1 conda run -n musia python scripts/run_pipeline.py AUDIO \
 - input/reference lyric, second ASR, or manual listening;
 - phrase timing, separated vocal, and repeated listening when they disagree.
 
-Use this priority:
+Use this evidence policy:
 
 ```text
-audio truth > ASR text > input/reference lyric > translation draft
+actual audible structure > close intended lyric > ASR guess > translation draft
 ```
+
+For close word-level conflicts, prefer the input/reference lyric when it is
+sound-close and grammatically/musically stronger. Override it only when ASR plus
+listening show a real structural change: missing line, repeated line, changed
+line order, different phrase length, or a clearly different word.
 
 Normalize model-facing language codes before ASR/model calls: use `zh` for
 Mandarin when the website track is `zh-Hans` / `zh-Hant`, and use `yue` for
@@ -124,6 +151,8 @@ Before calling an item public-demo quality:
 - confirm translation highlighting stays within the current line ID;
 - confirm the visible text language matches the track code, especially for
   Japanese/Chinese/Cantonese tracks;
+- confirm close ASR substitutions were corrected against the intended lyric
+  when pronunciation and context support the intended word;
 - confirm pinyin/furigana/Jyutping display once and cleanly;
 - confirm the chord row has a current highlighted chord when chord data exists;
 - confirm title, artist `Musia`, cover, social image, and localized titles are present;
