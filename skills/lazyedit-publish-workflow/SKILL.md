@@ -101,6 +101,13 @@ See `$LAZYEDIT_ROOT/references/PUBLISH_RUNBOOK_MUSIA_AND_PLATFORM_SMOOTHING_2026
   such as DistroKid, TuneCore, CD Baby, RouteNote, or SoundOn. For official
   YouTube Music/Spotify/Apple Music delivery, use a distributor; LazyEdit's
   YouTube art-track MP4 is normal YouTube publishing, not DSP delivery.
+- Bandcamp music publishing is prepared but guarded. Use `--bandcamp-audio`
+  with a real WAV/AIFF/FLAC master; never use an MP3-derived WAV as the
+  Bandcamp source. First run with `--platforms bandcamp_music --post --test` so
+  AutoPublish opens the port-5008 Bandcamp browser for registration/login and
+  form inspection. Set `BANDCAMP_UPLOAD_URL` if the account has a specific
+  artist upload page. Leave `BANDCAMP_PUBLISH_PUBLIC` unset until price,
+  payment, metadata, and account settings have been manually verified.
 
 ## Category Cleanup
 
