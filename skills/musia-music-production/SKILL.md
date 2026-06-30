@@ -95,6 +95,15 @@ pronunciation-prep gate before ACE/YuE generation:
 - add ACE-facing caption guidance for the risky words, and after generation
   compare ASR/listening against the pinyin guide before publishing.
 
+When the user's quality goal is a beautiful song rather than a literal poetry
+recitation, prefer a rewritten/adapted singable lyric route like the successful
+`侠客行` workflow. Do not force the full original poem into ACE unless the user
+explicitly asks for original-text-only output. Label full-original-poem renders
+as `ACE Poetry Demo` or experimental when ASR shows garbling. For the adapted
+route, preserve the poem's spirit, iconic images, and key lines, but rewrite
+into short breath-friendly verse/pre-chorus/chorus/bridge sections before
+generation.
+
 Do not cram words into the song just to preserve every detail. Use musical
 space: 留白, held vowels, rests, repeated hooks, and breath-friendly pauses.
 Some lines should be sparse and some can be fuller; the goal is a proper fit

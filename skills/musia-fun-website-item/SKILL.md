@@ -107,6 +107,12 @@ PYTHONNOUSERSITE=1 conda run -n musia python scripts/run_pipeline.py AUDIO \
   --language LANG
 ```
 
+For final public lyric correction, prefer a `large-v3` correction pass when it
+is feasible, especially for Chinese, Japanese, Cantonese, classical poetry, or
+any song that will be recorded/published. Use `small`/`medium` only as quick
+screening or cross-checks. If `large-v3` cannot run, document the fallback in
+the production note and treat uncertain lyrics as experimental.
+
 2. Correct lyrics using at least two sources:
 
 - ASR/STT from that same selected vocal or stem, not only the master render or
