@@ -84,6 +84,13 @@ space: 留白, held vowels, rests, repeated hooks, and breath-friendly pauses.
 Some lines should be sparse and some can be fuller; the goal is a proper fit
 to the melody and emotion, not the fewest words and not the most words.
 
+Do not overcorrect into lyrics that are too sparse. For ACE-style 80-95 second
+short songs, prior successful Musia renders usually use a complete verse /
+pre-chorus / chorus / bridge-or-outro shape with many short lines: roughly
+30-45 CJK lines, average 4-7 CJK characters per line, and about 150-280 total
+CJK lyric characters. Use this as a density target, then simplify only when
+ASR/listening shows the model is skipping or garbling lines.
+
 Before generating or accepting EN/JP/ZH lyrics, do an LLM lyric-quality pass
 when an API/model is available. Use OpenAI, DeepSeek, or a strong Codex/GPT-5.5
 reasoning pass to check:
