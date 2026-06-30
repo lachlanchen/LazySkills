@@ -23,6 +23,13 @@ be sparse and some can be fuller; fit the song rather than cramming words.
 - Avoid cloning or imitating a real singer unless the user owns or has consent for that voice.
 - Do not reuse one vocal render's lyric timeline for another render unless listening/ASR confirms the renders truly match.
 - Planned/reference lyrics are correction evidence, not blind truth. The published lyric timing must follow the actual audible vocal, but close ASR word substitutions should be corrected back to the intended lyric when pronunciation, grammar, and phrase structure support the intended word.
+- Before publishing, run a missing-planned-phrase audit: compare the source or
+  planned lyric against the corrected active-vocal JSON and inspect ASR timing
+  gaps plus long merged ASR segments. ASR can swallow short repeated phrases or
+  soft poetic CJK phrases. If listening supports the planned phrase, add it back
+  with real timing, translations, and ruby/pinyin; if not, document it as
+  skipped. If the user later catches a missed phrase, patch the website data and
+  redeploy rather than leaving the public lyrics stale.
 - After generation, every target vocal must be transcribed and listened to
   independently before public lyrics are written. Prompt lyrics are not enough:
   if the English, Japanese, Chinese, Cantonese, or mixed render sings something
@@ -35,6 +42,11 @@ Default repo path:
 ```text
 /home/lachlan/ProjectsLFS/Musia
 ```
+
+Runtime rule: use the unified `musia` conda environment for Musia Python tools.
+Prefer the repo CLI wrapper because it automatically routes through
+`conda run -n musia python ...`; only bypass it with `MUSIA_PYTHON` or
+`MUSIA_NO_CONDA=1` when explicitly needed.
 
 Run local analysis:
 
@@ -173,6 +185,12 @@ lyrics/ja-vocal/ja.json
 Each playable audio asset must set `lyricSetId`. The active vocal language owns timing and exact current-word highlighting. Other languages in the same set translate that active vocal's real sung lines and may rough-highlight corresponding tokens inside the same current `line.id`. If the vocal misses, changes, or repeats a planned line, reflect that fact.
 
 Correct every public lyric set from at least two evidence sources: ASR/STT from the actual vocal plus input/reference lyrics, second ASR, or manual listening. When ASR and input disagree only on a close word, keep the input lyric if it is sound-close and makes better sentence/musical sense. Override the input only for real audible structure changes such as skipped, repeated, reordered, garbled, or clearly different lines. Add pinyin for Mandarin, furigana readings for Japanese kanji, and Jyutping readings for Cantonese. Run:
+
+This correction must include a missing-planned-phrase pass: every source lyric
+phrase should be accounted for as `audible`, `merged into line <id>`,
+`added in timing gap <start-end>`, or `not audible/skipped`. Update the active
+lyric JSON, translation JSON, manifest timeline, references, and website deploy
+when this pass changes the public item.
 
 For generated companion vocals, do this per vocal, not per project. The
 Japanese public lyric set must be corrected against the selected Japanese

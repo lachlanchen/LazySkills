@@ -13,6 +13,21 @@ Use this skill after a song, localization, MV, short film, or vocal render has b
 /home/lachlan/ProjectsLFS/Musia
 ```
 
+## Runtime Rule
+
+Use the unified `musia` conda environment for Musia Python tools. Prefer the
+repo CLI wrapper because it automatically routes through
+`conda run -n musia python ...`:
+
+```bash
+node bin/musia.js fun-validate
+node bin/musia.js fun-audit --media-id <media-id>
+node bin/musia.js fun-record --media-id <media-id>
+```
+
+Only bypass this with `MUSIA_PYTHON` or `MUSIA_NO_CONDA=1` when the user
+explicitly asks or a tool cannot run inside the shared environment.
+
 ## Core Rule
 
 The website must match the real audio. Planned lyrics, prompts, and translations are references; ASR/STT, listening, and phrase timing are evidence. If a vocal repeats, skips, garbles, or changes a line, the published lyric set must reflect that vocal or the vocal should stay experimental.
@@ -91,6 +106,22 @@ sound-close and grammatically/musically stronger. Override it only when ASR plus
 listening show a real structural change: missing line, repeated line, changed
 line order, different phrase length, or a clearly different word.
 
+Run a missing-planned-phrase audit before publication. Compare the planned or
+reference lyric line-by-line against the corrected active-vocal track and ask:
+
+- Which planned phrases are not represented in any published line?
+- Did ASR swallow a short phrase into a long merged segment, especially repeated
+  CJK phrases such as `一点，一点`?
+- Is there a timing gap between ASR segments where a soft or garbled planned
+  phrase may still be audible, such as `梦也缱绻`?
+- Does listening support adding the planned phrase even though ASR omitted it?
+
+If a phrase is sound-supported, add it to the active-language JSON and to every
+translation track in the same lyric set, using either the merged line timing or
+a new line inside the gap. Update the manifest timeline and the production note
+under `references/`. If the website was already public, commit, push, and wait
+for the Pages deploy; do not leave live lyrics stale.
+
 Normalize model-facing language codes before ASR/model calls: use `zh` for
 Mandarin when the website track is `zh-Hans` / `zh-Hant`, and use `yue` for
 Cantonese when the website track is `yue-Hant` / `yue-Hans`. Keep the public
@@ -164,7 +195,8 @@ musia fun-record --media-id <media-id> --skip-intro
 ```
 
 When a Fun player recording is created, always sync the final MP4 to the
-Nutstore Musia share folder before reporting completion:
+Nutstore Musia share folder before reporting completion. The recorder now does
+this by default; use `--no-sync` only for private or temporary captures:
 
 ```bash
 mkdir -p "/home/lachlan/Nutstore Files/Projects/Musia"
@@ -192,6 +224,8 @@ Before calling an item public-demo quality:
   Japanese/Chinese/Cantonese tracks;
 - confirm close ASR substitutions were corrected against the intended lyric
   when pronunciation and context support the intended word;
+- confirm the missing-planned-phrase audit was done, including merged ASR
+  phrases and timing gaps between segments;
 - confirm pinyin/furigana/Jyutping display once and cleanly;
 - confirm the chord row has a current highlighted chord when chord data exists;
 - confirm title, artist `Musia`, cover, social image, and localized titles are present;

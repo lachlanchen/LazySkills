@@ -13,6 +13,21 @@ Use this skill for original song creation and review. For strict same-song local
 /home/lachlan/ProjectsLFS/Musia
 ```
 
+## Runtime Rule
+
+Use the unified `musia` conda environment for Musia Python tools. Prefer the
+repo CLI wrapper because it automatically routes through
+`conda run -n musia python ...`:
+
+```bash
+node bin/musia.js doctor --json
+node bin/musia.js song review --project-dir data/creative_projects/<song-id>
+node bin/musia.js fun-validate
+```
+
+Only bypass this with `MUSIA_PYTHON` or `MUSIA_NO_CONDA=1` when the user
+explicitly asks or a tool cannot run inside the shared environment.
+
 ## Core Rule
 
 Do not accept a generated song just because a WAV exists. A usable song needs:
@@ -31,6 +46,16 @@ best full-song model instead, even if EN/JP/ZH end up as independent high-qualit
 versions rather than one perfectly shared melody.
 
 Planned lyrics are intent, not blind truth. After generation, use listening and ASR/STT evidence to decide what the render actually sang. If the rendered vocal repeats, skips, reorders, or clearly changes a phrase, document the mismatch and publish lyrics/timing that match the audio. If ASR only substitutes a nearby word and the planned lyric is phonetically close, grammatically stronger, and supported by manual listening, keep the planned lyric; do not let ASR downgrade `When` to `In` or similar close words just because the recognizer guessed that token.
+
+Before calling the lyric correction complete, run a missing-planned-phrase audit:
+compare the planned/reference lyric against the corrected active-vocal lines and
+look for prompt phrases that ASR omitted, merged into a long segment, or placed
+inside a timing gap. Short repeated or soft CJK phrases can be swallowed by ASR
+even when audible. If listening supports the intended phrase, add it back with
+real timing and translations; if it is not audible, document that it was skipped.
+When the user later identifies a missed phrase, patch the website lyric JSON,
+manifest timeline, and references immediately, then push/deploy if the item is
+already public.
 
 For multilingual companion renders, run that correction independently for each
 selected audio. A Japanese render needs Japanese ASR/listening evidence; an
@@ -213,6 +238,12 @@ lyrics/ja-vocal/ja.json
 The active vocal owns timing and exact word highlighting. Other languages in the same set are translations of that vocal's actual sung lines and may rough-highlight corresponding tokens inside the same current `line.id`.
 
 Correct every public lyric set from at least two evidence sources: ASR/STT from the actual vocal plus input/reference lyrics, second ASR, or manual listening. For close word conflicts, preserve the input/reference lyric when pronunciation, grammar, and phrase structure support it; use ASR to detect real structural differences, not as an unquestioned transcript. Add pinyin for Mandarin, furigana readings for Japanese kanji, and Jyutping readings for Cantonese. Run the publication audit:
+
+Also check missing planned phrases before publishing: scan any ASR timing gap
+and any unusually long merged ASR segment against the source lyric. Add
+sound-supported phrases to the active JSON and matching translation tracks; do
+not leave the public site or LazyEdit/Shipinhao handoff using the older
+incomplete lyric set.
 
 For companion-language songs, this evidence rule applies to each playable
 asset separately. Never reuse the master-language transcript, prompt lyric, or
