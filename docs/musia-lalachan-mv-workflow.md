@@ -8,15 +8,23 @@ This document explains how to turn a reviewed Musia song into a LALACHAN/Xiaoyun
 
 Use for a complete music video. This is best when the song is long enough for a story and the user wants the whole emotional arc.
 
+Cost gate: full-song planning does not imply approval for an expensive render.
+LALACHAN should still default to `Seedance 2.0 Mini 体验版` / the cheapest
+visible suitable model. If the only practical full-song path is `创作 Agent`,
+`智能长视频`, or another high-credit route, inspect the visible estimate and
+pause for explicit approval. If the user says cheapest/Mini, generate a chorus
+or shorter Mini version unless they approve the full-song cost.
+
 Typical plan:
 
 1. Read the selected Musia song handoff, lyrics, duration, and analysis.
 2. Write a story with beginning, tension, climax, and ending.
 3. Build timestamped segments that match the song sections.
 4. Write a Xiaoyunque prompt with uploaded references only as `图1`, `图2`, `音频1`.
-5. Generate video, download it, verify duration and audio.
-6. If the music was changed, mux the Musia master audio back in.
-7. Publish through normal LazyEdit logic only when requested.
+5. Verify visible model/cost before paid rendering.
+6. Generate video, download it, verify duration and audio.
+7. If the music was changed, mux the Musia master audio back in.
+8. Publish through normal LazyEdit logic only when requested.
 
 Use this for the **Aya Chan Hikari Ame** full MV.
 

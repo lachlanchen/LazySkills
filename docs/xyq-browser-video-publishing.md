@@ -6,25 +6,28 @@ This document records the browser-first method used to generate, download, and p
 
 1. Use the logged-in Chrome/CDP page instead of API submission.
 2. Select `沉浸式短片` for normal/default LALACHAN runs.
-3. Select a relatively cheap suitable model. `Seedance 2.0 Mini 体验版` / `vipnew` at `单秒限时低至4积分` is preferred for cheap fast runs; if unavailable, choose the relatively cheaper suitable `Seedance 2.0 Fast`, `Fast VIP`, or available Seedance row and continue.
-4. Set duration to `15秒` by default. Use 30s or longer only when explicitly
+3. Select `Seedance 2.0 Mini 体验版` / `vipnew` by default when visible. This is the preferred cheapest path, especially when the UI shows `单秒限时低至4积分`.
+4. If Mini体验版 is unavailable, choose the cheapest visible suitable Seedance row. Do not silently upgrade to an expensive Agent/long-video render.
+5. If the task requires long/full-song video and only `创作 Agent` can do it, inspect the visible credit estimate before any paid action. Pause and ask for explicit approval when the estimate is high or the model is not clearly the cheapest available path.
+6. Set duration to `15秒` by default. Use 30s or longer only when explicitly
    requested.
-5. Set ratio to `4:3` and verify it by reopening the ratio dropdown because the toolbar may still show only `比例`.
-6. Upload all required reference images and wait until every file item is
+7. Set ratio to `4:3` and verify it by reopening the ratio dropdown because the toolbar may still show only `比例`.
+8. Upload all required reference images and wait until every file item is
    `success`. Current LALACHAN default is seven images: words card, robot
    `庄子`, LightMind glasses, patchwork notebook, `R1`, `R3`, and `Trio`.
    Never skip this step and never paste local file paths as a substitute for
    upload.
-7. Fill a compact prompt that includes no-subtitle/no-text requirements and
+9. Fill a compact prompt that includes no-subtitle/no-text requirements and
    references uploaded images only as `图1` through `图7`, never as local paths.
-8. Submit from the actual enabled submit button coordinates, not stale toolbar coordinates.
-9. Poll the generation thread until a video appears.
-10. If direct download fails, use browser-context `fetch` on the active `video.currentSrc`; when it returns `200 video/mp4`, trigger an in-page blob download and copy from `~/Downloads`. If protected direct/browser fetch still fails but the completed page has a visible `下载` button, click the page's own download button and copy the newest MP4 from `~/Downloads`.
-11. Verify with `ffprobe`, copy to `Videos/`, and copy to Nutstore AutoPublish.
+10. Submit from the actual enabled submit button coordinates, not stale toolbar coordinates.
+11. Poll the generation thread until a video appears.
+12. If direct download fails, use browser-context `fetch` on the active `video.currentSrc`; when it returns `200 video/mp4`, trigger an in-page blob download and copy from `~/Downloads`. If protected direct/browser fetch still fails but the completed page has a visible `下载` button, click the page's own download button and copy the newest MP4 from `~/Downloads`.
+13. Verify with `ffprobe`, copy to `Videos/`, and copy to Nutstore AutoPublish.
 
 ## Problems Met
 
 - The long-video Agent path created a ~93s plan and requested 1023 points, exceeding the available 869 points.
+- A full-song MV or Agent workflow can request hundreds of points even when the user expects Mini体验版. Treat this as a cost-policy violation unless the user explicitly approves the visible estimate.
 - The browser CDP port changed; the active controlled page was on `http://127.0.0.1:9344`.
 - The ratio toolbar label did not display `4:3`; the dropdown checkmark was the reliable evidence.
 - One reference image stayed in `uploading`, which kept the submit button disabled.

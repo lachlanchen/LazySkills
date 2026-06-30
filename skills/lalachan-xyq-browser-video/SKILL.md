@@ -125,7 +125,7 @@ Default video setup:
 
 ```text
 Mode: 沉浸式短片 by default for normal LALACHAN video generation
-Model: relatively cheap suitable Seedance option by default
+Model: Seedance 2.0 Mini 体验版 / cheapest visible suitable model by default
 Duration target: 15s by default
 Ratio: 4:3 unless the user requests otherwise
 Prompt language: mainly Chinese
@@ -133,25 +133,28 @@ Always include: 不要字幕，不要生成任何字幕、说明文字、下三�
 Post-generation: always auto-download the finished MP4, verify it, copy it to Videos/, and send it back to the requesting chat. Submit to LazyEdit only when the current request explicitly asks for LazyEdit/import/process or public publishing.
 ```
 
-For default work, target `15秒` and prefer `沉浸式短片` with a relatively cheap
-suitable Seedance option. Use `创作 Agent` / integrated-agent only when the user asks
-for a longer video, when the current active thread is already an Agent thread,
-or when short-film controls cannot satisfy the task. If a generation fails,
-continue in the same current thread by sending a short corrective message; do
-not start a new session or new thread just to retry unless the current thread is
-unusable and the user accepts that cost/risk.
+For default work, target `15秒` and prefer `沉浸式短片` with `Seedance 2.0 Mini
+体验版` / the cheapest visible suitable model. Use `创作 Agent` /
+integrated-agent only when the user explicitly asks for a longer/full-song
+video, when the current active thread is already an Agent thread, or when
+short-film controls cannot satisfy the task. Before any Agent/long-video paid
+action, inspect the visible credit estimate. If it is not clearly the cheapest
+available path, or if it is a high-cost render, pause and ask for approval
+instead of continuing. If a generation fails, continue in the same current
+thread by sending a short corrective message; do not start a new session or new
+thread just to retry unless the current thread is unusable and the user accepts
+that cost/risk.
 
 Use `30秒` or longer only when the user explicitly asks for it.
 
 ## Credit-Budget Rule
 
-- Default to a relatively cheap suitable Seedance model for LALACHAN video generation.
-- Model selection must not block the task. Preferred cheap/fast option: `Seedance 2.0 Mini 体验版` / `vipnew` when the UI shows a cheap rate such as `单秒限时低至4积分`.
-- If Mini体验版/vipnew is unavailable, choose the relatively cheaper suitable `Seedance 2.0 Fast`, `Fast VIP`, or available Seedance row and continue.
-- Do not treat the `VIP` label, missing preferred model, or missing exact cost text as a blocker. Pause only for real non-model blockers such as no credits, recharge/payment approval, disabled submit, login, CAPTCHA, or an explicit user budget limit.
-- Use normal `Seedance 2.0` only when the user explicitly asks for non-Fast or higher quality over credit savings.
-- If the user asks for cheapest, inspect visible options when possible and choose a relatively cheaper suitable model instead of a fixed default.
-- Do not continue an `智能长视频` / Agent render only when it hits a real blocker such as insufficient credits, recharge/payment confirmation, or explicit budget conflict.
+- Default to `Seedance 2.0 Mini 体验版` / `vipnew` when the UI shows it, especially when it shows a cheap rate such as `单秒限时低至4积分`.
+- If Mini体验版/vipnew is unavailable, choose the cheapest visible suitable Seedance row. Do not silently upgrade to a high-credit long-video/Agent render.
+- Treat visible high credit estimates, non-Mini paid long renders, recharge/payment approval, insufficient credits, disabled submit, login, CAPTCHA, or explicit user budget limits as blockers that require reporting before paid submission.
+- Use normal `Seedance 2.0`, Fast VIP, Agent long-video, or other more expensive routes only when the user explicitly asks for that quality/duration/capability or confirms the visible cost.
+- If the user asks for cheapest, Mini体验版 is the target. If the requested duration cannot be made with Mini, offer a shorter Mini version or ask before using Agent.
+- Do not continue an `智能长视频` / Agent render when it requests a large point spend unless the user has explicitly approved that exact high-cost render.
 - For `4:3`, verify the opened ratio menu checkmark or screenshot because the compact toolbar may still show only `比例`.
 - Never waste credits on avoidable retries: do not click `生成视频`, `提交`, or
   any paid action twice unless the page proves the first attempt failed without

@@ -25,6 +25,14 @@ export LAZYSKILLS_ROOT="${LAZYSKILLS_ROOT:-/path/to/LazySkills}"
 
 **Chorus / climax MV**: choose when the user wants a short social cut, has limited credits, asks for 副歌/高潮部分, or wants to test the strongest hook before generating a long version.
 
+Cost rule: full-song planning is allowed, but paid full-song/Agent rendering is
+not automatically allowed. LALACHAN defaults to `Seedance 2.0 Mini 体验版` /
+the cheapest visible suitable model. If the full-song workflow requires
+`创作 Agent`, `智能长视频`, or another high-credit route, inspect the visible
+credit estimate and pause for explicit approval before paid generation. If the
+user asks for cheapest/Mini, make a chorus/climax cut or shorter Mini version
+unless they explicitly approve the expensive full-song render.
+
 For deeper mode selection, read:
 
 ```text
@@ -40,9 +48,10 @@ references/full-vs-chorus-mv.md
 5. Keep dialogue short and place it in musical gaps.
 6. For character MVs, explicitly state that the characters can perform the song: one lead-singer character, short chorus echo, clapping, dancing, or rally shouts. Keep music primary.
 7. If the generated storyboard duration drifts away from the song duration, correct it before paid render.
-8. Generate the video, download it, and verify duration/audio with `ffprobe`.
-9. If needed, mux the Musia master audio back in.
-10. Publish through normal LazyEdit logic only when public posting is requested.
+8. Before paid generation, verify the visible model/cost. Use Mini/cheapest when possible; pause if the page requests a high-credit Agent render.
+9. Generate the video, download it, and verify duration/audio with `ffprobe`.
+10. If needed, mux the Musia master audio back in.
+11. Publish through normal LazyEdit logic only when public posting is requested.
 
 ## Handoff Package Rule
 

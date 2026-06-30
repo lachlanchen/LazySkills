@@ -79,6 +79,22 @@ Before generating, write a compact producer brief with:
 
 Prefer fewer stronger lines over dense poetry. For Chinese/Japanese, reduce pronunciation risk by using natural, short phrases and correcting after ASR/listening.
 
+For classical Chinese poems, especially Li Bai/Tang poetry, run a
+pronunciation-prep gate before ACE/YuE generation:
+
+- verify the source text and likely poem variant from at least one external
+  source or local reference;
+- search/check a poem-specific pinyin or annotated reading source when
+  available;
+- run pypinyin as a baseline, then manually audit polyphonic and rare
+  characters such as `行`, `将`, `了`, names, place names, and classical words;
+- write a pinyin guide and list risky pronunciations in the project notes;
+- prefer an adapted modern-singable lyric when exact classical diction causes
+  ACE to garble pronunciation, but preserve the poem's core images and
+  document any omissions;
+- add ACE-facing caption guidance for the risky words, and after generation
+  compare ASR/listening against the pinyin guide before publishing.
+
 Do not cram words into the song just to preserve every detail. Use musical
 space: 留白, held vowels, rests, repeated hooks, and breath-friendly pauses.
 Some lines should be sparse and some can be fuller; the goal is a proper fit
