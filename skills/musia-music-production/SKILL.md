@@ -132,7 +132,7 @@ If ACE produces no ASR recovery, weak vocal text, or subtitle/credit leakage:
 - select by actual hook recovery and listening, not by model size alone.
 
 For long classical poems where the user wants original text but a beautiful
-song, do not force the full poem linearly. Choose the most 朗朗上口 / 啷啷上口,
+song, do not force the full poem linearly. Choose the most 朗朗上口,
 emotionally central, and 音韵-compatible original lines; preserve those selected
 lines exactly; reorganize them into verse/pre-chorus/chorus/bridge form; repeat
 the strongest couplet as a hook when it improves melody, memory, rhyme, and
