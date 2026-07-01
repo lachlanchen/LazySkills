@@ -130,6 +130,10 @@ For close word-level conflicts, prefer the input/reference lyric when it is
 sound-close and grammatically/musically stronger. Override it only when ASR plus
 listening show a real structural change: missing line, repeated line, changed
 line order, different phrase length, or a clearly different word.
+For classical poems and other source-sensitive texts, matching word/syllable
+count is strong evidence to preserve the source. If the source phrase and the
+heard/ASR phrase have the same length and close sound, keep the source unless
+manual listening proves the audio is clearly different.
 
 Run a missing-planned-phrase audit before publication. Compare the planned or
 reference lyric line-by-line against the corrected active-vocal track and ask:
@@ -137,6 +141,7 @@ reference lyric line-by-line against the corrected active-vocal track and ask:
 - Which planned phrases are not represented in any published line?
 - Did ASR swallow a short phrase into a long merged segment, especially repeated
   CJK phrases such as `一点，一点`?
+- Did ASR miss a soft final syllable or tail at the ending, such as `不知`?
 - Is there a timing gap between ASR segments where a soft or garbled planned
   phrase may still be audible, such as `梦也缱绻`?
 - Does listening support adding the planned phrase even though ASR omitted it?

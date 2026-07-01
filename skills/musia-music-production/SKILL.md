@@ -48,19 +48,23 @@ versions rather than one perfectly shared melody.
 Planned lyrics are intent, not blind truth. After generation, use listening and ASR/STT evidence to decide what the render actually sang. If the rendered vocal repeats, skips, reorders, or clearly changes a phrase, document the mismatch and publish lyrics/timing that match the audio. If ASR only substitutes a nearby word and the planned lyric is phonetically close, grammatically stronger, and supported by manual listening, keep the planned lyric; do not let ASR downgrade `When` to `In` or similar close words just because the recognizer guessed that token.
 
 If the user wants the public lyric to feel closer to the actual performance,
-allow a sound-close poetic compromise instead of rigidly restoring the prompt or
-source text. Choose words that are close to the audible syllables, make sense in
-context, and remain beautiful. Document the compromise in the production note.
-Example from `越人歌`: the first publication restored `心爱君兮` to source
-`心悦君兮`, but the later user-reviewed website lyric keeps `心爱君兮` and uses
-`追不着` where the render repeatedly sings that phrase.
+allow a sound-close poetic compromise only when the rendered phrase has clearly
+changed structure, word count, or sound. When the input/source lyric has the same
+phrase length, is phonetically close, and is more beautiful or grammatically
+stronger, preserve the source and treat ASR's nearby modern word as a guess.
+Document every compromise in the production note. Example from `越人歌`: after
+user review, `心爱君兮` was restored to source `心悦君兮`, `追不着` was restored
+to `君不知`, and `牵愁中流` was restored to `搴舟中流`; the `望之` phrases
+remain because those lines changed structure more clearly.
 
 Before calling the lyric correction complete, run a missing-planned-phrase audit:
 compare the planned/reference lyric against the corrected active-vocal lines and
 look for prompt phrases that ASR omitted, merged into a long segment, or placed
 inside a timing gap. Short repeated or soft CJK phrases can be swallowed by ASR
-even when audible. If listening supports the intended phrase, add it back with
-real timing and translations; if it is not audible, document that it was skipped.
+even when audible. Always check the ending manually for soft final syllables or
+tails that ASR may miss. If listening supports the intended phrase or tail, add
+it back with real timing and translations; if it is not audible, document that
+it was skipped.
 When the user later identifies a missed phrase, patch the website lyric JSON,
 manifest timeline, and references immediately, then push/deploy if the item is
 already public.
