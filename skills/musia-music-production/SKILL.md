@@ -123,6 +123,29 @@ If ACE produces no ASR recovery, weak vocal text, or subtitle/credit leakage:
   public original text only where sound-close;
 - select by actual hook recovery and listening, not by model size alone.
 
+For future original-poem experiments, create a recursive refinement package
+instead of hand-building the project from scratch:
+
+```bash
+PYTHONNOUSERSITE=1 conda run -n musia python scripts/prepare_ace_poem_refinement_pack.py \
+  --title "Poem Title" \
+  --poem-file poem.txt \
+  --hook "main emotional couplet" \
+  --substitution "rare=common-sound-control"
+```
+
+Use the generated `REFINEMENT_PLAN.md`, `source/pronunciation-guide.md`,
+repeated-hook lyrics, SFT/Turbo configs, and `commands.sh`. The successful
+`越人歌 · 原诗版` route came from this philosophy: source truth -> pronunciation
+truth -> private model-facing simplification -> multiple lyric layouts -> model
+sweep -> ASR/listening rejection -> hook-focused regeneration -> truthful
+website correction. Keep these references close when repeating the method:
+
+```text
+/home/lachlan/ProjectsLFS/Musia/references/ace-poem-song-beauty-and-lyric-alignment-method-2026-07-01.md
+/home/lachlan/ProjectsLFS/Musia/references/yue-ren-ge-recursive-refinement-playbook-2026-07-01.md
+```
+
 When the user's quality goal is a beautiful song rather than a literal poetry
 recitation, prefer a rewritten/adapted singable lyric route like the successful
 `侠客行` workflow. Do not force the full original poem into ACE unless the user
