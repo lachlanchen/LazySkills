@@ -45,6 +45,15 @@ experimental and leave it out of the public/final path. Regenerate with the
 best full-song model instead, even if EN/JP/ZH end up as independent high-quality
 versions rather than one perfectly shared melody.
 
+For beautiful song generation, use ACE/ACE-Step as the default and final route.
+The user explicitly prefers ACE output quality and asked to always use ACE.
+Treat DiffRhythm clean LRC as an alignment experiment only, not a beautiful-song
+route. The `蜀道难 · 原文重组 DR Draft` and `行路难 · 原文重组 DR Draft` checks
+showed that DiffRhythm can align lyrics reasonably, but melody and singing
+quality may be terrible or only so-so. Keep such outputs visibly `DR
+Draft`/experimental, do not record or publish them as final-quality songs, and
+return to ACE-Step XL/SFT when beauty, melody, and vocal feel matter.
+
 Planned lyrics are intent, not blind truth. After generation, use listening and ASR/STT evidence to decide what the render actually sang. If the rendered vocal repeats, skips, reorders, or clearly changes a phrase, document the mismatch and publish lyrics/timing that match the audio. If ASR only substitutes a nearby word and the planned lyric is phonetically close, grammatically stronger, and supported by manual listening, keep the planned lyric; do not let ASR downgrade `When` to `In` or similar close words just because the recognizer guessed that token.
 
 If the user wants the public lyric to feel closer to the actual performance,
