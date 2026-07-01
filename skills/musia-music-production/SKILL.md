@@ -47,6 +47,14 @@ versions rather than one perfectly shared melody.
 
 Planned lyrics are intent, not blind truth. After generation, use listening and ASR/STT evidence to decide what the render actually sang. If the rendered vocal repeats, skips, reorders, or clearly changes a phrase, document the mismatch and publish lyrics/timing that match the audio. If ASR only substitutes a nearby word and the planned lyric is phonetically close, grammatically stronger, and supported by manual listening, keep the planned lyric; do not let ASR downgrade `When` to `In` or similar close words just because the recognizer guessed that token.
 
+If the user wants the public lyric to feel closer to the actual performance,
+allow a sound-close poetic compromise instead of rigidly restoring the prompt or
+source text. Choose words that are close to the audible syllables, make sense in
+context, and remain beautiful. Document the compromise in the production note.
+Example from `越人歌`: the first publication restored `心爱君兮` to source
+`心悦君兮`, but the later user-reviewed website lyric keeps `心爱君兮` and uses
+`追不着` where the render repeatedly sings that phrase.
+
 Before calling the lyric correction complete, run a missing-planned-phrase audit:
 compare the planned/reference lyric against the corrected active-vocal lines and
 look for prompt phrases that ASR omitted, merged into a long segment, or placed
