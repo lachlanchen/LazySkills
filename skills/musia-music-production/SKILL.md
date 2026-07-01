@@ -131,6 +131,15 @@ If ACE produces no ASR recovery, weak vocal text, or subtitle/credit leakage:
   public original text only where sound-close;
 - select by actual hook recovery and listening, not by model size alone.
 
+For long classical poems where the user wants original text but a beautiful
+song, do not force the full poem linearly. Choose the most 朗朗上口 / 啷啷上口,
+emotionally central, and 音韵-compatible original lines; preserve those selected
+lines exactly; reorganize them into verse/pre-chorus/chorus/bridge form; repeat
+the strongest couplet as a hook when it improves melody, memory, rhyme, and
+audience resonance. This is still an original-text route if every sung line is
+from the source. The creative work is selection, ordering, repetition, and
+musical pacing, not modern paraphrase.
+
 For future original-poem experiments, create a recursive refinement package
 instead of hand-building the project from scratch:
 
