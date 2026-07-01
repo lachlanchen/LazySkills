@@ -77,6 +77,22 @@ Before generating, write a compact producer brief with:
 - arrangement and vocal direction;
 - negative instructions such as no clipped endings, no buried vocal, and no real-singer imitation.
 
+When the user says quality matters or has time to wait, use the best practical
+local route before accepting a faster route:
+
+- inspect installed model checkpoints before generation;
+- for ACE-Step 1.5, prefer `acestep-v15-xl-sft` at 50 steps for final-quality
+  full-song candidates when it is installed and VRAM allows;
+- use `acestep-v15-xl-turbo` for rapid iteration, fallback batches, or when SFT
+  fails, but do not silently treat it as the highest-quality route;
+- if a newer XL/XXL/XXXL or higher-quality model is available in the upstream
+  project or community and can be installed legally, download/test it before
+  final publication when the user asks for best quality;
+- keep the older model output only if listening and ASR prove it is better for
+  the specific song;
+- document the exact model, checkpoint, seeds, duration, and fallback reason in
+  the project note.
+
 Prefer fewer stronger lines over dense poetry. For Chinese/Japanese, reduce pronunciation risk by using natural, short phrases and correcting after ASR/listening.
 
 For classical Chinese poems, especially Li Bai/Tang poetry, run a
@@ -94,6 +110,18 @@ pronunciation-prep gate before ACE/YuE generation:
   document any omissions;
 - add ACE-facing caption guidance for the risky words, and after generation
   compare ASR/listening against the pinyin guide before publishing.
+
+For very short classical poems, do not assume a single exact pass is enough.
+If ACE produces no ASR recovery, weak vocal text, or subtitle/credit leakage:
+
+- repeat only original poem lines into a verse/chorus/hook form rather than
+  adding modern words;
+- emphasize the most important couplet or hook by repeating it;
+- keep captions positive and compact, avoiding long forbidden-word lists that
+  the model may sing;
+- use private phonetic substitutions for rare characters, then restore the
+  public original text only where sound-close;
+- select by actual hook recovery and listening, not by model size alone.
 
 When the user's quality goal is a beautiful song rather than a literal poetry
 recitation, prefer a rewritten/adapted singable lyric route like the successful
