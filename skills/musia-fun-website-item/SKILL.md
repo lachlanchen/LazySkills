@@ -194,6 +194,9 @@ Do not duplicate ruby by also putting pronunciation into the visible native text
 - save to `website/assets/covers/<media-id>-16x9.png`;
 - set `assets.cover`, `assets.poster`, and `share.image`;
 - record the cover prompt/source in `manifest.provenance` or the song production note.
+- for public song covers, use a visually selected AgInTi/image-generation image
+  matched to the song mood; no text, logo, or watermark; do not rely on a
+  procedural placeholder cover for public recording/publishing.
 
 7. Validate and audit:
 
@@ -222,6 +225,38 @@ as mixed-language when the audio truly sings them.
 ```bash
 python3 -m http.server 9174 --directory website
 musia fun-record --media-id <media-id> --skip-intro
+```
+
+Default publication recording, unless the user asks otherwise:
+
+- 4K portrait, upper player/cover/header and lower current lyrics plus guitar
+  fingering;
+- current two KTV-style lyric lines, not the full lyric sheet;
+- multilingual translation lines when available, especially EN/JP/ZH;
+- advanced mode enabled with guitar fingering below the current lyrics;
+- start from a smooth musical lead-in just before the first vocal, not exactly
+  on the first syllable;
+- mux the source audio from the same start time as the browser capture.
+
+Use the realtime recorder for this default style:
+
+```bash
+PYTHONNOUSERSITE=1 conda run -n musia python scripts/record_fun_player_realtime.py \
+  --media-id <media-id> \
+  --asset-id <asset-id> \
+  --output recorded_videos/<media-id>/<media-id>-<lang>-lyrics-guitar-portrait-4k.mp4 \
+  --width 2160 --height 3840 \
+  --css-width 1080 --css-height 1920 \
+  --device-scale-factor 2 \
+  --fps 24 \
+  --start <smooth-vocal-lead-in-seconds> \
+  --duration <remaining-duration-from-start> \
+  --multilingual-lyrics \
+  --advanced \
+  --no-guitar-focus \
+  --lyrics-guitar \
+  --crf 12 \
+  --preset ultrafast
 ```
 
 When a Fun player recording is created, always sync the final MP4 to the
