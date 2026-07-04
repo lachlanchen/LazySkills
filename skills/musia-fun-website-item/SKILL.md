@@ -88,6 +88,15 @@ vocal. Pass that exact active-language file as `--lyrics-json`; never hand off
 the original prompt lyric, draft lyric, or another vocal's lyric set as the
 music-platform lyric source.
 
+This is a hard blocker. Before any Shipinhao Music, YouTube Music, or pure
+music handoff, open the exact `website/data/songs/<media-id>/lyrics/<vocal>/<lang>.json`
+file that will be passed as `--lyrics-json`, compare its line count/order
+against the ASR-reviewed active vocal and the planned/reference lyric, and
+confirm no planned lines are missing because of a stale website generator,
+merged ASR segment, or earlier manual omission. If any line is missing or
+timing is stale, fix the website JSON first and rebuild the music package from
+that corrected JSON.
+
 Do not let ASR override a good intended lyric just because the recognizer chose
 a nearby word. If the input/reference lyric is phonetically close, fits the
 sentence better, and the phrase structure has not changed, preserve the input
@@ -151,6 +160,10 @@ translation track in the same lyric set, using either the merged line timing or
 a new line inside the gap. Update the manifest timeline and the production note
 under `references/`. If the website was already public, commit, push, and wait
 for the Pages deploy; do not leave live lyrics stale.
+
+Treat a missing-planned-phrase audit failure as a release blocker. Do not record,
+publish, or hand off music-platform metadata while the website still omits a
+source-supported lyric line.
 
 Normalize model-facing language codes before ASR/model calls: use `zh` for
 Mandarin when the website track is `zh-Hans` / `zh-Hant`, and use `yue` for

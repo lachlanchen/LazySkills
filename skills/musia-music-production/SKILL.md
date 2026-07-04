@@ -78,6 +78,12 @@ When the user later identifies a missed phrase, patch the website lyric JSON,
 manifest timeline, and references immediately, then push/deploy if the item is
 already public.
 
+Never package Shipinhao Music, YouTube Music, or another pure-music release from
+draft lyrics. The music-publish lyric source must be the corrected website
+active-vocal JSON after the missing-planned-phrase audit. Open that JSON, verify
+line count/order/timing against ASR and the intended lyric, and only then pass it
+as `--lyrics-json`.
+
 For multilingual companion renders, run that correction independently for each
 selected audio. A Japanese render needs Japanese ASR/listening evidence; an
 English render needs English ASR/listening evidence; a Chinese render needs
@@ -113,6 +119,14 @@ local route before accepting a faster route:
   the specific song;
 - document the exact model, checkpoint, seeds, duration, and fallback reason in
   the project note.
+
+Do not assume `acestep-v15-xl-sft` is better for every song. The failed `Star
+Bucks` SFT attempts produced noise/gibberish or unrelated outro chatter, while
+the earlier successful Musia songs (`越人歌`, `云海之恋`, `Take Care of Yourself`,
+`Aya Chan Hikari Ame`) mostly came from ACE XL Turbo with compact positive
+prompts and seed sweeps. If SFT returns empty ASR, generic outro text, buried
+vocals, or user-reported gibberish, immediately switch to a Turbo candidate
+sweep instead of trying to publish or record it.
 
 Prefer fewer stronger lines over dense poetry. For Chinese/Japanese, reduce pronunciation risk by using natural, short phrases and correcting after ASR/listening.
 
@@ -196,6 +210,14 @@ pre-chorus / chorus / bridge-or-outro shape with many short lines: roughly
 30-45 CJK lines, average 4-7 CJK characters per line, and about 150-280 total
 CJK lyric characters. Use this as a density target, then simplify only when
 ASR/listening shows the model is skipping or garbling lines.
+
+For English ACE songs, use a lower lyric-density target than Chinese/Japanese.
+Successful 65-80 second English renders often use one short verse, one chorus,
+and one outro, roughly 18-28 short lines. If ASR recovers the first verse but
+drops the chorus or later sections, shorten the lyric first; do not add more
+prompt constraints. A good fallback pattern is: XL Turbo, 8 internal steps,
+70-78 seconds, 4-8 seeds, clear positive caption, upfront natural English vocal,
+and candidate selection by listening plus large-v3 ASR.
 
 Before generating or accepting EN/JP/ZH lyrics, do an LLM lyric-quality pass
 when an API/model is available. Use OpenAI, DeepSeek, or a strong Codex/GPT-5.5
