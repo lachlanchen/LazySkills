@@ -255,9 +255,25 @@ PYTHONNOUSERSITE=1 conda run -n musia python scripts/record_fun_player_realtime.
   --advanced \
   --no-guitar-focus \
   --lyrics-guitar \
+  --publication-layout \
+  --capture-clock \
   --crf 12 \
   --preset ultrafast
 ```
+
+For publication recordings, `--publication-layout --capture-clock` is required.
+The dedicated publication layout fixes the vertical slots as:
+
+```text
+header/player -> current multilingual lyrics -> chord carousel -> guitar fingering
+```
+
+The capture clock drives the visible lyrics/chords from the muxed audio start
+time instead of browser media playback, so the recording cannot drift, freeze,
+or desynchronize when the browser audio is muted and the final audio is burned
+with FFmpeg. Do not publish a portrait Fun recording until sample frames prove
+the lyric area, chord row, and guitar fingering do not overlap at vocal lines
+or instrumental gaps.
 
 When a Fun player recording is created, always sync the final MP4 to the
 Nutstore Musia share folder before reporting completion. The recorder now does

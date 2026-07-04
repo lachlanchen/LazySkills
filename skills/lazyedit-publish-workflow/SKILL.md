@@ -47,6 +47,12 @@ conda activate lazyedit
 
 - Do not publish to real platforms just to debug packaging, subtitles, or logo output. Use `--no-publish` first, inspect the generated ZIP/final MP4, then publish exactly once when the package is correct.
 - For current Musia recording videos, publish with the existing LazyEdit logo at top-right and no LazyEdit subtitles unless the user explicitly asks for subtitles. Use `--no-burn-subtitles --logo --logo-position top-right`, force a fresh logo-only render when the side changes, and inspect a sample frame or the MP4 inside the ZIP before submitting.
+- If a Musia recording already has the correct logo burned into an inspected
+  high-quality MP4, do not let LazyEdit reprocess it. Build a direct AutoPublish
+  ZIP with a unique stem, matching `<stem>_metadata.json`, `video_filename`, and
+  `cover_filename`, then POST it to `/publish` with the requested platform
+  flags. This is the preferred recovery path when a LazyEdit `--no-process`
+  route still triggers processing or overwrites the inspected logo master.
 - Real publishes should use polished/corrected subtitles and the configured LazyEdit Studio logo unless the user explicitly asks otherwise. Verify logo settings with `curl -fsS $LAZYEDIT_API/api/ui-settings/logo_settings | jq .`; normal logo outputs end in `_subtitles_logo.mp4`.
 - For Musia pure-music publishes, lyrics must come from the corrected Musia
   website/publish lyric JSON for the exact selected vocal, not from the original
