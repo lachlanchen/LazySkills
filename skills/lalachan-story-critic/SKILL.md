@@ -27,6 +27,45 @@ setup -> problem -> cooperation/twist -> payoff
 Dialogue must sound speakable in normal Chinese. If a line sounds like a report,
 translation, slogan, or AI explanation, rewrite it.
 
+## Repeated Critique Loop
+
+Never accept the first draft for a LALACHAN story. Run a critique loop before
+showing or saving the final story:
+
+1. Draft the scene in plain language.
+2. Read every line of dialogue out loud mentally.
+3. Mark anything that sounds like a slogan, report, translation, prompt, or
+   forced-cute phrase.
+4. Check that every event has a clear cause. Avoid using `突然` to glue unrelated
+   events together.
+5. Rewrite the weak lines and re-check.
+6. Stop only when the story is easy to understand, characters sound distinct,
+   and the joke/payoff is visible without explanation.
+
+If the user asks for a story only, do this loop internally and return only the
+polished story. If the user asks what is wrong, show the critique with exact
+lines.
+
+## Normal Language Rules
+
+Use everyday phrasing first, then add one small cartoon exaggeration. Avoid
+trying to make every sentence cute.
+
+Bad patterns to reject:
+
+- Forced-cute abstract phrases, such as `睡前勇气`, when a normal line like
+  `我就吃了一小口饼干` works better.
+- Pests, props, or background objects shouting slogans unless the whole scene
+  clearly supports that joke.
+- Sudden gadget magic with no setup. A character should pick up or use the prop.
+- Fake anime battle lines for small daily-life problems unless the action is
+  clearly slapstick.
+- Robot lines that sound like system logs, status reports, or app messages.
+- Decorative final text or props that do not pay off the story.
+
+Use the simple test: would a normal person or a cute cartoon character actually
+say this line out loud? If not, rewrite it.
+
 ## Critic Workflow
 
 1. Read the draft story and prompt if available.
@@ -34,7 +73,8 @@ translation, slogan, or AI explanation, rewrite it.
 3. Quote the exact weak lines or phrases.
 4. Name the failure mode.
 5. Rewrite the line in a natural character voice.
-6. Only after the critique, produce a clean revised story or prompt.
+6. Repeat the critique after rewriting if any line still sounds strange.
+7. Only after the critique passes, produce a clean revised story or prompt.
 
 Do not just say "make it warmer" or "more vivid". Point to the exact wording
 that fails.
@@ -145,4 +185,3 @@ When asked to critique:
 
 When asked only for a final story, still run the critic pass internally and
 produce the polished result.
-
