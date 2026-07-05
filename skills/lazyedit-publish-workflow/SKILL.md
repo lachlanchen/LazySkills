@@ -71,6 +71,12 @@ conda activate lazyedit
 - If Bilibili shows `0.0MB/0.0MB` and browser-side `preupload` returns code `601` with `您上传视频过快，请您稍作休息后再继续`, stop retrying and wait for cooldown. Repeated upload retries extend the block.
 - To add a missing platform to an already-processed LazyEdit output, reuse the existing ZIP if it contains the correct rendered MP4. Re-submit the same ZIP with only the missing platform flags. Repackage only when the existing ZIP points at the wrong output.
 - AutoPublish derives the extracted metadata directory from the ZIP filename stem. Do not rename a prepared ZIP to add suffixes like `-topright` unless the internal metadata filename and directory contract are regenerated to match.
+- If one platform browser looks stale after an interrupted publish, use the
+  AutoPublish per-job recovery controls instead of globally restarting every
+  browser: POST the same ZIP to `/publish` with the normal platform flags plus
+  `restart_platforms=ins,y2b,sph,douyin` for the affected platforms, or
+  `force_browser_restart=true` when all selected target browsers should be
+  restarted. Check `/publish/queue`; queue rows now include these restart flags.
 - Avoid opening many long-lived terminal monitors. Prefer one `scripts/lazyedit_publish.py --guided-monitor --wait` process plus occasional one-shot queue/tmux checks. Close stale sessions before starting another long publish.
 
 ## Setting Semantics
