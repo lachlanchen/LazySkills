@@ -42,6 +42,20 @@
       "description": "Critique and repair LALACHAN/RaraXia/AyaChan/SasaKun story drafts, dialogue, and Xiaoyunque prompts so they read naturally, avoid AI-like language, and keep props, causality, duration, and character voices clear."
     },
     {
+      "id": "lalachan-story-improvement-loop",
+      "path": "skills/lalachan-story-improvement-loop/SKILL.md",
+      "category": "writing",
+      "platforms": [
+        "aginti",
+        "codex",
+        "claude",
+        "gemini",
+        "copilot",
+        "generic"
+      ],
+      "description": "Run multi-round LALACHAN story critique and rewrite cycles, including 10-round polish with Codex exec gpt-5.5 xhigh, to improve clarity, causality, shareability, natural Chinese dialogue, and Xiaoyunque readiness."
+    },
+    {
       "id": "lazyedit-publish-workflow",
       "path": "skills/lazyedit-publish-workflow/SKILL.md",
       "category": "publishing",
