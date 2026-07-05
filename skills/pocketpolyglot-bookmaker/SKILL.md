@@ -51,6 +51,10 @@ find sources/<book> -maxdepth 2 -type f
 
 Convert EPUB/PDF/Markdown to reviewed Markdown, then split into a manifest with stable chunk ids. Keep source references broad enough to recover context, usually chapter-level for references and chunk-level for generated output.
 
+When a real translation PDF/EPUB exists, register it as a preferred reference before generating missing languages. If `pdftotext` yields only page chrome or too little text, create an OCR/text cache first and mark the source as OCR-required instead of silently treating it as absent. Do not let HTML, Wikisource boilerplate, PDF page headers, archive labels, copyright/public-domain notices, or OCR noise enter chunk text.
+
+Do not split source by raw webpage/PDF line breaks. Join line-wrapped prose into paragraphs first, then split by semantic sentence or small paragraph units. Generated overlay rows should be coherent single-line prose for each unit; preserve spaces in English and avoid copying reference line breaks.
+
 2. Generate incrementally:
 
 - Write one chunk JSON file per chunk or shard.
@@ -60,7 +64,7 @@ Convert EPUB/PDF/Markdown to reviewed Markdown, then split into a manifest with 
 
 3. Review dynamically:
 
-- Detect schema errors, missing source text, non-target-language output, overlong ruby, missing spaces, all-one-color grammar, truncated comments, and line-alignment failures.
+- Detect schema errors, missing source text, non-target-language output, HTML/wiki/page boilerplate, source layout linebreaks copied into prose, overlong ruby, missing spaces, all-one-color grammar, truncated comments, and line-alignment failures.
 - Pass concrete issues to the reviewer, revalidate, and loop until fixed or marked blocked with evidence.
 
 4. Compile:
