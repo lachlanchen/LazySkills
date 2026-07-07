@@ -16,6 +16,16 @@ Use this skill for agent-assisted mechanical design where the deliverable should
 5. Render a full-view PNG and an exploded/detail PNG with Blender when the user needs visual inspection.
 6. Validate with mesh and STEP imports before committing.
 
+## Geometry Discipline
+
+- Pick one datum and keep every related feature aligned to it. For optical parts, the optical axis should drive C-mount bores, sensor packages, board pockets, and renders.
+- Keep mating bodies editable. Export separate STEP/STL bodies for sockets, plates, inserts, thread cutters, boards, and fixtures when the user may edit them in Shapr3D or FreeCAD.
+- Avoid accidental connector geometry. If the user asks for direct contact, remove bridge blocks and middle cylinders; do not replace one unwanted bridge with another.
+- Bound threads inside their parent length. A thread cutter for a socket from `x=0` to `x=H` should start after a small lead-in and end before `H`; then clip/intersect the swept thread so no tooth overflows beyond either end.
+- Document the contact plane between independent bodies, for example `socket x=0..12`, `plate x=12..19`.
+- Use clearance holes and pockets for real protrusions such as pin headers, solder joints, cables, screws, and printed-fit errors. Keep those clearances named and visible in the manifest.
+- Prefer simple, clean solids over decorative or overly coupled boolean shapes. If Shapr3D reports invalid geometry when editing, split the part into independent adjacent bodies and bounded cutters.
+
 ## Print-Fit Measurement
 
 When adapting old 3D-printed parts:
