@@ -19,6 +19,7 @@ Use this skill for agent-assisted mechanical design where the deliverable should
 ## Geometry Discipline
 
 - Pick one datum and keep every related feature aligned to it. For optical parts, the optical axis should drive C-mount bores, sensor packages, board pockets, and renders.
+- When adding clearance to a pocket or sink, add it symmetrically around the selected datum. If a printed part shows one side smaller than the other, first check whether an intentional datasheet offset is still valid; if not, make a new centered sibling variant and document the offset removal.
 - Keep mating bodies editable. Export separate STEP/STL bodies for sockets, plates, inserts, thread cutters, boards, and fixtures when the user may edit them in Shapr3D or FreeCAD.
 - Avoid accidental connector geometry. If the user asks for direct contact, remove bridge blocks and middle cylinders; do not replace one unwanted bridge with another.
 - Bound threads inside their parent length. A thread cutter for a socket from `x=0` to `x=H` should start after a small lead-in and end before `H`; then clip/intersect the swept thread so no tooth overflows beyond either end.
