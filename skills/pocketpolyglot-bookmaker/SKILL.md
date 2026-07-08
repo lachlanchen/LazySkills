@@ -105,6 +105,13 @@ python scripts/.../report_progress.py --manifest ... --chunk-dir ...
 
 If a model limit or external blocker appears, pause gracefully, keep all generated JSON, and resume from the manifest after recovery. A monitor may recompile previews from reviewed and unreviewed chunks, but it must not erase valid current data.
 
+Quota monitoring is reactive: workers detect Codex usage exhaustion from command
+output such as `usage limit`, `purchase more credits`, or `try again at`, then
+sleep/retry or write a `usage_limit` status record for later resume. Use
+`CODEX_USAGE_LIMIT_WAIT_SECONDS` for the retry interval, reduce `WORKERS` when
+quota is scarce, and inspect `candidates/status/*.json` plus worker logs before
+treating stopped chunks as real failures.
+
 ## Completion Checklist
 
 - Manifest coverage is complete with no stale chunk mismatch.
