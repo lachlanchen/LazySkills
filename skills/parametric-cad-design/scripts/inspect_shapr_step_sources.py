@@ -21,6 +21,7 @@ import tempfile
 import zipfile
 from dataclasses import dataclass, asdict
 from pathlib import Path
+from collections import Counter
 from typing import Any, Iterable
 
 
@@ -108,6 +109,70 @@ def sqlite_counts(db_path: Path, tables: Iterable[str]) -> dict[str, int | str]:
         conn.close()
 
 
+def decode_history_operations(conn: sqlite3.Connection, sample_limit: int = 40) -> dict[str, Any]:
+    try:
+        import msgpack  # type: ignore
+    except Exception as exc:  # pragma: no cover - optional dependency
+        return {"error": f"msgpack unavailable: {type(exc).__name__}: {exc}"}
+
+    try:
+        rows = conn.execute(
+            "SELECT HistoryTreeNodeID, HistoryTreeNodeType, Properties "
+            "FROM HistoryTreeNodes ORDER BY HistoryTreeNodeID"
+        ).fetchall()
+    except sqlite3.DatabaseError as exc:
+        return {"error": f"{type(exc).__name__}: {exc}"}
+
+    operations: list[dict[str, Any]] = []
+    type_counts: Counter[str] = Counter()
+    op_counts: Counter[str] = Counter()
+    name_counts: Counter[str] = Counter()
+    decode_errors = 0
+
+    for node_id, node_type, properties in rows:
+        type_counts[str(node_type)] += 1
+        if node_type != 2:
+            continue
+        try:
+            value = msgpack.unpackb(properties, raw=False, strict_map_key=False)
+        except Exception:
+            decode_errors += 1
+            continue
+        if not isinstance(value, list) or len(value) < 5:
+            continue
+        display_name = value[2]
+        operation_name = value[3]
+        child_ids = value[4] if isinstance(value[4], list) else []
+        if not isinstance(display_name, str) or not isinstance(operation_name, str):
+            continue
+        op_counts[operation_name] += 1
+        name_counts[display_name.split()[0] if display_name else operation_name] += 1
+        operations.append(
+            {
+                "node_id": node_id,
+                "display_name": display_name,
+                "operation": operation_name,
+                "child_count": len(child_ids),
+            }
+        )
+
+    sample: list[dict[str, Any]]
+    if sample_limit <= 0 or len(operations) <= sample_limit:
+        sample = operations
+    else:
+        head_count = max(sample_limit - 10, 1)
+        sample = operations[:head_count] + [{"omitted_operations": len(operations) - sample_limit}] + operations[-10:]
+
+    return {
+        "operation_count": len(operations),
+        "node_type_counts": dict(sorted(type_counts.items(), key=lambda item: int(item[0]))),
+        "operation_counts": dict(op_counts.most_common()),
+        "display_prefix_counts": dict(name_counts.most_common()),
+        "operation_sample": sample,
+        "decode_errors": decode_errors,
+    }
+
+
 def inspect_shapr(path: Path) -> dict[str, Any]:
     result: dict[str, Any] = {"path": str(path), "is_zip": zipfile.is_zipfile(path)}
     if not result["is_zip"]:
@@ -174,6 +239,7 @@ def inspect_shapr(path: Path) -> dict[str, Any]:
                     ]
                 except sqlite3.DatabaseError as exc:
                     result["sketch_error"] = f"{type(exc).__name__}: {exc}"
+                result["history"] = decode_history_operations(conn)
             finally:
                 conn.close()
 
@@ -201,6 +267,28 @@ def render_markdown(data: dict[str, Any]) -> str:
                     f"  - `{sketch['name']}` hidden=`{sketch['hidden']}` "
                     f"origin=`{sketch['origin']}` normal=`{sketch['normal']}`"
                 )
+        if "history" in shapr:
+            history = shapr["history"]
+            if history.get("error"):
+                lines.append(f"- History decode: `{history['error']}`")
+            else:
+                lines.append(f"- History operations: `{history.get('operation_count', 0)}`")
+                if history.get("operation_counts"):
+                    top_ops = list(history["operation_counts"].items())[:12]
+                    lines.append(
+                        "- Top operations: "
+                        + ", ".join(f"`{name}`={count}" for name, count in top_ops)
+                    )
+                if history.get("operation_sample"):
+                    lines.append("- Operation sample:")
+                    for operation in history["operation_sample"][:20]:
+                        if "omitted_operations" in operation:
+                            lines.append(f"  - ... `{operation['omitted_operations']}` operations omitted ...")
+                        else:
+                            lines.append(
+                                f"  - `{operation['display_name']}` -> `{operation['operation']}` "
+                                f"children=`{operation['child_count']}`"
+                            )
         lines.append("")
     for step in data.get("step", []):
         lines.append(f"## STEP: `{step['path']}`")
@@ -224,14 +312,19 @@ def render_markdown(data: dict[str, Any]) -> str:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--shapr", action="append", type=Path, default=[], help="Shapr3D .shapr file")
+    parser.add_argument("--shapr-dir", action="append", type=Path, default=[], help="Folder containing .shapr files")
     parser.add_argument("--step", action="append", type=Path, default=[], help="STEP/STP file or folder")
     parser.add_argument("--no-cadquery", action="store_true", help="Skip optional CadQuery import and bbox measurement")
     parser.add_argument("--limit-labels", type=int, default=60, help="Max PRODUCT/BREP labels per STEP file")
     parser.add_argument("--markdown", action="store_true", help="Print Markdown instead of JSON")
     args = parser.parse_args(argv)
 
+    shapr_paths = list(args.shapr)
+    for folder in args.shapr_dir:
+        shapr_paths.extend(sorted(folder.glob("*.shapr")))
+
     data: dict[str, Any] = {
-        "shapr": [inspect_shapr(path) for path in args.shapr],
+        "shapr": [inspect_shapr(path) for path in shapr_paths],
         "step": [
             asdict(inspect_step(path, args.limit_labels, not args.no_cadquery))
             for path in iter_step_files(args.step)

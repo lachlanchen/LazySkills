@@ -44,7 +44,10 @@ If run from `../LazySkills`, replace the script path with `skills/parametric-cad
 
 Interpretation rules:
 
+- `HistoryTreeNodes` type `2` nodes decode into Shapr operation names such as `Extrude`, `OffsetFace`, `Transform`, `Revolve`, `Boolean`, `Split`, and `MaterializeImportedBodies`.
 - Many `HistoryImportedBodies` plus zero/few `Shapes` means the `.shapr` is mostly imported B-rep, not a recoverable feature tree.
+- Many `OffsetFace` operations usually mean physical print-fit tuning; translate those into named clearance/tolerance parameters in new code.
+- Many `Transform` or `Align` operations usually mean the file is an assembly; preserve placement transforms and local part frames.
 - Exact regeneration should preserve the STEP/Parasolid B-rep and prove equivalence by source path, body labels, solid count, bbox, face/surface evidence, and render.
 - Physical fit changes should be sibling variants from the exact baseline. Do not overwrite exact regeneration folders.
 - When old B-rep booleans leave thread shells or invalid geometry, trim at a stable datum and rebuild that region cleanly.
@@ -90,6 +93,14 @@ Inspect `.shapr` and STEP sources:
 python ~/.codex/skills/parametric-cad-design/scripts/inspect_shapr_step_sources.py \
   --shapr cad/extracted/Nature.shapr \
   --step cad/extracted/OpenHI_STEP \
+  --markdown
+```
+
+Inspect a full Shapr backup folder:
+
+```bash
+python ~/.codex/skills/parametric-cad-design/scripts/inspect_shapr_step_sources.py \
+  --shapr-dir "/home/lachlan/Nutstore Files/Projects/shapr3d/BACKUP/BATCHEXPORT" \
   --markdown
 ```
 

@@ -18,6 +18,8 @@ python skills/parametric-cad-design/scripts/inspect_shapr_step_sources.py \
 The important signs are:
 
 - `workspace` is SQLite: inspect table counts and sketches.
+- `HistoryTreeNodes.Properties` type `2` nodes can be decoded as MessagePack
+  operation records: display name, operation name, and child node IDs.
 - Many `HistoryImportedBodies`: likely imported Parasolid/B-rep, not clean
   editable feature history.
 - Few or zero `Shapes`: do not assume a parametric Shapr feature tree is
@@ -29,6 +31,25 @@ If the Shapr archive mostly contains imported bodies, the correct path is:
 2. document body labels, bounding box, face/surface evidence, and source path;
 3. make sibling parametric variants for fit changes;
 4. do not overwrite exact regeneration outputs.
+
+## Reading Edit History As Design Knowledge
+
+Shapr operation history is useful even when full feature parameters are not
+available. Use it to infer the designer's workflow:
+
+| Signal | Meaning | Better future CAD practice |
+| --- | --- | --- |
+| Many `MaterializeImportedBodies` | vendor/reference components or flattened assemblies | Keep references locked and build clean generated holders around them. |
+| Many `MaterializeSketchPlane` + `Extrude` | sketch-first native design | Recreate with named sketches/profiles and explicit dimensions. |
+| Many `Revolve` | cylindrical/optical/tube design | Use section sketch + revolve; keep axis named. |
+| Many `OffsetFace` | physical fit tuning, wall-thickness adjustment, or direct-model clearance edits | Convert offsets to named parameters such as `pcb_clearance_xy`, `socket_relief_extra`, `thread_pilot_diameter`. |
+| Many `Transform`/`Align` | assembly placement matters | Preserve part coordinate frames and placement transforms; do not bake everything into one originless solid. |
+| Many `Boolean`/`Split` | cutters and construction bodies were important | Export cutter bodies separately and document boolean recipes. |
+| Many `Chamfer`/`Fillet` | edge handling for insertion, comfort, or printability | Name chamfer/fillet sizes and keep them late in the model. |
+
+Treat high `OffsetFace` count as a maintainability warning. It is good evidence
+of successful physical iteration, but a fragile edit chain. Once the fit is
+known, rebuild critical regions with parameters.
 
 ## Exact Regeneration Versus New Design
 
