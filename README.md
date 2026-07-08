@@ -78,7 +78,7 @@ The repository is intentionally platform-neutral. A skill should be useful to Ag
 | `kicad-mcp-pcb-design` | Installs and uses KiCad with MCP/agent automation to inspect old PCB projects, generate boards, save datasets, validate DRC, export Gerbers/STEP, and render previews. | KiCad 10, `kicad-cli`, `pcbnew`, MCP stdio, Gerber/STEP/render export |
 | `jlceda-mcp-automation` | Installs, activates, launches, and wires JLCEDA/LCEDA Pro with MCP bridge automation for agent-controlled PCB design. | LCEDA Pro, Electron CDP, `hyl64/jlcmcp`, `jlc-bridge.eext`, gateway WebSocket, MCP validation |
 | `dual-led-constant-power` | Calibrates and controls dual Arduino-driven LED branches with MOS modules and INA219 monitoring for smooth constant-power crossfades. | Arduino UNO, YYNMOS MOS, INA219, inverse LUT, CSV/PNG telemetry |
-| `parametric-cad-design` | Designs, revises, validates, documents, and renders mechanical CAD parts with versioned artifacts and measured print-fit compensation. | OpenSCAD, CadQuery/build123d/OCP, FreeCAD, Blender, STEP/STL/DXF/SVG/PDF, mesh checks |
+| `parametric-cad-design` | Designs, revises, validates, documents, and renders mechanical CAD parts, including Shapr3D/STEP source analysis, exact B-rep regeneration, optical holders, and measured print-fit compensation. | Shapr3D `.shapr`, STEP/Parasolid, OpenSCAD, CadQuery/build123d/OCP, FreeCAD, Blender, STEP/STL/DXF/SVG/PDF, mesh checks |
 
 ## Skill Anatomy
 

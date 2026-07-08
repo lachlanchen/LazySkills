@@ -1,6 +1,6 @@
 ---
 name: parametric-cad-design
-description: Use when designing, revising, validating, documenting, or rendering mechanical CAD parts with OpenSCAD, CadQuery/build123d/OCP, FreeCAD, Blender, STEP/STL/DXF/SVG/PDF exports, print-fit compensation, versioned artifacts, or old STEP reference measurements.
+description: Use when designing, revising, validating, documenting, or rendering mechanical CAD parts with Shapr3D .shapr archives, STEP/Parasolid references, OpenSCAD, CadQuery/build123d/OCP, FreeCAD, Blender, STEP/STL/DXF/SVG/PDF exports, print-fit compensation, versioned artifacts, exact B-rep regeneration, optical holders, C-mount/OpenHI threads, PCB/sensor holders, or old STEP reference measurements.
 ---
 
 # Parametric CAD Design
@@ -9,12 +9,14 @@ Use this skill for agent-assisted mechanical design where the deliverable should
 
 ## Core Workflow
 
-1. Inspect existing CAD and references first. Prefer `rg --files`, `find`, STEP labels, and measured bounding boxes over visual guesses.
-2. Keep dimensions in named parameters in the source model. Do not globally scale a whole part to tune fit.
-3. Preserve prior generated outputs in versioned artifact folders, for example `artifacts/v1_.../` and `artifacts/v2_.../`.
-4. Generate printable STL from the parametric source, lightweight/envelope STEP for CAD review, and threaded/detailed STEP when the thread geometry matters.
-5. Render a full-view PNG and an exploded/detail PNG with Blender when the user needs visual inspection.
-6. Validate with mesh and STEP imports before committing.
+1. Inspect source files before designing. Prefer `.shapr` package metadata, STEP labels, measured bounding boxes, datasheets, and old README notes over visual guesses.
+2. Decide the mode: exact B-rep regeneration, surgical print-fit variant, or new clean parametric design. Do not mix these silently.
+3. Keep dimensions in named parameters. Do not globally scale a whole part to tune fit.
+4. Preserve prior outputs in versioned artifact folders, for example `artifacts/v1_.../` and `artifacts/v2_.../`.
+5. Export editable source, decomposed STEP bodies, assembly STEP, printable STL, and full-view render PNG. Add exploded/detail renders when geometry is hard to inspect.
+6. Validate STEP import, solid count, bounding box, mesh watertight/component count, and render before committing.
+
+When Shapr3D archives, OpenHI/Nature geometry, C-mount, optical holders, or sensor/PCB holders are involved, read `references/shapr3d-cad-patterns.md` after this file.
 
 ## Geometry Discipline
 
@@ -26,6 +28,26 @@ Use this skill for agent-assisted mechanical design where the deliverable should
 - Document the contact plane between independent bodies, for example `socket x=0..12`, `plate x=12..19`.
 - Use clearance holes and pockets for real protrusions such as pin headers, solder joints, cables, screws, and printed-fit errors. Keep those clearances named and visible in the manifest.
 - Prefer simple, clean solids over decorative or overly coupled boolean shapes. If Shapr3D reports invalid geometry when editing, split the part into independent adjacent bodies and bounded cutters.
+
+## Shapr3D And STEP Intake
+
+Use the bundled inspector for source triage:
+
+```bash
+python ~/.codex/skills/parametric-cad-design/scripts/inspect_shapr_step_sources.py \
+  --shapr /path/to/design.shapr \
+  --step /path/to/step-folder \
+  --markdown
+```
+
+If run from `../LazySkills`, replace the script path with `skills/parametric-cad-design/scripts/inspect_shapr_step_sources.py`.
+
+Interpretation rules:
+
+- Many `HistoryImportedBodies` plus zero/few `Shapes` means the `.shapr` is mostly imported B-rep, not a recoverable feature tree.
+- Exact regeneration should preserve the STEP/Parasolid B-rep and prove equivalence by source path, body labels, solid count, bbox, face/surface evidence, and render.
+- Physical fit changes should be sibling variants from the exact baseline. Do not overwrite exact regeneration folders.
+- When old B-rep booleans leave thread shells or invalid geometry, trim at a stable datum and rebuild that region cleanly.
 
 ## Print-Fit Measurement
 
@@ -51,7 +73,25 @@ For helical threads made from a swept triangle, document:
 - thread hand and viewed-from direction;
 - thread length and unthreaded lead-in length.
 
+## Sensor, PCB, And Optical Holder Rules
+
+- Use the board or sensor module as the source of truth: outline, mounting holes, active center, component side, socket side, wire exit, protrusions, PCB thickness, and adhesive thickness.
+- Keep the optical axis and sensor active center explicit. The PCB geometric center is often not the sensor center.
+- Reliefs for sockets and wires must extend to the holder edge when the plug needs insertion/removal clearance.
+- If a PCB is recessed, socket relief height is measured from the PCB top surface, not from the bottom of the holder.
+- Keep C-mount socket, sensor plate, board proxy, sensor proxy, thread cutter, and final assembly as separate STEP bodies when practical.
+- For light valves and apertures, make the active aperture a through-cut and support the device only on a shallow retaining ledge around the active area.
+
 ## Useful Commands
+
+Inspect `.shapr` and STEP sources:
+
+```bash
+python ~/.codex/skills/parametric-cad-design/scripts/inspect_shapr_step_sources.py \
+  --shapr cad/extracted/Nature.shapr \
+  --step cad/extracted/OpenHI_STEP \
+  --markdown
+```
 
 Generate OpenSCAD STLs:
 
