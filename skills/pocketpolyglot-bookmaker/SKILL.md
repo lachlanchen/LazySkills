@@ -24,6 +24,7 @@ Use this skill for multilingual learning books where one language is the main te
 - Keep data and rendering separate. Generate durable JSON first; compile PDFs from JSON without regenerating text.
 - For each language pair, compile both directions when renderers exist, and produce color and black-white variants.
 - Do not trust page count alone. Validate manifest coverage, stale chunks, TOC, line overflow, ruby placement, and sample pages.
+- For final LinguaLeaf/PocketPolyglot PDFs, default to the larger Shiji AgInTi-style font profile for readability. Name this neutrally as `large-font` / `大字版`; do not use Shiji-specific wording in public artifact names unless the book is actually Shiji.
 
 ## Data Model
 
@@ -71,8 +72,27 @@ Do not split source by raw webpage/PDF line breaks. Join line-wrapped prose into
 
 - Main/comment directions: `zh-main`, `jp-main`, `en-main`, etc.
 - Variants: `color` and `blackwhite`.
+- Final share/export builds should use the larger pocket-book font profile by default, with ordinary-size builds kept only as working previews or legacy variants.
 - Include title page, author with ruby when useful, cover image, TOC, and LazyingArt/AgInTiFlow credit when requested.
 - Copy final PDFs to the requested book folder using clean filenames.
+
+### Nutstore / Cloud Filename Safety
+
+- Nutstore may accept a PDF locally but reject the cloud upload with
+  `NotAcceptableByServer` when the filename contains server-unsafe characters.
+  Before copying to Nutstore Share/Projects, sanitize public filenames for
+  ASCII `< > : " / \ | ? *`, control characters, and trailing spaces/dots.
+- Keep public titles readable by replacing unsafe ASCII punctuation with
+  fullwidth equivalents, especially `:` -> `：`. Do this in the sync script
+  before export, not as a manual post-copy repair.
+- In this repo, new sync/export scripts should call
+  `scripts/books/nutstore_paths.py:nutstore_safe_filename()`. After sync, scan
+  the target tree for unsafe filenames and inspect
+  `/home/lachlan/.nutstore/logs/client.log` when files exist locally but are
+  missing from Nutstore cloud.
+- For Share exports, keep the folder flat and user-facing, but still encode the
+  language shape clearly in the filename, for example `English-日本語-中文`,
+  `文言文-English-日本語-中文`, or `日本語-中文`.
 
 ## Monitoring
 
@@ -94,4 +114,5 @@ If a model limit or external blocker appears, pause gracefully, keep all generat
 - Grammar colors use normalized roles and remain readable.
 - Spot-checked pages show line-based alignment without truncation or overflow.
 - Generated PDFs are synced to the requested destination.
+- Cloud export filenames are server-safe and not rejected by the Nutstore client.
 - Source code, prompts, schemas, and durable JSON are committed; large original sources stay ignored unless explicitly requested.
