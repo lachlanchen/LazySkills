@@ -56,6 +56,13 @@ return to ACE-Step XL/SFT when beauty, melody, and vocal feel matter.
 
 Planned lyrics are intent, not blind truth. After generation, use listening and ASR/STT evidence to decide what the render actually sang. If the rendered vocal repeats, skips, reorders, or clearly changes a phrase, document the mismatch and publish lyrics/timing that match the audio. If ASR only substitutes a nearby word and the planned lyric is phonetically close, grammatically stronger, and supported by manual listening, keep the planned lyric; do not let ASR downgrade `When` to `In` or similar close words just because the recognizer guessed that token.
 
+Instrumental and pure-music spans are not lyrics. Do not write intro, break,
+outro, or silent-gap placeholders such as `♪`, `♪♪♪`, or
+`role: "instrumental"` into website lyric JSON, manifest timeline lyrics,
+subtitle tracks, or music-publish lyric files. Store only sung lines. Let the
+Fun player infer non-lyric spans from timing gaps and show musical-note status
+as UI state only.
+
 If the user wants the public lyric to feel closer to the actual performance,
 allow a sound-close poetic compromise only when the rendered phrase has clearly
 changed structure, word count, or sound. When the input/source lyric has the same

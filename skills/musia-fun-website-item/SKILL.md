@@ -32,6 +32,13 @@ explicitly asks or a tool cannot run inside the shared environment.
 
 The website must match the real audio. Planned lyrics, prompts, and translations are references; ASR/STT, listening, and phrase timing are evidence. If a vocal repeats, skips, garbles, or changes a line, the published lyric set must reflect that vocal or the vocal should stay experimental.
 
+Do not encode instrumental or pure-music spans as song-level lyrics. Public
+lyric JSON, manifest timeline lyrics, music-publish lyric files, and subtitles
+must contain sung lyric lines only. Do not add `role: "instrumental"` rows or
+`♪` / `♪♪♪` rows to lyric tracks. The player may infer intro, break, outro, and
+idle sections from timing gaps and show musical-note status in the player UI,
+but those note markers are presentation state, not lyric data.
+
 For generated multilingual songs, treat each playable vocal as its own evidence
 source. A Chinese, English, Japanese, Cantonese, or mixed render may diverge
 from the prompt and from the other language renders, even when they came from
