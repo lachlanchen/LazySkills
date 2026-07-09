@@ -15,7 +15,8 @@ Use this skill for agent-assisted mechanical design where the deliverable should
 4. Preserve prior project runs inside the same design folder. Use `runs/run-N-human-readable-info-YYYYMMDDTHHMMSSZ/` for archived runs and keep the root `artifacts/` directory as the latest checked output.
 5. Export editable source, decomposed STEP bodies, assembly STEP, printable STL, and full-view render PNG. Add exploded/detail renders when geometry is hard to inspect.
 6. Validate STEP import, solid count, bounding box, mesh watertight/component count, and render before committing.
-7. When the user asks for Nutstore sync, or when generating final LabCanvas CAD handoff artifacts, copy the final `*_assembly.step` or `*_assembled.step` to `/home/lachlan/Nutstore Files/Projects/LabCanvas` with its descriptive filename intact.
+7. Put one directly usable final STEP at the design root as `USE_THIS_<design>.step` when there are many artifact STEP files. Keep reference/cutter/smooth variants under `artifacts/`.
+8. When the user asks for Nutstore sync, or when generating final LabCanvas CAD handoff artifacts, copy the final root `USE_THIS_*.step` or final `*_assembly.step`/`*_assembled.step` to `/home/lachlan/Nutstore Files/Projects/LabCanvas` with its descriptive filename intact.
 
 When Shapr3D archives, OpenHI/Nature geometry, C-mount, optical holders, or sensor/PCB holders are involved, read `references/shapr3d-cad-patterns.md` after this file.
 
@@ -52,7 +53,7 @@ Interpretation rules:
 - Many `Transform` or `Align` operations usually mean the file is an assembly; preserve placement transforms and local part frames.
 - Exact regeneration should preserve the STEP/Parasolid B-rep and prove equivalence by source path, body labels, solid count, bbox, face/surface evidence, and render.
 - Physical fit changes should be sibling variants from the exact baseline. Do not overwrite exact regeneration folders.
-- When old B-rep booleans leave thread shells or invalid geometry, trim at a stable datum and rebuild that region cleanly.
+- When old B-rep booleans leave thread shells, transparent Shapr regions, slow Shapr repair, or invalid geometry, preserve the stable source body and replace only the fragile region with clean analytic sleeves/sockets. Validate the exported STEP itself, not only the in-memory CAD object.
 
 ## Print-Fit Measurement
 
@@ -66,6 +67,7 @@ When adapting old 3D-printed parts:
 - For standard-like printed female C-mount sensor holders, treat `25.4 mm` as the nominal internal thread/groove maximum, not the smooth pilot. Prefer a `25.0 mm` female pilot/root and a `25.4 mm` nominal cutter maximum; avoid a `25.4 mm` pilot plus larger groove unless the user wants a loose high-clearance experiment.
 - For the OpenHI Lens B/C holder receiver, the corrected print-fit variants keep the 30 mm OpenHI family. Do not convert them to 25.4 mm C-mount unless explicitly making a new adapter. Change the old `30.2 mm` female start/root to a `30.0 mm` pilot and cut a `30.4 mm` groove envelope. Preserve the 25.5 mm lens seat and adjust the 45 degree transition chamfer from `25.5 -> 30.0 mm` over `2.25 mm`.
 - When a regenerated OpenHI receiver looks messy after a fill-and-recut operation, assume old threaded B-rep faces may remain as internal slivers. Prefer trimming the old receiver away at a stable datum, rebuilding the receiver as a clean adjacent solid, and then unioning it back. Validate that no exposed fill-cylinder shell remains and that helical B-spline faces start only at the intended thread start.
+- If Shapr3D takes a long repair pass, drops threads, or shows transparent faces, count B-spline faces in the exported STEP. Helical B-spline thread faces are a common cause. For Shapr-target files, replace fragile helical threads with bounded analytic ring-groove previews, and also export a smooth editable STEP with no thread preview so Shapr native threads or physical tapping can be used later.
 - When a Z-axis helical cutter exports as a split STEP or loose fragment, construct the helix in a stable axis frame that already works for another variant, rotate it into place, then verify the final STEP re-import has one connected solid.
 - `Nature.shapr` and the flattened `cad/extracted/OpenHI_STEP/` exports can describe the same bodies. On Ubuntu, exact regeneration should usually preserve the exported STEP B-rep, because the `.shapr` often stores imported Parasolid bodies rather than editable feature history.
 
@@ -146,11 +148,39 @@ print(bb.xlen, bb.ylen, bb.zlen)
 PY
 ```
 
+Validate Shapr-friendly STEP topology:
+
+```bash
+cad/.conda/cad-python/bin/python - <<'PY'
+import cadquery as cq
+from OCP.BRepCheck import BRepCheck_Analyzer
+from OCP.BRepAdaptor import BRepAdaptor_Surface
+from OCP.GeomAbs import GeomAbs_BSplineSurface
+from OCP.TopAbs import TopAbs_FACE
+from OCP.TopExp import TopExp_Explorer
+from OCP.TopoDS import TopoDS
+
+path = "USE_THIS_design.step"
+shape = cq.importers.importStep(path).val()
+exp = TopExp_Explorer(shape.wrapped, TopAbs_FACE)
+bspline_faces = 0
+while exp.More():
+    face = TopoDS.Face_s(exp.Current())
+    if BRepAdaptor_Surface(face, True).GetType() == GeomAbs_BSplineSurface:
+        bspline_faces += 1
+    exp.Next()
+bb = shape.BoundingBox()
+print("solids", len(shape.Solids()), "valid", BRepCheck_Analyzer(shape.wrapped).IsValid())
+print("bbox", bb.xlen, bb.ylen, bb.zlen)
+print("bspline_faces", bspline_faces)
+PY
+```
+
 Sync final assembly STEP to Nutstore LabCanvas:
 
 ```bash
 mkdir -p "/home/lachlan/Nutstore Files/Projects/LabCanvas"
-find artifacts -maxdepth 1 -type f \( -name '*_assembly.step' -o -name '*_assembled.step' \) \
+find . artifacts -maxdepth 1 -type f \( -name 'USE_THIS_*.step' -o -name '*_assembly.step' -o -name '*_assembled.step' \) \
   -exec cp -f {} "/home/lachlan/Nutstore Files/Projects/LabCanvas/" \;
 ```
 

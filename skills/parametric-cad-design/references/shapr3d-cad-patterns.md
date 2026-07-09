@@ -111,6 +111,42 @@ or leave a smooth section. Use construction runout:
 If old threaded B-rep faces produce shell fragments after boolean edits, trim
 away the receiver at a stable datum and rebuild the receiver cleanly.
 
+## Avoiding Slow Shapr3D STEP Repair
+
+Shapr3D can import an OCCT-valid STEP slowly or repair it badly when the file
+contains fragile topology. Symptoms include:
+
+- long "repairing" on import;
+- helical threads disappearing after import;
+- transparent or broken-looking faces;
+- thread/pocket regions importing as partial shells.
+
+The OpenHI A+C+BS receiver fix showed the reliable pattern:
+
+1. Keep the stable original STEP body as the outer body and preserve complex
+   local geometry such as the BS slope/slot.
+2. Identify the fragile region by face evidence. Helical thread surfaces often
+   appear as B-spline faces.
+3. Do not keep adding broad fill-and-recut booleans around the fragile area.
+   They can leave internal slivers that Shapr repairs poorly.
+4. Add a clean analytic sleeve/socket only inside the mating region.
+5. Recut the smooth pilot/root bore with cylinders/cones/planes.
+6. For a Shapr-target "threaded" preview, use bounded ring-groove cuts instead
+   of helical B-spline threads.
+7. Also export a smooth editable STEP with no thread preview.
+8. Re-import the exported STEP and verify one solid, expected bbox, B-rep
+   validity, and acceptable B-spline face count.
+
+For the OpenHI A+C+BS case, the final Shapr-friendly files preserved the
+original `40 x 40 x 84.9 mm` envelope and removed all B-spline thread faces
+from the Shapr-target exports. The root-level handoff file was named
+`USE_THIS_openhi_a_c_bs_receivers_30p0_30p4_print_fit.step`.
+
+Use this pattern whenever the user reports that Shapr import is slow, Shapr
+repairs for a long time, threads vanish, or imported faces become transparent.
+If the user needs real editable threads, send the smooth STEP and add native
+Shapr threads there, or treat the print as a physically tapped part.
+
 ## Alignment And Datum Rules
 
 - Pick one optical axis and drive C-mount, lens seat, sensor active center, PCB
@@ -166,6 +202,8 @@ When the user says "Nutstore sync", use:
 Copy the final `*_assembly.step` there after generation, preserving the
 descriptive filename. Keep the complete editable source and full artifact set in
 the design folder; the Nutstore copy is a handoff copy for Shapr3D/LabCanvas.
+When a folder contains many STEP files, also create and sync one root-level
+`USE_THIS_<design>.step` so the user has an unambiguous import target.
 
 Validation should report importability, solid count, bounding box, mesh
 watertight/component count, render path, and Nutstore sync path when used.
