@@ -87,6 +87,12 @@ Characters:
 - `ayachan.png`: individual 阿芽酱 / Aya Chan reference.
 - `sasakun.jpeg`: individual 飒飒君 / Sasa Kun reference.
 
+Main-cast identity is a paid-submit blocker:
+
+- The generated prompt must clearly anchor `啦啦侠 / Lala Xia`, `阿芽酱 / Aya Chan`, `飒飒君 / Sasa Kun`, and `庄子机器人 / Zhuangzi Robot` to the uploaded reference images.
+- Extra villains, crowds, workers, animals, or fantasy characters are allowed, but they must not replace or redesign the four main characters as unrelated humans, unrelated figurines, or new faces.
+- If the visible preview/prompt setup suggests the main cast may be redesigned instead of referenced, stop before paid submission and fix the prompt or attachments.
+
 Words-card rule:
 
 - Treat `图1` as the visual style reference for the physical learning card.
@@ -154,6 +160,7 @@ Use `30秒` or longer only when the user explicitly asks for it.
 - Treat visible high credit estimates, non-Mini paid long renders, recharge/payment approval, insufficient credits, disabled submit, login, CAPTCHA, or explicit user budget limits as blockers that require reporting before paid submission.
 - Use normal `Seedance 2.0`, Fast VIP, Agent long-video, or other more expensive routes only when the user explicitly asks for that quality/duration/capability or confirms the visible cost.
 - If the user asks for cheapest, Mini体验版 is the target. If the requested duration cannot be made with Mini, offer a shorter Mini version or ask before using Agent.
+- If the UI shows Mini 体验版 / cheapest trial but another model is selected, do not submit. Select the cheap model first or stop and report the blocker.
 - Do not continue an `智能长视频` / Agent render when it requests a large point spend unless the user has explicitly approved that exact high-cost render.
 - For `4:3`, verify the opened ratio menu checkmark or screenshot because the compact toolbar may still show only `比例`.
 - Never waste credits on avoidable retries: do not click `生成视频`, `提交`, or
