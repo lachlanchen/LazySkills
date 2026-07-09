@@ -12,16 +12,17 @@ Use this skill for agent-assisted mechanical design where the deliverable should
 1. Inspect source files before designing. Prefer `.shapr` package metadata, STEP labels, measured bounding boxes, datasheets, and old README notes over visual guesses.
 2. Decide the mode: exact B-rep regeneration, surgical print-fit variant, or new clean parametric design. Do not mix these silently.
 3. Keep dimensions in named parameters. Do not globally scale a whole part to tune fit.
-4. Preserve prior outputs in versioned artifact folders, for example `artifacts/v1_.../` and `artifacts/v2_.../`.
+4. Preserve prior project runs inside the same design folder. Use `runs/run-N-human-readable-info-YYYYMMDDTHHMMSSZ/` for archived runs and keep the root `artifacts/` directory as the latest checked output.
 5. Export editable source, decomposed STEP bodies, assembly STEP, printable STL, and full-view render PNG. Add exploded/detail renders when geometry is hard to inspect.
 6. Validate STEP import, solid count, bounding box, mesh watertight/component count, and render before committing.
-7. When the user asks for Nutstore sync, or when generating final LabCanvas CAD handoff artifacts, copy the final `*_assembly.step` to `/home/lachlan/Nutstore Files/Projects/LabCanvas` with its descriptive filename intact.
+7. When the user asks for Nutstore sync, or when generating final LabCanvas CAD handoff artifacts, copy the final `*_assembly.step` or `*_assembled.step` to `/home/lachlan/Nutstore Files/Projects/LabCanvas` with its descriptive filename intact.
 
 When Shapr3D archives, OpenHI/Nature geometry, C-mount, optical holders, or sensor/PCB holders are involved, read `references/shapr3d-cad-patterns.md` after this file.
 
 ## Geometry Discipline
 
 - Pick one datum and keep every related feature aligned to it. For optical parts, the optical axis should drive C-mount bores, sensor packages, board pockets, and renders.
+- For a standard 30 mm optical cage, rod centers are at `x/y = +/-15 mm` from the optical/sample center. Use nominal 6 mm rods with a named printed clearance such as `6.4 mm` unless a specific reference says otherwise; do not move cage holes toward a wider holder's outer corners.
 - When adding clearance to a pocket or sink, add it symmetrically around the selected datum. If a printed part shows one side smaller than the other, first check whether an intentional datasheet offset is still valid; if not, make a new centered sibling variant and document the offset removal.
 - Keep mating bodies editable. Export separate STEP/STL bodies for sockets, plates, inserts, thread cutters, boards, and fixtures when the user may edit them in Shapr3D or FreeCAD.
 - Avoid accidental connector geometry. If the user asks for direct contact, remove bridge blocks and middle cylinders; do not replace one unwanted bridge with another.
@@ -149,7 +150,8 @@ Sync final assembly STEP to Nutstore LabCanvas:
 
 ```bash
 mkdir -p "/home/lachlan/Nutstore Files/Projects/LabCanvas"
-cp -f artifacts/*_assembly.step "/home/lachlan/Nutstore Files/Projects/LabCanvas/"
+find artifacts -maxdepth 1 -type f \( -name '*_assembly.step' -o -name '*_assembled.step' \) \
+  -exec cp -f {} "/home/lachlan/Nutstore Files/Projects/LabCanvas/" \;
 ```
 
 ## Completion Report
