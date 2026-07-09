@@ -15,6 +15,7 @@ Use this skill for agent-assisted mechanical design where the deliverable should
 4. Preserve prior outputs in versioned artifact folders, for example `artifacts/v1_.../` and `artifacts/v2_.../`.
 5. Export editable source, decomposed STEP bodies, assembly STEP, printable STL, and full-view render PNG. Add exploded/detail renders when geometry is hard to inspect.
 6. Validate STEP import, solid count, bounding box, mesh watertight/component count, and render before committing.
+7. When the user asks for Nutstore sync, or when generating final LabCanvas CAD handoff artifacts, copy the final `*_assembly.step` to `/home/lachlan/Nutstore Files/Projects/LabCanvas` with its descriptive filename intact.
 
 When Shapr3D archives, OpenHI/Nature geometry, C-mount, optical holders, or sensor/PCB holders are involved, read `references/shapr3d-cad-patterns.md` after this file.
 
@@ -144,6 +145,13 @@ print(bb.xlen, bb.ylen, bb.zlen)
 PY
 ```
 
+Sync final assembly STEP to Nutstore LabCanvas:
+
+```bash
+mkdir -p "/home/lachlan/Nutstore Files/Projects/LabCanvas"
+cp -f artifacts/*_assembly.step "/home/lachlan/Nutstore Files/Projects/LabCanvas/"
+```
+
 ## Completion Report
 
-Report the source model path, current artifact folder, STL/STEP/DXF/SVG/PDF/PNG outputs, measured bounds, watertight/component checks, render path, commit hash, push status, and any remaining physical fit checks.
+Report the source model path, current artifact folder, STL/STEP/DXF/SVG/PDF/PNG outputs, measured bounds, watertight/component checks, render path, Nutstore LabCanvas assembly STEP copy when performed, commit hash, push status, and any remaining physical fit checks.

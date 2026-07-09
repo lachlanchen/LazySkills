@@ -157,5 +157,15 @@ For each serious CAD design, produce:
 - optional exploded/detail PNG;
 - optional DXF/SVG/PDF sketches for profiles and hole patterns.
 
+When the user says "Nutstore sync", use:
+
+```text
+/home/lachlan/Nutstore Files/Projects/LabCanvas
+```
+
+Copy the final `*_assembly.step` there after generation, preserving the
+descriptive filename. Keep the complete editable source and full artifact set in
+the design folder; the Nutstore copy is a handoff copy for Shapr3D/LabCanvas.
+
 Validation should report importability, solid count, bounding box, mesh
-watertight/component count, and render path.
+watertight/component count, render path, and Nutstore sync path when used.
