@@ -304,6 +304,12 @@ PYTHONNOUSERSITE=1 conda run -n musia python scripts/record_fun_player_realtime.
 Use this realtime recorder for normal publication clips. The slower deterministic
 frame recorder is a fallback for visual debugging or special frame-exact renders,
 not the default when the user wants a normal 4K portrait song capture quickly.
+For portrait Fun-player recordings, do not create a landscape master and then
+bg-fill it into portrait. Capture the page directly as native portrait
+(`--width 2160 --height 3840 --css-width 1080 --css-height 1920
+--device-scale-factor 2`) and publish that portrait MP4. If LazyEdit processing
+is used for logo/metadata, pass `--no-portrait-blur-fill`; bg-fill is only for
+converting non-portrait source videos and must respect source aspect ratio.
 
 For publication recordings, `--publication-layout --capture-clock` is required.
 The dedicated publication layout fixes the vertical slots as:

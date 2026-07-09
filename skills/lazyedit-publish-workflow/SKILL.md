@@ -47,6 +47,11 @@ conda activate lazyedit
 
 - Do not publish to real platforms just to debug packaging, subtitles, or logo output. Use `--no-publish` first, inspect the generated ZIP/final MP4, then publish exactly once when the package is correct.
 - For current Musia recording videos, publish with the existing LazyEdit logo at top-right and no LazyEdit subtitles unless the user explicitly asks for subtitles. Use `--no-burn-subtitles --logo --logo-position top-right`, force a fresh logo-only render when the side changes, and inspect a sample frame or the MP4 inside the ZIP before submitting.
+- For native portrait Musia player recordings, also pass
+  `--no-portrait-blur-fill`. Do not apply portrait bg-fill to a video that is
+  already a direct 2160x3840 portrait capture. Bg-fill is only for converting
+  horizontal or nonmatching-aspect source videos, and the foreground geometry
+  must respect the source aspect ratio.
 - If a Musia recording already has the correct logo burned into an inspected
   high-quality MP4, do not let LazyEdit reprocess it. Build a direct AutoPublish
   ZIP with a unique stem, matching `<stem>_metadata.json`, `video_filename`, and
