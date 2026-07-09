@@ -364,6 +364,13 @@ post-song closeout is:
 4. Create per-vocal lyric JSON with ruby/pinyin/furigana and timing.
 5. Add or update the song entry in `website/data/catalog.json`.
 6. Add a 16:9 cover at `website/assets/covers/<media-id>-16x9.png`.
+   The cover must be newly generated or newly selected for this exact song.
+   Base the cover prompt on the corrected lyrics, story, mood, symbols, and
+   final title of the current song. Do not reuse an older song cover, and do
+   not let old song names, characters, scenes, metadata, or prompt fragments
+   pollute the new cover. If adapting a prior visual style, rewrite the prompt
+   from a clean current-song brief and verify the resulting image does not look
+   like a stale cover from another song.
 7. Run `npm run website:validate`, `musia fun-audit --media-id <media-id>`, `node --check website/app.js`, and `git diff --check`.
 
 If the song will be packaged for LazyEdit/Shipinhao Music or YouTube Music,

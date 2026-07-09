@@ -237,6 +237,11 @@ Do not duplicate ruby by also putting pronunciation into the visible native text
 - for public song covers, use a visually selected AgInTi/image-generation image
   matched to the song mood; no text, logo, or watermark; do not rely on a
   procedural placeholder cover for public recording/publishing.
+- create or select a fresh cover for this exact song. Derive the image prompt
+  from the corrected lyrics, title, emotional arc, setting, and symbols of the
+  current song only. Do not reuse an older song cover, and do not let old song
+  details contaminate the prompt or resulting image. Before publishing, confirm
+  the cover does not visibly belong to another song, character, place, or theme.
 
 7. Validate and audit:
 
