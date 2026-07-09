@@ -74,6 +74,20 @@ even when audible. Always check the ending manually for soft final syllables or
 tails that ASR may miss. If listening supports the intended phrase or tail, add
 it back with real timing and translations; if it is not audible, document that
 it was skipped.
+For mixed-language songs, do a word-by-word coverage table before accepting the
+song for website, recording, LazyEdit, or Shipinhao Music. Compare each planned
+line against the corrected active vocal and mark it as kept, sound-close
+corrected, split, merged, omitted-not-audible, or translation-only. Pay special
+attention to ASR gaps between adjacent recognized lines; a missing English line
+such as `Moonlight will not return to me` can live entirely inside a gap between
+`Moon` and a Japanese line. Do not record or publish until every planned line is
+accounted for and companion EN/JA/ZH tracks translate the actual active line.
+For endings, treat ASR silence or hallucination as suspicious when VAD/waveform
+still shows vocal energy. Use manual listening and user correction to recover
+soft tail lyrics; then patch website JSON, manifest, translations, and the
+production note before recording or packaging. The `共饮长江水 · Same River`
+tail is the canonical example: `Ding bu fu xiang si yi` -> `Same river, same
+longing` -> `Give me all`.
 When the user later identifies a missed phrase, patch the website lyric JSON,
 manifest timeline, and references immediately, then push/deploy if the item is
 already public.
@@ -183,7 +197,9 @@ repeated-hook lyrics, SFT/Turbo configs, and `commands.sh`. The successful
 `越人歌 · 原诗版` route came from this philosophy: source truth -> pronunciation
 truth -> private model-facing simplification -> multiple lyric layouts -> model
 sweep -> ASR/listening rejection -> hook-focused regeneration -> truthful
-website correction. Keep these references close when repeating the method:
+website correction.
+
+For the full reusable ACE poem-song method, use the repo reference:
 
 ```text
 /home/lachlan/ProjectsLFS/Musia/references/ace-poem-song-beauty-and-lyric-alignment-method-2026-07-01.md

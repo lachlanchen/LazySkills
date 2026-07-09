@@ -53,6 +53,12 @@ conda activate lazyedit
   `cover_filename`, then POST it to `/publish` with the requested platform
   flags. This is the preferred recovery path when a LazyEdit `--no-process`
   route still triggers processing or overwrites the inspected logo master.
+- For Musia posts, platform metadata must describe the song itself, not the
+  workflow. Do not include conversation context, model/pipeline notes, recording
+  mode names, "publication master", "no subtitle", implementation details, or
+  internal review notes unless the user explicitly asks for a technical demo.
+  Good metadata focuses on song title, artist, theme, mood, language mix, genre,
+  and a short listener-facing hook.
 - Real publishes should use polished/corrected subtitles and the configured LazyEdit Studio logo unless the user explicitly asks otherwise. Verify logo settings with `curl -fsS $LAZYEDIT_API/api/ui-settings/logo_settings | jq .`; normal logo outputs end in `_subtitles_logo.mp4`.
 - For Musia pure-music publishes, lyrics must come from the corrected Musia
   website/publish lyric JSON for the exact selected vocal, not from the original
@@ -70,6 +76,11 @@ conda activate lazyedit
 - For Bilibili, optional SMS verification after upload is only for completion notifications; close it and continue. If the page shows `请完成短信验证` while the upload is stuck at `0.0MB/0.0MB`, it is a hard SMS gate, not GeeTest. Click `获取验证码`, get the SMS code from the user, and do not retry upload loops without it. Cover upload is best-effort, so a missing cover dialog should not cause a full reupload.
 - If Bilibili shows `0.0MB/0.0MB` and browser-side `preupload` returns code `601` with `您上传视频过快，请您稍作休息后再继续`, stop retrying and wait for cooldown. Repeated upload retries extend the block.
 - To add a missing platform to an already-processed LazyEdit output, reuse the existing ZIP if it contains the correct rendered MP4. Re-submit the same ZIP with only the missing platform flags. Repackage only when the existing ZIP points at the wrong output.
+- For `scripts/lazyedit_publish.py --platforms`, use the CLI's accepted video
+  platform names: `shipinhao,instagram,youtube,douyin`. Do not pass shorthand
+  aliases such as `sph,ins,y2b` to this CLI; they can fail after processing.
+  Shorthands may still appear in lower-level AutoPublish recovery flags, so
+  distinguish the LazyEdit CLI layer from remote recovery/debug endpoints.
 - AutoPublish derives the extracted metadata directory from the ZIP filename stem. Do not rename a prepared ZIP to add suffixes like `-topright` unless the internal metadata filename and directory contract are regenerated to match.
 - If one platform browser looks stale after an interrupted publish, use the
   AutoPublish per-job recovery controls instead of globally restarting every

@@ -97,6 +97,12 @@ merged ASR segment, or earlier manual omission. If any line is missing or
 timing is stale, fix the website JSON first and rebuild the music package from
 that corrected JSON.
 
+For video/music platform metadata, write for listeners, not for engineers.
+Describe the song itself: title, artist, mood, story, language mix, genre, and
+emotional hook. Do not leak conversation notes, generation pipeline details,
+recording style names, implementation caveats, or "how this video was made"
+unless the user explicitly asks for a technical demo post.
+
 Do not let ASR override a good intended lyric just because the recognizer chose
 a nearby word. If the input/reference lyric is phonetically close, fits the
 sentence better, and the phrase structure has not changed, preserve the input
@@ -155,11 +161,32 @@ reference lyric line-by-line against the corrected active-vocal track and ask:
   phrase may still be audible, such as `梦也缱绻`?
 - Does listening support adding the planned phrase even though ASR omitted it?
 
+For mixed-language vocals, this audit must be word-by-word against the planned
+mixed lyric, not only against the ASR segment list. ASR can silently collapse an
+English or Japanese phrase into a gap between two recognized lines. Before any
+recording or publication, print a side-by-side table of `planned/reference line
+-> corrected active line/timing -> EN/JA/ZH companion lines` and account for
+every planned line as one of: `kept`, `sound-close corrected`, `split`,
+`merged`, `omitted-not-audible`, or `translation-only`. If a planned line falls
+inside a timing gap and is even plausibly audible, add it as its own timed line
+or explicitly document why it is not present.
+
+For soft endings and mixed-language tails, do not trust one ASR pass. If ASR
+hallucinates or stops early but the separated vocal/VAD still has energy, use
+focused listening, waveform/VAD boundaries, user-provided hearing corrections,
+and nearby prompt text to decide the public lyric. Example rule from `共饮长江水
+· Same River`: replace stale guesses such as `Wo xiang xin` or `Same, same
+longing` when listening confirms `Ding bu fu xiang si yi` and `Same river,
+same longing`. Patch the active JSON and all companion translations before any
+recording, video publish, or music package.
+
 If a phrase is sound-supported, add it to the active-language JSON and to every
 translation track in the same lyric set, using either the merged line timing or
 a new line inside the gap. Update the manifest timeline and the production note
 under `references/`. If the website was already public, commit, push, and wait
-for the Pages deploy; do not leave live lyrics stale.
+for the Pages deploy; do not leave live lyrics stale. After deploy, fetch the
+live `https://fun.lazying.art/data/songs/...` JSON and confirm the corrected
+lines are actually served before reporting completion or publishing elsewhere.
 
 Treat a missing-planned-phrase audit failure as a release blocker. Do not record,
 publish, or hand off music-platform metadata while the website still omits a
@@ -274,6 +301,10 @@ PYTHONNOUSERSITE=1 conda run -n musia python scripts/record_fun_player_realtime.
   --preset ultrafast
 ```
 
+Use this realtime recorder for normal publication clips. The slower deterministic
+frame recorder is a fallback for visual debugging or special frame-exact renders,
+not the default when the user wants a normal 4K portrait song capture quickly.
+
 For publication recordings, `--publication-layout --capture-clock` is required.
 The dedicated publication layout fixes the vertical slots as:
 
@@ -300,6 +331,21 @@ cp -f RECORDED_VIDEO.mp4 "/home/lachlan/Nutstore Files/Projects/Musia/"
 For multi-vocal recordings, render and sync one MP4 per public vocal/language,
 and make sure `--asset-id` matches both the visible website player and the
 muxed audio track.
+
+Use these standard portrait publication styles for Fun player recordings:
+
+- `lyrics-only`: full-width top player plus current multilingual lyrics. Use
+  `--multilingual-lyrics --no-advanced --no-guitar-focus` with the realtime
+  recorder.
+- `fingering-only`: full-width top player plus chord carousel and large guitar
+  fingering. Use `--advanced --guitar-focus`.
+- `lyrics+fingering`: full-width top player plus current multilingual lyrics,
+  then guitar fingering in the lower spare portrait space. Use
+  `--multilingual-lyrics --advanced --no-guitar-focus --lyrics-guitar
+  --publication-layout --capture-clock`.
+
+Do not change lyric content to make room for fingering. Use empty portrait
+space first; only reduce type size if the text actually overflows.
 
 ## Quality Gate
 
