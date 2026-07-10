@@ -54,6 +54,14 @@ quality may be terrible or only so-so. Keep such outputs visibly `DR
 Draft`/experimental, do not record or publish them as final-quality songs, and
 return to ACE-Step XL/SFT when beauty, melody, and vocal feel matter.
 
+For new Mandarin or mixed Mandarin generation, prefer real Chinese characters
+as the model-facing sung lyric. Do not use pinyin as the primary sung lyric just
+because it is easier to tokenize; it often makes Mandarin sound foreign. Keep
+pinyin for website ruby, external pronunciation guides, correction notes, or
+explicit phonetic fallback experiments only. If a pinyin-based render is kept
+public, label it with a meaningful version suffix instead of treating it as the
+standard clean-language version.
+
 Planned lyrics are intent, not blind truth. After generation, use listening and ASR/STT evidence to decide what the render actually sang. If the rendered vocal repeats, skips, reorders, or clearly changes a phrase, document the mismatch and publish lyrics/timing that match the audio. If ASR only substitutes a nearby word and the planned lyric is phonetically close, grammatically stronger, and supported by manual listening, keep the planned lyric; do not let ASR downgrade `When` to `In` or similar close words just because the recognizer guessed that token.
 
 Instrumental and pure-music spans are not lyrics. Do not write intro, break,
