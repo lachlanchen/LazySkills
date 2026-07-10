@@ -62,6 +62,25 @@ explicit phonetic fallback experiments only. If a pinyin-based render is kept
 public, label it with a meaningful version suffix instead of treating it as the
 standard clean-language version.
 
+Before inventing a new generation route, inspect the closest successful Musia
+project and reuse its proven structure. For example, `越人歌` worked because it
+used a focused Chinese ancient-song route, source-line selection/repetition,
+compact positive prompting, and public restoration of source-close ASR errors.
+`共饮长江水` worked because it used sparse English-led mixed phonetic lyrics
+with pinyin/romaji as private sound control, then corrected public lyrics from
+the actual audio. The old `共白头 · Snow We Share · 雪中回声` worked because its
+hook lyric was sparse and pinyin/romaji-led. If a remake needs higher source
+truth, first try the focused `越人歌` route; if the user wants a mixed-language
+vocal, try the `共饮长江水` sparse phonetic route. Do not keep iterating dense
+new prompt shapes after ASR shows drift.
+
+Pinyin can be used as a private pronunciation-control lyric when the user
+accepts it or when a previous pinyin route clearly worked, but the public text
+must be corrected from the actual audio and restored to the original Chinese
+only when the sound, phrase count, and context are close. Include the original
+Chinese source lines in the caption/notes so the model has semantic grounding;
+do not rely on pinyin alone.
+
 Planned lyrics are intent, not blind truth. After generation, use listening and ASR/STT evidence to decide what the render actually sang. If the rendered vocal repeats, skips, reorders, or clearly changes a phrase, document the mismatch and publish lyrics/timing that match the audio. If ASR only substitutes a nearby word and the planned lyric is phonetically close, grammatically stronger, and supported by manual listening, keep the planned lyric; do not let ASR downgrade `When` to `In` or similar close words just because the recognizer guessed that token.
 
 Instrumental and pure-music spans are not lyrics. Do not write intro, break,
