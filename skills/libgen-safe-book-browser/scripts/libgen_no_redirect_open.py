@@ -38,10 +38,11 @@ INIT_SCRIPT = r"""
 (() => {
   const bad = /trip\.com|tripcdn|ctrip|pipaffiliates|realizationnewestfangs|evaluatestormypawn|preferencenail|storageimagedisplay|googlesyndication|doubleclick|googleadservices|pagead2|taboola|outbrain|popads|propeller/i;
   const block = (url) => bad.test(String(url || ""));
+  const allowed = /(^https:\/\/([^\/]+\.)?libgen\.(pw|li)\/)|^\//i;
   const originalOpen = window.open;
   window.open = function(url, target, features) {
     if (block(url)) return null;
-    if (url && !String(url).startsWith("https://libgen.pw") && !String(url).startsWith("/")) return null;
+    if (url && !allowed.test(String(url))) return null;
     return originalOpen.call(window, url, target, features);
   };
   document.addEventListener("click", (event) => {
@@ -126,7 +127,7 @@ def close_ad_targets(cdp_url: str, ad_words: list[str]) -> list[dict[str, str]]:
     return closed
 
 
-def cdp_call(ws: Any, counter: list[int], method: str, params: dict[str, Any] | None = None) -> dict[str, Any]:
+def cdp_call(ws: Any, counter: list[int], method: str, params: dict[str, Any] | None = None, *, allowed_hosts: set[str] | None = None) -> dict[str, Any]:
     counter[0] += 1
     message_id = counter[0]
     ws.send(json.dumps({"id": message_id, "method": method, "params": params or {}}))
@@ -135,7 +136,7 @@ def cdp_call(ws: Any, counter: list[int], method: str, params: dict[str, Any] | 
         if message.get("id") == message_id:
             return message
         if message.get("method") == "Fetch.requestPaused":
-            handle_paused_request(ws, counter, message, allowed_hosts={"libgen.pw"})
+            handle_paused_request(ws, counter, message, allowed_hosts=allowed_hosts or {"libgen.pw"})
 
 
 def handle_paused_request(ws: Any, counter: list[int], message: dict[str, Any], *, allowed_hosts: set[str]) -> None:
@@ -163,16 +164,17 @@ def guard_tab(cdp_url: str, label: str, target_url: str, allowed_hosts: set[str]
         ws = websocket.create_connection(tab["webSocketDebuggerUrl"], timeout=10)
         ws.settimeout(1)
         counter = [0]
-        cdp_call(ws, counter, "Fetch.enable", {"patterns": [{"urlPattern": "*", "requestStage": "Request"}]})
-        cdp_call(ws, counter, "Page.enable")
-        cdp_call(ws, counter, "Page.addScriptToEvaluateOnNewDocument", {"source": INIT_SCRIPT})
-        cdp_call(ws, counter, "Page.navigate", {"url": target_url})
+        cdp_call(ws, counter, "Fetch.enable", {"patterns": [{"urlPattern": "*", "requestStage": "Request"}]}, allowed_hosts=allowed_hosts)
+        cdp_call(ws, counter, "Page.enable", allowed_hosts=allowed_hosts)
+        cdp_call(ws, counter, "Page.addScriptToEvaluateOnNewDocument", {"source": INIT_SCRIPT}, allowed_hosts=allowed_hosts)
+        cdp_call(ws, counter, "Page.navigate", {"url": target_url}, allowed_hosts=allowed_hosts)
         time.sleep(1.0)
         sample = cdp_call(
             ws,
             counter,
             "Runtime.evaluate",
             {"expression": "({title:document.title,url:location.href,text:document.body?document.body.innerText.slice(0,240):''})", "returnByValue": True},
+            allowed_hosts=allowed_hosts,
         )
         value = sample.get("result", {}).get("result", {}).get("value", {}) or {}
         result_queue.put(OpenResult(label, "opened", target_url, value.get("title", ""), value.get("url", ""), (value.get("text", "") or "").replace("\n", " | ")))
