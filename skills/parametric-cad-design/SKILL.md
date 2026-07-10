@@ -32,7 +32,7 @@ When Shapr3D archives, OpenHI/Nature geometry, C-mount, optical holders, or sens
 - Use clearance holes and pockets for real protrusions such as pin headers, solder joints, cables, screws, and printed-fit errors. Keep those clearances named and visible in the manifest.
 - Prefer simple, clean solids over decorative or overly coupled boolean shapes. If Shapr3D reports invalid geometry when editing, split the part into independent adjacent bodies and bounded cutters.
 - For large flat printed parts, add removable anti-warp ears by default unless the user explicitly wants a clean outline. Use thin sacrificial Z thickness, weak breakaway overlap, two side pulls, and a diagonal full-corner pull tab from the true corner to a wider tail pad. The diagonal pull matters because side tabs mostly hold the adjacent edges, not the actual corner.
-- When a design is ready to print, make a clean Nutstore print folder such as `/home/lachlan/Nutstore Files/Projects/LabCanvas/<design>/run-N-short-name-print-ready/` with `PRINT_THIS_*.stl`, `PRINT_THIS_*.step`, separate part STEP files, and a render PNG. Loose STEP copies are useful for Shapr handoff, but print-ready folders prevent choosing the wrong run.
+- When a design is ready to print, make a clean Nutstore print folder such as `/home/lachlan/Nutstore Files/Projects/LabCanvas/<design>/run-N-short-name-print-ready/` with `PRINT_THIS_*.stl`, `PRINT_THIS_*.step`, `PRINT_THIS_*.3mf`, separate part STEP files, and a render PNG. Loose STEP copies are useful for Shapr handoff, but print-ready folders prevent choosing the wrong run.
 
 ## Shapr3D And STEP Intake
 
@@ -188,4 +188,4 @@ find . artifacts -maxdepth 1 -type f \( -name 'USE_THIS_*.step' -o -name '*_asse
 
 ## Completion Report
 
-Report the source model path, current artifact folder, STL/STEP/DXF/SVG/PDF/PNG outputs, measured bounds, watertight/component checks, render path, Nutstore LabCanvas assembly STEP copy when performed, commit hash, push status, and any remaining physical fit checks.
+Report the source model path, current artifact folder, STL/STEP/3MF/DXF/SVG/PDF/PNG outputs, measured bounds, watertight/component checks, 3MF zip validation, render path, Nutstore LabCanvas assembly STEP copy when performed, commit hash, push status, and any remaining physical fit checks.
