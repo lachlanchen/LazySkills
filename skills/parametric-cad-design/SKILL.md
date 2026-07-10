@@ -31,7 +31,8 @@ When Shapr3D archives, OpenHI/Nature geometry, C-mount, optical holders, or sens
 - Document the contact plane between independent bodies, for example `socket x=0..12`, `plate x=12..19`.
 - Use clearance holes and pockets for real protrusions such as pin headers, solder joints, cables, screws, and printed-fit errors. Keep those clearances named and visible in the manifest.
 - Prefer simple, clean solids over decorative or overly coupled boolean shapes. If Shapr3D reports invalid geometry when editing, split the part into independent adjacent bodies and bounded cutters.
-- For large flat printed parts, add removable anti-warp ears by default unless the user explicitly wants a clean outline. Use thin sacrificial Z thickness, weak breakaway overlap, and diagonal full-corner pull tabs in addition to side tabs when the actual corners need to be held down.
+- For large flat printed parts, add removable anti-warp ears by default unless the user explicitly wants a clean outline. Use thin sacrificial Z thickness, weak breakaway overlap, two side pulls, and a diagonal full-corner pull tab from the true corner to a wider tail pad. The diagonal pull matters because side tabs mostly hold the adjacent edges, not the actual corner.
+- When a design is ready to print, make a clean Nutstore print folder such as `/home/lachlan/Nutstore Files/Projects/LabCanvas/<design>/run-N-short-name-print-ready/` with `PRINT_THIS_*.stl`, `PRINT_THIS_*.step`, separate part STEP files, and a render PNG. Loose STEP copies are useful for Shapr handoff, but print-ready folders prevent choosing the wrong run.
 
 ## Shapr3D And STEP Intake
 
