@@ -73,6 +73,13 @@ hook lyric was sparse and pinyin/romaji-led. If a remake needs higher source
 truth, first try the focused `越人歌` route; if the user wants a mixed-language
 vocal, try the `共饮长江水` sparse phonetic route. Do not keep iterating dense
 new prompt shapes after ASR shows drift.
+For the Snow We Share route specifically, keep the old public sparse hook as
+the baseline when the user praises it; later native/no-pinyin remakes are not
+automatically better. See the LazySkills reference note named
+`musia-snow-we-share-route-and-publish-recovery-2026-07-10.md` and the Musia
+repo reference
+`/home/lachlan/ProjectsLFS/Musia/references/musia-successful-song-routes-2026-07-10.md`
+before choosing a new route.
 
 Pinyin can be used as a private pronunciation-control lyric when the user
 accepts it or when a previous pinyin route clearly worked, but the public text
@@ -108,6 +115,12 @@ even when audible. Always check the ending manually for soft final syllables or
 tails that ASR may miss. If listening supports the intended phrase or tail, add
 it back with real timing and translations; if it is not audible, document that
 it was skipped.
+For soft mixed-language hooks, run a second no-VAD or loose-VAD ASR pass on the
+separated vocal when a suspicious gap follows a chorus or hook. Snow We Share
+recovered `Let our hearts be less alone`, a long `Ah` tail, and the final
+`Ta zhao ruo shi tong lin xue / Ye suan gong bai tou` only after this extra
+check. Do not mark that span instrumental until no-VAD, waveform energy, and
+manual listening all agree it has no sung content.
 For mixed-language songs, do a word-by-word coverage table before accepting the
 song for website, recording, LazyEdit, or Shipinhao Music. Compare each planned
 line against the corrected active vocal and mark it as kept, sound-close

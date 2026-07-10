@@ -58,12 +58,21 @@ conda activate lazyedit
   `cover_filename`, then POST it to `/publish` with the requested platform
   flags. This is the preferred recovery path when a LazyEdit `--no-process`
   route still triggers processing or overwrites the inspected logo master.
+- For 4K Musia player recordings with small text, compare source and processed
+  outputs before publish. If a logo-only/subtitle-disabled LazyEdit render is
+  much smaller, lower bitrate, or visibly blurrier than the approved source,
+  preserve quality by direct-packaging the inspected MP4 for AutoPublish. Keep a
+  sample-frame check beside the package when debugging.
 - For Musia posts, platform metadata must describe the song itself, not the
   workflow. Do not include conversation context, model/pipeline notes, recording
   mode names, "publication master", "no subtitle", implementation details, or
   internal review notes unless the user explicitly asks for a technical demo.
   Good metadata focuses on song title, artist, theme, mood, language mix, genre,
   and a short listener-facing hook.
+- If generated metadata invents languages, wrong lyric phrases, model names, or
+  private workflow context, replace it with a clean manual metadata JSON before
+  publishing. The metadata correction should warm the audience with the song's
+  story and mood; it should not summarize the Codex/user conversation.
 - Real publishes should use polished/corrected subtitles and the configured LazyEdit Studio logo unless the user explicitly asks otherwise. Verify logo settings with `curl -fsS $LAZYEDIT_API/api/ui-settings/logo_settings | jq .`; normal logo outputs end in `_subtitles_logo.mp4`.
 - For Musia pure-music publishes, lyrics must come from the corrected Musia
   website/publish lyric JSON for the exact selected vocal, not from the original
@@ -105,6 +114,16 @@ conda activate lazyedit
   `restart_platforms=ins,y2b,sph,douyin` for the affected platforms, or
   `force_browser_restart=true` when all selected target browsers should be
   restarted. Check `/publish/queue`; queue rows now include these restart flags.
+- When posting a direct AutoPublish ZIP to the remote API, use
+  `filename=<zip-name>` plus boolean flags such as
+  `publish_shipinhao=true`, `publish_y2b=true`, `publish_instagram=true`, and
+  `publish_douyin=true`. Do not use `path=...` for this endpoint. AutoPublish
+  expects the ZIP under its `transcription_data/<stem>/` directory and derives
+  the metadata directory from the ZIP stem.
+- If the AutoPublish server or tmux session is interrupted mid-run, its in-memory
+  queue may be lost. Requeue the same verified ZIP rather than rebuilding. If a
+  platform may already have clicked publish, recover the remaining platforms
+  first and only retry the uncertain platform after checking drafts/history.
 - Avoid opening many long-lived terminal monitors. Prefer one `scripts/lazyedit_publish.py --guided-monitor --wait` process plus occasional one-shot queue/tmux checks. Close stale sessions before starting another long publish.
 
 ## Setting Semantics

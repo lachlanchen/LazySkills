@@ -177,6 +177,11 @@ every planned line as one of: `kept`, `sound-close corrected`, `split`,
 `merged`, `omitted-not-audible`, or `translation-only`. If a planned line falls
 inside a timing gap and is even plausibly audible, add it as its own timed line
 or explicitly document why it is not present.
+When a gap follows a hook or chorus, run a no-VAD or looser-VAD ASR pass on the
+separated vocal stem before treating the gap as instrumental. Snow We Share
+needed this to recover a soft English continuation, an `Ah` vocal tail, and the
+final Chinese pinyin tail. Add sung material with real timing when it is audible;
+do not add `♪` or instrumental placeholder rows to the song-level lyric JSON.
 
 For soft endings and mixed-language tails, do not trust one ASR pass. If ASR
 hallucinates or stops early but the separated vocal/VAD still has energy, use
@@ -364,6 +369,13 @@ Use these standard portrait publication styles for Fun player recordings:
 
 Do not change lyric content to make room for fingering. Use empty portrait
 space first; only reduce type size if the text actually overflows.
+
+After recording, inspect the MP4 with `ffprobe` and extract a sample frame before
+publishing. If a LazyEdit logo/subtitle processing step turns an approved 4K
+Musia recording into a much smaller, blurrier, or low-bitrate output, publish the
+inspected recording through a direct HQ AutoPublish package instead of accepting
+the degraded re-encode. Use clean listener-facing metadata and keep internal
+workflow notes out of platform descriptions.
 
 ## Quality Gate
 
