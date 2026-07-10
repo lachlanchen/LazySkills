@@ -74,11 +74,25 @@ Prompt labels after upload:
 - 图7: `sasakun.jpeg`, individual 飒飒君 / Sasa Kun reference.
 - 图8: `Trio.png`, three-character group identity reference.
 
+No-Trio variant:
+
+- If the user says not to upload `Trio.png`, skip only `Trio.png`.
+- Still upload supporting assets unless separately excluded: `words-card.jpg`,
+  `LazyingArtRobot.png`, `display.png`, and
+  `patchwork-leather-notebook-luxury-clean-v2.png`.
+- Still upload the three individual character references: `raraxia.jpeg`,
+  `ayachan.png`, and `sasakun.jpeg`.
+- In that case labels stop at 图7 and the prompt must not mention 图8 or a
+  group-reference image. "No Trio" does not mean "only character photos" unless
+  the user explicitly says only to upload character photos.
+
 Characters:
 
-- `啦啦侠 / Lala Xia`: giant panda from `Trio.png`.
-- `阿芽酱 / Aya Chan`: red panda from `Trio.png`.
-- `飒飒君 / Sasa Kun`: boy from `Trio.png`.
+- `啦啦侠 / Lala Xia`: use `raraxia.jpeg` as the primary individual reference.
+- `阿芽酱 / Aya Chan`: use `ayachan.png` as the primary individual reference.
+- `飒飒君 / Sasa Kun`: use `sasakun.jpeg` as the primary individual reference.
+- `Trio.png`: optional group identity/reference image when uploaded; omit it
+  when the user requests no Trio.
 - `words-card.jpg`: words card / 小白屏学习卡 style reference.
 - `LazyingArtRobot.png`: robot `庄子`; preserve the LazyingArt chest logo.
 - `display.png`: LightMind AI glasses.
@@ -118,8 +132,10 @@ Story writing rule:
 - Before turning a new story into a Xiaoyunque prompt, run a critic pass using `lalachan-story-critic` when available. Fix exact awkward lines first, then write the final prompt.
 
 Never paste local filesystem paths into the Xiaoyunque prompt. Paths are only
-for the browser file upload command. The prompt should say `图1` through `图8`
-and explicitly ask not to draw file names or paths into the video.
+for the browser file upload command. The prompt should refer only to actually
+uploaded labels: normally `图1` through `图8`, or `图1` through `图7` when
+`Trio.png` is intentionally omitted. Explicitly ask not to draw file names or
+paths into the video.
 
 Always upload the actual reference image files before generation. Do not treat
 typed local paths, pasted filenames, or prompt-only image descriptions as a

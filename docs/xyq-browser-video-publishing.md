@@ -13,12 +13,17 @@ This document records the browser-first method used to generate, download, and p
    requested.
 7. Set ratio to `4:3` and verify it by reopening the ratio dropdown because the toolbar may still show only `比例`.
 8. Upload all required reference images and wait until every file item is
-   `success`. Current LALACHAN default is seven images: words card, robot
-   `庄子`, LightMind glasses, patchwork notebook, `R1`, `R3`, and `Trio`.
-   Never skip this step and never paste local file paths as a substitute for
-   upload.
+   `success`. Current full LALACHAN default is eight images: words card, robot
+   `庄子`, LightMind glasses, patchwork notebook, individual `raraxia`,
+   individual `ayachan`, individual `sasakun`, and optional `Trio`.
+   If the user says not to upload `Trio.png`, skip only `Trio.png`; still
+   upload the robot, notebook, AI glasses, words-card, and three individual
+   character images unless those are separately excluded. Never paste local file
+   paths as a substitute for upload.
 9. Fill a compact prompt that includes no-subtitle/no-text requirements and
-   references uploaded images only as `图1` through `图7`, never as local paths.
+   references uploaded images only by their actual upload labels, never as local
+   paths. Use `图1` through `图8` for the full set, or `图1` through `图7` when
+   `Trio.png` is intentionally omitted.
 10. Submit from the actual enabled submit button coordinates, not stale toolbar coordinates.
 11. Poll the generation thread until a video appears.
 12. If direct download fails, use browser-context `fetch` on the active `video.currentSrc`; when it returns `200 video/mp4`, trigger an in-page blob download and copy from `~/Downloads`. If protected direct/browser fetch still fails but the completed page has a visible `下载` button, click the page's own download button and copy the newest MP4 from `~/Downloads`.
@@ -65,9 +70,9 @@ skills/lalachan-xyq-browser-video/scripts/xyq_cdp_browser.py \
 ```bash
 skills/lalachan-xyq-browser-video/scripts/xyq_cdp_browser.py \
   --cdp-url http://127.0.0.1:9344 upload-images-verify PAGE_ID \
-  artifacts/images/2026-06-07T02-10-31-891Z/image.png \
+  words-card.jpg \
   LazyingArtRobot.png display.png patchwork-leather-notebook-luxury-clean-v2.png \
-  R1.jpg.jpeg R3.jpg.jpeg Trio.png \
+  raraxia.jpeg ayachan.png sasakun.jpeg \
   --timeout 180 \
   --screenshot outputs/run/after-upload.png
 ```

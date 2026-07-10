@@ -99,15 +99,25 @@ Use these prompt labels after upload:
 - 图7: `sasakun.jpeg`, individual 飒飒君 / Sasa Kun reference.
 - 图8: `Trio.png`, three-character group identity reference.
 
-Use `Trio.png` / 图8 as the role identity reference:
+No-Trio variant:
 
-- 啦啦侠 / Lala Xia: giant panda.
-- 阿芽酱 / Aya Chan: red panda.
-- 飒飒君 / Sasa Kun: boy.
+- If the user says not to upload `Trio.png`, skip only `Trio.png`.
+- Still upload the supporting assets unless separately excluded: words card,
+  庄子 robot, LightMind AI glasses, and patchwork notebook.
+- Still upload the three individual character references.
+- Labels stop at 图7 and the prompt must not mention 图8.
+
+Use individual images as primary role references. Use `Trio.png` / 图8 only as
+an optional group identity reference when it is uploaded:
+
+- 啦啦侠 / Lala Xia: `raraxia.jpeg`.
+- 阿芽酱 / Aya Chan: `ayachan.png`.
+- 飒飒君 / Sasa Kun: `sasakun.jpeg`.
 
 Never paste local filesystem paths into the Xiaoyunque prompt. Paths are only
 for browser upload commands. In the prompt, refer to uploaded references as
-`图1`, `图2`, ..., `图8` in this exact order.
+`图1`, `图2`, ..., `图8` in this exact order, or stop at `图7` when `Trio.png`
+is intentionally omitted.
 
 For `图1`, generate a new word or concept for each new video. The card content
 must include English, Japanese, and furigana. The card should look like a real

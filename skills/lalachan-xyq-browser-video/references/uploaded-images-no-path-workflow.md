@@ -17,6 +17,11 @@ the Xiaoyunque prompt.
 | 图7 | `sasakun.jpeg` | individual 飒飒君 / Sasa Kun reference |
 | 图8 | `Trio.png` | 啦啦侠, 阿芽酱, 飒飒君 group identity reference |
 
+If the user says not to upload `Trio.png`, skip only `Trio.png`. Keep the
+supporting props and robot unless separately excluded: words card, 庄子 robot,
+LightMind AI glasses, and patchwork notebook. The no-Trio labels stop at 图7,
+and the prompt must not mention 图8.
+
 ## Upload
 
 ```bash
@@ -80,6 +85,7 @@ Submit only after proving:
 - use `15秒` only when the user explicitly asks for 15s, quick test, cheapest/least credits, or accepts the short-film cap
 - use a relatively cheap suitable model that supports the requested duration; Mini体验版/vipnew at a visible cheap rate such as `单秒限时低至4积分` is preferred, and Fast/Fast VIP/another Seedance row is acceptable when it is the relatively cheaper suitable option
 - `4:3` unless requested otherwise
-- all eight images attached successfully
+- all required images attached successfully: normally eight images, or seven
+  images when `Trio.png` is intentionally omitted
 - prompt contains no local paths
 - no subtitles or extra generated screen text beyond intentional in-scene props such as the words card, `AgInTi`, or `LightMind`
