@@ -44,6 +44,28 @@ python scripts/lazyedit_publish.py \
 
 Omit `--no-process` when processing should run before publishing.
 
+For normal LALACHAN story/video public posts, include all four target platforms
+unless the user explicitly excludes one:
+
+```bash
+--platforms shipinhao,youtube,instagram,douyin
+```
+
+If Shipinhao blocks on login, keep the verified ZIP and continue with the other
+platforms only as a partial fallback. Then retry Shipinhao alone from the same
+ZIP after login is fixed:
+
+```bash
+curl -fsS -X POST \
+  "$AUTOPUBLISH_API/publish?filename=VIDEO_SESSION.zip&publish_shipinhao=true&restart_platforms=shipinhao" \
+  --data-binary @/path/to/VIDEO_SESSION.zip
+```
+
+Do not claim the full publish is complete while Shipinhao is still pending.
+If AutoPublish says `Shipinhao login iframe was not available and the publish
+editor is not ready`, the QR-email path did not run. Treat that as a
+Shipinhao login-flow bug and fix/report it before another same-platform retry.
+
 ## High-Quality Portrait Masters
 
 For vertical shorts made from 4:3 or horizontal generated videos, prefer LazyEdit's built-in portrait blur-fill and normal subtitle/logo reburn. LALACHAN mode targets about 40% lower blurred reserve (`bottomSpaceRatio=0.4`) and derives the top margin from the source aspect ratio. Use a separate high-quality blur-fill master only as a fallback for older runs, layout experiments, or visible quality regressions.

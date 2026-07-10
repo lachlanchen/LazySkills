@@ -86,6 +86,18 @@ conda activate lazyedit
   aliases such as `sph,ins,y2b` to this CLI; they can fail after processing.
   Shorthands may still appear in lower-level AutoPublish recovery flags, so
   distinguish the LazyEdit CLI layer from remote recovery/debug endpoints.
+- For normal public LALACHAN story/video publishes, include Shipinhao by
+  default: `--platforms shipinhao,youtube,instagram,douyin`, unless the user
+  explicitly excludes it. If Shipinhao login blocks a combined job, publish the
+  remaining platforms separately only as a partial fallback, then leave an
+  explicit Shipinhao-only retry using the same verified ZIP. Do not report the
+  overall publish as fully complete while Shipinhao is pending.
+- If Shipinhao is logged out, the expected behavior is to extract the QR code
+  and send the login email. If AutoPublish fails earlier with a message such as
+  `Shipinhao login iframe was not available and the publish editor is not ready`,
+  treat that as a Shipinhao login-flow bug to fix or report. Do not keep
+  restarting all platforms; preserve the ZIP and retry Shipinhao only after the
+  login/QR path is corrected.
 - AutoPublish derives the extracted metadata directory from the ZIP filename stem. Do not rename a prepared ZIP to add suffixes like `-topright` unless the internal metadata filename and directory contract are regenerated to match.
 - If one platform browser looks stale after an interrupted publish, use the
   AutoPublish per-job recovery controls instead of globally restarting every
