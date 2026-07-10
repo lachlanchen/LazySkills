@@ -72,7 +72,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("urls", nargs="+", help="LibGen detail/search URLs to open")
     parser.add_argument("--cdp-url", default="http://127.0.0.1:9222", help="Chrome CDP HTTP endpoint")
     parser.add_argument("--guard-seconds", type=int, default=600, help="Seconds to keep redirect guard attached")
-    parser.add_argument("--allowed-host", action="append", default=["libgen.pw"], help="Allowed host; repeat as needed")
+    parser.add_argument("--allowed-host", action="append", default=["libgen.pw", "libgen.li"], help="Allowed host; repeat as needed")
     parser.add_argument("--label", action="append", default=[], help="Optional labels matching positional URLs")
     parser.add_argument("--no-close-ad-targets", action="store_true", help="Do not close existing ad targets first")
     parser.add_argument("--json", action="store_true", help="Emit JSON lines")

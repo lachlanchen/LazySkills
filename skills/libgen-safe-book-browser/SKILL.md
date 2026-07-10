@@ -71,6 +71,10 @@ python3 skills/libgen-safe-book-browser/scripts/libgen_no_redirect_open.py \
   --label "Les Miserables EN" https://libgen.pw/book/113160300
 ```
 
+The redirect guard allows `libgen.pw` and `libgen.li` by default. Use the same
+tool for `https://libgen.li/edition.php?...` pages; add `--allowed-host` only
+for another trusted LibGen mirror.
+
 ## Browser Setup
 
 Use an existing Chrome only if it has a CDP endpoint:
