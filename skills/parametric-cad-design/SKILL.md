@@ -31,6 +31,7 @@ When Shapr3D archives, OpenHI/Nature geometry, C-mount, optical holders, or sens
 - Document the contact plane between independent bodies, for example `socket x=0..12`, `plate x=12..19`.
 - Use clearance holes and pockets for real protrusions such as pin headers, solder joints, cables, screws, and printed-fit errors. Keep those clearances named and visible in the manifest.
 - Prefer simple, clean solids over decorative or overly coupled boolean shapes. If Shapr3D reports invalid geometry when editing, split the part into independent adjacent bodies and bounded cutters.
+- For large flat printed parts, add removable anti-warp ears by default unless the user explicitly wants a clean outline. Use thin sacrificial Z thickness, weak breakaway overlap, and diagonal full-corner pull tabs in addition to side tabs when the actual corners need to be held down.
 
 ## Shapr3D And STEP Intake
 
