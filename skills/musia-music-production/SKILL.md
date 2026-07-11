@@ -413,7 +413,10 @@ post-song closeout is:
 6. Add a 16:9 cover at `website/assets/covers/<media-id>-16x9.png`.
    The cover must be newly generated or newly selected for this exact song.
    Base the cover prompt on the corrected lyrics, story, mood, symbols, and
-   final title of the current song. Do not reuse an older song cover, and do
+   final title of the current song. By default, make Musia song covers feel
+   like song-themed cinematic megastructures: vast scale, elegant impossible
+   architecture or landscape, deep atmosphere, and one small warm human-scale
+   focal point tied to the lyric. Do not reuse an older song cover, and do
    not let old song names, characters, scenes, metadata, or prompt fragments
    pollute the new cover. If adapting a prior visual style, rewrite the prompt
    from a clean current-song brief and verify the resulting image does not look

@@ -249,6 +249,12 @@ Do not duplicate ruby by also putting pronunciation into the visible native text
 - for public song covers, use a visually selected AgInTi/image-generation image
   matched to the song mood; no text, logo, or watermark; do not rely on a
   procedural placeholder cover for public recording/publishing.
+- unless the user asks for a different visual direction, default Musia song
+  covers to a song-specific cinematic megastructure feeling: the song's own
+  setting, symbols, and emotional world should appear with vast scale, elegant
+  architecture or impossible landscape, strong depth, and a small human/warm
+  focal element. The megastructure must serve the song theme, not become a
+  generic sci-fi background.
 - create or select a fresh cover for this exact song. Derive the image prompt
   from the corrected lyrics, title, emotional arc, setting, and symbols of the
   current song only. Do not reuse an older song cover, and do not let old song
