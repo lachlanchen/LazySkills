@@ -75,6 +75,24 @@ The redirect guard allows `libgen.pw` and `libgen.li` by default. Use the same
 tool for `https://libgen.li/edition.php?...` pages; add `--allowed-host` only
 for another trusted LibGen mirror.
 
+The guard keeps top-level navigation restricted to LibGen hosts, but allows
+required static render resources from `cdn.jsdelivr.net` and `code.jquery.com`
+by default. This prevents the common half-rendered page state where the HTML
+loads but Bootstrap CSS/JQuery are missing. Add `--allowed-resource-host` only
+for another trusted static host that is needed for page rendering.
+
+If an existing tab looks half-loaded, reload and verify it instead of just
+checking `document.body` text:
+
+```bash
+python3 skills/libgen-safe-book-browser/scripts/libgen_reload_verify_tabs.py \
+  --cdp-url $XYQ_CDP_URL \
+  --url "https://libgen.li/edition.php?id=138479359"
+```
+
+The reload verifier checks `document.readyState`, real body text, and expected
+Bootstrap/JQuery resources when the page declares them.
+
 ## Browser Setup
 
 Use an existing Chrome only if it has a CDP endpoint:
