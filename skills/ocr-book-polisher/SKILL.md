@@ -1,12 +1,16 @@
 ---
 name: ocr-book-polisher
-description: Use when converting scanned PDFs, image-heavy books, OCR output, or rough Markdown into a corrected, publishable text/TeX/PDF book while preserving figures, captions, source structure, and evidence-based validation.
+description: Use when converting scanned PDFs, image-heavy books, technical textbooks, music books, OCR output, or rough Markdown into corrected, publishable Markdown/TeX/PDF while preserving figures, equations, diagrams, tables, captions, source structure, and evidence-based validation.
 triggers:
   - OCR scanned book
   - scanned PDF to TeX
   - polished OCR markdown
   - correct OCR errors
   - preserve figures and captions
+  - equations to TeX
+  - figures diagrams tables
+  - music notation OCR
+  - technical textbook to LaTeX
   - booklike TeX
   - fix generated TOC
   - searchable PDF to clean book
@@ -16,13 +20,17 @@ triggers:
 
 Use this skill for scanned or image-heavy books that need more than a hidden text layer: the output should read like a newly typeset book, with corrected text, real headings, figures, captions, and a reliable table of contents.
 
+For technical books with equations, diagrams, tables, music notation, or dense figures, read `references/pdf-to-tex-equation-figure-table-workflow.md` before choosing the OCR route.
+
 ## Core Rules
 
 - Fix the body, not only the generated TOC. If the TOC is wrong, locate the corresponding content heading and correct or insert it in the source text.
 - Preserve images and captions when the original book contains meaningful figures. Remove placeholder prose such as “original page image” unless the user explicitly wants a facsimile.
+- For equations, tables, diagrams, music notation, chord charts, staff notation, and exercise layouts, preserve the semantic object when possible; otherwise preserve the original visual object as a high-quality figure with clean caption and source evidence.
 - Treat OCR as suspect until checked against source evidence. Correct obvious recognition errors, garbled Latin fragments, broken captions, and misread headings.
 - Keep old outputs if requested, but put new editions in a clear folder such as `build/<book>-polished-tex/` or `build/<book>-booklike-pocket/`.
-- Validate before claiming completion: generated PDF path, page count, TOC, log warnings, and a spot check of representative pages.
+- For PDF-to-TeX conversions, produce an exact/review edition before changing page size. Then generate the pocket edition from the same reviewed TeX body.
+- Validate before claiming completion: generated PDF path, page count, TOC, log warnings, overfull lines, missing figures, text extraction, and a spot check of representative pages.
 
 ## Workflow
 

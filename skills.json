@@ -207,7 +207,7 @@
         "copilot",
         "generic"
       ],
-      "description": "Correct scanned/OCR books into page-aware Markdown, booklike TeX, and validated PDFs while preserving figures, captions, and TOC structure."
+      "description": "Correct scanned/OCR and technical books into page-aware Markdown, booklike TeX, and validated PDFs while preserving figures, equations, tables, diagrams, captions, and TOC structure."
     },
     {
       "id": "libgen-safe-book-browser",
