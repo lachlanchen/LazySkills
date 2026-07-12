@@ -54,6 +54,12 @@ vocal is unclear, garbled, skips words, repeats a line, or sings different text:
 - regenerate before publication.
 
 Do not prettify translations into lyrics the audio did not sing.
+For compact mixed-language ACE songs such as `Best Am I`, the planned native
+lyric may be only an intention document. The active vocal can be English plus
+Mandarin pinyin and Japanese romaji. Publish that active mixed layer truthfully,
+then provide native EN/JA/ZH companion tracks for meaning. If the selected audio
+only sings a compact subset, do not force the longer draft bridge/final chorus
+into website lyrics, subtitles, or music-platform lyric files.
 
 For every selected Musia song that is not explicitly private or experimental,
 website preparation is part of the definition of done. Always prepare the data
@@ -182,6 +188,11 @@ separated vocal stem before treating the gap as instrumental. Snow We Share
 needed this to recover a soft English continuation, an `Ah` vocal tail, and the
 final Chinese pinyin tail. Add sung material with real timing when it is audible;
 do not add `♪` or instrumental placeholder rows to the song-level lyric JSON.
+For sound-close title or pinyin/romaji hooks, preserve the intended hook when it
+is contextually stronger than ASR: `Best am I` over `Best of my`, `Wo shi tian
+xia di yi deng` over `Washi tian shadi den`, and `Dare ni mo mienai namida`
+over approximate ASR romaji. Override the planned form only when the audio
+clearly changes structure or meaning.
 
 For soft endings and mixed-language tails, do not trust one ASR pass. If ASR
 hallucinates or stops early but the separated vocal/VAD still has energy, use
@@ -255,6 +266,9 @@ Do not duplicate ruby by also putting pronunciation into the visible native text
   architecture or impossible landscape, strong depth, and a small human/warm
   focal element. The megastructure must serve the song theme, not become a
   generic sci-fi background.
+- `Best Am I` is the reference cover success: a small figure in a luminous
+  golden-and-glass megastructure at sunrise, no text, no logo, no watermark,
+  clean vivid color, and emotional alignment with self-belief.
 - create or select a fresh cover for this exact song. Derive the image prompt
   from the corrected lyrics, title, emotional arc, setting, and symbols of the
   current song only. Do not reuse an older song cover, and do not let old song

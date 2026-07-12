@@ -73,6 +73,15 @@ hook lyric was sparse and pinyin/romaji-led. If a remake needs higher source
 truth, first try the focused `越人歌` route; if the user wants a mixed-language
 vocal, try the `共饮长江水` sparse phonetic route. Do not keep iterating dense
 new prompt shapes after ASR shows drift.
+`Best Am I · 我是天下第一等` is the compact mixed-anthem reference: dense mixed
+lyrics failed, compact XL Turbo seed sweep worked, XL SFT hallucinated generic
+video-outro text, and the public lyric was corrected to the actual compact sung
+structure. For motivational/cute/pop mixed EN/ZH/JP songs, start with a native
+public lyric for intent, rewrite it into a compact ACE-facing performance lyric
+with one language phrase per line, use English as the lead scaffold plus short
+Mandarin pinyin/Japanese romaji hooks, repeat the title hook, and select by
+ASR/listening rather than draft coverage. See
+`/home/lachlan/ProjectsLFS/Musia/references/best-am-i-mixed-language-route-lessons-2026-07-12.md`.
 For the Snow We Share route specifically, keep the old public sparse hook as
 the baseline when the user praises it; later native/no-pinyin remakes are not
 automatically better. See the LazySkills reference note named
@@ -188,6 +197,11 @@ the earlier successful Musia songs (`越人歌`, `云海之恋`, `Take Care of Y
 prompts and seed sweeps. If SFT returns empty ASR, generic outro text, buried
 vocals, or user-reported gibberish, immediately switch to a Turbo candidate
 sweep instead of trying to publish or record it.
+For mixed EN/ZH/JP songs, pinyin/romaji can be a useful active-vocal
+sound-control layer when it helps ACE sing beautifully, but it is not the public
+meaning layer. Publish the corrected active mixed vocal plus native companion
+translations. If the render only sings a compact subset of the prompt, publish
+that subset honestly and omit unsung draft lines.
 
 Prefer fewer stronger lines over dense poetry. For Chinese/Japanese, reduce pronunciation risk by using natural, short phrases and correcting after ASR/listening.
 
