@@ -181,10 +181,12 @@ player. Chinese uses `token.pinyin`; Japanese kanji uses `token.reading`. Do not
 invent ruby in the client if the corrected lyric JSON lacks it; enrich the lyric
 JSON first.
 
-Atlas jianpu / simple numbered notes are allowed only as labeled learning data.
-When `melody_f0.csv` exists, the Atlas builder may convert token-level median F0
-to note names and key-relative jianpu, but mark it `analysis` unless a human
-audits the lead sheet.
+Atlas **Number notes** are allowed only as labeled learning data. This is the
+English UI label for 简谱-style numbered notation. When `melody_f0.csv` exists,
+the Atlas builder may convert token-level median F0 to note names and
+key-relative numbered scale degrees, but mark it `analysis` unless a human
+audits the lead sheet. The note lane should show all current-phrase notes,
+highlight the active sung note, and auto-scroll with playback.
 
 Catalog curation: use `hidden: true` plus `hiddenReason` for low-quality,
 terrible, superseded, or suffix/demo versions. The normal player and playback
