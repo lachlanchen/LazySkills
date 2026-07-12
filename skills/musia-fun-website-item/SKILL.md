@@ -176,6 +176,21 @@ current two lyric rows shown side by side. Keep a sticky mini player available
 while scrolling the study section. Practice speed should support a broad range
 such as `25%` to `200%`, with pitch preservation where the browser supports it.
 
+Atlas current phrase must render the same ruby-aware lyric tokens as the main
+player. Chinese uses `token.pinyin`; Japanese kanji uses `token.reading`. Do not
+invent ruby in the client if the corrected lyric JSON lacks it; enrich the lyric
+JSON first.
+
+Atlas jianpu / simple numbered notes are allowed only as labeled learning data.
+When `melody_f0.csv` exists, the Atlas builder may convert token-level median F0
+to note names and key-relative jianpu, but mark it `analysis` unless a human
+audits the lead sheet.
+
+Catalog curation: use `hidden: true` plus `hiddenReason` for low-quality,
+terrible, superseded, or suffix/demo versions. The normal player and playback
+queue should hide them; `?showall` or `?showAll` should reveal the full catalog
+for review/debug. Prefer hiding over deleting so old direct links still work.
+
 ## Workflow
 
 1. Run or collect analysis for every public vocal:
