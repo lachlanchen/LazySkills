@@ -123,6 +123,32 @@ lyric. Use ASR to catch real omissions, repeats, order changes, and garbling,
 not to downgrade plausible words such as `When` into `In` when listening and
 context support `When`.
 
+## Musia Atlas Learning Pages
+
+When the user asks for a Chordify/Chord AI-like learning page, guitar-practice
+view, song detail page, music-theory training page, or `musia.js`, prepare it as
+**Musia Atlas** rather than inventing a separate player. Atlas uses the same
+corrected website lyrics and media clock, then adds learning data:
+
+```text
+website/data/songs/<media-id>/study.json
+website/musia.js
+https://fun.lazying.art/?mode=atlas&media=<media-id>
+https://fun.lazying.art/atlas/<media-id>/
+```
+
+Atlas data must be honest about confidence:
+
+- lyrics: corrected website JSON for the active vocal;
+- chords: timed manifest chord map, marked analysis-grade unless human audited;
+- beats: local beat-analysis grid when available, otherwise BPM-estimated;
+- capo/transpose/simplify: display-only transforms; the audio remains unchanged.
+
+Do not use Atlas to teach false certainty. If chord timing, harmony, beats,
+melody, or rhythm are approximate, label them as analysis or estimate. For
+practice pages, make the UI beginner-readable: current phrase, current chord,
+beat count, tempo, chord fingering, and simple steps before dense theory.
+
 ## Workflow
 
 1. Run or collect analysis for every public vocal:
