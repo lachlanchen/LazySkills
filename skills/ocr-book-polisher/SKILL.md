@@ -20,7 +20,7 @@ triggers:
 
 Use this skill for scanned or image-heavy books that need more than a hidden text layer: the output should read like a newly typeset book, with corrected text, real headings, figures, captions, and a reliable table of contents.
 
-For technical books with equations, diagrams, tables, music notation, or dense figures, read `references/pdf-to-tex-equation-figure-table-workflow.md` before choosing the OCR route.
+For technical books with equations, diagrams, tables, music notation, or dense figures, read `references/pdf-to-tex-equation-figure-table-workflow.md` before choosing the OCR route. For concrete tools, script responsibilities, and validation commands, read `references/pdf-to-tex-toolchain-and-scripts.md`.
 
 ## Core Rules
 

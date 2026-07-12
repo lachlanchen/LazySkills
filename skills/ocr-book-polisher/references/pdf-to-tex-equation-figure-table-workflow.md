@@ -3,6 +3,9 @@
 Use this reference when a book contains equations, figures, tables, diagrams,
 music notation, chord charts, technical exercises, or dense scanned pages.
 
+For concrete executable tools, script responsibilities, and validation command
+patterns, see `pdf-to-tex-toolchain-and-scripts.md`.
+
 ## Current Capability
 
 We have a strong hybrid PDF-to-TeX pipeline, but there is no single local tool
