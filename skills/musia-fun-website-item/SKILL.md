@@ -163,6 +163,13 @@ melody, or rhythm are approximate, label them as analysis or estimate. For
 practice pages, make the UI beginner-readable: current phrase, current chord,
 beat count, tempo, chord fingering, and simple steps before dense theory.
 
+Atlas rhythm coach rule: strum and fingerpicking patterns are optional practice
+guides, not verified original arrangements unless a musician or reliable
+symbolic source confirms them. Default beginner behavior should divide the
+active chord span into simple playable parts such as `D U D U`, with slower
+playback-rate controls for practice. Keep the pattern labels clear enough for a
+learner who cannot sing yet and does not know music theory.
+
 ## Workflow
 
 1. Run or collect analysis for every public vocal:
