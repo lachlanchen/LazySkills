@@ -144,6 +144,20 @@ Atlas data must be honest about confidence:
 - beats: local beat-analysis grid when available, otherwise BPM-estimated;
 - capo/transpose/simplify: display-only transforms; the audio remains unchanged.
 
+After correcting a song for the website or preparing it for Shipinhao Music,
+rebuild Atlas before recording/publishing:
+
+```bash
+node bin/musia.js atlas-build --media-id <media-id>
+node bin/musia.js fun-validate
+```
+
+For a catalog-wide refresh:
+
+```bash
+node bin/musia.js atlas-build --all
+```
+
 Do not use Atlas to teach false certainty. If chord timing, harmony, beats,
 melody, or rhythm are approximate, label them as analysis or estimate. For
 practice pages, make the UI beginner-readable: current phrase, current chord,
