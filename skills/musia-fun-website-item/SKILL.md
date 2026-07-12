@@ -170,8 +170,9 @@ active chord span into simple playable parts such as `D U D U`, with slower
 playback-rate controls for practice. Keep the pattern labels clear enough for a
 learner who cannot sing yet and does not know music theory.
 
-Atlas layout default: use a compact three-column top on desktop (`player /
-chords+fingering / current lyrics`) and keep a sticky mini player available
+Atlas layout default: use a compact four-column top on desktop. Column 1 is the
+player, column 2 is chords plus guitar fingering, and columns 3-4 are the
+current two lyric rows shown side by side. Keep a sticky mini player available
 while scrolling the study section. Practice speed should support a broad range
 such as `25%` to `200%`, with pitch preservation where the browser supports it.
 
