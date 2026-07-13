@@ -390,6 +390,20 @@
         "generic"
       ],
       "description": "Launch, control, debug, and clean up remote Linux GUI apps through clean Xvfb desktops, localhost x11vnc/noVNC bridges, browser app windows, SSH-local ports, and camera/GUI process isolation."
+    },
+    {
+      "id": "codex-session-recovery",
+      "path": "skills/codex-session-recovery/SKILL.md",
+      "category": "agent-operations",
+      "platforms": [
+        "aginti",
+        "codex",
+        "claude",
+        "gemini",
+        "copilot",
+        "generic"
+      ],
+      "description": "Diagnose, privately back up, compact, verify, and hand off stalled or extremely slow Codex sessions through guarded official app-server workflows without rewriting rollout JSONL or SQLite state."
     }
   ]
 }

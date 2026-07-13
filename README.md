@@ -73,6 +73,7 @@ The repository is intentionally platform-neutral. A skill should be useful to Ag
 | `transcript-video-section-splitter` | Transcribes videos, derives topic-based section boundaries, and splits edited or source videos into named clips with manifests. | Whisper/WhisperX, content sections, ffmpeg, clip manifest |
 | `video-face-image-replacement` | Covers or replaces one or more detected video faces with supplied or generated image assets, including multi-person animal masks with stable identity tracking. | InsightFace/SCRFD, identity maps, RetinaFace/MediaPipe options, alpha compositing, ffmpeg |
 | `aginti-agentlink` | Coordinates multiple agent sessions across machines, repos, tools, hardware, and APIs using safe handoffs and action contracts. | peer maps, handoff packets, private session mirrors, status probes, evidence bundles |
+| `codex-session-recovery` | Diagnoses and recovers stalled or extremely slow Codex threads without rewriting private session state. | read-only inspection, private verified backup, app-server compaction, ownership checks, append-only verification |
 | `kv260-metavision-lab` | Operates and maintains the AMD Kria KV260 + Prophesee Metavision lab, including desktop launchers, custom viewer, recording API, native viewer recovery, Windows X11 control center, and file transfer. | PetaLinux, Prophesee, Metavision, V4L2, X11/Matchbox, SSH X11, event recording |
 | `kv260-windows-arduino` | Coordinates KV260 event recording with the Windows host and USB Arduino light controller, including LAN identity, COM-port checks, future Arduino APIs, and cross-session handoffs. | KV260 API, Windows SSH, Arduino CLI, COM ports, DualLampHI, private session mirrors |
 | `kicad-mcp-pcb-design` | Installs and uses KiCad with MCP/agent automation to inspect old PCB projects, generate boards, save datasets, validate DRC, export Gerbers/STEP, and render previews. | KiCad 10, `kicad-cli`, `pcbnew`, MCP stdio, Gerber/STEP/render export |
@@ -170,6 +171,7 @@ cp -R skills/pocketpolyglot-bookmaker ~/.codex/skills/
 cp -R skills/transcript-video-section-splitter ~/.codex/skills/
 cp -R skills/video-face-image-replacement ~/.codex/skills/
 cp -R skills/aginti-agentlink ~/.codex/skills/
+cp -R skills/codex-session-recovery ~/.codex/skills/
 cp -R skills/kv260-metavision-lab ~/.codex/skills/
 cp -R skills/kv260-windows-arduino ~/.codex/skills/
 cp -R skills/kicad-mcp-pcb-design ~/.codex/skills/
@@ -211,6 +213,9 @@ test -f skills/pocketpolyglot-bookmaker/SKILL.md
 test -f skills/transcript-video-section-splitter/SKILL.md
 test -f skills/video-face-image-replacement/SKILL.md
 test -f skills/aginti-agentlink/SKILL.md
+test -f skills/codex-session-recovery/SKILL.md
+python3 -m py_compile skills/codex-session-recovery/scripts/*.py
+python3 skills/codex-session-recovery/scripts/test_codex_session_recovery.py
 test -f skills/kv260-metavision-lab/SKILL.md
 test -f skills/kv260-windows-arduino/SKILL.md
 test -f skills/kicad-mcp-pcb-design/SKILL.md
@@ -235,6 +240,7 @@ aginti skills "npm publishing"
 - [Xiaoyunque continue confirmation and protected download runbook](skills/lalachan-xyq-browser-video/references/continue-confirm-download-runbook.md)
 - [LazyEdit publish runbook](docs/lazyedit-publish-runbook.md)
 - [Publish repo skill handoff](docs/publish-repo-skill-handoff.md)
+- [Codex stalled-session recovery runbook](docs/codex-session-recovery.md)
 - [Reusable language header](i18n/language-header.md)
 
 Detailed, project-specific run logs should live in the project that produced them. LazySkills keeps only reusable procedures and general examples.
