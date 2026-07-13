@@ -7,6 +7,12 @@ description: Use when installing, activating, launching, documenting, or wiring 
 
 Use this skill when an agent needs to prepare JLCEDA/LCEDA Pro for PCB automation through MCP. Keep EDA activation files, license text, browser state, and user project data out of git.
 
+For JLC/JLCEDA website browsing and downloads on Lachlan's workstation, reuse
+the shared Chrome profile `$HOME/.cache/xyq-chrome` through noVNC `6099`
+(display `:98`, VNC `5908`, CDP `9344`). This is also the Xiaoyunque and general
+download browser. Do not confuse it with LCEDA Pro's separate Electron
+application profile or replace it with a newly created Chrome profile.
+
 ## Safety Rules
 
 - Never print, summarize, or commit activation file contents. Only report path, size, hash prefix if useful, and success/failure.

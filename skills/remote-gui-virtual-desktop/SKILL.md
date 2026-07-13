@@ -44,6 +44,26 @@ http://127.0.0.1:6099/vnc_lite.html?host=127.0.0.1&port=6099&autoconnect=1&resiz
 Keep VNC/noVNC bound to `127.0.0.1`. Use SSH tunneling or another authenticated
 layer for remote viewing from a different machine.
 
+## Canonical Shared Browser
+
+On Lachlan's workstation, preserve the established Chrome browser identity:
+
+```text
+X display: :98
+VNC: 127.0.0.1:5908
+noVNC: http://127.0.0.1:6099/vnc_lite.html?host=127.0.0.1&port=6099&autoconnect=1&resize=remote
+AgInTi Browser: http://127.0.0.1:8794
+Chrome CDP: http://127.0.0.1:9344
+Chrome profile: $HOME/.cache/xyq-chrome
+```
+
+Xiaoyunque, JLC/JLCEDA web work, and ordinary downloads share this Chrome
+profile. Reuse it when the user asks for the familiar browser or its download
+history. Do not substitute `embedded-agentic-browser-chrome`,
+`agentic-browser-vdesktop-chrome`, or a temporary profile. Do not delete,
+overwrite, inspect secrets from, or commit the profile. LCEDA Pro's Electron
+application state remains separate.
+
 ## AgenticApp Launcher
 
 When working in AgenticApp, prefer:
@@ -101,6 +121,9 @@ close the whole GUI session.
 
 ## Troubleshooting
 
+- If the browser opens without the expected Xiaoyunque, JLC, and download
+  history, stop and verify `--user-data-dir=$HOME/.cache/xyq-chrome`; changing
+  noVNC ports or displays does not select the browser identity.
 - If `xdpyinfo` fails but the X socket exists, remove stale `/tmp/.X11-unix/XN`
   and `/tmp/.XN-lock` only after confirming no matching Xvfb process is alive.
 - If a GUI reports X11 `BadMatch`, retry on a fresh `1920x1080x24` Xvfb display.

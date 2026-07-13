@@ -9,6 +9,12 @@ description: Use when generating, preparing, monitoring, downloading, or publish
 
 Prefer the logged-in Xiaoyunque browser UI over the Xiaoyunque API unless the user explicitly asks for API usage. Validate visible page state before submitting: mode, model, duration, ratio, prompt, attachments, and credit estimate.
 
+On Lachlan's workstation, `$HOME/.cache/xyq-chrome` is the canonical shared
+Chrome profile for Xiaoyunque, JLC/JLCEDA web workflows, and downloads. When a
+visible virtual desktop is requested, preserve that profile on display `:98`,
+CDP `9344`, and noVNC `6099`. Do not launch a fresh profile or substitute the
+book-only embedded-browser profile.
+
 For portable docs/examples, use an ignored local config instead of personal
 absolute paths:
 

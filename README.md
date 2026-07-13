@@ -229,6 +229,7 @@ aginti skills "npm publishing"
 
 - [LazySkills website source](website/)
 - [Platform support](docs/platform-support.md)
+- [Canonical shared browser runtime](docs/shared-browser-runtime.md)
 - [Xiaoyunque browser video publishing](docs/xyq-browser-video-publishing.md)
 - [Smooth Xiaoyunque video generation runbook](skills/lalachan-xyq-browser-video/references/smooth-video-generation-runbook.md)
 - [Xiaoyunque continue confirmation and protected download runbook](skills/lalachan-xyq-browser-video/references/continue-confirm-download-runbook.md)
