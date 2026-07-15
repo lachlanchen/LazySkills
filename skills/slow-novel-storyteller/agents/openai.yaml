@@ -1,0 +1,4 @@
+interface:
+  display_name: "Slow Novel Storyteller"
+  short_description: "Write one carefully reviewed novel chapter per day."
+  default_prompt: "Build or operate a slow paragraph-level novelist, critic, translator, and pocket-PDF workflow."

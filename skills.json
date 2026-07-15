@@ -404,6 +404,20 @@
         "generic"
       ],
       "description": "Diagnose, privately back up, compact, verify, and hand off stalled or extremely slow Codex sessions through guarded official app-server workflows without rewriting rollout JSONL or SQLite state."
+    },
+    {
+      "id": "slow-novel-storyteller",
+      "path": "skills/slow-novel-storyteller/SKILL.md",
+      "category": "writing",
+      "platforms": [
+        "aginti",
+        "codex",
+        "claude",
+        "gemini",
+        "copilot",
+        "generic"
+      ],
+      "description": "Design and operate a slow long-form novel workflow with source authority, persistent novelist/critic/translator sessions, paragraph-level quality gates, one chapter per day, durable resume, and clean pocket PDFs."
     }
   ]
 }
