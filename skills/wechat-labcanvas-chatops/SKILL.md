@@ -110,13 +110,25 @@ Hard requirements for future agents:
   useful. If mp.weixin direct fetch returns `环境异常` or `完成验证后继续访问`, do not
   open an external Chrome/browser by default because it can steal focus from the
   official WeChat client and make the desktop appear locked. Prefer the native
-  WeChat article/webview session or an already verified readable capture. If
-  verification is needed, return `waiting_confirmation`, ask the owner to
-  verify/open the page in WeChat, then resume capture. External browser-assist
-  for mp.weixin requires an explicit user request or
+  WeChat-compatible read-only recovery, private cache, or canonical-source
+  reconstruction. Read-only source gates do not become
+  `waiting_confirmation`: if recovery remains incomplete, state the evidence
+  limit without asking the owner to verify. External browser-assist for
+  mp.weixin requires an explicit user request or
   `WECHAT_ALLOW_EXTERNAL_BROWSER_FOR_MP_WEIXIN=1`. The helper refuses
   `mp.weixin.qq.com` URLs before launch unless `--allow-mp-weixin` or that
   environment override is present.
+- for Shipinhao video understanding, isolate the exact `<finderFeed>` object ID,
+  title, author, and nonce before reading media. Try the allowlisted Tencent card
+  URL first. If it expired, leave the exact native player visible and run
+  `shipinhao_gui_audio_capture.py` with distinctive title/author identity terms.
+  It must bind only the current `WeChatAppEx` PipeWire stream, stop after
+  consecutive OCR identity loss, trim feed auto-advance, and write a private
+  object-ID/hash manifest. Feed that manifest to `shipinhao_media_transcribe.py`
+  and the exact chat's resumed worker session. Never reload after selecting the
+  audio stream, trust card duration alone, treat transcript JSON as comments, or
+  reuse another object's capture. See
+  `references/shipinhao-media-transcription.md`.
 - never let old chat history authorize public publishing. Shipinhao, YouTube,
   Instagram, LazyEdit/AutoPublish public queues, purchases, deletion, and other
   irreversible actions require explicit current-message intent;
