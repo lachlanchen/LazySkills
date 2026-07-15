@@ -61,6 +61,7 @@ The repository is intentionally platform-neutral. A skill should be useful to Ag
 
 | Skill | What it does | Key tools |
 | --- | --- | --- |
+| `novnc-webapp-control` | Operates and validates first-party webapps through a dedicated, observable noVNC browser while preserving visible user controls and paid-action guards. | Xvfb, x11vnc, noVNC, Chrome/CDP, Playwright, screenshots, artifact probes |
 | `lalachan-xyq-browser-video` | Generates and monitors Xiaoyunque videos through the logged-in browser UI, with visible validation before paid submission. | Chrome/CDP, upload verification, prompt fill, thread watcher, MP4 download fallback |
 | `lazyedit-publish-workflow` | Publishes LazyEdit videos and AI-generated LALACHAN/RARACHAN videos through AutoPubMonitor and AutoPublish, including subtitle correction and queue monitoring. | LazyEdit CLI/API, AutoPubMonitor, `lazyingart` SSH, tmux, Shipinhao, YouTube, Instagram |
 | `musia-lalachan-mv-workflow` | Creates song-first LALACHAN/Xiaoyunque MV handoffs from reviewed Musia tracks, including full-song story MVs, chorus/highlight cuts, and song-locked audio replacement. | Musia audio, Xiaoyunque prompts, timestamped MV segments, ffmpeg muxing, LazyEdit-ready outputs |

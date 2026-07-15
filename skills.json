@@ -14,6 +14,20 @@
   },
   "skills": [
     {
+      "id": "novnc-webapp-control",
+      "path": "skills/novnc-webapp-control/SKILL.md",
+      "category": "browser-automation",
+      "platforms": [
+        "aginti",
+        "codex",
+        "claude",
+        "gemini",
+        "copilot",
+        "generic"
+      ],
+      "description": "Operate, test, and refine local webapps through an isolated visible noVNC Chrome session with semantic controls, evidence capture, safe paid-action guards, and artifact validation."
+    },
+    {
       "id": "lalachan-xyq-browser-video",
       "path": "skills/lalachan-xyq-browser-video/SKILL.md",
       "category": "browser-video",

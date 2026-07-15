@@ -1,0 +1,4 @@
+interface:
+  display_name: "noVNC Webapp Control"
+  short_description: "Drive and validate a webapp through an isolated visible browser."
+  default_prompt: "Open the target webapp in a dedicated noVNC Chrome session, manipulate only visible DOM controls, collect evidence, and refine failures until the workflow completes."

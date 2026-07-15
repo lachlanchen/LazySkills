@@ -256,18 +256,27 @@ scripts/xyq_chrome/watch_thread_dom_download.py \
   --thread-url "THREAD_URL" \
   --output-dir outputs/xyq-run \
   --filename result_30s.mp4 \
+  --expected-duration 30 \
   --copy-to Videos \
   --copy-to "$NUTSTORE_AUTOPUBLISH"
 ```
 
 After every successful Xiaoyunque generation, do not stop at the browser result.
-Download the final MP4 automatically, verify it with `ffprobe`, copy it to
+Download the final MP4 automatically, verify it with `ffprobe`, apply the
+5-second duration tolerance unless exact duration was requested, copy it to
 `Videos/`, and send it back to the requesting chat. Only submit it to LazyEdit
 when the current request explicitly asks for LazyEdit/import/process or public
 publishing. Direct LazyEdit CLI upload is preferred when available; Nutstore
 AutoPublish import is an acceptable fallback. For LazyEdit-only requests, use
 `--no-publish`; for public publish requests, publish exactly once to the
 requested platforms.
+
+Do not scan every page-level `video` element and accept the first downloadable
+file. Xiaoyunque pages can contain promotional media and stale results. Scope
+discovery to the current result card or visible preview, pass
+`--expected-duration`, and reject a candidate whose probed duration falls
+outside the requested tolerance. Hash the accepted download and copied outputs
+when exact identity matters.
 
 Direct LazyEdit handoff pattern:
 
