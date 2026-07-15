@@ -96,6 +96,36 @@ Do not split source by raw webpage/PDF line breaks. Join line-wrapped prose into
 
 ## Monitoring
 
+### PocketPolyglot Studio Browser
+
+For visible Studio supervision, reuse the dedicated persistent browser instead
+of launching temporary Chrome profiles:
+
+```text
+tmux: pocketpolyglot-studio-browser
+display: :95
+VNC: 127.0.0.1:5925
+noVNC: http://127.0.0.1:6125/vnc_lite.html?host=127.0.0.1&port=6125&autoconnect=1&resize=remote
+CDP: http://127.0.0.1:9365
+profile: ~/.cache/pocketpolyglot-studio-chrome
+Studio: http://127.0.0.1:8766
+```
+
+Start or attach and operate it through the repository CLI:
+
+```bash
+./studio/pocketpolyglot browser start
+./studio/pocketpolyglot browser status
+./studio/pocketpolyglot browser progress --project PROJECT
+./studio/pocketpolyglot browser chat PROJECT --read-only --profile fast "Check queue health."
+```
+
+The first explicit start persists this identity under
+`.pocketpolyglot-studio/browser/config.json`; later starts reuse it. Do not
+delete or replace the profile during repair. The browser supervisor recovers
+Xvfb, x11vnc, noVNC, and Chrome failures without touching the independent book
+job. Use `browser stop` only when explicitly requested.
+
 Long runs should use tmux or another observable runner:
 
 ```bash
