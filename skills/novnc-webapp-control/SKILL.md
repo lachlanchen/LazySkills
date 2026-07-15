@@ -19,6 +19,7 @@ Operate the real webapp in an isolated, observable browser. Treat the webapp as 
 - Require a visible confirmation for paid, destructive, publishing, or irreversible actions. Submit exactly once.
 - Scope generated-artifact discovery to the current job or result container. Never accept unrelated media merely because it appears elsewhere on the page.
 - Validate downloaded artifacts against the request using available evidence such as duration, dimensions, filename, hash, and visible result identity before copying or reporting success.
+- When a first-party app delegates to a second browser service, require the app to establish and report that service's observable noVNC desktop before delegation. A reachable CDP endpoint alone is not visible-operation proof.
 
 ## Workflow
 
@@ -46,6 +47,9 @@ node tools/lala-studio-browser.mjs save
 node tools/lala-studio-browser.mjs production \
   --message "Generate this 15 second video" \
   --operation prepare
+node tools/lala-studio-browser.mjs delivery \
+  --message "Download the current result if needed and publish it with LazyEdit" \
+  --operation inspect
 ```
 
 Use `--operation generate --confirm-paid` only after the user has explicitly requested generation and the visible production contract is correct.

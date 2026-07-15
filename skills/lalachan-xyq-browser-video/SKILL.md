@@ -116,15 +116,14 @@ Main-cast identity is a paid-submit blocker:
 Words-card rule:
 
 - Treat `图1` as the visual style reference for the physical learning card.
-- Use `$LALACHAN_ROOT/words-card.jpg` as the default words-card reference image when uploading directly. Use a pre-generated card image only when a fresh card has already been made for the specific episode.
+- Use `$LALACHAN_ROOT/words-card.jpg` as the design reference for Codex image generation. Before Xiaoyunque upload, generate a fresh episode-specific PNG with the imagegen skill and pass the reference image to that generation call.
 - For every new video, create a fresh story-relevant word card; do not reuse the previous word unless the user asks.
 - The card content must include English, Japanese, and Japanese furigana. Add a short Chinese meaning when useful.
 - Use the successful in-scene prompt pattern by default: `图1 是小白屏学习卡风格参考，可作为场景边缘/桌面/道具架上的小道具，卡片内容是 English: WORD；Japanese: 日本語；Furigana: ふりがな；中文：中文含义。它只是场景里的真实道具，不是字幕。`
 - Choose a word that matches the episode theme, for example battle/courage scenes can use `courage / 勇気 / ゆうき / 勇气`.
-- Two valid methods are allowed:
-  - Pre-generate a new words-card image first with AgInTi/image generation, then upload that generated card as `图1`.
-  - Upload the existing words-card as a style/example reference, then give Xiaoyunque the exact English/Japanese/furigana content and make it responsible for rendering the new card in the scene.
-- Use either method, or both, as long as the final video has the fresh words card. Prefer pre-generation when text accuracy matters.
+- Default method: use Codex imagegen with `words-card.jpg` as the referenced image, render the exact English/Japanese/furigana/Chinese fields, save the generated PNG under the current run, inspect it for text accuracy, and upload that PNG as `图1`.
+- Treat an unreadable, misspelled, missing, or unverified generated card as a paid-submit blocker. Regenerate the card before Xiaoyunque; do not spend video credits hoping Xiaoyunque will repair it.
+- Asking Xiaoyunque to render a new card from the base style image is only a fallback when the user explicitly accepts it or Codex image generation is unavailable and no paid submission will occur yet.
 - The card is a real prop in the scene, not a subtitle overlay.
 
 Story writing rule:
