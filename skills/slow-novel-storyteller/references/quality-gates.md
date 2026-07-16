@@ -13,6 +13,25 @@ An accepted paragraph must change at least one item:
 
 Delete or merge a paragraph that only restates atmosphere, theme, surveillance, distress, or lore.
 
+## Sentence Necessity
+
+Require every sentence to change at least one item from the paragraph gate: action, choice, knowledge, relationship, power, risk, cost, physical position, or available path. Require descriptive words to affect perception, movement, judgment, or consequence rather than decorate an already complete action.
+
+Use the deletion test: if removing a sentence leaves the character's situation, the reader's understanding, and the next choice unchanged, delete it or merge its necessary fact elsewhere.
+
+Do not confuse efficiency with constant incident. A silence, pause, glance, sound, or landscape detail earns its place when it changes subtext, shortens decision time, blocks a route, reveals cost, or alters what a person can do. Reject:
+
+- atmosphere repeated after the risk is already clear;
+- action reports that merely connect two stronger actions;
+- two descriptions that perform the same pressure beat;
+- dialogue that restates known information;
+- functional labels copied from a plan instead of natural references;
+- mechanical blocking that records every hand, door, seat, and turn.
+
+Two similar actions may both be necessary when an intervening warning changes their meaning. For example, preparing to open a door and knowingly opening it after hearing the danger are separate choice beats. Two sounds may also remain when the first announces risk and the second forces action. Name the distinct change or remove the repetition.
+
+Apply the gate again in translation. Literal fidelity to locks, gears, handles, routes, or device positions must not turn human decisions into an operating manual.
+
 ## Independent Review
 
 Score the candidate in context for:

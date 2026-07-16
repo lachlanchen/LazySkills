@@ -51,6 +51,7 @@ An outer deterministic layer owns schemas, state, retries, files, compilation, v
 - Daily limit is tested and survives restart.
 - Sessions resume by stable role and can be reseeded from durable literary context.
 - Every accepted paragraph changes the scene in a concrete way.
+- Every retained sentence changes action, choice, knowledge, relationship, power, risk, cost, position, or available path; quiet beats must still perform dramatic work.
 - A reader understands the action without having every meaning explained.
 - Blank space comes from trusted action and subtext, not missing antecedents or obscure wording.
 - User steering reaches the next unwritten paragraph without silently rewriting accepted prose.
