@@ -8,7 +8,7 @@ Use this by default for ordinary LALACHAN Xiaoyunque video requests. The default
 2. Go to `创作` and stay in `创作 Agent` / integrated-agent mode.
 3. Upload reference files directly with `upload-images-verify`; paths are for upload only and must not appear in the prompt.
 4. Use a compact prompt whose first sentence includes `30 秒`, with concise image-order labels and only essential restrictions.
-   For the words card, use the stable prop phrasing: `图1 是小白屏学习卡风格参考，可作为场景边缘、桌面、道具架或实验台上的小道具，卡片内容是 English: WORD；Japanese: 日本語；Furigana: ふりがな；中文：中文含义。它只是场景里的真实道具，不是字幕。`
+   For the words card, use the stable prop phrasing: `图1 是已经制作好的实体学习卡，可作为场景边缘、桌面、道具架或实验台上的小道具。卡片只显示上传图片中的四行正文，不加语言名称、字段标签、冒号、项目符号或编号，并保持每一行准确清楚。它只是场景里的真实道具，不是字幕。`
 5. Submit from the enabled Agent send button.
 6. Monitor the new `integrated-agent` thread with `watch_thread_dom_download.py`.
 7. If the Agent pauses for confirmation after storyboard/material creation, answer in the same thread with `继续生成视频。`

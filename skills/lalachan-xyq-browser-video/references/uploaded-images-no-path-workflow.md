@@ -47,8 +47,8 @@ but the prompt must still say `图1`, not the temporary path.
 Use wording like:
 
 ```text
-参考图顺序：图1 是小白屏学习卡风格参考，可作为场景边缘、桌面、道具架或实验台上的小道具，
-卡片内容是 English: WORD；Japanese: 日本語；Furigana: ふりがな；中文：中文含义。
+参考图顺序：图1 是已经制作好的实体学习卡，可作为场景边缘、桌面、道具架或实验台上的小道具，
+只显示上传图片中的四行正文，不加语言名称、字段标签、冒号、项目符号或编号，并保持每一行准确清楚。
 它只是场景里的真实道具，不是字幕。图2 是机器人庄子；图3 是 LightMind AI 眼镜；
 图4 是拼皮笔记本；图5 是啦啦侠单人参考；图6 是阿芽酱单人参考；
 图7 是飒飒君单人参考；图8 是啦啦侠、阿芽酱、飒飒君三人角色参考。请只根据这些已经上传的图片参考，
@@ -64,11 +64,11 @@ Two methods are valid:
 - Pre-generate a new words-card image first with AgInTi/image generation and
   upload that new card as `图1`.
 - Upload the existing words-card as the `图1` style/example reference, then give
-  Xiaoyunque the exact English/Japanese/furigana content and let it render the
-  new card in-scene.
+  Xiaoyunque the exact unlabeled value block and let it render the new card
+  in-scene.
 
-Use either method, or both, as long as it works. Prefer pre-generation when exact
-text accuracy matters.
+Use either method, or both, as long as it works. Prefer pre-generation and apply
+the same accuracy check to every language value.
 
 Reject path leakage before submission:
 

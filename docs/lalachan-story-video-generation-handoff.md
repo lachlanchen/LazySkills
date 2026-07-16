@@ -2,6 +2,9 @@
 
 Use this note when a WeChat-monitored agent needs to create a daily LALACHAN story, generate the Xiaoyunque video, download it, and optionally publish through LazyEdit.
 
+For the complete evidence gates, recovery rules, scripts, and platform behavior,
+read `skills/lalachan-xyq-browser-video/references/lala-studio-end-to-end-runbook.md`.
+
 ## WeChat Message Template
 
 ```text
@@ -41,7 +44,7 @@ set +a
 
 Always upload the actual files. Do not paste local paths into the prompt.
 
-1. `$LALACHAN_ROOT/words-card.jpg`: small white learning card style. Every new episode should use a fresh word matching the story.
+1. `$LALACHAN_ROOT/words-card.jpg`: visual reference for a fresh episode-specific card generated before upload. Its face contains only the accurate language values, without labels such as `English:` or `Japanese:`.
 2. `$LALACHAN_ROOT/LazyingArtRobot.png`: robot `庄子`; keep the LazyingArt chest logo.
 3. `$LALACHAN_ROOT/display.png`: LightMind AI glasses.
 4. `$LALACHAN_ROOT/patchwork-leather-notebook-luxury-clean-v2.png`: patchwork notebook/tool prop.

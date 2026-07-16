@@ -44,6 +44,7 @@ references/smooth-video-generation-runbook.md
 references/continue-confirm-download-runbook.md
 references/30s-agent-workflow.md
 references/words-card-30s-default.md
+references/lala-studio-end-to-end-runbook.md
 ```
 
 For a complete WeChat/operator handoff covering story writing, prompt saving,
@@ -118,11 +119,13 @@ Words-card rule:
 - Treat `图1` as the visual style reference for the physical learning card.
 - Use `$LALACHAN_ROOT/words-card.jpg` as the design reference for Codex image generation. Before Xiaoyunque upload, generate a fresh episode-specific PNG with the imagegen skill and pass the reference image to that generation call.
 - For every new video, create a fresh story-relevant word card; do not reuse the previous word unless the user asks.
-- The card content must include English, Japanese, and Japanese furigana. Add a short Chinese meaning when useful.
-- Use the successful in-scene prompt pattern by default: `图1 是小白屏学习卡风格参考，可作为场景边缘/桌面/道具架上的小道具，卡片内容是 English: WORD；Japanese: 日本語；Furigana: ふりがな；中文：中文含义。它只是场景里的真实道具，不是字幕。`
+- Default card metadata includes English, Japanese, Japanese furigana, and one short target-language meaning. Use another target language when the episode requests it.
+- Before image generation, verify that every value expresses the same intended word and is correctly written in its own language or script. Apply the same accuracy standard to every line.
+- The physical card face contains only the values, one line each. Do not render language names, field labels such as `English:` or `Japanese:`, colons, bullets, numbering, or explanatory text.
+- Use the in-scene prompt pattern: `图1 是已经制作好的实体学习卡，只显示上传图片中的四行正文，不加语言名称、字段标签、冒号、项目符号或编号。保持每一行文字准确清楚。它只是场景里的真实道具，不是字幕。`
 - Choose a word that matches the episode theme, for example battle/courage scenes can use `courage / 勇気 / ゆうき / 勇气`.
-- Default method: use Codex imagegen with `words-card.jpg` as the referenced image, render the exact English/Japanese/furigana/Chinese fields, save the generated PNG under the current run, inspect it for text accuracy, and upload that PNG as `图1`.
-- Treat an unreadable, misspelled, missing, or unverified generated card as a paid-submit blocker. Regenerate the card before Xiaoyunque; do not spend video credits hoping Xiaoyunque will repair it.
+- Default method: use Codex imagegen with `words-card.jpg` as the referenced image, render the exact unlabeled value block, save the generated PNG under the current run, compare every line character-by-character, and upload that PNG as `图1`.
+- Treat an unreadable, mislabeled, misspelled, semantically inconsistent, missing, duplicated, or unverified generated card as a paid-submit blocker. Regenerate the card before Xiaoyunque; do not spend video credits hoping Xiaoyunque will repair it.
 - Asking Xiaoyunque to render a new card from the base style image is only a fallback when the user explicitly accepts it or Codex image generation is unavailable and no paid submission will occur yet.
 - The card is a real prop in the scene, not a subtitle overlay.
 
