@@ -6,7 +6,7 @@ Keep a transactional store for chapters, paragraphs, jobs, sessions, author note
 
 ## Role Threads
 
-Store one thread ID per role: novelist, critic, translator. Resume the role's own thread on later calls. If resume fails, clear only that role and start a new thread with:
+Store one thread ID per role: novelist, whole-story critic, prose critic, and translator. Resume the role's own thread on later calls. A single critic may cover both gates for a modest project, but keep the prompts and artifacts distinct. If resume fails, clear only that role and start a new thread with:
 
 - source-authority manifest;
 - author core and story promise;
@@ -22,10 +22,11 @@ Do not pretend two threads share hidden memory. Their communication is the expli
 chapter contract
   for each paragraph
     novelist candidate
-    critic gate
+    whole-story gate
+    prose gate
     while rejected and attempts remain
       novelist rewrite from exact findings
-      critic gate
+      repeat both relevant gates
     translator draft
     translation gate/revision
     persist accepted bilingual paragraph
@@ -36,5 +37,6 @@ chapter contract
 
 Record running jobs before external calls. On process restart, return orphaned running jobs to the queue and resume from accepted state. Author notes arriving during a call remain pending for the following paragraph.
 
-Use event streams or WebSockets for UI updates. Keep periodic traffic only as a low-frequency reconnect fallback; the durable database remains authoritative after network loss.
+Persist every candidate and each gate result separately. Never rely on one thread remembering another thread's finding. Install prose only from an explicit acceptance artifact that identifies the accepted candidate and both source-language gate results.
 
+Use event streams or WebSockets for UI updates. Keep periodic traffic only as a low-frequency reconnect fallback; the durable database remains authoritative after network loss.
