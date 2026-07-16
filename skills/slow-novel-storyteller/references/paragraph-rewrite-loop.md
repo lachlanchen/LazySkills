@@ -56,6 +56,28 @@ Test the distinction:
 
 Keep the first; repair the second.
 
+## Make Scene Cuts Carry Life
+
+A clean cut can cross years or places without an explanatory bridge. After the cut, establish a concrete present purpose before reviving mystery: a delivery, shift, meal, debt, promise, journey, or person waiting. Let the larger story interrupt a life that was already moving.
+
+When an image or place recurs, give it a new practical use. A road remembered in a family tale may later be a working detour. This creates resonance without announcing symbolism.
+
+Test the cut:
+
+- the reader knows whose life has resumed;
+- the person wanted something before the plot arrived;
+- time, money, labor, affection, or obligation makes interruption costly;
+- recurring scenery works physically in the present scene;
+- the next question arises from collision, not from an explanatory hook.
+
+Do not force ellipses, timestamps, or transition paragraphs. Use them only when they improve the prose's natural movement.
+
+## Use The Smallest Evidence Of Danger
+
+One missing shoe or one remnant of restraint may be stronger than a forensic catalogue of mud, torn clothing, wounds, posture, breath, and ominous behavior. Keep only the details a person would notice first and that the next action needs.
+
+Withhold cause, captor, route, and history when those are the true questions. Do not withhold the speaker, physical position, or immediate action. Stop once recognition or choice has changed the scene.
+
 ## Translate After Acceptance
 
 Use a separate persistent translator only after both source-language gates pass. Pass accepted prose, nearby continuity, names, and a small glossary.
@@ -70,6 +92,8 @@ Run an independent target-language gate. Search for:
 - distorted routes or spatial relations;
 - facts added to smooth the sentence;
 - explanation that removes source-language blank space.
+
+Also reject incident-report prose: stacked location verbs, repeated state checks, conspicuous classifiers, bureaucratic noun order, and sentences that explain every object's position. A factually clear translation can still feel dead. Rebuild sentence movement and spoken rhythm instead of replacing flagged words one by one.
 
 Revise and re-review until the target prose reads naturally on its own.
 
