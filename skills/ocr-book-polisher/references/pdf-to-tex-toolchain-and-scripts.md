@@ -40,6 +40,71 @@ pipelines. A robust project normally has these responsibilities:
 | `validate_pdf` | Count pages, text chars, missing images, overfulls, severe TeX errors, and sample-page render checks. |
 | `write_summary` | Emit `summary.json` with all evidence needed to accept or reject completion. |
 
+## Two-Stage Exact And Editorial Architecture
+
+Keep local reconstruction and model-assisted editorial work as separate
+stages. A good exact conversion must not depend on a model, and a later
+editorial pass must not rerun OCR or rewrite already accepted technical
+objects.
+
+### Stage 1: Local Exact And Pocket Conversion
+
+1. Hash and probe the immutable source.
+2. Select EPUB/Pandoc, born-digital PDF extraction, or page-aware OCR according
+   to evidence rather than filename.
+3. Process long PDFs in resumable page shards and retain raw extraction logs.
+4. Normalize transport, Unicode, table, image-path, and TeX defects
+   deterministically.
+5. Keep exceptional source-backed fixes in count-checked JSON ledgers. Never
+   patch the raw OCR cache in place.
+6. Build an exact edition first, then derive the pocket edition from the same
+   reviewed body.
+7. Accept completion only after structure, object inventory, source coverage,
+   PDF integrity, TOC, glyph, overflow, and visual checks pass.
+
+Layout-only changes should rebuild from cached extraction. They must not repeat
+OCR.
+
+### Stage 2: Optional Evidence-Gated Editorial Polish
+
+Use a model only for unresolved prose correction or translation:
+
+- split content into stable semantic segments;
+- replace equations, figures, tables, labels, citations, numbers, and fragile
+  TeX commands with protected tokens;
+- cache accepted output by source hash and segment id;
+- compare protected-token, command, math, number, and object signatures with
+  deterministic validators;
+- retry only the failing segment, never an otherwise-correct chunk or book;
+- repair malformed source evidence before asking the model to translate it;
+- assemble and compile only after current-manifest coverage is complete.
+
+Do not let an orchestration layer recursively create retry jobs. One durable
+queue owns retry passes; stalled jobs retain evidence and return a concrete
+blocked reason.
+
+### Evidence Layout
+
+Prefer this durable structure:
+
+```text
+output/<book>/
+  source/                 # immutable flattened source snapshot
+  tasks/manifest.json     # stable chunks and segment ids
+  work/marker-shards/     # local extraction cache when applicable
+  work/segment-cache/     # accepted editorial segments
+  work/failed/            # concrete unresolved evidence
+  exact/tex/book.tex
+  exact/book.pdf
+  pocket-large-font/tex/book.tex
+  pocket-large-font/book.pdf
+  review/status.json
+```
+
+The status file is authoritative only when its timestamp and live process state
+agree. After a reboot or interrupted tmux session, inspect processes and
+manifest coverage instead of trusting a stale `running` field.
+
 ## Minimal Command Patterns
 
 ### Inspect source quality

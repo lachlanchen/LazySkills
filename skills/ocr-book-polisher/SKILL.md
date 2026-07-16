@@ -1,19 +1,6 @@
 ---
 name: ocr-book-polisher
 description: Use when converting scanned PDFs, image-heavy books, technical textbooks, music books, OCR output, or rough Markdown into corrected, publishable Markdown/TeX/PDF while preserving figures, equations, diagrams, tables, captions, source structure, and evidence-based validation.
-triggers:
-  - OCR scanned book
-  - scanned PDF to TeX
-  - polished OCR markdown
-  - correct OCR errors
-  - preserve figures and captions
-  - equations to TeX
-  - figures diagrams tables
-  - music notation OCR
-  - technical textbook to LaTeX
-  - booklike TeX
-  - fix generated TOC
-  - searchable PDF to clean book
 ---
 
 # OCR Book Polisher
