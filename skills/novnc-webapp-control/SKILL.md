@@ -32,6 +32,7 @@ Operate the real webapp in an isolated, observable browser. Treat the webapp as 
 7. Validate both DOM state and a visual screenshot. For media output, also probe the downloaded file and compare it with the requested duration or format. A completion claim without evidence is not completion.
 8. If blocked, save evidence, classify whether the app, controller, browser, or external service failed, patch the smallest general fix, restart only the affected layer, and retry from the last proven state.
 9. Leave the desktop running when the user wants to monitor it and report the exact noVNC URL and profile/port isolation.
+10. When serving `vnc_lite.html`, include `scale=1` in the viewer URL. The lite client ignores `resize=remote`, so that parameter can clip a large remote canvas on smaller screens.
 
 ## Lala Studio Adapter
 

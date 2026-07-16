@@ -351,7 +351,7 @@ websockify -D --web=/usr/share/novnc 127.0.0.1:6099 127.0.0.1:5908
 Open:
 
 ```text
-http://127.0.0.1:6099/vnc_lite.html?host=127.0.0.1&port=6099&autoconnect=1&resize=remote
+http://127.0.0.1:6099/vnc_lite.html?host=127.0.0.1&port=6099&autoconnect=1&scale=1
 ```
 
 Verify the desktop before automating clicks or keystrokes:

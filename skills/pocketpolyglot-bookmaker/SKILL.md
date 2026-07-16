@@ -105,7 +105,7 @@ of launching temporary Chrome profiles:
 tmux: pocketpolyglot-studio-browser
 display: :95
 VNC: 127.0.0.1:5925
-noVNC: http://127.0.0.1:6125/vnc_lite.html?host=127.0.0.1&port=6125&autoconnect=1&resize=remote
+noVNC: http://127.0.0.1:6125/vnc_lite.html?host=127.0.0.1&port=6125&autoconnect=1&scale=1
 CDP: http://127.0.0.1:9365
 profile: ~/.cache/pocketpolyglot-studio-chrome
 Studio: http://127.0.0.1:8766

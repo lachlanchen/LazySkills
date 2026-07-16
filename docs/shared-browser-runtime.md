@@ -15,7 +15,7 @@ Xiaoyunque, JLC/JLCEDA web pages, and normal downloads.
 Viewer URL:
 
 ```text
-http://127.0.0.1:6099/vnc_lite.html?host=127.0.0.1&port=6099&autoconnect=1&resize=remote
+http://127.0.0.1:6099/vnc_lite.html?host=127.0.0.1&port=6099&autoconnect=1&scale=1
 ```
 
 Reuse the profile; never create a replacement when the browser is merely

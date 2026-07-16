@@ -38,7 +38,7 @@ websockify -D --web=/usr/share/novnc 127.0.0.1:6099 127.0.0.1:5908
 6. Give the user:
 
 ```text
-http://127.0.0.1:6099/vnc_lite.html?host=127.0.0.1&port=6099&autoconnect=1&resize=remote
+http://127.0.0.1:6099/vnc_lite.html?host=127.0.0.1&port=6099&autoconnect=1&scale=1
 ```
 
 Keep VNC/noVNC bound to `127.0.0.1`. Use SSH tunneling or another authenticated
@@ -51,7 +51,7 @@ On Lachlan's workstation, preserve the established Chrome browser identity:
 ```text
 X display: :98
 VNC: 127.0.0.1:5908
-noVNC: http://127.0.0.1:6099/vnc_lite.html?host=127.0.0.1&port=6099&autoconnect=1&resize=remote
+noVNC: http://127.0.0.1:6099/vnc_lite.html?host=127.0.0.1&port=6099&autoconnect=1&scale=1
 AgInTi Browser: http://127.0.0.1:8794
 Chrome CDP: http://127.0.0.1:9344
 Chrome profile: $HOME/.cache/xyq-chrome
@@ -63,6 +63,10 @@ history. Do not substitute `embedded-agentic-browser-chrome`,
 `agentic-browser-vdesktop-chrome`, or a temporary profile. Do not delete,
 overwrite, inspect secrets from, or commit the profile. LCEDA Pro's Electron
 application state remains separate.
+
+For `vnc_lite.html`, use `scale=1` to fit the entire remote desktop inside the
+viewer. The lite client ignores `resize=remote`, which otherwise leaves a large
+remote canvas clipped on smaller screens.
 
 ## AgenticApp Launcher
 
