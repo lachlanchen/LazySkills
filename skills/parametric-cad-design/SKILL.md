@@ -10,15 +10,17 @@ Use this skill for agent-assisted mechanical design where the deliverable should
 ## Core Workflow
 
 1. Inspect source files before designing. Prefer `.shapr` package metadata, STEP labels, measured bounding boxes, datasheets, and old README notes over visual guesses.
-2. Decide the mode: exact B-rep regeneration, surgical print-fit variant, or new clean parametric design. Do not mix these silently.
-3. Keep dimensions in named parameters. Do not globally scale a whole part to tune fit.
-4. Preserve prior project runs inside the same design folder. Use `runs/run-N-human-readable-info-YYYYMMDDTHHMMSSZ/` for archived runs and keep the root `artifacts/` directory as the latest checked output.
-5. Export editable source, decomposed STEP bodies, assembly STEP, printable STL, and full-view render PNG. Add exploded/detail renders when geometry is hard to inspect.
-6. Validate STEP import, solid count, bounding box, mesh watertight/component count, and render before committing.
-7. Put one directly usable final STEP at the design root as `USE_THIS_<design>.step` when there are many artifact STEP files. Keep reference/cutter/smooth variants under `artifacts/`.
-8. When the user asks for Nutstore sync, or when generating final LabCanvas CAD handoff artifacts, copy the final root `USE_THIS_*.step` or final `*_assembly.step`/`*_assembled.step` to `/home/lachlan/Nutstore Files/Projects/LabCanvas` with its descriptive filename intact.
+2. For asymmetric modules, define the source face, mating face, optical axis, PCB long axis, PCB short axis, and sign convention before changing geometry. Write the source-to-holder transform explicitly.
+3. Decide the mode: exact B-rep regeneration, surgical print-fit variant, or new clean parametric design. Do not mix these silently.
+4. Keep dimensions in named parameters. Do not globally scale a whole part to tune fit.
+5. Preserve prior project runs inside the same design folder. Use `runs/run-N-human-readable-info-YYYYMMDDTHHMMSSZ/` for archived runs and keep the root `artifacts/` directory as the latest checked output.
+6. Export editable source, decomposed STEP bodies, assembly STEP, printable STL, and full-view render PNG. Add exploded/detail renders when geometry is hard to inspect.
+7. Validate STEP import, solid count, bounding box, mesh watertight/component count, and render before committing.
+8. Put one directly usable final STEP at the design root as `USE_THIS_<design>.step` when there are many artifact STEP files. Keep reference/cutter/smooth variants under `artifacts/`.
+9. When the user asks for Nutstore sync, or when generating final LabCanvas CAD handoff artifacts, copy the final root `USE_THIS_*.step` or final `*_assembly.step`/`*_assembled.step` to `/home/lachlan/Nutstore Files/Projects/LabCanvas` with its descriptive filename intact.
 
 When Shapr3D archives, OpenHI/Nature geometry, C-mount, optical holders, or sensor/PCB holders are involved, read `references/shapr3d-cad-patterns.md` after this file.
+When a PCB photo, sketch, rear view, component view, or mating face controls an asymmetric holder, also read `references/pcb-sensor-mating-face-orientation.md`.
 
 ## Geometry Discipline
 
@@ -85,12 +87,18 @@ For helical threads made from a swept triangle, document:
 ## Sensor, PCB, And Optical Holder Rules
 
 - Use the board or sensor module as the source of truth: outline, mounting holes, active center, component side, socket side, wire exit, protrusions, PCB thickness, and adhesive thickness.
+- Label every directional measurement with a face and axis. Bare words such as left, right, top, bottom, front, and back are not geometry contracts.
+- Treat source-view to mating-view placement as an explicit transform. Apply it to the derived PCB-face features, not automatically to an already-correct C-mount, optical axis, plate, or depth stack.
+- Use photos to resolve orientation and physical meaning; use measured values or datasheets to control dimensions. Do not add visible daughterboards, connectors, notches, or housings unless the requested holder actually needs their envelopes.
+- When the user says a feature is almost correct or needs a slight adjustment, calculate and report the delta from the accepted run before rebuilding. A small correction must not silently become a large absolute translation.
 - Keep the optical axis and sensor active center explicit. The PCB geometric center is often not the sensor center.
 - Reliefs for sockets and wires must extend to the holder edge when the plug needs insertion/removal clearance.
 - If a PCB is recessed, socket relief height is measured from the PCB top surface, not from the bottom of the holder.
 - Treat connector housings and PCB-side solder tails as separate envelopes. If through-hole tails face the holder, cut their relief on the PCB seating face; for closely pitched rows, join overlapping clearance holes into one continuous slot so thin webs cannot foul the pins.
 - To recess a PCB without moving an established sensor/thread datum, preserve the structural seating plate and add the pocket depth as a raised perimeter outside the PCB footprint. Validate the installed PCB top plane relative to the new rim.
 - Keep C-mount socket, sensor plate, board proxy, sensor proxy, thread cutter, and final assembly as separate STEP bodies when practical.
+- Keep visualization proxies separate from printable geometry. A richer assembly render must not make the holder itself more complicated.
+- Preserve accepted geometry with regression invariants: unchanged envelope, named datums, seating plane, thread limits, and unaffected parameters. Compare solid count, bounding box, and volume with the accepted baseline after a narrow orientation fix.
 - For light valves and apertures, make the active aperture a through-cut and support the device only on a shallow retaining ledge around the active area.
 
 ## Useful Commands
