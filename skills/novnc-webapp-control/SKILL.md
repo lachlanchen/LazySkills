@@ -26,13 +26,29 @@ Operate the real webapp in an isolated, observable browser. Treat the webapp as 
 1. Inspect the app, existing desktop launchers, browser dependencies, and occupied ports.
 2. Define the action contract: target page, expected visible inputs, expected evidence, terminal success states, blockers, and irreversible actions.
 3. Instrument the first-party app with stable selectors and explicit state markers where needed.
-4. Launch Xvfb, x11vnc, websockify/noVNC, the app server, and Chrome with a dedicated profile.
+4. Launch Xvfb, x11vnc, websockify/noVNC, the app server, and Chrome with a dedicated profile. Use the full `vnc.html` client with `autoconnect=1&resize=scale` by default, then fit the remote Chrome window to the X root dimensions.
 5. Attach Playwright over CDP. Reuse the target tab, call `bringToFront()`, and verify URL, title, and an app-root marker.
 6. Drive the workflow through the UI. For chat tasks, type into the chat composer, click its visible action, and wait for a new assistant message or terminal job state.
 7. Validate both DOM state and a visual screenshot. For media output, also probe the downloaded file and compare it with the requested duration or format. A completion claim without evidence is not completion.
 8. If blocked, save evidence, classify whether the app, controller, browser, or external service failed, patch the smallest general fix, restart only the affected layer, and retry from the last proven state.
 9. Leave the desktop running when the user wants to monitor it and report the exact noVNC URL and profile/port isolation.
-10. When serving `vnc_lite.html`, include `scale=1` in the viewer URL. The lite client ignores `resize=remote`, so that parameter can clip a large remote canvas on smaller screens.
+10. Keep a lightweight fit guard active when Chrome or the delegated GUI may recreate, restore, or replace its top-level window. Center small login dialogs and resize normal main windows to the X root bounds. Use `vnc_lite.html` only for explicit legacy compatibility.
+
+## Default Autofit
+
+Autofit is mandatory for new launchers. Use both layers:
+
+- Viewer: `vnc.html?host=127.0.0.1&port=PORT&autoconnect=1&resize=scale`.
+- Remote window: discover the window by app PID, move it to `(0, 0)`, and resize
+  it to `xdotool getdisplaygeometry` with synchronous `windowmove` and
+  `windowsize` calls.
+
+Apply the fit after startup and after any login-to-main-window transition. A
+one-time resize is insufficient for apps that replace their top-level window.
+Verify the URL returns HTTP 200, the main-window geometry equals the X root
+geometry, screenshots show no clipping, and the full noVNC clipboard panel is
+available. Do not use `resize=remote` as the default because it mutates the
+remote display instead of simply fitting the viewer.
 
 ## Lala Studio Adapter
 
