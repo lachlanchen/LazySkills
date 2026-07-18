@@ -88,6 +88,8 @@ For helical threads made from a swept triangle, document:
 - Keep the optical axis and sensor active center explicit. The PCB geometric center is often not the sensor center.
 - Reliefs for sockets and wires must extend to the holder edge when the plug needs insertion/removal clearance.
 - If a PCB is recessed, socket relief height is measured from the PCB top surface, not from the bottom of the holder.
+- Treat connector housings and PCB-side solder tails as separate envelopes. If through-hole tails face the holder, cut their relief on the PCB seating face; for closely pitched rows, join overlapping clearance holes into one continuous slot so thin webs cannot foul the pins.
+- To recess a PCB without moving an established sensor/thread datum, preserve the structural seating plate and add the pocket depth as a raised perimeter outside the PCB footprint. Validate the installed PCB top plane relative to the new rim.
 - Keep C-mount socket, sensor plate, board proxy, sensor proxy, thread cutter, and final assembly as separate STEP bodies when practical.
 - For light valves and apertures, make the active aperture a through-cut and support the device only on a shallow retaining ledge around the active area.
 

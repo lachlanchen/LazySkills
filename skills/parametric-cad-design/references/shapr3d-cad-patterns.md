@@ -172,6 +172,18 @@ Use datasheet or board measurements as source of truth:
 The socket relief height should be measured from the PCB surface, not from the
 bottom of the holder when the PCB sits in a pocket.
 
+Do not use the visible connector housing as a substitute for PCB-side pin
+geometry. Through-hole solder tails can protrude into the seating surface even
+when the housing clears the holder. Model their row on the PCB datum. When the
+clearance diameter exceeds the pitch, union the holes with a bridge cutter to
+make one continuous slot and eliminate fragile webs between pins.
+
+When an existing optical datum is already correct, a safer PCB recess can be
+made by keeping the original seating plate and adding the requested recess
+depth as a raised rim outside the PCB footprint. For a 1.5 mm PCB and 2.0 mm
+rim, the installed board finishes 0.5 mm below the rim while the sensor,
+thread, pilots, and pin-tail relief remain on their validated planes.
+
 For optical sensor holders, prefer direct clean layouts:
 
 - C-mount socket directly adjacent to sensor plate if no bridge is needed;
