@@ -125,6 +125,7 @@ Words-card rule:
 - Use the in-scene prompt pattern: `图1 是已经制作好的实体学习卡，只显示上传图片中的四行正文，不加语言名称、字段标签、冒号、项目符号或编号。保持每一行文字准确清楚。它只是场景里的真实道具，不是字幕。`
 - Choose a word that matches the episode theme, for example battle/courage scenes can use `courage / 勇気 / ゆうき / 勇气`.
 - Default method: use Codex imagegen with `words-card.jpg` as the referenced image, render the exact unlabeled value block, save the generated PNG under the current run, compare every line character-by-character, and upload that PNG as `图1`.
+- After generating any words card, key-scene image, character reference, or other still asset, preserve the selected result at a stable project path and open it in a detached local viewer with the `persistent-image-preview` skill. A preview rendered only in chat does not count as opened. Keep the viewer open while the asset is reviewed or uploaded.
 - Treat an unreadable, mislabeled, misspelled, semantically inconsistent, missing, duplicated, or unverified generated card as a paid-submit blocker. Regenerate the card before Xiaoyunque; do not spend video credits hoping Xiaoyunque will repair it.
 - Asking Xiaoyunque to render a new card from the base style image is only a fallback when the user explicitly accepts it or Codex image generation is unavailable and no paid submission will occur yet.
 - The card is a real prop in the scene, not a subtitle overlay.

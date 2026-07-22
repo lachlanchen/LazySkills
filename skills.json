@@ -14,6 +14,20 @@
   },
   "skills": [
     {
+      "id": "persistent-image-preview",
+      "path": "skills/persistent-image-preview/SKILL.md",
+      "category": "image-workflow",
+      "platforms": [
+        "aginti",
+        "codex",
+        "claude",
+        "gemini",
+        "copilot",
+        "generic"
+      ],
+      "description": "Preserve generated or edited images at stable project paths and open them in detached persistent desktop viewers with verifiable state."
+    },
+    {
       "id": "novnc-webapp-control",
       "path": "skills/novnc-webapp-control/SKILL.md",
       "category": "browser-automation",

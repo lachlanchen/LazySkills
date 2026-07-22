@@ -1,0 +1,6 @@
+interface:
+  display_name: "Persistent Image Preview"
+  short_description: "Preserve and visibly open generated images"
+  default_prompt: "Use $persistent-image-preview to preserve this image in the project and open it in a persistent desktop viewer."
+policy:
+  allow_implicit_invocation: true
