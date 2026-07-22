@@ -178,6 +178,13 @@ that cost/risk.
 
 Use `30秒` or longer only when the user explicitly asks for it.
 
+For a requested video longer than 15 seconds, select `创作 Agent` (or another
+explicit long-video workflow) and make sure the `沉浸式短片` chip is not active.
+Do not split the story into 15-second clips or compress it merely because the
+short-film workflow is capped. `Seedance 2.0 Mini 体验版` can still be selected
+inside Agent mode when the visible UI offers it; validate the actual selected
+model and credit preview before submitting.
+
 ## Credit-Budget Rule
 
 - Default to `Seedance 2.0 Mini 体验版` / `vipnew` when the UI shows it, especially when it shows a cheap rate such as `单秒限时低至4积分`.
@@ -194,6 +201,14 @@ Use `30秒` or longer only when the user explicitly asks for it.
 
 ## Browser Workflow
 
+Before manipulating the page, prove that CDP and noVNC expose the same logged-in
+Chrome profile and X display. On the canonical workstation this is normally CDP
+`9344`, display `:98`, noVNC `6099`, and profile `~/.cache/xyq-chrome`. A healthy
+legacy port such as `9222` may belong to an unrelated browser. Check the Chrome
+process arguments, page URL, and visible noVNC tab together; do not trust a
+responsive port alone. Explicit `LALA_STUDIO_XYQ_*` values take precedence over
+stale generic `XYQ_*` settings.
+
 1. Attach to an existing logged-in Chrome CDP endpoint, usually `$XYQ_CDP_URL` or another active port:
 
 ```bash
@@ -207,7 +222,11 @@ scripts/xyq_cdp_browser.py --cdp-url "$XYQ_CDP_URL" bring-to-front PAGE_ID
 scripts/xyq_cdp_browser.py --cdp-url "$XYQ_CDP_URL" visible PAGE_ID
 ```
 
-3. Select mode/model/duration/ratio by browser UI. Verify the requested mode, selected model row, duration, ratio, upload success, and any visible point cost/VIP/vipnew state as far as the UI allows. Do not block only because the exact preferred model or exact cost text is unavailable.
+3. Select mode/model/duration/ratio by browser UI. For long work, click the exact
+   top-level Agent mode and verify the short-film chip is inactive. Verify the
+   requested mode, selected model row, duration, ratio, upload success, and any
+   visible point cost/VIP/vipnew state as far as the UI allows. Do not block only
+   because the exact preferred model or exact cost text is unavailable.
 
 4. Upload and verify reference images:
 
