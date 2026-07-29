@@ -193,6 +193,52 @@ terrible, superseded, or suffix/demo versions. The normal player and playback
 queue should hide them; `?showall` or `?showAll` should reveal the full catalog
 for review/debug. Prefer hiding over deleting so old direct links still work.
 
+## Unlisted Preview Protocol
+
+Use **Preview** for `试听`. Use **Unlisted Preview** when a song is published as
+a complete website item for human listening but must not appear in the normal
+library, search peek, or autoplay queue. Unlisted means discoverability is
+reduced; it is not private, and anyone with the direct URL can open it.
+
+Do not use `hidden` or `Legacy` for a healthy candidate that is awaiting a
+selection decision. Mark the catalog item explicitly:
+
+```json
+{
+  "visibility": "unlisted",
+  "releaseStage": "preview",
+  "category": "preview",
+  "previewLabel": "Listening Preview"
+}
+```
+
+Also set `manifest.publication.visibility: "unlisted"`,
+`manifest.publication.stage: "preview"`, and
+`manifest.publication.listed: false`. A Preview must still meet normal
+publication quality:
+
+- selected normalized audio is hosted in `MusiaSongs`;
+- each independently generated candidate has its own `asset`, `lyricSet`, ASR
+  correction evidence, word timing, chords, and beats;
+- all companion translations align to that candidate's actual sung structure;
+- pinyin/furigana/Jyutping, cover, title, artist, and provenance are complete;
+- strict media audit and full website validation pass.
+
+The default catalog, search peek, and playback queue must exclude Preview
+items. A direct hash remains usable, and `?preview=1` exposes the Preview
+library for listening:
+
+```text
+https://fun.lazying.art/?preview=1#<media-id>
+```
+
+When several candidates belong to one listening decision, prefer one media item
+with clearly labeled switchable assets such as `Music First` and `Lyrics
+First`. Do not merge their lyric or musical analysis merely because duration or
+prompt is similar. After the user selects a master, either promote the selected
+asset into a normal listed item or create the final listed item from it; rerun
+the lyric audit instead of silently reusing draft Preview data.
+
 ## Workflow
 
 1. Run or collect analysis for every public vocal:
