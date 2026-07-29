@@ -218,6 +218,22 @@ single model name:
 5. Select by human listening with melody/emotion weighted above raw lyric
    coverage, while still rejecting materially wrong or missing lyrics.
 
+Do not reject a high-music candidate from mixed-track ASR alone. Dense
+instrumentation can make ASR return generic speech, miss whole sections, or
+hallucinate an outro even when the isolated vocal is intelligible. For every
+serious finalist, separate the vocal first and rerun a large ASR model plus an
+independent music-understanding transcription. Keep a `music-first` finalist
+and a `lyric-first` finalist when the evidence disagrees, loudness-match their
+listening copies, and require a full human listen before choosing one. The
+`洛水照影` experiment is the canonical example: the stronger music candidate
+had lower automated lyric overlap, while the alternate recovered more of the
+planned lyric.
+
+Prefer a compact positive producer caption for ACE. Long negative instructions
+can leak into the generated vocal or encourage generic outro speech. Put
+forbidden behavior in the external quality gate instead of making the model
+sing a list of prohibitions.
+
 LeVo 2 / SongGeneration-v2 may be used as a private same-brief research
 challenger only. Its current upstream license excludes commercial and production
 use, so never send its outputs to Fun, LazyEdit, Shipinhao, or another public
