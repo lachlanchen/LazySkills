@@ -514,6 +514,50 @@ artifact or a redacted status.
 11. Periodically sync downloaded media with auto-discovered `xwechat_files`
     folders, copying only new/changed files and pruning private temporary data.
 
+For existing-video publication, resume the exact chat's worker agent with a
+bounded `gpt-5.6-sol` low/medium turn before the stable LazyEdit pipeline. The agent
+interprets platforms and current subtitle/background/metadata instructions and
+invokes `scripts/lazyedit_publish.py`; deterministic code owns exact-source
+resolution, duplicate guards, queue probes, and terminal verification. Treat a
+null or timed-out LazyEdit video list as temporary unavailability. Never issue a
+second publish when the same `video_id` is queued, running, or waiting for
+login.
+The agent submits with `--no-wait`; it must not hold a model turn across
+processing, platform uploads, sleeps, browser polling, or QR login. Persist the
+job IDs and let the deterministic poststage report blockers and verify
+completion.
+When the poststage detects `waiting_login`, copy only fresh fixed-name
+AutoPublish QR/login PNGs into the exact task artifact directory and deliver
+them once to the source chat. Never attach a stale or unrelated screenshot.
+Treat `publish_running`, `waiting_login`, and `published_verified` as durable
+queue states that stop generic model escalation. Do not start a repair agent or
+second publish because an earlier agent's prose was incomplete.
+Probe the exact imported video before resuming an agent during reprocess or
+reboot recovery. Bypass the agent when that exact queue is already running,
+waiting for login, or terminal.
+When `/api/videos` is null, recover the ID only from one publish-queue filename
+whose stem exactly matches the source-scoped completed MP4. Ambiguous or nearby
+jobs remain rejected.
+
+For link/read-later groups such as `Shares鏈接`, a source-only share has one
+substantive responder: silently enqueue it and let the exact-chat worker return
+one natural source-grounded summary. Do not send a title-based route-agent
+analysis first, and do not attach Markdown/PDF unless the current message asks
+for a report. Completion auditing must inspect only the extracted human request,
+not the worker instruction envelope or older PDF policy text.
+The completion audit must also strip monitor-authored `New WeChat ... item
+received` and raw `metadata:` attachment scaffolding when a later human command
+exists. Keep a normalized default-intake requirement only for a naked upload.
+Expose bounded terminal publish-stage evidence to the checker, so
+`published_verified` satisfies an explicit publish request without a duplicate
+summary or self-requeued corrective turn.
+
+For LabAgent idle inspiration, combine recent exact-group messages with bounded
+durable same-group summaries of older interests, ideas, and findings. Prior
+inspiration and research output are continuity evidence. Web/literature search
+updates or challenges that context rather than replacing it with a generic
+topic; never import another group's memory.
+
 ## Failure Handling
 
 - If WeChat login expires, stop automation and ask the user to re-authenticate in
