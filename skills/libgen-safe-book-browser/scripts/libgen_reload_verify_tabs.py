@@ -100,14 +100,20 @@ def evaluate_state(ws: Any, counter: list[int], *, allowed_hosts: set[str], time
   const bootstrapCssLoaded = resources.some((url) => url.includes("bootstrap") && url.includes(".css"));
   const jqueryLoaded = resources.some((url) => url.includes("jquery"));
   const bootstrapJsLoaded = resources.some((url) => url.includes("bootstrap") && url.includes(".js"));
+  const supportedHost =
+    location.hostname.endsWith("libgen.li") ||
+    location.hostname.endsWith("libgen.pw");
+  const needsClassicAssets = location.hostname.endsWith("libgen.li");
+  const classicAssetsReady =
+    (!hasBootstrapCss || bootstrapCssLoaded) &&
+    (!hasJquery || jqueryLoaded) &&
+    (!hasBootstrapJs || bootstrapJsLoaded);
   const useful =
-    location.hostname.endsWith("libgen.li") &&
+    supportedHost &&
     document.readyState === "complete" &&
     document.title &&
     text.length > 500 &&
-    (!hasBootstrapCss || bootstrapCssLoaded) &&
-    (!hasJquery || jqueryLoaded) &&
-    (!hasBootstrapJs || bootstrapJsLoaded) &&
+    (!needsClassicAssets || classicAssetsReady) &&
     !/bad internet|checking your browser|loading/i.test(text.slice(0, 1200));
   return {
     title: document.title,

@@ -90,8 +90,9 @@ python3 skills/libgen-safe-book-browser/scripts/libgen_reload_verify_tabs.py \
   --url "https://libgen.li/edition.php?id=138479359"
 ```
 
-The reload verifier checks `document.readyState`, real body text, and expected
-Bootstrap/JQuery resources when the page declares them.
+The reload verifier supports both `libgen.pw` Vue detail pages and classic
+`libgen.li` pages. It checks `document.readyState` and real body text; for
+`libgen.li`, it also verifies declared Bootstrap and JQuery resources.
 
 ## Browser Setup
 
