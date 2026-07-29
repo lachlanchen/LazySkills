@@ -193,6 +193,9 @@ irreversible work. Queue writes must merge monitor-owned same-chat
 interruptions under lock so an older worker snapshot cannot erase newly arrived
 messages. Put the complete focused user request in each interruption packet,
 without long reusable policy wrappers or unrelated history.
+Completion checks must derive PDF and other artifact requirements only from
+focused human request items. Synthetic attachment instructions, metadata, and
+"send PDF only if requested" policy text never authorize or require a PDF.
 
 The worker should select effort from the current user request before running,
 not from the long reusable queue playbook: medium for simple follow-ups,
