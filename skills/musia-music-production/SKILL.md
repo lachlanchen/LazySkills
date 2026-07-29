@@ -52,7 +52,7 @@ route. The `蜀道难 · 原文重组 DR Draft` and `行路难 · 原文重组 D
 showed that DiffRhythm can align lyrics reasonably, but melody and singing
 quality may be terrible or only so-so. Keep such outputs visibly `DR
 Draft`/experimental, do not record or publish them as final-quality songs, and
-return to ACE-Step XL/SFT when beauty, melody, and vocal feel matter.
+return to an ACE-Step candidate sweep when beauty, melody, and vocal feel matter.
 
 For new Mandarin or mixed Mandarin generation, prefer real Chinese characters
 as the model-facing sung lyric. Do not use pinyin as the primary sung lyric just
@@ -178,10 +178,10 @@ When the user says quality matters or has time to wait, use the best practical
 local route before accepting a faster route:
 
 - inspect installed model checkpoints before generation;
-- for ACE-Step 1.5, prefer `acestep-v15-xl-sft` at 50 steps for final-quality
-  full-song candidates when it is installed and VRAM allows;
-- use `acestep-v15-xl-turbo` for rapid iteration, fallback batches, or when SFT
-  fails, but do not silently treat it as the highest-quality route;
+- use `acestep-v15-xl-turbo` as the proven Musia production baseline and sweep
+  6-10 seeds when the result matters;
+- include `acestep-v15-xl-sft` as an A/B challenger when VRAM allows, but never
+  promote it merely because it uses more steps;
 - if a newer XL/XXL/XXXL or higher-quality model is available in the upstream
   project or community and can be installed legally, download/test it before
   final publication when the user asks for best quality;
@@ -202,6 +202,31 @@ sound-control layer when it helps ACE sing beautifully, but it is not the public
 meaning layer. Publish the corrected active mixed vocal plus native companion
 translations. If the render only sings a compact subset of the prompt, publish
 that subset honestly and omit unsung draft lines.
+
+For frontier-quality work, use a license-aware candidate gate rather than a
+single model name:
+
+1. Generate multiple ACE candidates from one frozen lyric/producer brief.
+2. Run `scripts/audio_health_report.py`; reject silence, clipping, non-finite
+   audio, broken dynamics, and hard cuts before expensive review.
+3. Use APEX + MERT only to rank which candidates deserve listening; its
+   coherence, musicality, memorability, clarity, and naturalness scores do not
+   verify lyrics.
+4. Run at least two lyric evidence routes, such as separated-vocal
+   faster-whisper plus MOSS-Music or HeartTranscriptor, then audit gaps,
+   repeats, weak endings, and source-close ASR substitutions manually.
+5. Select by human listening with melody/emotion weighted above raw lyric
+   coverage, while still rejecting materially wrong or missing lyrics.
+
+LeVo 2 / SongGeneration-v2 may be used as a private same-brief research
+challenger only. Its current upstream license excludes commercial and production
+use, so never send its outputs to Fun, LazyEdit, Shipinhao, or another public
+release. Qwen-Music and the 2026 FullDiT full-song route are paper-only until
+official runnable weights exist. SegTune currently provides training/inference
+code but no ready official checkpoint; do not claim it is installed merely
+because its repository can be cloned. Read
+`/home/lachlan/ProjectsLFS/Musia/references/luoshenfu-frontier-model-research-2026-07-29.md`
+before changing Musia's production default.
 
 Prefer fewer stronger lines over dense poetry. For Chinese/Japanese, reduce pronunciation risk by using natural, short phrases and correcting after ASR/listening.
 
@@ -407,6 +432,13 @@ data/creative_projects/<song-id>/
 ## Model Routing
 
 - Idea/lyrics to full song: ACE-Step 1.5 first.
+- Best-quality full song: ACE multi-seed production sweep, objective health
+  gate, APEX shortlist, multi-route lyric audit, then human listening.
+- Frontier local A/B: HeartMuLa as a license-compatible challenger; LeVo 2 only
+  as private research under its current non-production license.
+- Music QA: MOSS-Music and HeartTranscriptor for independent lyric evidence;
+  APEX for aesthetic ranking only; FFmpeg/signal measurements remain
+  authoritative for clipping, loudness, silence, and hard-cut checks.
 - Vocal-only controlled short hook: SoulX if language metadata is supported.
 - Strict source-song localization: Demucs/analysis plus YingMusic/SoulX prep, not full-song generation.
 - Same melody is optional when it hurts quality. Prefer high-quality independent ACE/YuE language renders over low-quality same-score vocals.
