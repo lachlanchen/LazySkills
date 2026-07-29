@@ -246,6 +246,31 @@ before changing Musia's production default.
 
 Prefer fewer stronger lines over dense poetry. For Chinese/Japanese, reduce pronunciation risk by using natural, short phrases and correcting after ASR/listening.
 
+### Classical Source-Text Default
+
+When the user names or supplies a classical poem, ci, yuefu, fu, or other
+premodern text and asks for a song without explicitly requesting a rewrite,
+default to an **original-source-text song**:
+
+- for a short work, try to use the complete original text;
+- for a long work, select the most musical and emotionally central original
+  passages rather than forcing the whole text linearly;
+- ordering, sectioning, repetition, held syllables, and musical space are
+  allowed, but every Chinese sung lyric line must come from the source;
+- do not add modern Chinese paraphrase, connective lines, or newly written
+  hooks merely because the user asks for a beautiful or resonant song;
+- show and save the selected source-text lyric layout before generation;
+- keep public lyrics in the verified source wording. Private homophone,
+  pinyin, or easier-character substitutions may guide the model, but restore
+  the source wording wherever listening confirms a sound-close performance;
+- when EN/JA companion lyrics are requested, the Chinese layer remains source
+  text while EN/JA may be culturally singable adaptations.
+
+An adapted modern-lyric version is a separate route, not the implicit default.
+Use it only when the user explicitly asks for adaptation, or offer it as a
+clearly labeled alternate after repeated source-text attempts fail pronunciation
+or musical quality. Never silently replace the poem with a rewrite.
+
 For classical Chinese poems, especially Li Bai/Tang poetry, run a
 pronunciation-prep gate before ACE/YuE generation:
 
@@ -256,9 +281,10 @@ pronunciation-prep gate before ACE/YuE generation:
 - run pypinyin as a baseline, then manually audit polyphonic and rare
   characters such as `行`, `将`, `了`, names, place names, and classical words;
 - write a pinyin guide and list risky pronunciations in the project notes;
-- prefer an adapted modern-singable lyric when exact classical diction causes
-  ACE to garble pronunciation, but preserve the poem's core images and
-  document any omissions;
+- when exact classical diction causes garbling, first try a shorter selected
+  source excerpt, better repetition/spacing, private phonetic controls, and
+  additional seeds. Move to a modern adaptation only as a separately labeled
+  route under the source-text default above;
 - add ACE-facing caption guidance for the risky words, and after generation
   compare ASR/listening against the pinyin guide before publishing.
 
@@ -308,14 +334,12 @@ For the full reusable ACE poem-song method, use the repo reference:
 /home/lachlan/ProjectsLFS/Musia/references/yue-ren-ge-recursive-refinement-playbook-2026-07-01.md
 ```
 
-When the user's quality goal is a beautiful song rather than a literal poetry
-recitation, prefer a rewritten/adapted singable lyric route like the successful
-`侠客行` workflow. Do not force the full original poem into ACE unless the user
-explicitly asks for original-text-only output. Label full-original-poem renders
-as `ACE Poetry Demo` or experimental when ASR shows garbling. For the adapted
-route, preserve the poem's spirit, iconic images, and key lines, but rewrite
-into short breath-friendly verse/pre-chorus/chorus/bridge sections before
-generation.
+The rewritten `侠客行` workflow remains a useful optional adaptation route, but
+it does not override the source-text default. A beautiful song can come from
+selection, reordering, repetition, phrasing, and arrangement without modern
+paraphrase. Do not force every line of a long poem into ACE; use a strong
+original excerpt first. Label an adapted route explicitly, preserve the poem's
+spirit and iconic images, and keep it separate from the source-text version.
 
 Do not cram words into the song just to preserve every detail. Use musical
 space: 留白, held vowels, rests, repeated hooks, and breath-friendly pauses.
