@@ -186,6 +186,14 @@ polling should only read local DB/files and must not call Codex. Spend model
 tokens only when a new message needs a route decision, immediate reply, or
 worker execution.
 
+Serialize worker execution by exact chat while allowing different chats to run
+in parallel. If a worker process dies, recover only one recent safe task inside
+the bounded recovery window; do not automatically replay paid generation or
+irreversible work. Queue writes must merge monitor-owned same-chat
+interruptions under lock so an older worker snapshot cannot erase newly arrived
+messages. Put the complete focused user request in each interruption packet,
+without long reusable policy wrappers or unrelated history.
+
 The worker should select effort from the current user request before running,
 not from the long reusable queue playbook: medium for simple follow-ups,
 paper/PDF/search/research/figure tasks, and generated-video browser work; high
