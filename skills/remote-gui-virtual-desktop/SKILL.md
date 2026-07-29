@@ -73,7 +73,13 @@ every 1-2 seconds while the app is alive. Center fixed-size login dialogs; fit
 the main window once it reaches a normal application size. Stop the guard with
 the desktop session. Do not spawn duplicate guards for the same display/app.
 
-## Canonical Shared Browser
+Before force-resizing, check whether the application implements one logical UI
+with several synchronized top-level/layered windows, as WeCom does under Wine.
+Moving only one layer fragments that UI. For such applications, preserve native
+window geometry, center only the login dialog when safe, and rely on full noVNC
+`resize=scale` to fit the complete desktop.
+
+## AgInTi Browser / Xiaoyunque Identity
 
 On Lachlan's workstation, preserve this established browser identity:
 
@@ -86,11 +92,27 @@ Chrome CDP: http://127.0.0.1:9344
 Chrome profile: $HOME/.cache/xyq-chrome
 ```
 
-Xiaoyunque, JLC/JLCEDA web work, and ordinary downloads share this Chrome
-profile. Reuse it when the user asks for the familiar browser or its download
-history. Do not substitute an embedded, temporary, or default virtual-desktop
-profile. Never delete, overwrite, expose private state from, or commit the
-profile. LCEDA Pro's Electron state remains separate.
+This identity belongs to AgInTi Browser and Xiaoyunque. Reuse it when the user
+asks for that familiar browser or its download history. Do not substitute an
+embedded, temporary, or default virtual-desktop profile. Never delete,
+overwrite, expose private state from, or commit the profile. Do not open JLC
+tabs in this browser, and do not stop or reopen it while preparing a JLC order.
+
+JLC web ordering has a separate AgenticApp stack:
+
+```text
+X display: :104
+VNC: 127.0.0.1:5924
+noVNC: http://127.0.0.1:6124/vnc.html?host=127.0.0.1&port=6124&autoconnect=1&resize=scale
+Chrome CDP: http://127.0.0.1:49237
+Chrome profile: $HOME/.cache/jlcpcb-order-shared
+Launcher: agentic_tools/jlcpcb_order_agent/scripts/jlc_browser_stack.sh
+```
+
+The JLC profile name is historical; it is dedicated to JLC runs. Repeated
+launcher calls reuse the existing JLC process and tab. `JLCPCB_TAB_CDP_PORT` is
+intentionally unsupported. LCEDA Pro's Electron state and the Books/LibGen
+browser remain separate.
 
 ## AgenticApp Launcher
 
