@@ -110,6 +110,12 @@ LOAD_CHECK_SCRIPT = r"""
   const bootstrapCssLoaded = resources.some((url) => url.includes("bootstrap") && url.includes(".css"));
   const jqueryLoaded = resources.some((url) => url.includes("jquery"));
   const bootstrapJsLoaded = resources.some((url) => url.includes("bootstrap") && url.includes(".js"));
+  const conciseRecord =
+    location.hostname.endsWith("libgen.pw") &&
+    /^\/(?:book|links)\/\d+\/?$/.test(location.pathname) &&
+    document.title &&
+    text.includes(document.title.trim());
+  const enoughText = text.length > 500 || (conciseRecord && text.length > 220);
   return {
     title: document.title,
     url: location.href,
@@ -124,7 +130,7 @@ LOAD_CHECK_SCRIPT = r"""
     bootstrapJsLoaded,
     useful: document.readyState === "complete" &&
       document.title &&
-      text.length > 500 &&
+      enoughText &&
       (!hasBootstrapCss || bootstrapCssLoaded) &&
       (!hasJquery || jqueryLoaded) &&
       (!hasBootstrapJs || bootstrapJsLoaded) &&

@@ -108,11 +108,17 @@ def evaluate_state(ws: Any, counter: list[int], *, allowed_hosts: set[str], time
     (!hasBootstrapCss || bootstrapCssLoaded) &&
     (!hasJquery || jqueryLoaded) &&
     (!hasBootstrapJs || bootstrapJsLoaded);
+  const conciseRecord =
+    location.hostname.endsWith("libgen.pw") &&
+    /^\/(?:book|links)\/\d+\/?$/.test(location.pathname) &&
+    document.title &&
+    text.includes(document.title.trim());
+  const enoughText = text.length > 500 || (conciseRecord && text.length > 220);
   const useful =
     supportedHost &&
     document.readyState === "complete" &&
     document.title &&
-    text.length > 500 &&
+    enoughText &&
     (!needsClassicAssets || classicAssetsReady) &&
     !/bad internet|checking your browser|loading/i.test(text.slice(0, 1200));
   return {
