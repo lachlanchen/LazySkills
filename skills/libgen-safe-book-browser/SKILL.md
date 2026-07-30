@@ -62,6 +62,11 @@ Use the scored `https://libgen.pw/book/<id>` output as the candidate detail
 page. Avoid relying on DOM `.click()` for LibGen result cards; the cards may not
 have direct anchors and programmatic clicks may not trigger Vue routing.
 
+The search helper uses a disposable `about:blank` tab by default and closes it
+after disabling request interception. This prevents a killed run from leaving a
+visible LibGen tab paused. Use `--reuse-tab` only when explicitly debugging an
+existing tab.
+
 Open selected detail URLs with the bundled redirect guard:
 
 ```bash

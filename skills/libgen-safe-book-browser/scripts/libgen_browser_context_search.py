@@ -69,6 +69,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--language", help="Preferred language code, e.g. jpn, chi, eng")
     parser.add_argument("--title-term", action="append", default=[], help="Expected title substring for scoring")
     parser.add_argument("--author-term", action="append", default=[], help="Expected author substring for scoring")
+    parser.add_argument(
+        "--reuse-tab",
+        action="store_true",
+        help="Reuse an existing LibGen tab instead of a disposable search tab",
+    )
     parser.add_argument("--json", action="store_true", help="Emit JSON instead of a table")
     return parser.parse_args()
 
@@ -121,7 +126,7 @@ def host_allowed(url: str) -> bool:
 
 
 class CdpPage:
-    def __init__(self, cdp_url: str) -> None:
+    def __init__(self, cdp_url: str, *, reuse_tab: bool = False) -> None:
         try:
             import websocket  # type: ignore
         except Exception as exc:  # pragma: no cover - environment failure
@@ -130,7 +135,8 @@ class CdpPage:
         self.websocket = websocket
         self.cdp_url = cdp_url.rstrip("/")
         self.counter = 0
-        self.tab = self._find_or_create_libgen_tab()
+        self.owns_tab = not reuse_tab
+        self.tab = self._find_or_create_libgen_tab(reuse_tab=reuse_tab)
         self.ws = websocket.create_connection(self.tab["webSocketDebuggerUrl"], timeout=10)
         self.ws.settimeout(2)
         self.call("Runtime.enable")
@@ -140,10 +146,11 @@ class CdpPage:
             self.call("Page.navigate", {"url": "https://libgen.pw/"})
             self.wait_for_libgen()
 
-    def _find_or_create_libgen_tab(self) -> dict[str, Any]:
-        for tab in http_json(self.cdp_url, "/json"):
-            if tab.get("type") == "page" and is_libgen_url(tab.get("url", "")):
-                return tab
+    def _find_or_create_libgen_tab(self, *, reuse_tab: bool) -> dict[str, Any]:
+        if reuse_tab:
+            for tab in http_json(self.cdp_url, "/json"):
+                if tab.get("type") == "page" and is_libgen_url(tab.get("url", "")):
+                    return tab
         return new_tab(self.cdp_url, "about:blank")
 
     def send(self, method: str, params: dict[str, Any] | None = None) -> int:
@@ -249,9 +256,18 @@ class CdpPage:
 
     def close(self) -> None:
         try:
+            self.call("Fetch.disable", timeout=5)
+        except Exception:
+            pass
+        try:
             self.ws.close()
         except Exception:
             pass
+        if self.owns_tab:
+            try:
+                http_text(self.cdp_url, "/json/close/" + self.tab["id"])
+            except Exception:
+                pass
 
 
 def normalize(value: Any) -> str:
@@ -326,7 +342,7 @@ def main() -> int:
         raise SystemExit("provide at least one query")
 
     closed = close_ad_targets(args.cdp_url)
-    page = CdpPage(args.cdp_url)
+    page = CdpPage(args.cdp_url, reuse_tab=args.reuse_tab)
     try:
         results = [page.search(query, args.collection, args.from_index, args.limit, args.timeout_ms) for query in queries]
     finally:
