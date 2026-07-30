@@ -309,6 +309,8 @@ def guard_tab(
         result_queue.put(OpenResult(label, "error", target_url, error=f"websocket-client missing: {exc}"))
         return
 
+    ws: Any | None = None
+    counter: list[int] | None = None
     try:
         tab = new_tab(cdp_url, "about:blank")
         ws = websocket.create_connection(tab["webSocketDebuggerUrl"], timeout=10)
@@ -360,9 +362,24 @@ def guard_tab(
                     target_url=target_url,
                     allowed_navigation_hosts=allowed_navigation_hosts,
                 )
-        ws.close()
     except Exception as exc:
         result_queue.put(OpenResult(label, "error", target_url, error=f"{type(exc).__name__}: {exc}"))
+    finally:
+        if ws is not None and counter is not None:
+            try:
+                cdp_call(
+                    ws,
+                    counter,
+                    "Fetch.disable",
+                    allowed_hosts=allowed_request_hosts,
+                )
+            except Exception:
+                pass
+        if ws is not None:
+            try:
+                ws.close()
+            except Exception:
+                pass
 
 
 def main() -> int:

@@ -67,6 +67,10 @@ after disabling request interception. This prevents a killed run from leaving a
 visible LibGen tab paused. Use `--reuse-tab` only when explicitly debugging an
 existing tab.
 
+The detail-page opener also disables `Fetch` in a `finally` cleanup before
+detaching. Let it finish its guard interval when possible; cleanup is still
+attempted on load errors or other controlled exits.
+
 Open selected detail URLs with the bundled redirect guard:
 
 ```bash
