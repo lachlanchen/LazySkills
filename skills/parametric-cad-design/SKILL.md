@@ -21,6 +21,7 @@ Use this skill for agent-assisted mechanical design where the deliverable should
 
 When Shapr3D archives, OpenHI/Nature geometry, C-mount, optical holders, or sensor/PCB holders are involved, read `references/shapr3d-cad-patterns.md` after this file.
 When a PCB photo, sketch, rear view, component view, or mating face controls an asymmetric holder, also read `references/pcb-sensor-mating-face-orientation.md`.
+When joining round OpenHI/4F tubes inside a thin square envelope, also read `references/openhi-square-tube-connectors.md`.
 
 ## Geometry Discipline
 
@@ -30,6 +31,9 @@ When a PCB photo, sketch, rear view, component view, or mating face controls an 
 - Keep mating bodies editable. Export separate STEP/STL bodies for sockets, plates, inserts, thread cutters, boards, and fixtures when the user may edit them in Shapr3D or FreeCAD.
 - Avoid accidental connector geometry. If the user asks for direct contact, remove bridge blocks and middle cylinders; do not replace one unwanted bridge with another.
 - Bound threads inside their parent length. A thread cutter for a socket from `x=0` to `x=H` should start after a small lead-in and end before `H`; then clip/intersect the swept thread so no tooth overflows beyond either end.
+- For a full first and last tooth, sweep both male and female thread profiles about half a pitch beyond each true end, then intersect with the exact parent-length clipping solid. Extending construction geometry is useful; exporting overflow is not.
+- When a circular bore nearly fills a square body, do not place radial set screws at the face center by habit. Calculate engagement over the complete thread crest, then offset the hole tangentially toward a corner if needed. Preserve a named outer ligament and verify adjacent-face clearance.
+- For an internal tube stop printed along the tube axis, prefer an annular triangular ridge with straight chamfers over an unsupported right-angle shelf. Keep the optical opening explicit. "Straight fillet" should be interpreted as a chamfer or bevel, not a rounded fillet.
 - Document the contact plane between independent bodies, for example `socket x=0..12`, `plate x=12..19`.
 - Use clearance holes and pockets for real protrusions such as pin headers, solder joints, cables, screws, and printed-fit errors. Keep those clearances named and visible in the manifest.
 - Prefer simple, clean solids over decorative or overly coupled boolean shapes. If Shapr3D reports invalid geometry when editing, split the part into independent adjacent bodies and bounded cutters.
@@ -67,6 +71,7 @@ When adapting old 3D-printed parts:
 - Record male and female values separately. A male part that inserts into another part is usually kept smaller; the receiving hole/socket/pocket is enlarged.
 - Maintain a table for all mating fits: threaded parts, slip-fit pockets, square modules, pins, holes, and optical holders.
 - Use a test coupon for uncertain threads before printing large parts.
+- When horizontal female threads are part of the print, provide both a true-helical version and a smooth tap-ready pilot version. Export one single fit-test male screw before a full grid.
 - Do not confuse standard C-mount with the user's larger OpenHI lens/BS/top thread family. C-mount is `1"-32 UN`, nominal major diameter `25.4 mm`, pitch `0.79375 mm`. The OpenHI lens/BS/top family is near 30 mm and should not be converted to 25.4 mm unless the user explicitly asks for a new C-mount adapter.
 - For standard-like printed female C-mount sensor holders, treat `25.4 mm` as the nominal internal thread/groove maximum, not the smooth pilot. Prefer a `25.0 mm` female pilot/root and a `25.4 mm` nominal cutter maximum; avoid a `25.4 mm` pilot plus larger groove unless the user wants a loose high-clearance experiment.
 - For the OpenHI Lens B/C holder receiver, the corrected print-fit variants keep the 30 mm OpenHI family. Do not convert them to 25.4 mm C-mount unless explicitly making a new adapter. Change the old `30.2 mm` female start/root to a `30.0 mm` pilot and cut a `30.4 mm` groove envelope. Preserve the 25.5 mm lens seat and adjust the 45 degree transition chamfer from `25.5 -> 30.0 mm` over `2.25 mm`.
