@@ -11,8 +11,8 @@ the center of each face.
 - Keep the tube/print axis explicit.
 - For a two-tube connector, use an annular center stop rather than a blocking
   disk.
-- Make the stop support-friendly with straight chamfers: for a 2 mm radial
-  projection, a `40 -> 36 -> 40 mm` bore over a 4 mm axial base creates two
+- Make the stop support-friendly with straight chamfers: for the revised
+  connector, a `40.2 -> 36 -> 40.2 mm` bore over a 4 mm axial base creates two
   45-degree faces.
 - "Straight fillet" means chamfer or bevel. A fillet is rounded.
 
@@ -27,9 +27,9 @@ center. Shift the hole tangentially toward a corner and calculate:
 - outer edge ligament;
 - clearance to adjacent faces and other holes.
 
-For the proven 42 mm / 40 mm connector, an M6 crest radius of 3 mm at a 14.5 mm
-tangential offset gives about 4.64 mm minimum material across the full crest
-and about 7.23 mm at the centerline.
+For the revised 42 mm / 40.2 mm connector, an M6 crest radius of 3 mm at a
+14.5 mm tangential offset gives about 4.5149 mm minimum material across the
+full crest and about 7.0802 mm at the centerline.
 
 ## Printed Thread Pattern
 
@@ -61,4 +61,3 @@ ring-groove Shapr target when downstream editability matters.
 
 The full worked handoff lives in the LabCanvas repository at
 `references/openhi-4f-square-tube-connector-cad-handoff-2026-08-06.md`.
-
