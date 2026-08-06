@@ -192,6 +192,20 @@ For optical sensor holders, prefer direct clean layouts:
 - no filler block or decorative saddle unless it solves a real print/support
   problem.
 
+## Adapting A Proven Holder To A New Optical Mount
+
+When the sample-facing or PCB-facing holder geometry is already physically
+accepted, do not redraw it while changing the mounting interface. Import or
+call the accepted parametric feature functions, omit only the obsolete mount
+operation, and place the replacement mount in a separate registered body.
+Use a shallow named spigot/pocket pair so uncertain fit changes remain local.
+For a measured smooth receiver around a threaded reference, record both the
+plain-body diameter and thread-crest envelope, then provide a small fit coupon
+when the selected ID is tight. Clip large reference assemblies to the exact
+mating region for fit renders; never include reference hardware in print files.
+Compare bbox, volume, solid count, and feature probes against the accepted
+holder before declaring unaffected geometry unchanged.
+
 ## Artifact Contract
 
 For each serious CAD design, produce:
