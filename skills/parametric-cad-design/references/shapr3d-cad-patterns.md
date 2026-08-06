@@ -97,6 +97,28 @@ For the OpenHI 30 mm receiver print-fit fix:
 - keep the lens seat and adjust the transition chamfer to land cleanly on the
   new pilot.
 
+### OpenHI 30 mm Printed Mating Pair
+
+For the validated printed male/female OpenHI 30 mm pair, do not call every
+construction diameter the "nominal" or "pivot" diameter. Record four values:
+
+- male root cylinder: `29.8 mm`;
+- male crest: `30.2 mm`;
+- female land/pilot bore: `30.0 mm`;
+- female groove/cutter maximum: `30.4 mm`.
+
+With `0.8 mm` pitch, `0.2 mm` radial tooth height, and `0.8 mm` tooth base,
+this leaves `0.2 mm` diametral clearance at both root/land and crest/groove.
+Remember that a `0.2 mm` radial tooth changes diameter by `0.4 mm`.
+
+When one adapter must cover a larger reference chamfer and then screw into a
+smaller holder, keep the adapter as one continuous body with two axial regions.
+The lower cup OD must be sized by the largest reference shoulder; the upper
+thread root must be sized by the mating thread. For the OpenHI C-branch sample
+holder, this means a `42 mm` OD cup around a `40.2 -> 25.5 mm` smooth cavity,
+followed by the `29.8/30.2 mm` male threaded extension. Do not shrink the whole
+cup to `29.8 mm`; it would no longer cover the roughly `40 mm` chamfer.
+
 ## Thread Runout
 
 If a helical thread starts exactly on an end face, the end tooth can be missing
