@@ -20,6 +20,7 @@ from typing import Any
 
 
 DEFAULT_AD_WORDS = [
+    "freescienceengineering.org",
     "trip.com",
     "tripcdn",
     "ctrip",

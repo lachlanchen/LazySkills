@@ -124,7 +124,8 @@ google-chrome \
 ```
 
 If tabs are already hijacked, run the redirect guard anyway. It closes known
-Trip/ad targets before opening fresh guarded tabs.
+Trip/ad targets, including `freescienceengineering.org`, before opening fresh
+guarded tabs.
 
 ## Known Japanese Test Outcomes
 

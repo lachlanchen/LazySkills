@@ -22,6 +22,7 @@ from typing import Any
 
 
 DEFAULT_AD_WORDS = [
+    "freescienceengineering.org",
     "trip.com",
     "tripcdn",
     "ctrip",
@@ -42,7 +43,7 @@ DEFAULT_AD_WORDS = [
 
 INIT_SCRIPT = r"""
 (() => {
-  const bad = /trip\.com|tripcdn|ctrip|pipaffiliates|realizationnewestfangs|evaluatestormypawn|preferencenail|storageimagedisplay|googlesyndication|doubleclick|googleadservices|pagead2|taboola|outbrain|popads|propeller/i;
+  const bad = /freescienceengineering\.org|trip\.com|tripcdn|ctrip|pipaffiliates|realizationnewestfangs|evaluatestormypawn|preferencenail|storageimagedisplay|googlesyndication|doubleclick|googleadservices|pagead2|taboola|outbrain|popads|propeller/i;
   const block = (url) => bad.test(String(url || ""));
   const allowed = (url) => {
     const value = String(url || "");
