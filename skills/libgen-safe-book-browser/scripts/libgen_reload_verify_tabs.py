@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import time
 import urllib.parse
 import urllib.request
@@ -38,6 +39,7 @@ def parse_args() -> argparse.Namespace:
         help="Allowed static subresource host",
     )
     parser.add_argument("--timeout", type=float, default=30.0, help="Seconds to wait for each tab")
+    parser.add_argument("--verify-only", action="store_true", help="Inspect current DOM state without reloading")
     parser.add_argument("--json", action="store_true", help="Emit JSON lines")
     return parser.parse_args()
 
@@ -86,7 +88,10 @@ def tab_matches(tab: dict[str, Any], urls: list[str], contains: list[str]) -> bo
         return True
     if contains and any(part in current for part in contains):
         return True
-    return not urls and not contains and "libgen.li/edition.php" in current
+    return not urls and not contains and (
+        "libgen.li/edition.php" in current
+        or re.match(r"https?://(?:[^/]+\.)?libgen\.pw/(?:book|links)/\d+", current) is not None
+    )
 
 
 def evaluate_state(ws: Any, counter: list[int], *, allowed_hosts: set[str], timeout: float) -> dict[str, Any]:
@@ -108,12 +113,19 @@ def evaluate_state(ws: Any, counter: list[int], *, allowed_hosts: set[str], time
     (!hasBootstrapCss || bootstrapCssLoaded) &&
     (!hasJquery || jqueryLoaded) &&
     (!hasBootstrapJs || bootstrapJsLoaded);
+  const detailRecord =
+    /^\/book\/\d+\/?$/.test(location.pathname) &&
+    /\b(?:pdf|epub|mobi|azw3?|djvu)\b/i.test(text);
+  const linksRecord =
+    /^\/links\/\d+\/?$/.test(location.pathname) &&
+    /\bGet\b/i.test(text) &&
+    /Libgen/i.test(text);
   const conciseRecord =
     location.hostname.endsWith("libgen.pw") &&
-    /^\/(?:book|links)\/\d+\/?$/.test(location.pathname) &&
+    (detailRecord || linksRecord) &&
     document.title &&
     text.includes(document.title.trim());
-  const enoughText = text.length > 500 || (conciseRecord && text.length > 220);
+  const enoughText = text.length > 500 || (conciseRecord && text.length > 120);
   const useful =
     supportedHost &&
     document.readyState === "complete" &&
@@ -145,6 +157,38 @@ def evaluate_state(ws: Any, counter: list[int], *, allowed_hosts: set[str], time
         timeout=timeout,
     )
     return response.get("result", {}).get("result", {}).get("value", {}) or {}
+
+
+def verify_tab(tab: dict[str, Any], *, allowed_hosts: set[str], timeout: float) -> ReloadResult:
+    try:
+        import websocket  # type: ignore
+    except Exception as exc:
+        return ReloadResult(tab.get("id", ""), "error", tab.get("title", ""), tab.get("url", ""), error=str(exc))
+
+    ws = None
+    try:
+        ws = websocket.create_connection(tab["webSocketDebuggerUrl"], timeout=10)
+        ws.settimeout(1)
+        counter = [0]
+        cdp_call(ws, counter, "Runtime.enable", allowed_hosts=allowed_hosts)
+        state = evaluate_state(ws, counter, allowed_hosts=allowed_hosts, timeout=timeout)
+        return ReloadResult(
+            tab.get("id", ""),
+            "loaded" if state.get("useful") else "not_verified",
+            str(state.get("title", tab.get("title", ""))),
+            str(state.get("url", tab.get("url", ""))),
+            ready_state=str(state.get("readyState", "")),
+            text_length=int(state.get("textLength") or 0),
+            error="" if state.get("useful") else "current DOM did not pass the useful-page checks",
+        )
+    except Exception as exc:
+        return ReloadResult(tab.get("id", ""), "error", tab.get("title", ""), tab.get("url", ""), error=f"{type(exc).__name__}: {exc}")
+    finally:
+        try:
+            if ws is not None:
+                ws.close()
+        except Exception:
+            pass
 
 
 def reload_tab(
@@ -226,15 +270,18 @@ def main() -> int:
     allowed_request_hosts = allowed_navigation_hosts | {host.lower() for host in args.allowed_resource_host}
     close_ad_targets(args.cdp_url, DEFAULT_AD_WORDS)
     tabs = [tab for tab in http_json(args.cdp_url, "/json") if tab.get("type") == "page" and tab_matches(tab, args.url, args.contains)]
-    results = [
-        reload_tab(
-            tab,
-            allowed_navigation_hosts=allowed_navigation_hosts,
-            allowed_request_hosts=allowed_request_hosts,
-            timeout=args.timeout,
-        )
-        for tab in tabs
-    ]
+    if args.verify_only:
+        results = [verify_tab(tab, allowed_hosts=allowed_request_hosts, timeout=args.timeout) for tab in tabs]
+    else:
+        results = [
+            reload_tab(
+                tab,
+                allowed_navigation_hosts=allowed_navigation_hosts,
+                allowed_request_hosts=allowed_request_hosts,
+                timeout=args.timeout,
+            )
+            for tab in tabs
+        ]
     for result in results:
         if args.json:
             print(json.dumps(result.__dict__, ensure_ascii=False))

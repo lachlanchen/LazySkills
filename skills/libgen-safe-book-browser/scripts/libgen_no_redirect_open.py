@@ -111,12 +111,19 @@ LOAD_CHECK_SCRIPT = r"""
   const bootstrapCssLoaded = resources.some((url) => url.includes("bootstrap") && url.includes(".css"));
   const jqueryLoaded = resources.some((url) => url.includes("jquery"));
   const bootstrapJsLoaded = resources.some((url) => url.includes("bootstrap") && url.includes(".js"));
+  const detailRecord =
+    /^\/book\/\d+\/?$/.test(location.pathname) &&
+    /\b(?:pdf|epub|mobi|azw3?|djvu)\b/i.test(text);
+  const linksRecord =
+    /^\/links\/\d+\/?$/.test(location.pathname) &&
+    /\bGet\b/i.test(text) &&
+    /Libgen/i.test(text);
   const conciseRecord =
     location.hostname.endsWith("libgen.pw") &&
-    /^\/(?:book|links)\/\d+\/?$/.test(location.pathname) &&
+    (detailRecord || linksRecord) &&
     document.title &&
     text.includes(document.title.trim());
-  const enoughText = text.length > 500 || (conciseRecord && text.length > 220);
+  const enoughText = text.length > 500 || (conciseRecord && text.length > 120);
   return {
     title: document.title,
     url: location.href,
@@ -334,14 +341,16 @@ def guard_tab(
         )
         cdp_call(ws, counter, "Page.navigate", {"url": target_url}, allowed_hosts=allowed_request_hosts)
         value = wait_for_useful_page(ws, counter, allowed_hosts=allowed_request_hosts)
+        verified = bool(value.get("useful"))
         result_queue.put(
             OpenResult(
                 label=label,
-                status="opened",
+                status="opened" if verified else "not_verified",
                 url=target_url,
                 title=value.get("title", ""),
                 final_url=value.get("url", ""),
                 text_sample=(value.get("text", "") or "").replace("\n", " | "),
+                error="" if verified else "page did not pass the useful-detail checks",
             )
         )
 

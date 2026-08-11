@@ -115,8 +115,9 @@ python3 skills/libgen-safe-book-browser/scripts/libgen_reload_verify_tabs.py \
 The reload verifier supports both `libgen.pw` Vue detail pages and classic
 `libgen.li` pages. It checks `document.readyState` and real body text; for
 `libgen.li`, it also verifies declared Bootstrap and JQuery resources. Concise
-`libgen.pw` book/link records are accepted when the body contains the exact
-page title, avoiding false failures on valid records under 500 characters.
+`libgen.pw` records require the exact title plus format metadata on book pages,
+or the exact title plus `Get`/`Libgen` controls on links pages. Use
+`--verify-only` to audit current DOM state without reloading already good tabs.
 
 ## Browser Setup
 
