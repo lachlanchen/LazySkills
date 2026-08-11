@@ -90,6 +90,19 @@ by default. This prevents the common half-rendered page state where the HTML
 loads but Bootstrap CSS/JQuery are missing. Add `--allowed-resource-host` only
 for another trusted static host that is needed for page rendering.
 
+For long manual sessions, run the persistent companion instead of relying on a
+one-shot guard interval:
+
+```bash
+python3 skills/libgen-safe-book-browser/scripts/libgen_persistent_guard.py \
+  --cdp-url $XYQ_CDP_URL
+```
+
+It attaches to existing and newly opened LibGen tabs, closes known ad targets,
+and restores tabs after delayed off-site navigation. Navigation hosts and
+static resource hosts are separate: CDN hosts can load CSS/JS but can never
+become a top-level destination.
+
 If an existing tab looks half-loaded, reload and verify it instead of just
 checking `document.body` text:
 
