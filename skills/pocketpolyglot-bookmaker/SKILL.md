@@ -142,6 +142,21 @@ sleep/retry or write a `usage_limit` status record for later resume. Use
 quota is scarce, and inspect `candidates/status/*.json` plus worker logs before
 treating stopped chunks as real failures.
 
+### Queue Stage Recovery
+
+- Treat complete current-manifest chunk coverage as immutable generation work.
+  A resume must skip source audit, pilot review, and writer launch and continue
+  directly at deterministic finalization.
+- Record a deterministic export/audit/cover failure as
+  `finalization_blocked`, with the finalizer log and concise failure evidence;
+  do not downgrade it to an incomplete translation.
+- Do not repeat an identical failed finalizer several times in one queue pass.
+  Make one evidenced attempt, advance the queue when configured to continue on
+  blockers, and retry finalization after the underlying code or asset is fixed.
+- Reconcile a valid finalizer `success.json` plus current color and black-white
+  maximum-language exports back into queue state. This is required after a
+  manual repair so a completed book cannot remain falsely blocked.
+
 ## Completion Checklist
 
 - Manifest coverage is complete with no stale chunk mismatch.
