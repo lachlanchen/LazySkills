@@ -18,26 +18,7 @@ import urllib.request
 from dataclasses import dataclass
 from typing import Any
 
-
-DEFAULT_AD_WORDS = [
-    "freescienceengineering.org",
-    "trip.com",
-    "tripcdn",
-    "ctrip",
-    "pipaffiliates",
-    "realizationnewestfangs",
-    "evaluatestormypawn",
-    "preferencenail",
-    "storageimagedisplay",
-    "googlesyndication",
-    "doubleclick",
-    "googleadservices",
-    "pagead2",
-    "taboola",
-    "outbrain",
-    "popads",
-    "propeller",
-]
+from libgen_no_redirect_open import DEFAULT_AD_WORDS
 
 FORMAT_SCORE = {
     "pdf": 12,
@@ -74,6 +55,11 @@ def parse_args() -> argparse.Namespace:
         "--reuse-tab",
         action="store_true",
         help="Reuse an existing LibGen tab instead of a disposable search tab",
+    )
+    parser.add_argument(
+        "--close-ad-targets",
+        action="store_true",
+        help="Explicitly close known ad tabs before searching; disabled by default",
     )
     parser.add_argument("--json", action="store_true", help="Emit JSON instead of a table")
     return parser.parse_args()
@@ -342,7 +328,7 @@ def main() -> int:
     if not queries:
         raise SystemExit("provide at least one query")
 
-    closed = close_ad_targets(args.cdp_url)
+    closed = close_ad_targets(args.cdp_url) if args.close_ad_targets else 0
     page = CdpPage(args.cdp_url, reuse_tab=args.reuse_tab)
     try:
         results = [page.search(query, args.collection, args.from_index, args.limit, args.timeout_ms) for query in queries]
