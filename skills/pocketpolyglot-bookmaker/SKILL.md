@@ -144,6 +144,9 @@ treating stopped chunks as real failures.
 
 ### Queue Stage Recovery
 
+- When an interrupted book has partial current-manifest coverage, zero stale
+  chunks, and an explicit still-valid pilot gate, resume at the first missing
+  chunk. Do not repeat source audit, chunk preparation, or semantic pilot work.
 - Treat complete current-manifest chunk coverage as immutable generation work.
   A resume must skip source audit, pilot review, and writer launch and continue
   directly at deterministic finalization.
