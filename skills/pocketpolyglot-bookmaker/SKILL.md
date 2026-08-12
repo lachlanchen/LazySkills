@@ -156,6 +156,12 @@ treating stopped chunks as real failures.
 - Reconcile a valid finalizer `success.json` plus current color and black-white
   maximum-language exports back into queue state. This is required after a
   manual repair so a completed book cannot remain falsely blocked.
+- A finalizer waits for the writer, stall-repair, and autorepair tmux sessions.
+  It may stop those project-owned producer sessions only after current-manifest
+  coverage is complete with zero stale chunks.
+- Generate ordinary-layout `source.tex` with `--tex-only` before canonical
+  large-font export. Compile ordinary-size PDFs only when
+  `KEEP_STANDARD_PREVIEWS=1`; otherwise avoid four redundant XeLaTeX passes.
 
 ## Completion Checklist
 
