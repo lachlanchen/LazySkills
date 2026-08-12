@@ -80,9 +80,10 @@ python3 skills/libgen-safe-book-browser/scripts/libgen_no_redirect_open.py \
   --label "Les Miserables EN" https://libgen.pw/book/113160300
 ```
 
-The redirect guard allows `libgen.pw` and `libgen.li` by default. Use the same
-tool for `https://libgen.li/edition.php?...` pages; add `--allowed-host` only
-for another trusted LibGen mirror.
+The redirect guard allows `libgen.pw`, `libgen.li`, `libgen.fyi`,
+`libgen.stream`, and `freescienceengineering.org` by default. The last host is
+a selectable mirror that can sometimes redirect; treat the later off-list
+navigation as the ad, not the mirror tab itself.
 
 The guard keeps top-level navigation restricted to LibGen hosts, but allows
 required static render resources from `cdn.jsdelivr.net` and `code.jquery.com`
@@ -98,10 +99,10 @@ python3 skills/libgen-safe-book-browser/scripts/libgen_persistent_guard.py \
   --cdp-url $XYQ_CDP_URL
 ```
 
-It attaches to existing and newly opened LibGen tabs, closes known ad targets,
-and restores tabs after delayed off-site navigation. Navigation hosts and
-static resource hosts are separate: CDN hosts can load CSS/JS but can never
-become a top-level destination.
+It attaches to existing and newly opened allowed tabs, blocks off-list
+requests, and restores tabs after delayed off-site navigation. It does not
+close tabs by default. Navigation hosts and static resource hosts are separate:
+CDN hosts can load CSS/JS but can never become a top-level destination.
 
 If an existing tab looks half-loaded, reload and verify it instead of just
 checking `document.body` text:
@@ -137,9 +138,10 @@ google-chrome \
   --no-default-browser-check
 ```
 
-If tabs are already hijacked, run the redirect guard anyway. It closes known
-Trip/ad targets, including `freescienceengineering.org`, before opening fresh
-guarded tabs.
+If a tab is already hijacked, reopen its intended page under the redirect
+guard. The guard preserves the target and prevents or reverses later Trip/ad
+navigation instead of closing the tab. Use `--close-ad-targets` only when the
+user explicitly requests destructive cleanup.
 
 ## Known Japanese Test Outcomes
 

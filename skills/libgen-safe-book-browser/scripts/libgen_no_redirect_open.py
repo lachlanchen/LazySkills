@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Open LibGen detail pages while blocking ad redirects through Chrome CDP.
+"""Open LibGen pages while preventing off-site redirects through Chrome CDP.
 
 The script attaches to an existing Chrome remote-debugging endpoint, opens each
 URL from an about:blank tab, enables Fetch interception before navigation, and
-aborts requests whose host is not explicitly allowed. It is intended for
-bibliographic/detail-page inspection, not mirror/download-page automation.
+aborts requests whose host is not explicitly allowed. Normal operation never
+closes browser tabs; target cleanup remains an explicit diagnostic option.
 """
 
 from __future__ import annotations
@@ -21,8 +21,15 @@ from dataclasses import dataclass
 from typing import Any
 
 
-DEFAULT_AD_WORDS = [
+DEFAULT_NAVIGATION_HOSTS = [
+    "libgen.pw",
+    "libgen.li",
     "freescienceengineering.org",
+    "libgen.fyi",
+    "libgen.stream",
+]
+
+DEFAULT_AD_WORDS = [
     "trip.com",
     "tripcdn",
     "ctrip",
@@ -41,17 +48,28 @@ DEFAULT_AD_WORDS = [
     "propeller",
 ]
 
-INIT_SCRIPT = r"""
+INIT_SCRIPT_TEMPLATE = r"""
 (() => {
-  const bad = /freescienceengineering\.org|trip\.com|tripcdn|ctrip|pipaffiliates|realizationnewestfangs|evaluatestormypawn|preferencenail|storageimagedisplay|googlesyndication|doubleclick|googleadservices|pagead2|taboola|outbrain|popads|propeller/i;
-  const block = (url) => bad.test(String(url || ""));
+  const state = window.__agintiLibgenRedirectGuard || {};
+  state.allowedHosts = __ALLOWED_HOSTS__;
+  state.blockedFragments = __BLOCKED_FRAGMENTS__;
+  window.__agintiLibgenRedirectGuard = state;
+  if (state.installed) return;
+  state.installed = true;
+
+  const block = (url) => {
+    const value = String(url || "").toLowerCase();
+    return state.blockedFragments.some((fragment) => value.includes(fragment));
+  };
   const allowed = (url) => {
     const value = String(url || "");
     if (!value || value.startsWith("/") || value.startsWith("#")) return true;
     if (value.startsWith("about:") || value.startsWith("data:") || value.startsWith("blob:")) return true;
     try {
       const host = new URL(value, location.href).hostname;
-      return host === "libgen.pw" || host.endsWith(".libgen.pw") || host === "libgen.li" || host.endsWith(".libgen.li");
+      return state.allowedHosts.some(
+        (allowedHost) => host === allowedHost || host.endsWith("." + allowedHost)
+      );
     } catch (_) {
       return false;
     }
@@ -88,6 +106,22 @@ INIT_SCRIPT = r"""
   }, true);
 })();
 """
+
+
+def build_init_script(
+    allowed_hosts: set[str],
+    blocked_fragments: list[str] | None = None,
+) -> str:
+    """Build the page guard from the same host policy used by CDP."""
+    hosts = sorted(host.lower() for host in allowed_hosts)
+    blocked = sorted(word.lower() for word in (blocked_fragments or DEFAULT_AD_WORDS))
+    return INIT_SCRIPT_TEMPLATE.replace("__ALLOWED_HOSTS__", json.dumps(hosts)).replace(
+        "__BLOCKED_FRAGMENTS__",
+        json.dumps(blocked),
+    )
+
+
+INIT_SCRIPT = build_init_script(set(DEFAULT_NAVIGATION_HOSTS))
 
 
 @dataclass(frozen=True)
@@ -156,7 +190,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--allowed-host",
         action="append",
-        default=["libgen.pw", "libgen.li"],
+        default=list(DEFAULT_NAVIGATION_HOSTS),
         help="Allowed top-level LibGen host. Repeat to allow additional hosts.",
     )
     parser.add_argument(
@@ -166,7 +200,18 @@ def parse_args() -> argparse.Namespace:
         help="Allowed static subresource host. Repeat to allow additional CSS/JS hosts.",
     )
     parser.add_argument("--label", action="append", default=[], help="Optional labels matching positional URLs")
-    parser.add_argument("--no-close-ad-targets", action="store_true", help="Do not close existing ad targets first")
+    parser.add_argument(
+        "--close-ad-targets",
+        action="store_true",
+        help="Explicitly close known ad tabs while guarding; disabled by default",
+    )
+    parser.add_argument(
+        "--no-close-ad-targets",
+        action="store_false",
+        dest="close_ad_targets",
+        help=argparse.SUPPRESS,
+    )
+    parser.set_defaults(close_ad_targets=False)
     parser.add_argument("--json", action="store_true", help="Emit JSON lines for machine reading")
     return parser.parse_args()
 
@@ -319,6 +364,7 @@ def guard_tab(
 
     ws: Any | None = None
     counter: list[int] | None = None
+    script_identifier: str | None = None
     try:
         tab = new_tab(cdp_url, "about:blank")
         ws = websocket.create_connection(tab["webSocketDebuggerUrl"], timeout=10)
@@ -332,13 +378,15 @@ def guard_tab(
             allowed_hosts=allowed_request_hosts,
         )
         cdp_call(ws, counter, "Page.enable", allowed_hosts=allowed_request_hosts)
-        cdp_call(
+        init_script = build_init_script(allowed_navigation_hosts)
+        script_response = cdp_call(
             ws,
             counter,
             "Page.addScriptToEvaluateOnNewDocument",
-            {"source": INIT_SCRIPT},
+            {"source": init_script},
             allowed_hosts=allowed_request_hosts,
         )
+        script_identifier = script_response.get("result", {}).get("identifier")
         cdp_call(ws, counter, "Page.navigate", {"url": target_url}, allowed_hosts=allowed_request_hosts)
         value = wait_for_useful_page(ws, counter, allowed_hosts=allowed_request_hosts)
         verified = bool(value.get("useful"))
@@ -376,6 +424,17 @@ def guard_tab(
         result_queue.put(OpenResult(label, "error", target_url, error=f"{type(exc).__name__}: {exc}"))
     finally:
         if ws is not None and counter is not None:
+            if script_identifier:
+                try:
+                    cdp_call(
+                        ws,
+                        counter,
+                        "Page.removeScriptToEvaluateOnNewDocument",
+                        {"identifier": script_identifier},
+                        allowed_hosts=allowed_request_hosts,
+                    )
+                except Exception:
+                    pass
             try:
                 cdp_call(
                     ws,
@@ -398,7 +457,7 @@ def main() -> int:
     if len(labels) != len(args.urls):
         raise SystemExit("--label count must match URL count")
 
-    if not args.no_close_ad_targets:
+    if args.close_ad_targets:
         closed = close_ad_targets(args.cdp_url, DEFAULT_AD_WORDS)
         if args.json:
             print(json.dumps({"event": "closed_ad_targets", "count": len(closed), "targets": closed}, ensure_ascii=False))
@@ -409,12 +468,14 @@ def main() -> int:
     allowed_request_hosts = allowed_navigation_hosts | {host.lower() for host in args.allowed_resource_host}
     result_queue: queue.Queue[OpenResult] = queue.Queue()
     stop_watcher = threading.Event()
-    watcher = threading.Thread(
-        target=watch_ad_targets,
-        args=(args.cdp_url, DEFAULT_AD_WORDS, stop_watcher),
-        daemon=True,
-    )
-    watcher.start()
+    watcher: threading.Thread | None = None
+    if args.close_ad_targets:
+        watcher = threading.Thread(
+            target=watch_ad_targets,
+            args=(args.cdp_url, DEFAULT_AD_WORDS, stop_watcher),
+            daemon=True,
+        )
+        watcher.start()
     threads: list[threading.Thread] = []
 
     for label, url in zip(labels, args.urls):
@@ -450,7 +511,8 @@ def main() -> int:
     for thread in threads:
         thread.join()
     stop_watcher.set()
-    watcher.join(timeout=2)
+    if watcher is not None:
+        watcher.join(timeout=2)
     return 0
 
 

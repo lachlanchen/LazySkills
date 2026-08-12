@@ -3,8 +3,8 @@
 
 `libgen_no_redirect_open.py` protects tabs that it opens. This companion tool
 is meant for normal browsing sessions: it watches an existing Chrome CDP
-endpoint, attaches to LibGen tabs, blocks non-allowed hosts in those tabs, and
-closes known ad targets while it runs.
+endpoint, attaches to allowed tabs, and blocks off-list navigation without
+closing tabs. Destructive ad-target cleanup is available only as an opt-in.
 """
 
 from __future__ import annotations
@@ -20,7 +20,8 @@ from typing import Any
 
 from libgen_no_redirect_open import (
     DEFAULT_AD_WORDS,
-    INIT_SCRIPT,
+    DEFAULT_NAVIGATION_HOSTS,
+    build_init_script,
     close_ad_targets,
     handle_paused_request,
     host_allowed,
@@ -39,7 +40,12 @@ class GuardedTarget:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--cdp-url", default="http://127.0.0.1:9222", help="Chrome CDP HTTP endpoint")
-    parser.add_argument("--allowed-host", action="append", default=["libgen.pw", "libgen.li"], help="Allowed host")
+    parser.add_argument(
+        "--allowed-host",
+        action="append",
+        default=list(DEFAULT_NAVIGATION_HOSTS),
+        help="Allowed top-level host",
+    )
     parser.add_argument(
         "--allowed-resource-host",
         action="append",
@@ -48,6 +54,11 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--scan-interval", type=float, default=1.0, help="Seconds between tab scans")
     parser.add_argument("--close-ads-interval", type=float, default=0.5, help="Seconds between ad-tab cleanup passes")
+    parser.add_argument(
+        "--close-ad-targets",
+        action="store_true",
+        help="Explicitly close known ad tabs; disabled by default",
+    )
     parser.add_argument("--duration", type=int, default=0, help="Seconds to run; 0 means until interrupted")
     parser.add_argument("--json", action="store_true", help="Emit JSON events")
     return parser.parse_args()
@@ -117,6 +128,7 @@ def guard_target(
 
     ws = None
     counter: list[int] | None = None
+    script_identifier: str | None = None
     try:
         ws = websocket.create_connection(target.url, timeout=10)
         ws.settimeout(1)
@@ -130,16 +142,18 @@ def guard_target(
         wait_for_response(ws, counter, response_id, allowed_hosts=allowed_request_hosts)
         wait_for_response(ws, counter, cdp_send(ws, counter, "Page.enable"), allowed_hosts=allowed_request_hosts)
         wait_for_response(ws, counter, cdp_send(ws, counter, "Runtime.enable"), allowed_hosts=allowed_request_hosts)
-        wait_for_response(
+        init_script = build_init_script(allowed_navigation_hosts)
+        script_response = wait_for_response(
             ws,
             counter,
-            cdp_send(ws, counter, "Page.addScriptToEvaluateOnNewDocument", {"source": INIT_SCRIPT}),
+            cdp_send(ws, counter, "Page.addScriptToEvaluateOnNewDocument", {"source": init_script}),
             allowed_hosts=allowed_request_hosts,
         )
+        script_identifier = script_response.get("result", {}).get("identifier")
         wait_for_response(
             ws,
             counter,
-            cdp_send(ws, counter, "Runtime.evaluate", {"expression": INIT_SCRIPT}),
+            cdp_send(ws, counter, "Runtime.evaluate", {"expression": init_script}),
             allowed_hosts=allowed_request_hosts,
         )
         log_event(json_mode, "attached", target_id=target.target_id, title=target.title, url=target.last_allowed_url)
@@ -168,6 +182,23 @@ def guard_target(
                 cdp_send(ws, counter, "Page.navigate", {"url": last_allowed_url})
     finally:
         if ws is not None and counter is not None:
+            if script_identifier:
+                try:
+                    response_id = cdp_send(
+                        ws,
+                        counter,
+                        "Page.removeScriptToEvaluateOnNewDocument",
+                        {"identifier": script_identifier},
+                    )
+                    wait_for_response(
+                        ws,
+                        counter,
+                        response_id,
+                        allowed_hosts=allowed_request_hosts,
+                        timeout=2.0,
+                    )
+                except Exception:
+                    pass
             try:
                 response_id = cdp_send(ws, counter, "Fetch.disable")
                 wait_for_response(
@@ -199,7 +230,7 @@ def main() -> int:
     try:
         while deadline is None or time.time() < deadline:
             now = time.time()
-            if now - last_close >= args.close_ads_interval:
+            if args.close_ad_targets and now - last_close >= args.close_ads_interval:
                 closed = close_ad_targets(args.cdp_url, DEFAULT_AD_WORDS)
                 if closed:
                     log_event(args.json, "closed_ad_targets", count=len(closed))

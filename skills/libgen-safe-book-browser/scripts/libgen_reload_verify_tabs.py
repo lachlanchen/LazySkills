@@ -12,7 +12,7 @@ import urllib.request
 from dataclasses import dataclass
 from typing import Any
 
-from libgen_no_redirect_open import DEFAULT_AD_WORDS, INIT_SCRIPT, close_ad_targets, handle_paused_request, host_allowed
+from libgen_no_redirect_open import DEFAULT_NAVIGATION_HOSTS, build_init_script, handle_paused_request, host_allowed
 
 
 @dataclass(frozen=True)
@@ -31,7 +31,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--cdp-url", default="http://127.0.0.1:9222", help="Chrome CDP HTTP endpoint")
     parser.add_argument("--url", action="append", default=[], help="Reload tabs matching this exact URL")
     parser.add_argument("--contains", action="append", default=[], help="Reload tabs whose URL contains this text")
-    parser.add_argument("--allowed-host", action="append", default=["libgen.pw", "libgen.li"], help="Allowed top-level LibGen host")
+    parser.add_argument(
+        "--allowed-host",
+        action="append",
+        default=list(DEFAULT_NAVIGATION_HOSTS),
+        help="Allowed top-level host",
+    )
     parser.add_argument(
         "--allowed-resource-host",
         action="append",
@@ -166,6 +171,7 @@ def verify_tab(tab: dict[str, Any], *, allowed_hosts: set[str], timeout: float) 
         return ReloadResult(tab.get("id", ""), "error", tab.get("title", ""), tab.get("url", ""), error=str(exc))
 
     ws = None
+    script_identifier: str | None = None
     try:
         ws = websocket.create_connection(tab["webSocketDebuggerUrl"], timeout=10)
         ws.settimeout(1)
@@ -217,13 +223,15 @@ def reload_tab(
         )
         cdp_call(ws, counter, "Page.enable", allowed_hosts=allowed_request_hosts)
         cdp_call(ws, counter, "Runtime.enable", allowed_hosts=allowed_request_hosts)
-        cdp_call(
+        init_script = build_init_script(allowed_navigation_hosts)
+        script_response = cdp_call(
             ws,
             counter,
             "Page.addScriptToEvaluateOnNewDocument",
-            {"source": INIT_SCRIPT},
+            {"source": init_script},
             allowed_hosts=allowed_request_hosts,
         )
+        script_identifier = script_response.get("result", {}).get("identifier")
         if not host_allowed(tab.get("url", ""), allowed_navigation_hosts):
             return ReloadResult(tab.get("id", ""), "skipped", tab.get("title", ""), tab.get("url", ""), error="host not allowed")
         cdp_call(ws, counter, "Page.reload", {"ignoreCache": True}, allowed_hosts=allowed_request_hosts)
@@ -258,6 +266,17 @@ def reload_tab(
         return ReloadResult(tab.get("id", ""), "error", tab.get("title", ""), tab.get("url", ""), error=f"{type(exc).__name__}: {exc}")
     finally:
         if ws is not None:
+            if script_identifier:
+                try:
+                    cdp_call(
+                        ws,
+                        counter,
+                        "Page.removeScriptToEvaluateOnNewDocument",
+                        {"identifier": script_identifier},
+                        allowed_hosts=allowed_request_hosts,
+                    )
+                except Exception:
+                    pass
             try:
                 ws.close()
             except Exception:
@@ -268,7 +287,6 @@ def main() -> int:
     args = parse_args()
     allowed_navigation_hosts = {host.lower() for host in args.allowed_host}
     allowed_request_hosts = allowed_navigation_hosts | {host.lower() for host in args.allowed_resource_host}
-    close_ad_targets(args.cdp_url, DEFAULT_AD_WORDS)
     tabs = [tab for tab in http_json(args.cdp_url, "/json") if tab.get("type") == "page" and tab_matches(tab, args.url, args.contains)]
     if args.verify_only:
         results = [verify_tab(tab, allowed_hosts=allowed_request_hosts, timeout=args.timeout) for tab in tabs]
