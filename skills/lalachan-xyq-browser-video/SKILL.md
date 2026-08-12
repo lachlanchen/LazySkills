@@ -155,28 +155,25 @@ proved, stop and fix/report the blocker instead of submitting.
 Default video setup:
 
 ```text
-Mode: 沉浸式短片 by default for normal LALACHAN video generation
+Mode: 创作 Agent by default for normal LALACHAN video generation
 Model: Seedance 2.0 Mini 体验版 / cheapest visible suitable model by default
-Duration target: 15s by default
+Duration target: 30s by default
 Ratio: 4:3 unless the user requests otherwise
 Prompt language: mainly Chinese
 Always include: 不要字幕，不要生成任何字幕、说明文字、下三分之一文字或画面文字。
 Post-generation: always auto-download the finished MP4, verify it, copy it to Videos/, and send it back to the requesting chat. Submit to LazyEdit only when the current request explicitly asks for LazyEdit/import/process or public publishing.
 ```
 
-For default work, target `15秒` and prefer `沉浸式短片` with `Seedance 2.0 Mini
-体验版` / the cheapest visible suitable model. Use `创作 Agent` /
-integrated-agent only when the user explicitly asks for a longer/full-song
-video, when the current active thread is already an Agent thread, or when
-short-film controls cannot satisfy the task. Before any Agent/long-video paid
-action, inspect the visible credit estimate. If it is not clearly the cheapest
+For default work, target `30秒` and use `创作 Agent` / integrated-agent with
+`Seedance 2.0 Mini 体验版` / the cheapest visible suitable model. Use
+`沉浸式短片` when the user explicitly requests `15秒` or another duration that
+the short-film controls support. Before any Agent/long-video paid action,
+inspect the visible credit estimate. If it is not clearly the cheapest
 available path, or if it is a high-cost render, pause and ask for approval
 instead of continuing. If a generation fails, continue in the same current
 thread by sending a short corrective message; do not start a new session or new
 thread just to retry unless the current thread is unusable and the user accepts
 that cost/risk.
-
-Use `30秒` or longer only when the user explicitly asks for it.
 
 For a requested video longer than 15 seconds, select `创作 Agent` (or another
 explicit long-video workflow) and make sure the `沉浸式短片` chip is not active.
