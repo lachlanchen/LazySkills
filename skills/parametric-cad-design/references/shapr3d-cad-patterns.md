@@ -89,17 +89,21 @@ cutter/groove maximum, not the smooth pilot. A good first experiment is:
 - pitch: `0.79375 mm` or local `0.8 mm`;
 - extra runout: about half a pitch, clipped back to final end faces.
 
-For the OpenHI 30 mm receiver print-fit fix:
+For the exact six-file OpenHI collection, direct STEP measurement gives a
+`0.4 mm` radial tooth height, not `0.2 mm`. Therefore a pivot changes to its
+crest/groove by `0.8 mm` in diameter. The coordinated revision is:
 
-- old female pilot/start: around `30.2 mm`;
-- corrected pilot/start: `30.0 mm`;
-- groove/cutter maximum: around `30.4 mm`;
-- keep the lens seat and adjust the transition chamfer to land cleanly on the
-  new pilot.
+- old `29.6` male / `30.2` female pivots -> `29.8` / `30.0`;
+- old `29.8` male / `30.2` female pivots -> `30.0` / `30.0`;
+- resulting first-family crest/groove: `30.6` / `30.8`;
+- resulting second-family crest/groove: `30.8` / `30.8`.
 
-### OpenHI 30 mm Printed Mating Pair
+Keep the `25.5 mm` lens seats and adjust the transition chamfers only where
+the tighter `30.0 mm` female pilot must meet the preserved seat.
 
-For the validated printed male/female OpenHI 30 mm pair, do not call every
+### Earlier OpenHI 30 mm Printed Coupon Pair
+
+For an earlier independently designed printed coupon pair, do not call every
 construction diameter the "nominal" or "pivot" diameter. Record four values:
 
 - male root cylinder: `29.8 mm`;
@@ -107,9 +111,11 @@ construction diameter the "nominal" or "pivot" diameter. Record four values:
 - female land/pilot bore: `30.0 mm`;
 - female groove/cutter maximum: `30.4 mm`.
 
-With `0.8 mm` pitch, `0.2 mm` radial tooth height, and `0.8 mm` tooth base,
+With that coupon's `0.8 mm` pitch, `0.2 mm` radial tooth height, and `0.8 mm` tooth base,
 this leaves `0.2 mm` diametral clearance at both root/land and crest/groove.
-Remember that a `0.2 mm` radial tooth changes diameter by `0.4 mm`.
+Remember that a `0.2 mm` radial tooth changes diameter by `0.4 mm`. This
+coupon profile is not the same as the exact six-file OpenHI source profile,
+whose radial tooth height is `0.4 mm`.
 
 When one adapter must cover a larger reference chamfer and then screw into a
 smaller holder, keep the adapter as one continuous body with two axial regions.
@@ -132,6 +138,20 @@ or leave a smooth section. Use construction runout:
 
 If old threaded B-rep faces produce shell fragments after boolean edits, trim
 away the receiver at a stable datum and rebuild the receiver cleanly.
+
+## Split Male Thread Solids
+
+The flattened OpenHI STEP exports can store one male interface as two solids:
+
+- a low-volume swept helical tooth body;
+- a root cylinder that belongs to the adjacent main body.
+
+Inspect solid labels, volumes, cylinders, and B-spline envelopes before
+editing. To enlarge the pivot, rebuild the tooth body at the new root/crest and
+union a thin annular sleeve onto the imported root cylinder. Do not replace the
+tooth body with a complete threaded cylinder; that duplicates the root volume,
+changes assembly semantics, and can still pass a shallow validity check. Verify
+the final root and crest independently after STEP round-trip.
 
 ## Avoiding Slow Shapr3D STEP Repair
 
@@ -240,6 +260,19 @@ For each serious CAD design, produce:
 - full-view PNG render;
 - optional exploded/detail PNG;
 - optional DXF/SVG/PDF sketches for profiles and hole patterns.
+
+Separate edit and print packaging. An imported Shapr/OpenHI assembly can have
+valid bodies hundreds of millimetres above the global origin and can preserve
+thread teeth as separate touching solids. Keep that exact placement in the
+editable STEP evidence, but create a distinct `PRINT_THIS` handoff. The print
+STEP/STL/3MF must use a deliberate print orientation, sit at `Z=0`, and produce
+a nonempty first layer. If thread teeth and roots are separate overlapping
+solids, union them only in the print copy so the slicer receives one watertight
+physical solid. A single intended print should be one 3MF model object and one
+build item; otherwise Qidi/Orca-family slicers can ask whether to split the
+model and then report an empty initial layer. Verify these properties from the
+serialized 3MF and tessellated triangles, not only from an in-memory CAD
+preview. Keep the exact editable multi-solid STEP unchanged.
 
 When the user says "Nutstore sync", use:
 
