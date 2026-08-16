@@ -151,6 +151,12 @@ conda activate lazyedit
 - Only `--persist-settings` writes CLI options back to the webapp preferences.
 - `--languages` is bottom-to-top subtitle order.
 - For a destination-language travel episode, keep the established upper rows and place the local language last in the visible stack. For example, `--languages fr,zh-Hant,ja,en` renders top-to-bottom as English, Japanese, Chinese, French. Mark each subtitle item with its actual spoken language so the speaker/sound icon follows the source-language row instead of a fixed row.
+- Four-language vertical placement has two accepted one-shot styles. A lifted
+  band uses `--subtitle-lift-ratio 0.1`; a bottom-anchored band uses
+  `--subtitle-lift-ratio 0`. The latter keeps upper rows visually closer to an
+  unlifted three-language layout when a bottom language is added. If the user
+  does not choose a style, omit this flag and inherit Studio settings. Do not
+  persist either style merely because one publication used it.
 - Reuse the AI provider already configured by LazyEdit. DeepSeek is the normal default on an existing DeepSeek installation; do not require an OpenAI key or create an OpenAI client before the selected provider handles translation or metadata.
 - If Studio logo settings are enabled, `--no-burn-subtitles` still creates a processed logo-only output ending in `_logo.mp4` and publishes that output. Translation is skipped because subtitles are disabled.
 - Use polished/corrected subtitles for real publishes and debug publishes unless the user explicitly requests original subtitles.
