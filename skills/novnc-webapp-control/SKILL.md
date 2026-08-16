@@ -14,6 +14,8 @@ Operate the real webapp in an isolated, observable browser. Treat the webapp as 
 - Manipulate the webapp through Playwright/CDP locators and visible controls. Do not replace a failed UI interaction with a direct application API mutation.
 - Health probes may check service startup. They are not substitutes for browser actions.
 - Reuse one app tab and bring it to the front before every operation.
+- Keep one interactive noVNC client per desktop. Use `x11vnc -nevershared
+  -forever`; do not leave legacy `vnc_lite.html` clients connected.
 - Add stable `data-testid` and state attributes to first-party UI when selectors are ambiguous.
 - Capture before, after, and failure screenshots plus a machine-readable status summary.
 - Require a visible confirmation for paid, destructive, publishing, or irreversible actions. Submit exactly once.
@@ -26,7 +28,7 @@ Operate the real webapp in an isolated, observable browser. Treat the webapp as 
 1. Inspect the app, existing desktop launchers, browser dependencies, and occupied ports.
 2. Define the action contract: target page, expected visible inputs, expected evidence, terminal success states, blockers, and irreversible actions.
 3. Instrument the first-party app with stable selectors and explicit state markers where needed.
-4. Launch Xvfb, x11vnc, websockify/noVNC, the app server, and Chrome with a dedicated profile. Use the full `vnc.html` client with `autoconnect=1&resize=scale` by default, then fit the remote Chrome window to the X root dimensions.
+4. Launch Xvfb, x11vnc, websockify/noVNC, the app server, and Chrome with a dedicated profile. Use the full `vnc.html` client with `autoconnect=1&resize=scale&view_only=0&shared=0&reconnect=0` by default, then fit the remote Chrome window to the X root dimensions.
 5. Attach Playwright over CDP. Reuse the target tab, call `bringToFront()`, and verify URL, title, and an app-root marker.
 6. Drive the workflow through the UI. For chat tasks, type into the chat composer, click its visible action, and wait for a new assistant message or terminal job state.
 7. Validate both DOM state and a visual screenshot. For media output, also probe the downloaded file and compare it with the requested duration or format. A completion claim without evidence is not completion.
@@ -38,17 +40,29 @@ Operate the real webapp in an isolated, observable browser. Treat the webapp as 
 
 Autofit is mandatory for new launchers. Use both layers:
 
-- Viewer: `vnc.html?host=127.0.0.1&port=PORT&autoconnect=1&resize=scale`.
+- Viewer: `vnc.html?host=127.0.0.1&port=PORT&autoconnect=1&resize=scale&view_only=0&shared=0&reconnect=0`.
 - Remote window: discover the window by app PID, move it to `(0, 0)`, and resize
   it to `xdotool getdisplaygeometry` with synchronous `windowmove` and
   `windowsize` calls.
 
 Apply the fit after startup and after any login-to-main-window transition. A
 one-time resize is insufficient for apps that replace their top-level window.
+Do not force-resize applications that compose one UI from synchronized layered
+top-level windows; preserve their native geometry and let noVNC scale the root
+desktop instead.
 Verify the URL returns HTTP 200, the main-window geometry equals the X root
 geometry, screenshots show no clipping, and the full noVNC clipboard panel is
 available. Do not use `resize=remote` as the default because it mutates the
 remote display instead of simply fitting the viewer.
+
+## Misrouted Click Recovery
+
+If clicking a remote Chrome tab opens the host's `All Files` picker or Google
+AI/screenshot controls, do not classify the CDP browser as frozen. Cancel only
+that exact portal dialog and verify the intended CDP target is still hidden.
+Inspect VNC sockets for simultaneous clients; disconnect obsolete
+`vnc_lite.html` or `resize=remote` viewers and retain one full client. Verify
+CDP health and use a direct RFB pointer probe before restarting any browser.
 
 ## Lala Studio Adapter
 
