@@ -537,6 +537,14 @@ The agent submits with `--no-wait`; it must not hold a model turn across
 processing, platform uploads, sleeps, browser polling, or QR login. Persist the
 job IDs and let the deterministic poststage report blockers and verify
 completion.
+Persist agent-returned `video_id` and publish-job identity before rebuilding
+preflight; carry them across retries only while the exact source target/message
+is unchanged. Keep `publish_poststage_retry` at queue-row top level. Build
+correction and metadata prompts from focused human instructions and
+source-linked story/material excerpts only: exclude forwarding wrappers,
+routine JSON, raw media XML, signed URLs, unrelated media tokens, and old worker
+status. If `/api/videos` stalls because preview probing blocks its request
+thread, fix or report that LazyEdit request-path defect; do not resubmit.
 When the poststage detects `waiting_login`, copy only fresh fixed-name
 AutoPublish QR/login PNGs into the exact task artifact directory and deliver
 them once to the source chat. Never attach a stale or unrelated screenshot.
@@ -568,6 +576,10 @@ durable same-group summaries of older interests, ideas, and findings. Prior
 inspiration and research output are continuity evidence. Web/literature search
 updates or challenges that context rather than replacing it with a generic
 topic; never import another group's memory.
+Defer inspiration for genuinely active work, but not for
+`waiting_confirmation`: a durable human gate consumes no worker and can remain
+open for days. After changing the schedule or this blocking policy, invoke it
+once immediately and require verified chat delivery.
 
 ## Failure Handling
 
