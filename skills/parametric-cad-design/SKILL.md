@@ -41,6 +41,35 @@ When joining round OpenHI/4F tubes inside a thin square envelope, also read `ref
 - When a design is ready to print, create a timestamped run folder inside the design, such as `runs/run-N-short-name-print-ready-YYYYMMDDTHHMMSSZ/`, and put the direct print outputs there instead of leaving them only in root `artifacts/`. Also make a clean Nutstore print folder such as `/home/lachlan/Nutstore Files/Projects/LabCanvas/<design>/run-N-short-name-print-ready-YYYYMMDDTHHMMSSZ/` with `PRINT_THIS_*.stl`, `PRINT_THIS_*.step`, `PRINT_THIS_*.3mf`, manifest, README, separate part STEP files when relevant, and render PNGs for both the final single assembly and the exact direct-print layout. Loose STEP copies are useful for Shapr handoff, but print-ready folders prevent choosing the wrong run.
 - Do not expose source assembly coordinates or a multi-object edit package as the default slicer file. Rigidly orient every `PRINT_THIS` model, center it in XY, place its true printable base at `Z=0`, and package one intended print as one 3MF model/build object. When the source B-rep stores thread teeth and roots as overlapping solids, boolean-union them only in the print copy and verify one valid watertight solid; keep the exact multi-solid STEP unchanged. Validate `min_z = 0`, at least one triangle crossing the first layer, one 3MF build item, and a rendered build-plate view. Keep source-coordinate/multi-solid evidence under `artifacts/` or an archived run.
 
+## Layer-Shift Triage
+
+When a physical print develops a lateral staircase, do not assume the CAD was
+generated with shifted layers. Separate model evidence from printer motion:
+
+1. Inspect both the exported 3MF and the slicer-resaved project. Resolve 3MF
+   component indirection, then count mesh objects, components, build items, and
+   transforms. A constant build-plate translation is normal.
+2. Compare vertex count, triangle count, triangle indices, and centered vertex
+   coordinates. Serialization-scale rounding is not a geometric shift.
+3. Sample horizontal mesh sections at the intended layer height and measure
+   each section bounding-box center. For threaded parts, allow the small
+   periodic envelope change caused by the helix; flag millimetre-scale
+   discontinuities separately.
+4. If the source and slicer project are straight, the base remains attached,
+   and repeated attempts shift at different heights or a different number of
+   times, treat the result as intermittent XY step loss. Check nozzle/support
+   collisions, blobs or warp, belt and pulley fastening, rail binding,
+   cable/filament snags, and only then motor-driver/electrical causes.
+5. Inspect the actual saved slicer profile. Very high acceleration and travel,
+   dense infill, or aggressive automatic supports can expose a marginal motion
+   system or create collision opportunities even when other prints succeed.
+6. Run one conservative diagnostic reslice of the same verified mesh. Do not
+   regenerate correct geometry merely to address a physical layer shift.
+
+Preserve a short diagnosis with mesh hash, topology, layer-stack measurements,
+slicer settings, failure photograph, and the remaining limitation when actual
+G-code or printer logs are unavailable.
+
 ## Shapr3D And STEP Intake
 
 Use the bundled inspector for source triage:
