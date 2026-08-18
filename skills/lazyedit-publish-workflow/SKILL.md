@@ -99,7 +99,16 @@ conda activate lazyedit
   generated result becomes a storyboard dump, improve the supplied context or
   report/fix the LazyEdit metadata behavior. Split prompt files only for a
   diagnosed exceptional case.
-- If correction is expected to recover missing generated-video dialogue, inspect `DATA/VIDEO_FOLDER/*_mixed_polished.md` before publish so missed or over-recovered subtitles are caught before any platform post.
+- Before every generated-video burn or publish, compare the source ASR SRT with
+  the polished SRT using `scripts/validate_subtitle_timeline.py`. Ordinary text
+  correction must preserve cue count and every cue's start/end timestamps. A
+  failure blocks burn and publish. Never let a story script replace dialogue in
+  sequence while reusing unrelated ASR timestamps.
+- If correction is expected to recover dialogue that ASR missed, inspect
+  `DATA/VIDEO_FOLDER/*_mixed_polished.md` and align the added line against the
+  actual audio as a separate operation. Do not insert it by shifting later text
+  into earlier cues. After validation, spot-check audible dialogue near the
+  start, middle, and end before any platform post.
 - If missing-language recovery creates plain subtitle text, do not restore grammar colors with a per-video patch. Fix or use the shared `lazyedit/subtitle_tokens.py` normalization path so plain text, ruby markup, `word`/`reading` tokens, and speaker-helper rows all render through grammar-typed palette tokens.
 - When copying through Nutstore, use one stable `_COMPLETED` filename and watch AutoPubMonitor panes before recopying. Avoid creating duplicate source files just to retrigger the watcher.
 - When the source path is already under LazyEdit `DATA/`, use `--video-id` or a non-colliding `--filename`. Do not re-upload `DATA/<stem>/<filename>` with the same filename, because the upload endpoint can truncate the source by writing over it.
@@ -578,6 +587,12 @@ python scripts/lazyedit_publish.py \
 
 Use the LALACHAN story/prompt/script as subtitle-correction background. For subtitle correction, treat the script as a reference, not a verbatim source. Use a human middle path: do not over-edit, and do not stay too conservative when the ASR is obviously abnormal, broken, or mismatched with the context. Read neighboring lines, check whether the sentence makes sense, compare it with the audio/Whisper text and the story context, then infer the most likely intended wording. Fix recognition errors, names, objects, and broken phrases while preserving timing and line structure where possible. The final corrected subtitles do not need to be identical to the script if the audio or generated video differs, and they should not invent unsupported content.
 
+For ordinary correction, "preserve timing and line structure" is a hard
+contract: same cue count, same cue order, and the same start/end timestamps.
+Changing text is allowed; moving a later sentence into an earlier cue is not.
+Recovering genuinely missed audible speech requires a fresh audio-alignment
+pass with evidence-based timestamps, not prompt-driven insertion.
+
 For normal publication, make the story context accurate and readable, then pass
 it once with `--prompt-file`. LazyEdit decides how to use it for subtitle repair
 and concise public metadata. Do not pre-compose the metadata or replace the
@@ -594,6 +609,9 @@ If the user requests no rerun, use `--no-process`.
 After transcription/polish, inspect the polished subtitles before publish when the user gave precise context:
 
 ```bash
+python /path/to/skill/scripts/validate_subtitle_timeline.py \
+  DATA/VIDEO_FOLDER/VIDEO_mixed.srt \
+  DATA/VIDEO_FOLDER/VIDEO_mixed_polished.srt
 sed -n '1,180p' DATA/VIDEO_FOLDER/*_mixed_polished.md
 rg -n "bad term|broken term|ASR artifact" DATA/VIDEO_FOLDER/*_mixed_polished.*
 ```
@@ -601,8 +619,13 @@ rg -n "bad term|broken term|ASR artifact" DATA/VIDEO_FOLDER/*_mixed_polished.*
 Use a middle path:
 
 - Fix clear recognition errors, broken filler words, wrong objects, and wrong names.
-- Keep the conversational structure and timing.
+- Keep cue count, cue order, and timestamps unchanged during ordinary text correction.
 - Do not invent lines that are unsupported by the transcript/context.
+- If the validator reports cue-count or timestamp drift, block publishing. Repair
+  the polished SRT cue-by-cue or fall back to the source ASR when its wording is
+  acceptable. Do not translate or burn a known-misaligned polished file.
+- Compare at least one audible line near the start, middle, and end against the
+  rendered subtitle. Structural validation cannot prove audio alignment alone.
 - If the corrected text is Chinese filler such as `嗯` or `呃...`, make sure the JSON item language is `zh`, not a stale `ja` or `en`.
 
 When hand-editing subtitles, keep `.json`, `.srt`, and `.md` aligned. Prefer the LazyEdit subtitle-correction save endpoint if it responds quickly. If it starts a duplicate transcription or times out, stop that duplicate process and use the DB recovery note below.

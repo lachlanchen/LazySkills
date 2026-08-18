@@ -135,6 +135,21 @@ Use `lalamv` for LALACHAN character MVs. Route to YouTube `LalaMV` and Shipinhao
 
 Generated video scripts are reference material for subtitle correction. They help infer likely recognition errors, but the final subtitle text should still follow the actual audio and preserve timing. Use a human middle path: do not over-edit, and do not stay too conservative when ASR is obviously abnormal, broken, strange, or mismatched with context. Read neighboring lines, check whether the sentence makes sense, compare with the audio/Whisper text and story context, then infer the most likely intended wording without inventing unsupported content.
 
+Ordinary correction is text-only: cue count, cue order, and every start/end
+timestamp must remain unchanged. Run the timeline validator before translation,
+burning, or publishing:
+
+```bash
+python skills/lazyedit-publish-workflow/scripts/validate_subtitle_timeline.py \
+  DATA/VIDEO_FOLDER/VIDEO_mixed.srt \
+  DATA/VIDEO_FOLDER/VIDEO_mixed_polished.srt
+```
+
+If it fails, publishing is blocked. Repair text cue-by-cue or use the acceptable
+source ASR. Missing audible dialogue may be added only after a separate audio
+alignment pass assigns real timestamps. Also listen to a line near the start,
+middle, and end; matching SRT structure alone does not prove synchronization.
+
 Recommended Nutstore import path:
 
 ```bash
