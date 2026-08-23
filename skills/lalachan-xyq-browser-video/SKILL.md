@@ -196,6 +196,22 @@ model and credit preview before submitting.
   any paid action twice unless the page proves the first attempt failed without
   charging. If points drop or the task shows queued/running, monitor only.
 
+## Paid Submit Contract And Acceptance Gate
+
+Every render click spends a limited user resource. Keep automatic generation
+countdowns off and require visible evidence of mode, actual model/tier,
+duration, ratio, uploaded previews, prompt, cost, and balance before one
+deliberate click. Prompt text and agent claims are not UI evidence.
+
+After download, verify media integrity and inspect a contact sheet before
+another paid clip or publication. A rejected result is evidence, not a publish
+candidate. Retry only with user approval after reporting the charge, balance,
+failure evidence, and least-cost recovery. For multi-clip recovery, validate the
+first paid clip before spending on later clips.
+
+Read [references/paid-generation-quality-gate.md](references/paid-generation-quality-gate.md)
+before a paid submit, Agent storyboard render, retry, or multi-clip recovery.
+
 ## Browser Workflow
 
 Before manipulating the page, prove that CDP and noVNC expose the same logged-in
@@ -222,8 +238,8 @@ scripts/xyq_cdp_browser.py --cdp-url "$XYQ_CDP_URL" visible PAGE_ID
 3. Select mode/model/duration/ratio by browser UI. For long work, click the exact
    top-level Agent mode and verify the short-film chip is inactive. Verify the
    requested mode, selected model row, duration, ratio, upload success, and any
-   visible point cost/VIP/vipnew state as far as the UI allows. Do not block only
-   because the exact preferred model or exact cost text is unavailable.
+   visible point cost/VIP/vipnew state. If the selected model, tier, or price
+   cannot be proved from the visible UI, do not submit.
 
 4. Upload and verify reference images:
 
@@ -249,7 +265,9 @@ scripts/xyq_cdp_browser.py --cdp-url "$XYQ_CDP_URL" type-prompt PAGE_ID referenc
    credits and confuse the user. Use `创作` / new-session only when the current
    thread is truly unusable or the user explicitly asks.
 
-8. Submit only when the user asked for generation and the pre-submit contract is satisfied.
+8. Confirm the automatic generation countdown is disabled, save a preflight
+   screenshot, and submit exactly once only when the user asked for generation
+   and every field in the paid submit contract is satisfied.
 
 ## Agent Confirmation Pauses
 
@@ -289,6 +307,12 @@ publishing. Direct LazyEdit CLI upload is preferred when available; Nutstore
 AutoPublish import is an acceptable fallback. For LazyEdit-only requests, use
 `--no-publish`; for public publish requests, publish exactly once to the
 requested platforms.
+
+Before copy or publish, run a complete decode and inspect a contact sheet. For
+LALACHAN, reject generic replacement people/mascots, duplicate leads, incorrect
+character-image mapping, missing required main characters, or a visual style
+that contradicts the accepted references. Keep the rejected file as evidence,
+but do not place it in an AutoPublish folder or public queue.
 
 Do not scan every page-level `video` element and accept the first downloadable
 file. Xiaoyunque pages can contain promotional media and stale results. Scope
