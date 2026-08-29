@@ -319,6 +319,31 @@ python scripts/lazyedit_publish.py \
 
 Use this path only after verifying sample frames prove the subtitles and logo are already present in the MP4. If they are not present, use the normal LazyEdit burn path.
 
+## Authoritative SRT Fast Path
+
+When a reviewed SRT already matches the final video, import it directly instead of running Whisper again. This remains the normal LazyEdit pipeline after subtitle import: multilingual translation, ruby/pinyin rendering, blur-fill, logo, metadata, packaging, and AutoPublish all use the existing implementation.
+
+```bash
+python scripts/lazyedit_publish.py \
+  --video INPUT.mp4 \
+  --subtitle-file REVIEWED.zh-CN.srt \
+  --subtitle-language zh \
+  --prompt-file STORY_CONTEXT.md \
+  --publish-category lalachan \
+  --languages fr,zh-Hant,ja,en \
+  --portrait-blur-fill \
+  --portrait-blur-mode lalachan \
+  --logo \
+  --logo-position top-right \
+  --platforms shipinhao,youtube,instagram,douyin \
+  --guided-monitor \
+  --wait
+```
+
+`--subtitle-file` imports the cues as both original and polished subtitles and skips Whisper plus implicit AI correction. The prompt remains available as metadata context. Add `--correct-subtitles` only when the reviewed SRT should still be revised. The import rejects malformed, overlapping, empty, or out-of-range cues.
+
+For unintelligible generated speech, use a short contextual subtitle only after checking the matching visual action. Keep silent scenes silent; do not phoneticize gibberish.
+
 ## Common Commands
 
 Process and publish in one command with shared reviewed context:
