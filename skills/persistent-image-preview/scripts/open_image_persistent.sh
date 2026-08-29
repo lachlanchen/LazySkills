@@ -10,6 +10,8 @@ EOF
 }
 
 display="${DISPLAY:-}"
+display_explicit=false
+xauthority="${XAUTHORITY:-}"
 viewer=""
 state_dir="${XDG_STATE_HOME:-$HOME/.local/state}/persistent-image-preview"
 image=""
@@ -18,6 +20,7 @@ while (($#)); do
   case "$1" in
     --display)
       display="${2:?--display requires a value}"
+      display_explicit=true
       shift 2
       ;;
     --viewer)
@@ -73,24 +76,68 @@ if command -v file >/dev/null 2>&1; then
   fi
 fi
 
+display_is_xvfb() {
+  local candidate="${1%%.*}"
+  pgrep -a Xvfb 2>/dev/null | awk -v display="$candidate" '
+    $0 ~ ("Xvfb " display "([[:space:]]|$)") { found = 1 }
+    END { exit(found ? 0 : 1) }
+  '
+}
+
 display_works() {
-  local candidate="$1"
+  local candidate="$1" candidate_xauthority="${2:-}"
   if command -v xdpyinfo >/dev/null 2>&1; then
-    env DISPLAY="$candidate" xdpyinfo >/dev/null 2>&1
+    if [[ -n "$candidate_xauthority" ]]; then
+      env DISPLAY="$candidate" XAUTHORITY="$candidate_xauthority" xdpyinfo >/dev/null 2>&1
+    else
+      env DISPLAY="$candidate" xdpyinfo >/dev/null 2>&1
+    fi
   elif command -v xset >/dev/null 2>&1; then
-    env DISPLAY="$candidate" xset q >/dev/null 2>&1
+    if [[ -n "$candidate_xauthority" ]]; then
+      env DISPLAY="$candidate" XAUTHORITY="$candidate_xauthority" xset q >/dev/null 2>&1
+    else
+      env DISPLAY="$candidate" xset q >/dev/null 2>&1
+    fi
   else
     [[ -n "$candidate" ]]
   fi
 }
 
-if [[ -n "$display" ]] && ! display_works "$display"; then
+if [[ "$display_explicit" != true ]] && [[ -n "$display" ]] && display_is_xvfb "$display"; then
   display=""
+  xauthority=""
+fi
+
+if [[ -n "$display" ]] && ! display_works "$display" "$xauthority"; then
+  display=""
+  xauthority=""
 fi
 
 if [[ -z "$display" ]]; then
-  for candidate in :0 :1 :98 :99; do
-    if display_works "$candidate"; then
+  current_bus="${DBUS_SESSION_BUS_ADDRESS:-}"
+  while read -r shell_pid; do
+    [[ -r "/proc/$shell_pid/environ" ]] || continue
+    shell_env="$(tr '\0' '\n' <"/proc/$shell_pid/environ")"
+    candidate="$(printf '%s\n' "$shell_env" | sed -n 's/^DISPLAY=//p' | head -n 1)"
+    candidate_xauthority="$(printf '%s\n' "$shell_env" | sed -n 's/^XAUTHORITY=//p' | head -n 1)"
+    candidate_bus="$(printf '%s\n' "$shell_env" | sed -n 's/^DBUS_SESSION_BUS_ADDRESS=//p' | head -n 1)"
+    [[ -n "$candidate" ]] || continue
+    display_is_xvfb "$candidate" && continue
+    if [[ -n "$current_bus" && "$candidate_bus" != "$current_bus" ]]; then
+      continue
+    fi
+    if display_works "$candidate" "$candidate_xauthority"; then
+      display="$candidate"
+      xauthority="$candidate_xauthority"
+      break
+    fi
+  done < <(pgrep -u "$(id -u)" -x gnome-shell || true)
+fi
+
+if [[ -z "$display" ]]; then
+  for candidate in :0 :1; do
+    display_is_xvfb "$candidate" && continue
+    if display_works "$candidate" "$xauthority"; then
       display="$candidate"
       break
     fi
@@ -112,7 +159,11 @@ else
   launch=()
   for candidate in loupe eog ristretto gwenview imv feh; do
     if command -v "$candidate" >/dev/null 2>&1; then
-      launch=("$candidate" "$image")
+      if [[ "$candidate" == "eog" ]]; then
+        launch=("$candidate" --new-instance "$image")
+      else
+        launch=("$candidate" "$image")
+      fi
       break
     fi
   done
@@ -130,11 +181,16 @@ fi
 
 mkdir -p "$state_dir"
 log_file="$state_dir/viewer.log"
-nohup setsid env DISPLAY="$display" "${launch[@]}" >>"$log_file" 2>&1 </dev/null &
+launch_env=(env DISPLAY="$display")
+if [[ -n "$xauthority" ]]; then
+  launch_env+=(XAUTHORITY="$xauthority")
+fi
+nohup setsid "${launch_env[@]}" "${launch[@]}" >>"$log_file" 2>&1 </dev/null &
 launcher_pid=$!
 
 printf '%s\n' "$image" >"$state_dir/last-image"
 printf '%s\n' "$display" >"$state_dir/last-display"
+printf '%s\n' "$xauthority" >"$state_dir/last-xauthority"
 printf '%s\n' "$launcher_pid" >"$state_dir/last-launcher.pid"
 
 printf 'opened=%s\ndisplay=%s\nlauncher_pid=%s\nlog=%s\n' \

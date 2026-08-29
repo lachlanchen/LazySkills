@@ -32,8 +32,12 @@ terminal-bound viewer process.
 
 ## Display Selection
 
-The helper uses `--display`, then the current `DISPLAY`, then a reachable local
-display. Pass an explicit display when working in a dedicated virtual desktop:
+The helper uses an explicit `--display` first. Without that flag it prefers the
+current non-Xvfb desktop session and never falls back to a noVNC/Xvfb display.
+This prevents a virtual-desktop image viewer from capturing later desktop file
+opens through the shared D-Bus session. EOG is launched with a new instance for
+the same reason. Pass an explicit display only when the preview is intentionally
+part of a dedicated virtual desktop:
 
 ```bash
 skills/persistent-image-preview/scripts/open_image_persistent.sh \
