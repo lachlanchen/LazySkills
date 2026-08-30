@@ -340,7 +340,7 @@ python scripts/lazyedit_publish.py \
   --wait
 ```
 
-`--subtitle-file` imports the cues as both original and polished subtitles and skips Whisper plus implicit AI correction. The prompt remains available as metadata context. Add `--correct-subtitles` only when the reviewed SRT should still be revised. The import rejects malformed, overlapping, empty, or out-of-range cues.
+`--subtitle-file` imports the cues as both original and polished subtitles and skips Whisper plus implicit AI correction. This also applies when processing is deferred to the serial publish worker; only an explicit `--steps` value containing `transcribe` may opt back into Whisper. The prompt remains available as metadata context. Add `--correct-subtitles` only when the reviewed SRT should still be revised. The import rejects malformed, overlapping, empty, or out-of-range cues.
 
 For unintelligible generated speech, use a short contextual subtitle only after checking the matching visual action. Keep silent scenes silent; do not phoneticize gibberish.
 
