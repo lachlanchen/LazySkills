@@ -1,6 +1,6 @@
 ---
 name: publish-repo
-description: Publish a local git repository to GitHub from Codex or AgInTi, including profile-style multilingual README generation, LazyingArt banner/support panels, CITATION.cff repository citation, .github/FUNDING.yml, safe commit discipline, remote creation, push, homepage, description, and topics.
+description: Publish a local git repository to GitHub from Codex or AgInTi with safe commit discipline, metadata, citation, and push verification. For lachlanchen or LazyingArt repositories, default to the complete 11-language profile README, banner, support panel, and sponsor package.
 ---
 
 # Publish Repo
@@ -27,7 +27,7 @@ Use this skill when the user asks to publish a local repository to GitHub, add r
    - read `README.md`, `.gitignore`, and `AGENTS.md` if present.
 2. Prepare public-facing resources:
    - polished `README.md`;
-   - i18n README files when requested;
+   - i18n README files when requested, and by default for a `lachlanchen` or LazyingArt publication;
    - `CITATION.cff` and README citation block when the repo should be citable;
    - banner/logo assets when useful;
    - resource map to papers, docs, references, demos, scripts, or skills.
@@ -45,9 +45,9 @@ Use this skill when the user asks to publish a local repository to GitHub, add r
    - `gh repo view OWNER/REPO --json nameWithOwner,url,homepageUrl,description,repositoryTopics`;
    - open or report the final GitHub URL.
 
-## Lachlanchen Profile-Style README Mode
+## Lachlanchen Publication Default
 
-Use this mode when the user asks for "beautiful README", "like lachlanchen profile", "11 languages", "LazyingArt banner", "donation panel", or `.github sponsor`.
+Use this mode automatically when the target owner is `lachlanchen`, the repository is a LazyingArt project, or the user asks for "beautiful README", "like lachlanchen profile", "11 languages", "LazyingArt banner", "donation panel", or `.github sponsor`. The user may explicitly opt out for a particular repository.
 
 Read `references/lachlanchen-profile-readme-style.md` before editing. Required outputs:
 
@@ -59,8 +59,11 @@ Read `references/lachlanchen-profile-readme-style.md` before editing. Required o
 - `.github/FUNDING.yml` matching the lachlanchen profile sponsorship pattern.
 - `CITATION.cff` at repository root, plus a citation block in `README.md` and all i18n README files.
 - A concise repo-specific README body: project promise, visual/asset signal, current contents, quick start, validation/build commands, status, and links to key PDFs/docs/assets.
+- GitHub About metadata: a concise description, the most relevant public product or project homepage, and repo-specific topics including `lazying-art`.
 
-Do not machine-translate blindly if repo-specific terms matter. Preserve project names, command names, file paths, and badge labels. Translate section prose completely for each language, not only the headings.
+Treat the 11 README files as one public document set. When public-facing content changes materially, update every translation in the same publication commit. Do not machine-translate blindly if repo-specific terms matter. Preserve project names, command names, file paths, and badge labels. Translate section prose completely for each language, not only the headings.
+
+Before publishing, verify that all 11 README files contain the language header, banner, support panel, and citation link; that every language link resolves within the repository; and that translated sections are substantive rather than copies of English. After pushing, verify the live default branch plus description, homepage, and topics with `gh repo view`.
 
 ## Citation Mode
 

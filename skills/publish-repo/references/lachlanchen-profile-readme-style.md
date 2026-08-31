@@ -1,6 +1,8 @@
 # Lachlanchen Profile-Style Repository README
 
-Use this reference when a repo should look like Lachlan Chen's public profile/readme style.
+Use this reference for every repository published under `lachlanchen` or as a LazyingArt project unless the user explicitly opts out for that repository. It is also the style guide when a repo should look like Lachlan Chen's public profile/readme style.
+
+The English README and ten files under `i18n/` form one synchronized public document. A material README update is incomplete until all 11 versions express the same current project facts, links, setup, validation, support, and citation information.
 
 ## Language Header
 
@@ -124,3 +126,13 @@ Use a compact structure:
 14. Status and scope note.
 
 Translate every section into all 10 i18n files. Keep command blocks, file paths, project names, and badge labels stable.
+
+## GitHub About Metadata
+
+Every publication in this style also sets and verifies:
+
+- a concise repository-specific description;
+- the most relevant public product or project homepage, rather than a generic URL when a dedicated URL exists;
+- focused repository topics, including `lazying-art` plus the product domain, major technologies, and public use case.
+
+Use `gh repo view OWNER/REPO --json nameWithOwner,url,homepageUrl,description,repositoryTopics` after the push. README files alone do not satisfy the publication contract.

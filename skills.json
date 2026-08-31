@@ -42,6 +42,20 @@
       "description": "Operate, test, and refine local webapps through an isolated visible noVNC Chrome session with semantic controls, evidence capture, safe paid-action guards, and artifact validation."
     },
     {
+      "id": "doubao-external-audio-video",
+      "path": "skills/doubao-external-audio-video/SKILL.md",
+      "category": "browser-video",
+      "platforms": [
+        "aginti",
+        "codex",
+        "claude",
+        "gemini",
+        "copilot",
+        "generic"
+      ],
+      "description": "Create Doubao videos from externally generated music through a shared visible browser, with guarded paid submission, monitoring, download verification, and soundtrack preservation."
+    },
+    {
       "id": "lalachan-xyq-browser-video",
       "path": "skills/lalachan-xyq-browser-video/SKILL.md",
       "category": "browser-video",
@@ -179,7 +193,7 @@
         "copilot",
         "generic"
       ],
-      "description": "Publish a local git repository to GitHub from Codex or AgInTi, including profile-style multilingual README generation, LazyingArt banner/support panels, sponsors, CITATION.cff, remote creation, push, homepage, description, and topics."
+      "description": "Publish a local repository safely with GitHub metadata, citation, and push verification; lachlanchen and LazyingArt repositories default to the complete synchronized 11-language profile, banner, support, and sponsor package."
     },
     {
       "id": "media-transcription-report",
