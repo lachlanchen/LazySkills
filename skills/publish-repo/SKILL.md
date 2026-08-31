@@ -63,7 +63,7 @@ Read `references/lachlanchen-profile-readme-style.md` before editing. Required o
 
 Treat the 11 README files as one public document set. When public-facing content changes materially, update every translation in the same publication commit. Do not machine-translate blindly if repo-specific terms matter. Preserve project names, command names, file paths, and badge labels. Translate section prose completely for each language, not only the headings.
 
-Before publishing, verify that all 11 README files contain the language header, banner, support panel, and citation link; that every language link resolves within the repository; and that translated sections are substantive rather than copies of English. After pushing, verify the live default branch plus description, homepage, and topics with `gh repo view`.
+Before publishing, run `scripts/check_profile_readmes.py` from this skill against the target repository. It verifies all 11 files, navigation, profile panels, section counts, substantive prose, and stable command/BibTeX blocks; it complements rather than replaces a human-quality translation review. After pushing, verify the live default branch plus description, homepage, and topics with `gh repo view`.
 
 ## Citation Mode
 

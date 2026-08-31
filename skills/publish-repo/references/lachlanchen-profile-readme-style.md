@@ -127,6 +127,14 @@ Use a compact structure:
 
 Translate every section into all 10 i18n files. Keep command blocks, file paths, project names, and badge labels stable.
 
+Run the bundled structural check before committing:
+
+```bash
+python3 /path/to/publish-repo/scripts/check_profile_readmes.py /path/to/repository
+```
+
+The check catches missing or stale document structure and changed stable code blocks. Review translation meaning and fluency separately; structural equality alone does not prove semantic parity.
+
 ## GitHub About Metadata
 
 Every publication in this style also sets and verifies:
