@@ -581,6 +581,17 @@ Defer inspiration for genuinely active work, but not for
 open for days. After changing the schedule or this blocking policy, invoke it
 once immediately and require verified chat delivery.
 
+For a video that exists only in Android WeChat, recover the exact attachment
+with LabCanvas `wechat native-save-video`: verify the exact chat and bubble,
+select `查看原视频` when offered, invoke WeChat's native album save, pull the new
+MediaStore object, verify checksum/streams/duration/expected size on the host,
+then delete the temporary phone file and MediaStore row. Keep the resulting
+checksum-bound `native-video-export.json`; publication requires
+`device_copy_removed=true`. Never substitute screen recording, scrcpy capture,
+cropped player output, or GUI recording. If native retrieval fails, stop. An
+intentional screen-recording attachment from the user remains valid when the
+native route proves it is the exact attachment.
+
 ## Failure Handling
 
 - If WeChat login expires, stop automation and ask the user to re-authenticate in
