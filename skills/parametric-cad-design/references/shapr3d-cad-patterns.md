@@ -189,6 +189,44 @@ repairs for a long time, threads vanish, or imported faces become transparent.
 If the user needs real editable threads, send the smooth STEP and add native
 Shapr threads there, or treat the print as a physically tapped part.
 
+## OpenHI 4f Lens And Receiver Datums
+
+Do not treat a curved lens's annular support seat as its optical-axis surface
+vertex. For every A/B/C branch, record four separate positions:
+
+- inward optical-axis surface vertex;
+- inward annular support contact at the selected support radius;
+- outward annular support contact at the same radius;
+- external flange or tube-end plane.
+
+Place the inward optical vertex at the requested focal datum. Derive the
+holder seat from the inward surface sag. Derive the matching cap contact from
+the support-to-support lens envelope plus the named tightening clearance. A
+fully inserted pair must retain the finite lens while preserving full thread
+engagement and zero lens/part interference. Lens thickness belongs inside this
+cavity; do not add half or all of it again to the `2f` or `4f` distance.
+
+The original OpenHI A input is another independent datum. Its working lower
+receiver is about `12.474 mm` deep with a `25.0 mm` pilot and `25.8 mm` helical
+groove envelope, but the mating flange seats at the A outer face. Therefore
+the insertion depth lies inside the A arm and is not a second focal-distance
+allowance. When adapting A:
+
+1. isolate the source lower receiver solid;
+2. subtract it from a bounded cylinder to recover the exact internal void;
+3. translate that void to the new A flange plane;
+4. cut it from the regenerated A body;
+5. continue from its 25.0 mm top pilot through a manufacturable transition to
+   the lens-specific aperture;
+6. compare expected and generated voids in both directions inside the same
+   bounded receiver domain;
+7. verify nonzero helical relief beyond a smooth pilot and adequate remaining
+   wall where the receiver passes inside another thread root.
+
+For visual verification, export a half section through the optical axis and
+look from the removed half. A camera on the retained side only shows the
+outside thread and can falsely suggest the internal receiver is missing.
+
 ## Alignment And Datum Rules
 
 - Pick one optical axis and drive C-mount, lens seat, sensor active center, PCB
