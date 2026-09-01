@@ -139,6 +139,29 @@ or leave a smooth section. Use construction runout:
 If old threaded B-rep faces produce shell fragments after boolean edits, trim
 away the receiver at a stable datum and rebuild the receiver cleanly.
 
+### Final-Solid Thread Verification
+
+Do not accept a thread because its sweep or cutter is valid in isolation. The
+OpenHI C holder/cap correction exposed an OCCT failure mode where direct
+X-axis helical tools were valid, all final STEP files were valid one-solid
+B-reps, but the final lens interface contained only smooth pilot/root
+cylinders. The helical regions had been classified away during later booleans.
+
+For every required thread:
+
+1. record the expected axis and exact start/end interval;
+2. complete the helical boolean in a stable frame, normally Z;
+3. rotate the finished threaded solid onto an off-axis assembly direction;
+4. export and re-import STEP;
+5. inspect helical/B-spline face bounds in the final part at the expected
+   interval;
+6. verify the mating part independently and run an interference/engagement
+   check on the final pair;
+7. reject packaging if either final solid lacks its helical faces.
+
+An exterior render is insufficient for internal threads. Add a half-section
+render through the optical/thread axis when a thread controls a print decision.
+
 ## Split Male Thread Solids
 
 The flattened OpenHI STEP exports can store one male interface as two solids:
