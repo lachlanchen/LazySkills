@@ -130,17 +130,26 @@ Hard requirements for future agents:
   `WECHAT_ALLOW_EXTERNAL_BROWSER_FOR_MP_WEIXIN=1`. The helper refuses
   `mp.weixin.qq.com` URLs before launch unless `--allow-mp-weixin` or that
   environment override is present.
-- for Shipinhao video understanding, isolate the exact `<finderFeed>` object ID,
-  title, author, and nonce before reading media. Try the allowlisted Tencent card
-  URL first. If it expired, leave the exact native player visible and run
-  `shipinhao_gui_audio_capture.py` with distinctive title/author identity terms.
-  It must bind only the current `WeChatAppEx` PipeWire stream, stop after
-  consecutive OCR identity loss, trim feed auto-advance, and write a private
-  object-ID/hash manifest. Feed that manifest to `shipinhao_media_transcribe.py`
-  and the exact chat's resumed worker session. Never reload after selecting the
-  audio stream, trust card duration alone, treat transcript JSON as comments, or
-  reuse another object's capture. See
-  `references/shipinhao-media-transcription.md`.
+- for Shipinhao, a card alone is sufficient input to try recovery: isolate its
+  object ID/title/author and use the exact-media resolver, not generic thumbnail
+  scans. If its embedded URL expires, the worker opens the same-chat native card
+  and runs `shipinhao_gui_audio_capture.py --share-link-only`. Verify the player
+  and exact copy-link menu item; do not select a forwarding recipient. Pass the
+  fresh copied URL explicitly to `shipinhao_media_transcribe.py
+  --recovered-share-url`; appending a URL after Finder XML is not a reliable
+  handoff. Preserve resolved-title/author checks and original-card provenance.
+  Release the GUI before original download and configured GPU 1 ASR. Return
+  the original video, timestamped transcription, and one source-grounded agent
+  summary to the exact source chat; retain source knowledge locally.
+  Never substitute screen/audio recording or another card. If retrieval fails,
+  report its actual stage rather than calling the source silent. In LabCanvas,
+  see `references/labcanvas-source-knowledge-and-card-intake-2026-09-05.md`
+  for the tested native menu, explicit link handoff, and delivery checks.
+- recognize pre-Enter pending text receipts during intake so the monitor does
+  not answer a system message before its successful-send event is recorded.
+  Preserve genuine owner messages on the same account. Renamed artifacts need
+  content-verified alias accounting; receipt repairs must reuse delivery
+  evidence instead of resending unchanged files with a fresh filename.
 - never let old chat history authorize public publishing. Shipinhao, YouTube,
   Instagram, LazyEdit/AutoPublish public queues, purchases, deletion, and other
   irreversible actions require explicit current-message intent;
