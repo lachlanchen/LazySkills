@@ -469,6 +469,25 @@ Generated song folders are intentionally ignored by git:
 data/creative_projects/<song-id>/
 ```
 
+## MiniMax Music 3 Option
+
+For explicit MiniMax requests or a frontier-model comparison, use Musia's
+`scripts/install_minimax_music3.sh` and `scripts/run_minimax_music3.sh`.
+The verified local runtime is a virtualenv overlay at `.conda/minimax-music3`,
+not a named conda environment; keep the shared MOSS base intact.
+Read `references/minimax-music3-setup-and-ayachan-2026-09-13.md` in the Musia repo
+for pinned versions, resumable hash-checked downloads, commands and actual trials.
+
+Keep native lyrics separate from the structured Global Metadata / Vocal Details /
+Arrangement caption. Section tags must stand alone or trailing lyric text is
+discarded. Duration is an upper bound, not a guarantee. Preserve native 44.1 kHz
+stereo and check true peaks, not only sample peaks. Audit the entire rendered
+vocal: ASR can both omit real lines and invent zero-duration duplicate endings.
+Do not turn an ASR duplicate into a public repeat without supporting evidence.
+Mandarin was tested here; other languages need their own audition. Compare
+against the retained ACE baseline and review the downloaded model's release
+terms before public/commercial use. Installation is not proof of superior music.
+
 ## Model Routing
 
 - Idea/lyrics to full song: ACE-Step 1.5 first.
