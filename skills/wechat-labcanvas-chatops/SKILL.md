@@ -145,6 +145,13 @@ Hard requirements for future agents:
   report its actual stage rather than calling the source silent. In LabCanvas,
   see `references/labcanvas-source-knowledge-and-card-intake-2026-09-05.md`
   for the tested native menu, explicit link handoff, and delivery checks.
+- When Windows WeChat is selected, use `shipinhao_tiny11_share_link.py`, not
+  Ubuntu/Android GUI probes. Preserve the routing agent's exact card selection
+  across normalization and retries. Native video sends may be remuxed: verify
+  their native row digest plus unchanged audio/video stream hashes, then
+  reconcile the receipt instead of uploading again. Empty clipboard text does
+  not mean an attachment composer is empty. See the LabCanvas reference
+  `references/windows-wechat-channels-originals-and-send-reconciliation.md`.
 - recognize pre-Enter pending text receipts during intake so the monitor does
   not answer a system message before its successful-send event is recorded.
   Preserve genuine owner messages on the same account. Renamed artifacts need
