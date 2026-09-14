@@ -284,6 +284,13 @@ scripts/xyq_cdp_browser.py click PAGE_ID SEND_BUTTON_X SEND_BUTTON_Y
 
 ## Watch, Download, Copy
 
+Prefer the official watermark-free export, using included membership benefits
+when available. Verify the downloaded pixels: premium membership alone is not
+proof of a clean export, and an `AI-generated` label may have separate rules
+from a branding watermark. Preserve the original and report unavailable export
+options; this preference does not authorize paid regeneration, cropping, blur,
+or inpainting. Keep separately requested publication logos unchanged.
+
 Monitor the submitted thread through the browser page:
 
 ```bash
