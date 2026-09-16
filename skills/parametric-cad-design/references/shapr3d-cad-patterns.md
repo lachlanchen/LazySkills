@@ -32,6 +32,61 @@ If the Shapr archive mostly contains imported bodies, the correct path is:
 3. make sibling parametric variants for fit changes;
 4. do not overwrite exact regeneration outputs.
 
+## Native Workspace Schema (decoded 2026-09-16)
+
+Verified on 82 archives (Shapr schema `246000`, project version `156000`,
+Parasolid `36.1`-`38.0`). Everything below is readable with `sqlite3`,
+`msgpack`, and `json`; `scripts/shapr_native_decoder.py` implements it.
+
+| Table | What it holds | How to read |
+| --- | --- | --- |
+| `Settings` | `SchemaVersion`, `Persistence_ProjectVersion`, `Create_Date`, `Latest_Date`, `Create_ParasolidVersion`, `Latest_ParasolidVersion` | `SettingName`/`SettingValue` are UTF-8 text or JSON |
+| `HistoryFolders` | folder name, hidden flag, `NamedChildren` JSON `{"elements":[{"id","type"}]}`; type `6` = body, `0` = subfolder, `2` = sketch | body id is a `Metadata` row |
+| `Metadata` + `MetadataAssignments` | type `0` rows are display names (`Lens B holder`, `Thread lens 29.6*`); folder body ids usually point at a type-3 row whose type-0 sibling shares the same `NameID` | join through `MetadataAssignments`, fall back to `id - 1` |
+| `SketchControllers` | sketch name, hidden, plane centre, normal, U direction (metres) | plain columns |
+| `SketchCurves.Data` | JSON in metres, local plane coordinates: `type 0` line `start/end`; `1` arc `center/start/end`; `2` circle `center/radius`; `3` B-spline `controlPoints/degree/knots`; `4` interpolating spline `interpolatingPoints`; `5` ellipse `center/direction/majorRadius/minorRadius` | strip trailing bytes after the last `}` |
+| `HistoryTreeNodes` | msgpack. Type `0` node = ordered list of top-level operation node ids (true history order). Type `2` = operation `[ver, ver, title, operation, child_ids]` (older files omit one `ver`; read from the end). Type `3` = one typed parameter | see tag table |
+| `HistoryNames` | JSON topology names: type `2` `{"curveID"}` links a name to a sketch curve; `nameToAnchor`, `wrappedName`, `filling`, `sourceTopologyNames`, `originalEdgesWithSense` chain back to curves or to the creating node (`callKey.nodeID`) | follow the chain to a `curveID`; face names of imported bodies stop at the import node |
+| `HistoryImportedBodies` + `HistoryImportedPrototypes` | imported Parasolid bodies (`PS..TRANSMIT FILE` binary) with a 16-float row-major transform; translation is elements 12-14 | opaque geometry; older schema keeps `BodyData` directly in `HistoryImportedBodies` |
+| `BodyRevisionBlocks` / `BodyRevisionDeltas` | Parasolid partition transmit files: the current body state after direct edits | opaque; proves how many bodies are live |
+| `MaterialInstances` | `baseColor` packed RGBA int, `transmission` | JSON |
+
+Typed parameter tags inside type-3 nodes:
+
+| Tag | Meaning |
+| --- | --- |
+| `[0]` | null |
+| `[1, b]` | boolean |
+| `[2, n]` | enum (Extrude mode `0` new body / `3` boolean with target; Boolean kind; axis type) |
+| `[4, [k1, v1, k2, v2, ...]]` | struct (`axis`, `center`, `position`, `referenceDirection`, `topologiesArray`, `face`, `edge`, `relativePosition`) |
+| `[5, [x, y, z]]` | vector in metres |
+| `[6, [origin, normal, u]]` | plane frame |
+| `[7, id]` | HistoryName reference (face, edge, body, axis, profile) |
+| `[9, [...]]` | list |
+| `[10, id]` | sketch id |
+| `[11, id]` | imported body id |
+| `[12, [[1, 1], v]]` | length, metres |
+| `[12, [[2, 1], v]]` | angle, radians |
+| `[12, [[0, 0], v]]` | dimensionless (scale factor, pattern count) |
+
+Operation parameter layouts (positions are child order):
+
+- `Extrude`: `[profiles], distance, draft angle, [], mode, mode/target-kind, [target body], symmetric, flip, enum, enum, second distance, null, second distance`.
+- `Revolve`: `[profiles], axis name, angle, offset`.
+- `Chamfer`: `[edges], face a, face b, distance, null, equal-distance flag`. `Fillet`: `[edges], enum, enum, radius, ...`.
+- `OffsetFace`: `[faces], distance (the user's fit-tuning value; `-0.25 mm` is the most common in this library), enum, enum, [related faces]`.
+- `Transform`/`Rotate`/`Scale`/`Align`/`Mirror`: `[bodies], [], [], from-frame struct, to-frame struct, flag` with `position` vectors in metres.
+- `Boolean`: `[targets], [tools], kind enum, flags`. `Split`: `[bodies], [cutters], flag`. `Delete`: `[bodies]`.
+- `CreateCGPlaneWithFaceOffset`: `face, 0, offset`. `CreateCGAxisWithRevolvedFace`: `face, length`. `LinearPattern`: direction structs with count and spacing per axis.
+
+What this enables:
+
+1. Sketch-driven native parts (`Lens.shapr` = two circles + axis line + `Revolve 360`, `Slit.shapr` = rectangles + `Extrude` + `Chamfer 1.5`) can be rebuilt exactly in CadQuery from the decoded numbers alone.
+2. Face-edit chains (`OffsetFace`, `Chamfer` on imported faces) give the dimension deltas the user applied, even when the face itself is only a Parasolid name; combine with the STEP export to locate the face.
+3. Assemblies (`OpenHI.shapr`, `Nature.shapr`) give body names, folder grouping, and placement transforms; the exported STEP folder gives the geometry.
+
+Limits: Parasolid transmit blobs cannot be converted with OCCT, FreeCAD, or CadQuery. Do not promise an exact rebuild of an imported body from the `.shapr` alone; ask for the STEP as a complement, not a precondition.
+
 ## Reading Edit History As Design Knowledge
 
 Shapr operation history is useful even when full feature parameters are not

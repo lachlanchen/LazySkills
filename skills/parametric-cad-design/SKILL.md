@@ -75,7 +75,23 @@ G-code or printer logs are unavailable.
 
 ## Shapr3D And STEP Intake
 
-Use the bundled inspector for source triage:
+Read the `.shapr` archive directly first. It is a zip whose `workspace` member is
+SQLite, and most of the design knowledge is readable without Shapr3D: body and
+folder names, sketch planes and every sketch curve in millimetres, the ordered
+operation history with decoded distances/angles/enums, imported-body placement
+transforms, and Parasolid/schema versions. Only the solid bodies themselves are
+opaque Parasolid blobs. Never tell the user a `.shapr` cannot be used until a
+STEP arrives; decode it, reconstruct sketch-driven parts parametrically, and use
+STEP only as the exact B-rep for imported or face-edited bodies.
+
+Full native decode (Markdown or JSON):
+
+```bash
+python ~/.codex/skills/parametric-cad-design/scripts/shapr_native_decoder.py /path/to/design.shapr --markdown
+python ~/.codex/skills/parametric-cad-design/scripts/shapr_native_decoder.py /path/to/design.shapr --json --out design.decoded.json
+```
+
+Quick triage of `.shapr` plus STEP folders together:
 
 ```bash
 python ~/.codex/skills/parametric-cad-design/scripts/inspect_shapr_step_sources.py \
@@ -88,6 +104,11 @@ If run from `../LazySkills`, replace the script path with `skills/parametric-cad
 
 Interpretation rules:
 
+- Sketch curves are UTF-8 JSON in metres: type `0` line, `1` arc, `2` circle,
+  `3` B-spline, `4` interpolating spline, `5` ellipse. Operation parameters are
+  typed msgpack values: `[12, [[1,1], v]]` is a length in metres, `[12, [[2,1], v]]`
+  an angle in radians, `[7, id]` a HistoryName reference, `[10, id]` a sketch,
+  `[11, id]` an imported body. See `references/shapr3d-cad-patterns.md`.
 - `HistoryTreeNodes` type `2` nodes decode into Shapr operation names such as `Extrude`, `OffsetFace`, `Transform`, `Revolve`, `Boolean`, `Split`, and `MaterializeImportedBodies`.
 - Many `HistoryImportedBodies` plus zero/few `Shapes` means the `.shapr` is mostly imported B-rep, not a recoverable feature tree.
 - Many `OffsetFace` operations usually mean physical print-fit tuning; translate those into named clearance/tolerance parameters in new code.
