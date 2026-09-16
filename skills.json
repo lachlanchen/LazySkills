@@ -460,6 +460,20 @@
         "generic"
       ],
       "description": "Design and operate a slow long-form novel workflow with source authority, persistent novelist/critic/translator sessions, paragraph-level quality gates, one chapter per day, durable resume, and clean pocket PDFs."
+    },
+    {
+      "id": "codex-collaboration",
+      "path": "skills/codex-collaboration/SKILL.md",
+      "category": "agent-collaboration",
+      "platforms": [
+        "aginti",
+        "codex",
+        "claude",
+        "gemini",
+        "copilot",
+        "generic"
+      ],
+      "description": "Take over, hand off to, or collaborate with an OpenAI Codex CLI session: read rollouts read-only, write handoff packets, gate launches on quota, drive codex exec/resume/queue safely."
     }
   ]
 }
