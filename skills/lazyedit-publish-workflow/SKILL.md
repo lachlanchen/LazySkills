@@ -31,6 +31,21 @@ set -a
 set +a
 ```
 
+## Hosted editing and publication capability
+
+For the invite-only Studio service, editing and preview are the normal member
+workflow. Read authenticated `/accounts/account` and `/auth/me` capabilities;
+publication requires `capabilities.publishing=true` and the granted
+`publication.publish` scope. A disabled account uses prepare/process/preview,
+not a social login desktop or publish call. Only the operator's protected
+backend policy enables publication for an immutable account ID; invitations,
+subscriptions and OAuth login do not enable it. The reviewer has ordinary member
+capabilities and must never receive the personal Pi, profiles, library or channel
+credentials. Use the account's scoped API base and private client state.
+See LazyEdit's `references/studio/editor-first-and-optional-publication.md` for
+operator configuration and linked-app handoff. This does not change the original
+owner's local/Pi workflow or authorize a new real post.
+
 ## Core Rule
 
 Prefer the LazyEdit CLI over manual browser work. It creates normal LazyEdit jobs, so the webapp queue stays in sync.
