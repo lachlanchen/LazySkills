@@ -14,6 +14,13 @@
   },
   "skills": [
     {
+      "id": "wechat-sticker-production",
+      "path": "skills/wechat-sticker-production/SKILL.md",
+      "category": "image-workflow",
+      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "description": "Design coherent daily-use character stickers, animate approved references locally, validate looping GIFs, and upload through the authorized WeChat Sticker Platform."
+    },
+    {
       "id": "persistent-image-preview",
       "path": "skills/persistent-image-preview/SKILL.md",
       "category": "image-workflow",
