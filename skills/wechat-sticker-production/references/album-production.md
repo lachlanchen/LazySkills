@@ -56,9 +56,13 @@ Current animated exports are 240 x 240, infinite-loop GIFs under a conservative 
 
 Review first, middle and final states, limb contacts, tail/ear crop, small-size legibility and the loop transition. The audit records a first/last-frame difference, not a subjective pass. Keep minor limitations in a separate review note. Preserve earlier versions and never regenerate automatically.
 
+Separate technical deviations from the owner's artistic selection. A surprising motion or prop can become a funny accepted variant. Record the visible deviation and explicit acceptance without claiming perfect reference fidelity. If one alternate is authorized, preserve the original, compare both, and keep the selected version in the numbered album. Approval of one deviation does not waive identity or quality checks for later stickers.
+
 If only a label changes, export another GIF from the same source MP4. For example, `靠山` and `撑腰` share one animation. Keep both in `alternatives/`, but select only one for the numbered `gifs/` album; this is neither another model render nor an extra album slot.
 
 Album assets: transparent 240-square cover, transparent 50-square icon, 750 x 400 banner. Keep the full-size originals. The PNG banner exceeded the upload limit in this run; a high-quality JPEG passed, and the PNG was retained. The form's current validation remains authoritative.
+
+The white studio style of the GIFs is separate from album packaging. The official guide asks banners and appreciation artwork to contrast with WeChat's white page background. Prepare colored-background versions while preserving accepted white originals. Keep banners text-free. A 256-color PNG export can reduce a 750-square appreciation illustration below 500,000 bytes without another generation; inspect it after conversion.
 
 ## One album, ordered uploads
 

@@ -19,6 +19,8 @@ If the user requests a whole first album, the pilot is a style checkpoint, not t
 
 The first still must already communicate the emotion. Inspect at 240 px and chat-like 120 px, with audio absent. Check character identity, limb count, expression, text, crop, motion, and three repeated loops. A smooth global image wobble is not a substitute for a character acting.
 
+An owner may find an unexpected detail funny and accept it. Record that specific selection alongside the visible deviation; do not silently replace it or call it perfectly faithful. Preserve any separately authorized alternate for comparison. Acceptance of one variant is not a blanket quality waiver for the rest of the series.
+
 ## Local animation
 
 Discover the current LocalVideoGen API and its resource policy from the installed repository. Use its validated image upload and render API, keep the accepted reference as first frame, optionally as final frame for a loop, and save the job ID immediately. Submit once, monitor that same ID, download its observed output, and fully decode/sample it. Do not automatically regenerate or start a batch after a weak result.
@@ -70,6 +72,10 @@ The appreciation and thank-you artwork can feature any of the four buddies; rota
 On 2026-10-04 the album form accepted a 5-15-character message, a 750 x 560 guide image and a 750 x 750 thank-you image. A valid 240-square sticker GIF exceeded 500 KB after the platform enlarged it for appreciation. Reusing that sticker's PNG preview worked; pad the landscape guide instead of letting the platform crop ears or lettering. Inspect both uploaded previews. Keep the original animated album files unchanged.
 
 For a pending work, inspect available editing first. Do not withdraw or create a duplicate to change this option without authorization. When the owner has withdrawn it for editing, complete and resubmit the same work once, then verify both review status and appreciation. Appreciation is distinct from a red-packet-cover distribution link; enabling it does not prove payout verification or platform approval.
+
+## Paid Access
+
+Paid access is different from appreciation. Check the current official paid guide and account eligibility before proposing it. The guide checked on 2026-10-04 required one published album and a separate application; it did not allow published free and paid albums to switch modes. Content-edit permission does not imply repricing permission. Promotional works have separate restrictions. An informational question is not authorization to submit identity/bank details, withdraw a pack, or change its price.
 
 ## Records
 
