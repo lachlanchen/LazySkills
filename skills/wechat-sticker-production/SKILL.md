@@ -59,6 +59,14 @@ For albums choose 表情专辑 and 动态表情 instead of the single route. Upl
 
 A blank upload route after login can be a failed static-resource request. Inspect loading evidence; revisit the dashboard and reopen the same route before replacing the browser or asking for another login.
 
+## Appreciation settings
+
+The LALACHAN owner requests `接受赞赏` enabled by default for future sticker works wherever available, unless explicitly overridden. This is an owner preference, not consent to monetize another user's work. Before submission, complete the appreciation message, guide image and thank-you image, using approved series artwork when possible. Re-read the checked state and verify it persists on the saved work's settings page.
+
+On 2026-10-04 the album form accepted a 5-15-character message, a 750 x 560 guide image and a 750 x 750 thank-you image. A valid 240-square sticker GIF exceeded 500 KB after the platform enlarged it for appreciation. Reusing that sticker's PNG preview worked; pad the landscape guide instead of letting the platform crop ears or lettering. Inspect both uploaded previews. Keep the original animated album files unchanged.
+
+For a pending work, inspect available editing first. Do not withdraw or create a duplicate to change this option without authorization. When the owner has withdrawn it for editing, complete and resubmit the same work once, then verify both review status and appreciation. Appreciation is distinct from a red-packet-cover distribution link; enabling it does not prove payout verification or platform approval.
+
 ## Records
 
 See [the album production runbook](references/album-production.md) for the full sequential workflow, resume rules, upload ordering and resource lessons.

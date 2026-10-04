@@ -55,10 +55,29 @@ Album assets: transparent 240-square cover, transparent 50-square icon, 750 x 40
 3. Fill every meaning word. Confirm the generated thumbnail expresses the action and is not blank.
 4. Attach banner, cover and icon to their observed distinct inputs. Wait for upload previews to finish.
 5. Fill the short title, description, copyright and appropriate classification. Check selected controls after reactive updates; several rapid clicks can otherwise leave an earlier selection unset.
-6. Audit all 24 files and capture the full form before submitting once.
-7. Record the returned work URL and dashboard status. Saved draft, pending review and live are different outcomes. A pending pilot single should not be resubmitted.
+6. For this owner's works, enable `接受赞赏` by default. Fill its message and upload both guide and thank-you artwork; verify the checkbox and remote previews.
+7. Audit all 24 files and capture the full form before submitting once.
+8. Record the returned work URL, dashboard status and persisted appreciation setting. Saved draft, pending review and live are different outcomes. A pending pilot single should not be resubmitted.
 
 Creating a character collection requires eligible approved works on the observed platform. Do not attach an unrelated old word-card album just to complete that form. Wait until the new work becomes eligible.
+
+## Appreciation completion
+
+The owner explicitly requested appreciation enabled by default on 2026-10-04. The first album had originally been submitted without it; after the owner withdrew the work, the existing draft was edited instead of creating another album. Use the same workflow for an authorized correction, and preserve all GIFs and their order.
+
+- Message used: `谢谢喜欢，陪你过好每一天` (12 characters; the live form allowed 5-15).
+- Both illustrations reuse the approved `谢谢` sticker. The animated GIF was rejected after platform enlargement exceeded 500 KB; its existing PNG preview was accepted.
+- The platform outputs a 750 x 560 guide and a 750 x 750 thank-you image. Its automatic landscape crop cut the square artwork's ears and lettering. Padding before upload preserved the whole image.
+- Check the uploaded previews, submit once, then reload the work's settings to confirm `表情赞赏` is `接受` and its status is `待审核`. Pending review is not live approval.
+- The red-packet-cover distribution link is a separate feature. No payout/account details belong in public documentation.
+
+Format adaptation for the guide (preserves the source; no model render):
+
+```bash
+ffmpeg -hide_banner -loglevel error -n -i "$THANKS_PREVIEW" \
+  -vf 'scale=560:560:flags=lanczos,pad=750:560:(ow-iw)/2:0:white' \
+  -frames:v 1 "$ALBUM/reward-guide.png"
+```
 
 ## Deliverables and privacy
 
