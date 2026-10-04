@@ -42,6 +42,20 @@
       "description": "Operate, test, and refine local webapps through an isolated visible noVNC Chrome session with semantic controls, evidence capture, safe paid-action guards, and artifact validation."
     },
     {
+      "id": "store-login-session",
+      "path": "skills/store-login-session/SKILL.md",
+      "category": "browser-automation",
+      "platforms": [
+        "aginti",
+        "codex",
+        "claude",
+        "gemini",
+        "copilot",
+        "generic"
+      ],
+      "description": "Reuse persistent Apple/Google store browser sessions and recover ordinary remembered-account sign-in in the existing noVNC desktop before interrupting authorized store releases."
+    },
+    {
       "id": "doubao-external-audio-video",
       "path": "skills/doubao-external-audio-video/SKILL.md",
       "category": "browser-video",
