@@ -19,6 +19,8 @@ Example paths below are local configuration variables, not public account identi
 python3 scripts/render_wechat_sticker.py "$SERIES/14-sasa-wait.json" --font "$CJK_FONT"
 python3 scripts/audit_wechat_album.py "$SERIES/album" --partial
 python3 scripts/audit_wechat_album.py "$SERIES/album" --expected 24
+python3 scripts/audit_wechat_album.py "$NEXT_SERIES/album" --expected 16 \
+  --title '啦啦侠阿芽酱 · 日常第二弹'
 python3 -m unittest discover -s tests -p '*wechat*.py'
 ```
 
@@ -31,6 +33,16 @@ The helper records an intent before submission and a receipt immediately after a
 An explicit HTTP 400 validation rejection before GPU allocation is different from a failed render. Preserve the rejection and request, correct the actual contract or ambiguous wording, and archive the rejected intent before submitting the corrected request. Never treat a timeout as proof that no render exists.
 
 Observed LocalVideoGen validator false positives included `one hand` being interpreted as total anatomy, and `in place ... me` being interpreted as inserting a new person. Explicit right/left-hand wording and a separate sentence for jogging resolved these without disabling resource or anatomy validation. A bug report should include the original rejected prompt, not merely the workaround.
+
+A second-series preflight correctly rejected two physical jobs assigned to the same cup endpoint. Holding a glass is contact; pointing toward it is motion, not another grip. Keep that distinction in the contract rather than inventing duplicate contact points to satisfy validation.
+
+## Subsequent series
+
+Keep the accepted faces and clothing while adding new conversational uses, not just new labels over old animations. A compact second series can connect small acts of care from morning to bedtime: saving food, offering water, keeping company, waiting at home and saying goodbye. One clear action and a readable first frame matter more than a busy miniature scene.
+
+Use the existing full-step quality profile for the first sample, and record its actual precision and step count. This run used 25-step INT8/offload, not a claim that it is the best available model. Changing model or increasing precision should follow a demonstrated quality need and available resources. New references, native clips and alternative labels remain versioned; an approved first series is not overwritten.
+
+Preparation and submission are separate. An offline complete album may be ready for review while no new platform draft has been created. Use `--expected` and `--title` for its own gallery; a partial gallery is only progress evidence. Existing series cover artwork may serve as a preview, with final packaging reviewed before a later submission.
 
 ## Resource handling
 
