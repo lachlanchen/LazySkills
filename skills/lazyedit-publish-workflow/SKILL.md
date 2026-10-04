@@ -59,6 +59,10 @@ make it look better. Separate `--correction-prompt-file`,
 an inspected normal run proves that the shared context cannot produce correct
 results.
 
+When confirmed speech conflicts with ASR, Korean restoration needs review, or a
+native submission failed before dispatch, read
+[context correction and native recovery](references/context-correction-and-native-recovery.md).
+
 Activate the environment first:
 
 ```bash
