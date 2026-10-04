@@ -93,4 +93,6 @@ ffmpeg -hide_banner -loglevel error -n -i "$THANKS_PREVIEW" \
 
 ## Deliverables and privacy
 
+For every volume, preserve the approved offline gallery layout and capture it through the existing CDP gallery tab. Use `scripts/snapshot_wechat_gallery.py "$ALBUM" "$STICKER_SHARE/Vol-02" --cdp-url "$CDP_URL" --page-id "$GALLERY_PAGE_ID"`. It saves a full-page PNG and one browser-rendered PNG per GIF in a timestamped `captures/` folder, then copies artwork and the portable HTML to the configured `Share/Stickers/Vol-NN` destination. Original GIF bytes are retained. Repeated captures preserve earlier snapshots. Account receipts and settings-page screenshots are excluded. The helper verifies local destination hashes, not remote Nutstore upload acknowledgement. The owner approved this gallery design on 2026-10-04; keep its layout and palette for later volumes.
+
 Copy the complete album, gallery, original references, source MP4s and review records to the configured Nutstore share. Compare SHA-256 hashes; distinguish local copy verification from cloud acknowledgement. Keep job IDs, account screenshots, runtime endpoints, source paths and generated assets in ignored/private storage. Commit only portable scripts, tests, design notes and reusable workflow documentation.

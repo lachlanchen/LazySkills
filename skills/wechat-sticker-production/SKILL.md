@@ -71,6 +71,8 @@ For a pending work, inspect available editing first. Do not withdraw or create a
 
 ## Records
 
+For this owner's sticker series, keep the approved offline gallery design and export every volume to the configured Nutstore `Share/Stickers/Vol-NN` folder. Include original GIFs, portable HTML, a full-page CDP screenshot and one screenshot of each GIF. The bundled `scripts/snapshot_wechat_gallery.py` reuses an existing local-gallery tab, checks image loading and count, excludes account receipts, preserves timestamped captures and verifies copied hashes. The sync-folder location is local configuration, not a hard-coded public home path.
+
 See [the album production runbook](references/album-production.md) for the full sequential workflow, resume rules, upload ordering and resource lessons.
 
 Keep private upload handles, account screenshots, cookies, paths and generated artifacts outside public Git. A portable handoff should name input/output roles, dimensions, hashes, generation settings, actual review result and platform status. Copy chosen deliverables to the configured sync folder and compare hashes; distinguish copying from confirmed cloud synchronization.
