@@ -82,6 +82,8 @@ The owner explicitly requested appreciation enabled by default on 2026-10-04. Th
 - The platform outputs a 750 x 560 guide and a 750 x 750 thank-you image. Its automatic landscape crop cut the square artwork's ears and lettering. Padding before upload preserved the whole image.
 - Check the uploaded previews, submit once, then reload the work's settings to confirm `表情赞赏` is `接受` and its status is `待审核`. Pending review is not live approval.
 - The red-packet-cover distribution link is a separate feature. No payout/account details belong in public documentation.
+- Appreciation and thank-you artwork may feature any of the four buddies, not only Aya. Rotate characters to suit the album; a robot-led office volume can use Zhuangzi. This does not call for resubmitting existing pending packs.
+- Album introductions should name all participating buddies, including Zhuangzi the robot. Platform meaning words are separate from lettering embedded in a GIF: if the owner requests a trigger-only change, preserve the GIF bytes and edit only that field.
 
 Format adaptation for the guide (preserves the source; no model render):
 

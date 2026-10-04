@@ -65,6 +65,8 @@ A blank upload route after login can be a failed static-resource request. Inspec
 
 The LALACHAN owner requests `接受赞赏` enabled by default for future sticker works wherever available, unless explicitly overridden. This is an owner preference, not consent to monetize another user's work. Before submission, complete the appreciation message, guide image and thank-you image, using approved series artwork when possible. Re-read the checked state and verify it persists on the saved work's settings page.
 
+The appreciation and thank-you artwork can feature any of the four buddies; rotate characters to match the pack rather than always using Aya. Introductions name all participating buddies, including Zhuangzi the robot. Platform meaning words and lettering inside a GIF are separate: honor a trigger-only edit without rewriting or rerendering the accepted GIF.
+
 On 2026-10-04 the album form accepted a 5-15-character message, a 750 x 560 guide image and a 750 x 750 thank-you image. A valid 240-square sticker GIF exceeded 500 KB after the platform enlarged it for appreciation. Reusing that sticker's PNG preview worked; pad the landscape guide instead of letting the platform crop ears or lettering. Inspect both uploaded previews. Keep the original animated album files unchanged.
 
 For a pending work, inspect available editing first. Do not withdraw or create a duplicate to change this option without authorization. When the owner has withdrawn it for editing, complete and resubmit the same work once, then verify both review status and appreciation. Appreciation is distinct from a red-packet-cover distribution link; enabling it does not prove payout verification or platform approval.
