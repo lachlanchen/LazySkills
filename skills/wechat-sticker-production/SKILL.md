@@ -15,6 +15,8 @@ For LALACHAN, inspect the canonical individual images first. Aya is the red pand
 
 Work one sticker at a time when requested: reference -> user/style acceptance -> local animation -> small-size/loop review -> upload. Planned stickers are not generated stickers. Later cute-angry interactions can form reply pairs such as 哼 / 给你 / 好吧 without becoming hurtful or requiring the full story to understand them.
 
+If the user requests a whole first album, the pilot is a style checkpoint, not the deliverable. Establish a complete 8-24-sticker scope using the live platform limits, then finish that scope sequentially. User additions such as hugs, kisses, shyness and encouragement can extend the same album. Keep each GIF useful independently and do not force all four characters into every composition.
+
 The first still must already communicate the emotion. Inspect at 240 px and chat-like 120 px, with audio absent. Check character identity, limb count, expression, text, crop, motion, and three repeated loops. A smooth global image wobble is not a substitute for a character acting.
 
 ## Local animation
@@ -22,6 +24,8 @@ The first still must already communicate the emotion. Inspect at 240 px and chat
 Discover the current LocalVideoGen API and its resource policy from the installed repository. Use its validated image upload and render API, keep the accepted reference as first frame, optionally as final frame for a loop, and save the job ID immediately. Submit once, monitor that same ID, download its observed output, and fully decode/sample it. Do not automatically regenerate or start a batch after a weak result.
 
 Check RAM, swap, GPU and queue before rendering. Small output dimensions do not eliminate model-loading memory. Keep the normal resource gates; clean up only verified owned idle runtimes. Never close an active VM or another project's service just to fit a render. Stop the render services you launched when finished, while preserving a browser or image viewer needed for user review.
+
+Bundled `scripts/render_wechat_sticker.py` supports the local H3 API contract used by this workflow. It records submission intent and receipt, fingerprints inputs, and resumes the same job after interruption. An ambiguous POST is blocked from automatic retry. An explicit preflight rejection is not a completed GPU attempt; preserve that evidence and correct the actual prompt/contract before resubmitting. Do not disable a guard just to get past it.
 
 ## GIF packaging
 
@@ -34,7 +38,11 @@ python3 scripts/video_to_wechat_gif.py INPUT.mp4 OUTPUT.gif \
 
 It creates a GIF, preview PNG and provenance JSON without overwriting earlier versions. Recheck quality after palette/fps reduction. Flat backgrounds often look cleaner with no dithering; this is an aesthetic choice, not a universal rule. Keep the native source MP4, even though GIF carries no sound.
 
+For a wording-only revision, reuse that MP4 and export a new labeled GIF. Preserve both alternatives, ask for selection when requested, and keep just one in the album's numbered GIF folder. Changing `靠山` to `撑腰` does not require a video rerender or a 25th album item.
+
 Read the current [WeChat official specifications](https://sticker.weixin.qq.com/cgi-bin/mmemoticon-bin/readtemplate?t=guide/index.html#/makingSpecifications#specifications_stickers). On 2026-10-04 a dynamic single used 240 x 240 GIF, looping, <=500 KB. This helper conservatively targets 500,000 bytes. The meaning word allowed four Chinese characters. Albums required 8-24 images. LINE APNG and WeChat effect frame limits are not GIF requirements.
+
+For a complete album, use `scripts/audit_wechat_album.py ALBUM --expected 24` (or the actual planned count). `--partial` permits progress previews but is not final acceptance. It writes a portable gallery and checks GIF dimensions, loop, byte limit, duplicate content, transparent cover/icon and banner. The layout expects `gifs/*.gif`, `cover.png` (240 square), `icon.png` (50 square), and `banner.jpg` (750 x 400). Full-size originals stay preserved. A high-quality JPEG can fit the banner limit when its PNG is too large.
 
 ## Browser upload and receipts
 
@@ -47,9 +55,13 @@ Reuse the user's specified authorized Chrome/CDP profile. Use available browser 
 5. Save or submit according to the user's authorization. Report saved, submitted for review, approved, and live as distinct states; never retry a successful submission merely because approval is pending.
 6. For 创建形象, inspect eligible works first. Do not associate unrelated old work. The observed form imposed six-month limits on changes to name/avatar/icon/description.
 
+For albums choose 表情专辑 and 动态表情 instead of the single route. Upload sorted GIFs into one form, append only missing files when staging uploads, and verify remote order and meaning words. Banner, cover and icon have separate file inputs. Re-read checked values after each reactive form update. Use a name within eight Chinese characters, a short viewer-facing description, and the appropriate daily/cute classification. Confirm the complete count and thumbnails before one submission; retain the durable work URL and review status. Do not resubmit an already pending pilot single.
+
 A blank upload route after login can be a failed static-resource request. Inspect loading evidence; revisit the dashboard and reopen the same route before replacing the browser or asking for another login.
 
 ## Records
+
+See [the album production runbook](references/album-production.md) for the full sequential workflow, resume rules, upload ordering and resource lessons.
 
 Keep private upload handles, account screenshots, cookies, paths and generated artifacts outside public Git. A portable handoff should name input/output roles, dimensions, hashes, generation settings, actual review result and platform status. Copy chosen deliverables to the configured sync folder and compare hashes; distinguish copying from confirmed cloud synchronization.
 
