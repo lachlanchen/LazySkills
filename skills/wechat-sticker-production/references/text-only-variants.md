@@ -35,3 +35,9 @@ For this trial the font is [ZCOOL KuaiLe](https://github.com/googlefonts/zcool-k
 Open the full gallery persistently in the existing review browser, and the variant folder in the owner's physical desktop file manager. Select the physical desktop environment explicitly so a noVNC session does not capture later file opens. No new desktop stack is needed.
 
 Review full and chat size, all 24 placements and several animation phases. Export to a separate `Share/Stickers/Vol-04-text-cute-v1` folder, including the `originals/` comparison files. Use the existing `snapshot_wechat_gallery.py` for a full-page screenshot and one screenshot per GIF; its artwork allowlist does not copy `originals/`, so copy and verify that directory separately. Keep account pages and financial receipts out of the export. Local hash verification is not a cloud-sync acknowledgement.
+
+## After Owner Approval
+
+For this owner, the cute-text style became the future default after review. Keep submission authorization separate from aesthetic acceptance. Saved-draft card deletion controls appeared on hover even when old meaning-word inputs looked disabled. Replace form items, not the album; preserve old local files. Count meaning-word inputs rather than `[isfirstcrop]`, which was absent on new upload cards. Verify an empty form before selecting the sorted replacement batch, then wait for all thumbnails and inspect order/labels.
+
+For an authorized paid release, select the actual price control and retain appreciation. Save once and inspect a separately reloaded settings page for count, price and appreciation; then submit once and verify pending-review status. A saved draft, successful submission, payout-information approval and published availability are distinct states. Keep account receipts outside shared artwork exports.
