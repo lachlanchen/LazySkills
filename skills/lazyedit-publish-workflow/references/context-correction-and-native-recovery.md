@@ -16,8 +16,13 @@ words; restore confidently identified Sino-Korean roots without forcing extra
 ones. The restored root uses exact Hangul ruby, while native endings stay visible
 with romanization. For example, 감사 / 感謝 / 감사 followed by 합니다 / 합니다 /
 hamnida. A suffix must not disappear into the root's ruby or remain inside a mixed
-Hanja/Hangul display word. Shared dictionary-backed formatting and bounded model
-review handle this; do not patch individual rendered subtitles.
+Hanja/Hangul display word. Use the existing per-cue parallel translator with nearby
+context: one normal call for natural Korean and common, confident Hanja choices.
+Partial restoration is enough. Local code supplies readings and repairs common
+affix/spacing formats; only invalid structure needs one bounded model repair.
+Reuse the normal cache instead of adding a completeness-review call or patching
+individual rendered subtitles. See LazyEdit's
+`references/korean-restoration-single-pass.md` for implementation and tests.
 
 If polishing changes a wrongly tagged English cue into Han-only Chinese, a
 native-text lock must not force that cue to stay Chinese in the English row.
