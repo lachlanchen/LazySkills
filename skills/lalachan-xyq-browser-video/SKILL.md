@@ -184,6 +184,10 @@ model and credit preview before submitting.
 
 ## Credit-Budget Rule
 
+- Owner-approved low-credit fallback: when the usual 30-second episode cannot
+  fit the balance, use a complete 15-second story with Mini experience if its
+  visible quote fits. No repeat duration confirmation is needed for this
+  fallback. This does not authorize an upgrade, a second render, or overspend.
 - Default to `Seedance 2.0 Mini 体验版` / `vipnew` when the UI shows it, especially when it shows a cheap rate such as `单秒限时低至4积分`.
 - If Mini体验版/vipnew is unavailable, choose the cheapest visible suitable Seedance row. Do not silently upgrade to a high-credit long-video/Agent render.
 - Treat visible high credit estimates, non-Mini paid long renders, recharge/payment approval, insufficient credits, disabled submit, login, CAPTCHA, or explicit user budget limits as blockers that require reporting before paid submission.
