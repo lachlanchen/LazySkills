@@ -73,6 +73,19 @@ conda activate lazyedit
 
 ## Safety Rules
 
+- Published staging cleanup is enabled by default in AutoPublish. Let
+  `published_retention.py` verify archive hashes and every requested platform
+  result, then remove only archived media/ZIP copies. Preserve original media,
+  Nutstore masters, corrected lyrics, covers, proofs and receipts. Failed,
+  active, ambiguous or test jobs are not cleanup candidates. For a deliberate
+  later republish, re-upload the retained canonical ZIP instead of assuming the
+  remote staging copy still exists.
+- If Shipinhao stays at cover `生成中` or music upload stays at 0%, inspect
+  resource timing before blaming disk space or changing video resolution.
+  AutoPublish's `references/shipinhao-dependencies-and-published-retention.md`
+  covers verified public WASM caching and the asynchronous language-dropdown
+  fix. Never bypass readiness or invent successful publication receipts.
+
 - Do not publish to real platforms just to debug packaging, subtitles, or logo output. Use `--no-publish` first, inspect the generated ZIP/final MP4, then publish exactly once when the package is correct.
 - For current Musia recording videos, publish with the existing LazyEdit logo at top-right and no LazyEdit subtitles unless the user explicitly asks for subtitles. Use `--no-burn-subtitles --logo --logo-position top-right`, force a fresh logo-only render when the side changes, and inspect a sample frame or the MP4 inside the ZIP before submitting.
 - For native portrait Musia player recordings, also pass
