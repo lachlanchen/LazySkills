@@ -91,7 +91,7 @@ def main():
     parser.add_argument("output", type=Path)
     parser.add_argument("--label", required=True)
     parser.add_argument("--font", required=True, type=Path)
-    parser.add_argument("--padding", type=int, default=6)
+    parser.add_argument("--padding", type=int, default=1)
     parser.add_argument("--font-size", type=int, default=24)
     parser.add_argument("--center", type=float, nargs=2)
     parser.add_argument("--vertical", action="store_true")

@@ -23,6 +23,9 @@ def inspect(path):
 
 def build(config, output):
     labels = [("original", "原留白"), ("compact", "紧凑版"), ("edge", "贴边版")]
+    selected = config.get("selected")
+    if selected is not None and selected not in dict(labels):
+        raise ValueError("Unknown selected layout")
     if not config.get("items") or output.exists():
         raise ValueError("Provide items and a new output directory")
     pending = []
@@ -44,7 +47,8 @@ def build(config, output):
                 raise ValueError("Copy hash mismatch")
             reports.append({"file": "gifs/" + name, "label": title, "variant": key, **report})
             fps = report["frames"] / (report["duration_ms"] / 1000)
-            cards.append(f'<figure><h3>{label}</h3><div class="stage"><img src="gifs/{name}" '
+            selection = " · 已选定" if key == selected else ""
+            cards.append(f'<figure><h3>{label}{selection}</h3><div class="stage"><img src="gifs/{name}" '
                          f'width="240" height="240" alt="{html.escape(title, quote=True)} · {label}"></div>'
                          f'<figcaption><span>{report["bytes"]/1000:.0f} KB · {fps:.0f} fps</span>'
                          f'<a href="gifs/{name}" download>GIF</a></figcaption></figure>')
@@ -62,7 +66,7 @@ main{padding-top:0}section{margin:0 0 28px}h2{font-size:18px;margin:14px 0}h3{fo
 .stage{height:240px;display:flex;align-items:center;justify-content:center}figure img{display:block;width:240px;height:240px;max-width:100%;object-fit:contain}
 body.small figure img{width:120px;height:120px}figcaption{display:flex;align-items:center;justify-content:space-between;font-size:13px;color:#60716b;margin-top:10px;gap:8px}a{color:#205f50}footer{padding-top:0;font-size:13px;color:#60716b}
 @media(max-width:860px){.grid{grid-template-columns:1fr}header,main,footer{padding:18px}main{padding-top:0}h1{font-size:23px}}
-</style><header><h1>__TITLE__</h1><p class="status">阿芽酱 · 啦啦侠 · 庄子 / 待选择</p>
+</style><header><h1>__TITLE__</h1><p class="status">阿芽酱 · 啦啦侠 · 庄子 / __SELECTION__</p>
 <nav aria-label="预览尺寸"><button data-size="full" aria-pressed="true">240 px</button><button data-size="small" aria-pressed="false">120 px</button><button id="restart">重新播放</button></nav></header>
 <main>__SECTIONS__</main><footer>原文件保留 · 新版未上传 · 仅后期裁剪与排字</footer>
 <script>
@@ -70,8 +74,9 @@ document.querySelectorAll('[data-size]').forEach(b=>b.onclick=()=>{document.body
 document.getElementById('restart').onclick=()=>{const stamp=Date.now();document.querySelectorAll('main img').forEach(i=>{i.src=i.getAttribute('src').split('?')[0]+'?r='+stamp})};
 </script></html>'''
     (output / "index.html").write_text(page.replace("__TITLE__", html.escape(config.get("title", "表情留白试装")))
+                                      .replace("__SELECTION__", dict(labels)[selected] + "已选定" if selected else "待选择")
                                       .replace("__SECTIONS__", "".join(sections)), encoding="utf-8")
-    audit = {"gif_count": len(reports), "platform_submission": "not_submitted", "reports": reports}
+    audit = {"gif_count": len(reports), "platform_submission": "not_submitted", "selected": selected, "reports": reports}
     (output / "audit.json").write_text(json.dumps(audit, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     return audit
 

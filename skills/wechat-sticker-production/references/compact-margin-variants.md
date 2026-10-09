@@ -23,7 +23,13 @@ python scripts/compact_wechat_sticker.py "$CLEAN_MP4" "$NEW_DIR/edge.gif" \
   --label 委屈 --font "$FONT_FILE" --padding 1 --gifsicle "$GIFSICLE"
 ```
 
-These padding values are comparison choices, not new universal defaults. The
+After initially choosing compact, the owner's latest selection on 2026-10-09 is
+**edge / 贴边版 for formal publication**. Start with 1 px padding and adjust for
+the action so no limb or text clips. This is an owner-specific future-upload
+default, not permission to withdraw already submitted packs or rerender animation.
+Use the clean MP4 for a new `edge/` export, retaining compact and original editions.
+
+These padding values remain adjustable rather than universal requirements. The
 canvas remains 240 x 240. Aspect-ratio fitting can leave space on one axis;
 "edge" does not mean stretching, cutting a limb, or filling every pixel.
 
