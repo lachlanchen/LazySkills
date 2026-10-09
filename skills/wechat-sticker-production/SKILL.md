@@ -50,6 +50,8 @@ Read the current [WeChat official specifications](https://sticker.weixin.qq.com/
 
 For a complete album, use `scripts/audit_wechat_album.py ALBUM --expected 24` (or the actual planned count). Set `--title` for subsequent series; `--partial` permits progress previews but is not final acceptance. It writes a portable gallery and checks GIF dimensions, loop, byte limit, duplicate content, transparent cover/icon and banner. The layout expects `gifs/*.gif`, `cover.png` (240 square), `icon.png` (50 square), and `banner.jpg` (750 x 400). Full-size originals stay preserved. A high-quality JPEG can fit the banner limit when its PNG is too large.
 
+Different albums need genuinely distinct covers and chat icons. Reusing either caused two review rejections on 2026-10-09. Give each volume its own pose/composition and matching banner, appreciation guide and thank-you art; preserve accepted GIFs when repairing packaging. Run `scripts/audit_wechat_packaging.py` across volumes and visually review the 50-pixel icons. See [distinct packaging](references/distinct-album-packaging.md) for exports and same-work resubmission.
+
 For a second series, preserve accepted identities while filling new everyday reply needs. A loose day-together arc can connect the set, but each sticker must work independently. Record the actual model profile and steps rather than equating a "better model" with better results. Preparing an album locally does not authorize submitting it; keep the first work and the unpublished successor separate.
 
 ## Browser upload and receipts
