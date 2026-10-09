@@ -23,6 +23,8 @@ The first still must already communicate the emotion. Inspect at 240 px and chat
 
 An owner may find an unexpected detail funny and accept it. Record that specific selection alongside the visible deviation; do not silently replace it or call it perfectly faithful. Preserve any separately authorized alternate for comparison. Acceptance of one variant is not a blanket quality waiver for the rest of the series.
 
+For future references, use one approved character palette and neutral lighting within each pack. Compare Aya's red-orange fur before animation; scene lighting and GIF palette reduction can both change its appearance. Preserve color/expression differences the owner accepts, particularly in submitted packs. A website redesign should not change the successful generation prompts or animation pipeline.
+
 For this owner, retain every generated candidate, including wrong versions, native clips, references and receipts. On 2026-10-09 the owner authorized targeted local corrective rerenders without per-item questions, with the agent selecting the reviewed version that matches the intended identity/action. Keep unsuccessful candidates in a separate `deviation-candidates` gallery category with explicit issues and provenance. Inspect between attempts; normally cap at two corrective attempts, then hold unresolved items and continue others rather than retry indefinitely. This does not authorize paid video rerenders or change draft/review boundaries. An accepted funny deviation can seed a new themed pack with fitting captions; record the changed selection without rewriting the original quality finding. Reuse of existing animation must be disclosed rather than called a new render.
 
 ## Local animation
@@ -47,6 +49,8 @@ It creates a GIF, preview PNG and provenance JSON without overwriting earlier ve
 For a wording-only revision, reuse that MP4 and export a new labeled GIF. Preserve both alternatives, ask for selection when requested, and keep just one in the album's numbered GIF folder. Changing `靠山` to `撑腰` does not require a video rerender or a 25th album item.
 
 The owner's Japanese meme-pack preference is Chinese phonetic lettering, not kana. Keep the earlier Japanese-script edition; create a separate text-only version and use Chinese meaning words for search. Treat playful approximations as jokes, not pronunciation tuition or a universal platform language rule. See [series expansion and review](references/series-expansion-and-review.md) for the researched examples and selected-clip workflow.
+
+For this owner's Cantonese pack, GIF lettering stays Cantonese while platform meaning/trigger words are ordinary Mandarin (唔該 -> 麻烦你, 好攰 -> 好累, 冇問題 -> 没问题). Check glyph coverage before exporting; the existing accepted Cantonese GIFs are correct. A missing-glyph error in a new export does not imply the old artwork is wrong. Use the verified Hong Kong CJK font for those glyphs while retaining white fill, dark outline and gentle animated lettering.
 
 For a text-style-only comparison, retain the original frames and timing where a verified separate caption band permits it. The bundled `restyle_sticker_text.py` overlays smaller outlined lettering at per-sticker positions and checks decoded non-text pixels and frame delays for exact equality. It needs Pillow, NumPy and fontTools; Gifsicle is optional for verified lossless compression. Use an explicitly licensed font with complete glyph coverage, keep motion gentle and review faces/gestures at chat size. The output folder must be new. See [text-only variants](references/text-only-variants.md); a local preview does not authorize replacing uploaded drafts.
 
@@ -100,6 +104,8 @@ Paid access is different from appreciation. Check the current official paid guid
 For this owner's sticker series, keep the approved offline gallery design and export every volume to the configured Nutstore `Share/Stickers/Vol-NN` folder. Include original GIFs, portable HTML, a full-page CDP screenshot and one screenshot of each GIF. The bundled `scripts/snapshot_wechat_gallery.py` reuses an existing local-gallery tab, checks image loading and count, excludes account receipts, preserves timestamped captures and verifies copied hashes. The sync-folder location is local configuration, not a hard-coded public home path.
 
 `build_sticker_library.py` provides a portable all-series overview. Clicking a GIF opens the embedded viewer; previous/next respects filters, and Close/Escape/browser Back restore the review position. Keep old assets and avoid periodic reloads during inspection. Album backlinks depend on destination depth; verify them after copying. Use `sticker_review_sheets.py` for phase/chat-size samples plus running-GIF review.
+
+Use `--archive-root` to include preserved exports in separate historical and alternative views. Exact copied GIFs are indexed once, without deleting originals. Public preparation is opt-in with `public: true` and `--public-only` into a new empty destination; it never deploys. See [independent editions and gallery](references/independent-editions-gallery.md) for audit boundaries, portable exports and browser tests.
 
 See [the album production runbook](references/album-production.md) for the full sequential workflow, resume rules, upload ordering and resource lessons.
 
