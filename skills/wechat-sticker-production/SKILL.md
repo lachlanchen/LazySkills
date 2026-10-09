@@ -101,6 +101,11 @@ Paid access is different from appreciation. Check the current official paid guid
 
 ## Records
 
+For a separate public sticker shop, read [multilingual storefronts](references/multilingual-storefront.md).
+Keep the selected public edition separate from the owner's archived alternatives;
+translate lettering from clean animations, and bind each purchase to all advertised
+language ZIPs. Optional support pricing never changes those download rights.
+
 For this owner's sticker series, keep the approved offline gallery design and export every volume to the configured Nutstore `Share/Stickers/Vol-NN` folder. Include original GIFs, portable HTML, a full-page CDP screenshot and one screenshot of each GIF. The bundled `scripts/snapshot_wechat_gallery.py` reuses an existing local-gallery tab, checks image loading and count, excludes account receipts, preserves timestamped captures and verifies copied hashes. The sync-folder location is local configuration, not a hard-coded public home path.
 
 `build_sticker_library.py` provides a portable all-series overview. Clicking a GIF opens the embedded viewer; previous/next respects filters, and Close/Escape/browser Back restore the review position. Keep old assets and avoid periodic reloads during inspection. Album backlinks depend on destination depth; verify them after copying. Use `sticker_review_sheets.py` for phase/chat-size samples plus running-GIF review.
