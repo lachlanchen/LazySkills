@@ -9,6 +9,8 @@ Use this for the WeChat Sticker Platform, not WeChat chat-message automation or 
 
 ## Design and review
 
+For this owner, each selected formal sticker must have a distinct animation across packs. Changing lettering, language, crop or encoding is not a new animation. Run `audit_wechat_animation_reuse.py` on selected native sources and visually compare actions; exclude archived alternatives and text revisions of the same sticker. Packaging/file hashes alone miss this failure. New editions must not reuse another pack's selected animation.
+
 Define a small series around common chat replies. Each sticker should work alone, while shared clothes, palette, character relationships, or a small daily-life arc connect the set. Prefer one or two clear subjects, a large expressive face, a simple backdrop, and one readable action. Learn from public sticker collections without copying their characters or assets.
 
 For LALACHAN, inspect the canonical individual images first. Aya is the red panda in a navy sailor outfit; Lala is the black-and-white panda. Preserve the user's approved reference, including prior versions. Do not force every buddy or branded prop into every sticker.

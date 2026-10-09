@@ -1,5 +1,36 @@
 # Sticker Series Expansion And Review
 
+## Latest Owner Correction: Unique Animations
+
+The owner rejected cross-pack animation reuse after reviewing the galleries.
+This supersedes the reuse choices documented below: every selected formal GIF
+needs its own distinct animation. New lettering, language, crop or compression
+does not count. Audit native provenance across selected editions with
+`audit_wechat_animation_reuse.py`, then visually compare actions. Exclude archived
+versions and requested text revisions of the same sticker from the formal set.
+Do not upload a pack whose selected animation is already used in another pack.
+The first audit found 54 reused entries across the six newer packs; a passed
+packaging hash audit had not detected this. Preserve originals and prepare
+independent replacements. Obtain authorization before withdrawing pending works.
+
+For the phonetic pack, keep normal Chinese platform meaning/trigger words; only
+the lettering burned into the GIF is a playful Chinese transliteration.
+
+The requested extension is 16 entries. Four additions separate displayed jokes
+from useful search words:
+
+| GIF lettering | Japanese source (internal reference) | Chinese meaning word |
+| --- | --- | --- |
+| 阿姨洗铁路 | あいしてる | 我爱你 |
+| 私密马赛 | すみません | 不好意思 |
+| 干巴爹 | がんばって | 加油 |
+| 呆胶布 | だいじょうぶ | 没关系 |
+
+Use distinct actions for these: shy love-letter offering, a small apologetic
+gesture, energetic encouragement, and reassuring care. They are playful
+transliterations, not language-learning pronunciation guides. These are planned
+additions until their own references, animation receipts and reviews exist.
+
 ## Decisions From The October 2026 Run
 
 - Preserve every generated variant, including incorrect outputs, native MP4s,
@@ -53,8 +84,10 @@ is a **Chinese phonetic joke edition**, called `空耳小日常`: 空你七哇�
 哦哈哟、他大姨妈、哦卡诶里、哦伊西、卡拉伊、伊伊尼欧伊、内木伊、
 一大个麻薯、姨爹拉沙姨、阿里嘎多. These are playful approximations, not accurate
 pronunciation tuition. Keep ordinary Chinese meaning words for platform search.
-Use the existing native animations and a new text-only export folder. This is an
-owner-specific content choice, not evidence of a universal platform ban on Japanese.
+The initial text-only conversion preserved existing native animations; the later
+cross-pack uniqueness correction now requires independent replacements where an
+animation is selected elsewhere. This is an owner-specific content choice, not
+evidence of a universal platform ban on Japanese.
 
 [Miyakonojo City's multilingual leaflet](https://www.city.miyakonojo.miyazaki.jp/uploaded/attachment/4618.pdf)
 uses Chinese approximations for basic greetings. This
