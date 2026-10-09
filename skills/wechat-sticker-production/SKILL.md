@@ -21,6 +21,8 @@ The first still must already communicate the emotion. Inspect at 240 px and chat
 
 An owner may find an unexpected detail funny and accept it. Record that specific selection alongside the visible deviation; do not silently replace it or call it perfectly faithful. Preserve any separately authorized alternate for comparison. Acceptance of one variant is not a blanket quality waiver for the rest of the series.
 
+For this owner, retain every generated candidate, including wrong versions, native clips, references and receipts. An accepted funny deviation can seed a new themed pack with fitting captions; record the changed selection without rewriting the original quality finding. Reuse of existing animation must be disclosed rather than called a new render.
+
 ## Local animation
 
 Discover the current LocalVideoGen API and its resource policy from the installed repository. Use its validated image upload and render API, keep the accepted reference as first frame, optionally as final frame for a loop, and save the job ID immediately. Submit once, monitor that same ID, download its observed output, and fully decode/sample it. Do not automatically regenerate or start a batch after a weak result.
@@ -41,6 +43,8 @@ python3 scripts/video_to_wechat_gif.py INPUT.mp4 OUTPUT.gif \
 It creates a GIF, preview PNG and provenance JSON without overwriting earlier versions. Recheck quality after palette/fps reduction. Flat backgrounds often look cleaner with no dithering; this is an aesthetic choice, not a universal rule. Keep the native source MP4, even though GIF carries no sound.
 
 For a wording-only revision, reuse that MP4 and export a new labeled GIF. Preserve both alternatives, ask for selection when requested, and keep just one in the album's numbered GIF folder. Changing `靠山` to `撑腰` does not require a video rerender or a 25th album item.
+
+The owner's Japanese meme-pack preference is Chinese phonetic lettering, not kana. Keep the earlier Japanese-script edition; create a separate text-only version and use Chinese meaning words for search. Treat playful approximations as jokes, not pronunciation tuition or a universal platform language rule. See [series expansion and review](references/series-expansion-and-review.md) for the researched examples and selected-clip workflow.
 
 For a text-style-only comparison, retain the original frames and timing where a verified separate caption band permits it. The bundled `restyle_sticker_text.py` overlays smaller outlined lettering at per-sticker positions and checks decoded non-text pixels and frame delays for exact equality. It needs Pillow, NumPy and fontTools; Gifsicle is optional for verified lossless compression. Use an explicitly licensed font with complete glyph coverage, keep motion gentle and review faces/gestures at chat size. The output folder must be new. See [text-only variants](references/text-only-variants.md); a local preview does not authorize replacing uploaded drafts.
 
@@ -73,6 +77,8 @@ For albums choose 表情专辑 and 动态表情 instead of the single route. Upl
 
 A blank upload route after login can be a failed static-resource request. Inspect loading evidence; revisit the dashboard and reopen the same route before replacing the browser or asking for another login.
 
+A new work ID alone does not prove a saved draft. GIF previews may remain local blobs until Save; verify complete local thumbnails first, then remote GIFs and all five packaging roles after reload, along with text, paid mode and appreciation. If login expires during Submit, recover the session and inspect that work's status before retrying. `stage_wechat_album.py` stages/saves empty drafts; `replace_wechat_draft_gifs.py` edits an explicitly identified existing draft. Neither submits review. See [series expansion and review](references/series-expansion-and-review.md) for the verified recovery sequence.
+
 ## Appreciation settings
 
 The LALACHAN owner requests `接受赞赏` enabled by default for future sticker works wherever available, unless explicitly overridden. This is an owner preference, not consent to monetize another user's work. Before submission, complete the appreciation message, guide image and thank-you image, using approved series artwork when possible. Re-read the checked state and verify it persists on the saved work's settings page.
@@ -90,6 +96,8 @@ Paid access is different from appreciation. Check the current official paid guid
 ## Records
 
 For this owner's sticker series, keep the approved offline gallery design and export every volume to the configured Nutstore `Share/Stickers/Vol-NN` folder. Include original GIFs, portable HTML, a full-page CDP screenshot and one screenshot of each GIF. The bundled `scripts/snapshot_wechat_gallery.py` reuses an existing local-gallery tab, checks image loading and count, excludes account receipts, preserves timestamped captures and verifies copied hashes. The sync-folder location is local configuration, not a hard-coded public home path.
+
+`build_sticker_library.py` provides a portable all-series overview. Clicking a GIF opens the embedded viewer; previous/next respects filters, and Close/Escape/browser Back restore the review position. Keep old assets and avoid periodic reloads during inspection. Album backlinks depend on destination depth; verify them after copying. Use `sticker_review_sheets.py` for phase/chat-size samples plus running-GIF review.
 
 See [the album production runbook](references/album-production.md) for the full sequential workflow, resume rules, upload ordering and resource lessons.
 

@@ -99,6 +99,8 @@ def main():
     parser.add_argument("--speed", type=float, default=1.25)
     parser.add_argument("--fps", type=int, default=15)
     parser.add_argument("--gifsicle", type=Path, help="Optional lossless GIF optimizer")
+    parser.add_argument("--lossy", type=int, default=0,
+                        help="Optional Gifsicle loss level (0-30); needs visual review")
     parser.add_argument("--max-text-overlap", type=float, default=.02,
                         help="Maximum text-mask overlap with detected foreground (default .02)")
     args = parser.parse_args()
@@ -106,6 +108,8 @@ def main():
         parser.error("Input and font must exist")
     if args.gifsicle and not args.gifsicle.is_file():
         parser.error("Gifsicle executable must exist")
+    if not 0 <= args.lossy <= 30 or (args.lossy and not args.gifsicle):
+        parser.error("Lossy compression requires Gifsicle and a level from 0 to 30")
     if not 0 <= args.padding <= 30 or not 12 <= args.font_size <= 36:
         parser.error("Invalid padding or font size")
     if not args.label.strip() or not 0 <= args.max_text_overlap <= 1:
@@ -157,6 +161,7 @@ def main():
                                     "-loop", "0", "-y", str(candidate)], check=True)
             raw_bytes = candidate.stat().st_size
             lossless_optimized = False
+            lossy_applied = False
             if args.gifsicle:
                 optimized = root / "optimized.gif"
                 subprocess.run([str(args.gifsicle.resolve()), "-O3", str(candidate),
@@ -166,8 +171,20 @@ def main():
                         raise ValueError("Optimizer changed displayed frames or timing")
                     shutil.copy2(optimized, candidate)
                     lossless_optimized = True
+                if args.lossy and candidate.stat().st_size > 500_000:
+                    optimized = root / "lossy.gif"
+                    before = decoded_timeline(candidate)
+                    subprocess.run([str(args.gifsicle.resolve()), "-O3", f"--lossy={args.lossy}",
+                                    str(candidate), "-o", str(optimized)], check=True)
+                    after = decoded_timeline(optimized)
+                    if before[:2] != after[:2] or sum(x[1] for x in before[2]) != sum(x[1] for x in after[2]):
+                        raise ValueError("Lossy optimizer changed geometry, loop or duration")
+                    if optimized.stat().st_size < candidate.stat().st_size:
+                        shutil.copy2(optimized, candidate)
+                        lossy_applied = True
             attempts.append({"fps": fps, "colors": colors, "raw_bytes": raw_bytes,
                              "lossless_optimized": lossless_optimized,
+                             "lossy_level": args.lossy if lossy_applied else 0,
                              "bytes": candidate.stat().st_size})
             if candidate.stat().st_size <= 500_000:
                 break

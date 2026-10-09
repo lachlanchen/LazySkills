@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 
 from PIL import Image, ImageChops, ImageStat
+from sticker_gallery_viewer import viewer_markup
 
 
 def require(condition, message):
@@ -42,6 +43,8 @@ def main():
     parser.add_argument("--expected", type=int, choices=range(8, 25), default=24)
     parser.add_argument("--partial", action="store_true")
     parser.add_argument("--title", default="啦啦侠阿芽酱 · 日常第一弹")
+    parser.add_argument("--library-href", help="Optional portable link to the all-series index")
+    parser.add_argument("--labels-file", type=Path, help="Optional selection JSON with id/label items")
     args = parser.parse_args()
     paths = sorted((args.folder / "gifs").glob("*.gif"))
     if not args.partial and len(paths) != args.expected:
@@ -59,16 +62,24 @@ def main():
     (args.folder / "audit.json").write_text(json.dumps({"expected": args.expected, "count": len(paths),
         "complete": len(paths) == args.expected, "files": results}, indent=2, ensure_ascii=False) + "\n")
     figures = []
+    labels = {}
+    if args.labels_file:
+        labels = {item['id']: item['label'] for item in json.loads(args.labels_file.read_text())['items']}
     for path in paths:
         relative = "gifs/" + path.name
-        figures.append(f'<figure><a href="{html.escape(relative)}"><img width="240" height="240" src="{html.escape(relative)}" alt="{html.escape(path.stem)}"></a><figcaption>{html.escape(path.stem)}</figcaption></figure>')
+        label = labels.get(path.stem, path.stem)
+        figures.append(f'<figure><a href="{html.escape(relative)}"><img width="240" height="240" src="{html.escape(relative)}" alt="{html.escape(label)}"></a><figcaption>{html.escape(label)}</figcaption></figure>')
     gallery = '''<!doctype html><html lang="zh-CN"><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta http-equiv="refresh" content="60"><title>啦啦侠阿芽酱 · 日常第一弹</title>
+<title>啦啦侠阿芽酱 · 日常第一弹</title>
 <style>*{box-sizing:border-box}body{font-family:system-ui,sans-serif;background:#f5f7f6;color:#223c33;margin:0;padding:24px;letter-spacing:0}header{max-width:1100px;margin:0 auto 24px}h1{font-size:24px;margin:12px 0}header img{max-width:750px;width:100%;height:auto}main{max-width:1100px;margin:auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}figure{margin:0;background:white;border:1px solid #dae3dd;border-radius:8px;text-align:center;padding:8px}figure img{width:240px;height:240px;max-width:100%;object-fit:contain}figcaption{font-size:12px;overflow-wrap:anywhere;padding:8px;color:#53655d}@media(max-width:560px){body{padding:12px}main{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}figure img{width:100%;height:auto;aspect-ratio:1}h1{font-size:20px}}</style>
 <header><img src="banner.jpg" width="750" height="400" alt="啦啦侠、阿芽酱、飒飒君和庄子"><h1>啦啦侠阿芽酱 · 日常第一弹</h1><p>COUNT</p></header><main>FIGURES</main></html>'''
     gallery = gallery.replace("COUNT", f"{len(paths)} / {args.expected}").replace("FIGURES", "".join(figures))
     gallery = gallery.replace("啦啦侠阿芽酱 · 日常第一弹", html.escape(args.title))
+    if args.library_href:
+        require(not args.library_href.lower().startswith(('javascript:', 'data:')), 'Unsafe gallery link')
+        gallery = gallery.replace('<header>', '<header><a href="' + html.escape(args.library_href, quote=True) + '">全部表情</a>')
+    gallery = gallery.replace('</html>', viewer_markup() + '</html>')
     (args.folder / "index.html").write_text(gallery, encoding="utf-8")
     print(json.dumps({"count": len(paths), "complete": len(paths) == args.expected,
                       "largest_bytes": max((x["bytes"] for x in results), default=0)}, indent=2))

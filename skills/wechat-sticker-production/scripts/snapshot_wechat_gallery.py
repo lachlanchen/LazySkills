@@ -100,7 +100,7 @@ def main():
         cdp.bring_to_front()
         deadline = time.monotonic() + 30
         while time.monotonic() < deadline:
-            ready = cdp.eval("location.href === " + json.dumps(url) + " && document.readyState === 'complete' && document.querySelectorAll('main figure img').length > 0 && [...document.images].every(i => i.complete && i.naturalWidth > 0)")
+            ready = cdp.eval("location.href === " + json.dumps(url) + " && document.readyState === 'complete' && document.querySelectorAll('main figure img').length > 0 && [...document.querySelectorAll('header img, main figure img')].every(i => i.complete && i.naturalWidth > 0)")
             if ready is True:
                 break
             time.sleep(.25)

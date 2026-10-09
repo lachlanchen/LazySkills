@@ -20,6 +20,37 @@ def save(path, value):
     temporary.replace(path)
 
 
+def with_supports(spec):
+    """Use a declared seat/support before falling back to standing on the floor."""
+    entities = copy.deepcopy(spec["entities"])
+    contacts = copy.deepcopy(spec.get("contacts", []))
+    supports = spec.get("supports", {})
+    performers = [e for e in entities if e["kind"] in {"character", "creature", "robot"}]
+    ids = {e["id"] for e in performers}
+    if set(supports) - ids:
+        raise ValueError("Support references an undeclared performer")
+    ground = {"id": "studio_floor", "kind": "set_piece", "label": "plain studio floor",
+              "count": 1, "parts": {}, "contact_points": [], "roles": [], "inserted": False}
+    endpoints = {e["id"] + ":" + point for e in entities for point in e["contact_points"]}
+    for performer in performers:
+        performer["contact_points"].append("body_support")
+        support = supports.get(performer["id"])
+        if support:
+            if set(support) != {"target", "relation"}:
+                raise ValueError("Support accepts only target and relation")
+            if support["target"] not in endpoints or not support["relation"].strip():
+                raise ValueError("Support target/relation is invalid")
+            contacts.append({"source": performer["id"] + ":body_support", **support})
+        else:
+            ground["contact_points"].append(performer["id"] + "_support")
+            contacts.append({"source": performer["id"] + ":body_support",
+                             "relation": "balances through feet on",
+                             "target": "studio_floor:" + performer["id"] + "_support"})
+    if ground["contact_points"]:
+        entities.append(ground)
+    return entities, contacts
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("spec", type=Path)
@@ -74,18 +105,7 @@ def run(args, spec, reference, out, fingerprint):
         uploaded = upload.json()
         save(out / "upload.json", uploaded)
         token = uploaded["token"]
-        entities = copy.deepcopy(spec["entities"])
-        contacts = list(spec.get("contacts", []))
-        performers = [e for e in entities if e["kind"] in {"character", "creature", "robot"}]
-        ground = {"id": "studio_floor", "kind": "set_piece", "label": "plain studio floor",
-                  "count": 1, "parts": {}, "contact_points": [], "roles": [], "inserted": False}
-        for performer in performers:
-            performer["contact_points"].append("body_support")
-            ground["contact_points"].append(performer["id"] + "_support")
-            contacts.append({"source": performer["id"] + ":body_support",
-                             "relation": "balances through feet on",
-                             "target": "studio_floor:" + performer["id"] + "_support"})
-        entities.append(ground)
+        entities, contacts = with_supports(spec)
         motions = []
         for entity in entities:
             if entity["kind"] not in {"character", "creature", "robot"}:

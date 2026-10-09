@@ -53,6 +53,17 @@ canvas remains 240 x 240. Aspect-ratio fitting can leave space on one axis;
    overlap estimate, duration, selected rate/palette and encoding attempts.
    Failed exports leave originals untouched and must not trigger model rerenders.
 
+Optional `--lossy 20` uses bounded Gifsicle compression only when the lossless
+candidate exceeds the byte limit. The default remains zero. Geometry, loop and
+total duration must remain unchanged; pixels may change, so inspect the result.
+The sidecar records the actual applied level, palette and frame rate.
+
+For an explicit multi-clip selection, use `export_sticker_selection.py` with an
+album-root output and per-item labels/layout overrides. Existing matching outputs
+are preserved, and a changed input requires a new edition. See
+[series expansion and review](series-expansion-and-review.md) for galleries,
+draft verification, language choices and full provenance.
+
 The duration/speed defaults match existing five-second sticker sources: 5.125
 seconds of source at 1.25x, approximately 4.1 seconds per loop. Use explicit
 arguments for other sources. Export always requires a new output path.
