@@ -85,6 +85,12 @@ conda activate lazyedit
   AutoPublish's `references/shipinhao-dependencies-and-published-retention.md`
   covers verified public WASM caching and the asynchronous language-dropdown
   fix. Never bypass readiness or invent successful publication receipts.
+- Music submission needs native form validation, not merely an enabled button.
+  Wait for audio/cover uploads and all form validators; require the explicit
+  submitted page. If a submit click has uncertain results, inspect management
+  before retrying. Include the public source URL in the music package and fill
+  the external playback field when it was already released. Keep production
+  autoreload off and deploy only to an idle queue.
 
 - Do not publish to real platforms just to debug packaging, subtitles, or logo output. Use `--no-publish` first, inspect the generated ZIP/final MP4, then publish exactly once when the package is correct.
 - For current Musia recording videos, publish with the existing LazyEdit logo at top-right and no LazyEdit subtitles unless the user explicitly asks for subtitles. Use `--no-burn-subtitles --logo --logo-position top-right`, force a fresh logo-only render when the side changes, and inspect a sample frame or the MP4 inside the ZIP before submitting.
