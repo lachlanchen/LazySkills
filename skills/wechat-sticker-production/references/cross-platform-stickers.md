@@ -48,6 +48,12 @@ Use relevant expression/character tags and an actual owned source website.
 Be truthful about AI-assisted origin. An application submission and public GIF
 URLs do not establish Instagram partner-search availability.
 
+For this owner's Aya/Lala collections, use `ayalala` and `lazyingart` as common
+search tags, with relevant expression tags in addition. The verified channel is
+`@lazyingart`; preserve its handle. Report tag-save success separately from
+GIPHY/Instagram search eligibility. Existing uploads can be tagged through their
+Edit UI without creating duplicate GIFs; verify the tags after reload.
+
 The successful upload page can remain at `/upload/finalize`. Verify the
 expected number of `Open Sticker` links and `Open Channel`; a navigation
 timeout is not an upload failure and must not trigger another submission.
