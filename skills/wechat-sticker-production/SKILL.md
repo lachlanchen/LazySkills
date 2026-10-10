@@ -27,6 +27,15 @@ If the user requests a whole first album, the pilot is a style checkpoint, not t
 
 The first still must already communicate the emotion. Inspect at 240 px and chat-like 120 px, with audio absent. Check character identity, limb count, expression, text, crop, motion, and three repeated loops. A smooth global image wobble is not a substitute for a character acting.
 
+For this owner's conversational stickers, prefer articulated acting over a rigid
+turntable rotation: a beckoning elbow/wrist, questioning eyebrows, a small nod
+or a balanced step with visible knee/ankle movement. Keep the face readable;
+describe which joints move and how the weight settles. A spin is appropriate
+only when it serves the intended action. Review the middle of the clip, not
+just its matching first/last frames. When replacing a mechanical turn, retain
+the old native clip and GIF in the existing deviation-candidates gallery with
+its original provenance; show the new version separately before distribution.
+
 An owner may find an unexpected detail funny and accept it. Record that specific selection alongside the visible deviation; do not silently replace it or call it perfectly faithful. Preserve any separately authorized alternate for comparison. Acceptance of one variant is not a blanket quality waiver for the rest of the series.
 
 For future references, use one approved character palette and neutral lighting within each pack. Compare Aya's red-orange fur before animation; scene lighting and GIF palette reduction can both change its appearance. Preserve color/expression differences the owner accepts, particularly in submitted packs. A website redesign should not change the successful generation prompts or animation pipeline.
