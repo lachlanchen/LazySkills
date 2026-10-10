@@ -54,3 +54,25 @@ hash large deployment archives as streams on low-memory hosts.
 Record the exact release, own service, site URL and verified sandbox outcomes.
 Distinguish a local sync-folder copy from confirmed cloud upload, and catalog
 provisioning from a completed real purchase.
+
+## External Media Hosting
+
+Separate public GIF previews from order-protected language ZIPs before moving
+bandwidth off the shop host. Use a selected-artwork allowlist, retain originals,
+and never include private review/account material in Git or a public CDN.
+Public hosting does not change the artwork license or payment entitlement.
+
+GitHub Pages excludes e-commerce hosting. GitHub Releases can hold versioned
+project downloads but public asset links are not an authorization mechanism.
+jsDelivr's GitHub package/file limits also need checking before a large artwork
+migration. Verify current official terms instead of promising unlimited free
+commercial hosting. Object storage with direct CDN delivery can be a better
+fit; leave checkout on the application backend. Check caching, CORS, individual
+downloads, old paid receipts and rollback before switching the catalog.
+
+For owner-requested attribution, export a separate edition with the small
+`@lazyingart` corner credit, preserving source timing and accepted animation.
+The GIPHY exporter applies it by default; inspect faces, gesture extremes and
+existing lettering. A local credited derivative is not an updated live post.
+Where a platform lacks media replacement, new uploads get new URLs. Keep old
+posts intact and avoid duplicate pending submissions.
