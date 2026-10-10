@@ -16,6 +16,13 @@ PACKAGING = [('banner.jpg', (750, 400)), ('cover.png', (240, 240)),
              ('reward-thanks.png', (750, 750))]
 
 
+def price_label(meta):
+    mode = meta.get('price_mode', 'paid')
+    if mode not in {'free', 'paid'}:
+        raise ValueError('price_mode must be free or paid')
+    return '免费' if mode == 'free' else '10 微信豆'
+
+
 def validate_packaging(album):
     """Check every local asset before changing an existing remote draft."""
     for name, size in PACKAGING:
@@ -96,6 +103,7 @@ def main():
     if args.receipt.exists():
         raise SystemExit("Receipt exists: resume the saved work instead of creating a duplicate")
     meta = json.loads(args.metadata.read_text())
+    price = price_label(meta)
     files = sorted((args.album / "gifs").glob("*.gif"))
     if not 8 <= len(files) <= 24 or len(meta["words"]) != len(files):
         raise ValueError("Count mismatch")
@@ -126,7 +134,7 @@ def main():
                                 ("textarea", meta["description"]),
                                 ("input[placeholder=填写版权信息]", meta["copyright"])]:
             fill(cdp, selector, value)
-        for text in ["卡通表情/其他", "日常", "软萌可爱", meta.get("theme", "万能通用"), "全球", "10 微信豆", "接受赞赏"]:
+        for text in ["卡通表情/其他", "日常", "软萌可爱", meta.get("theme", "万能通用"), "全球", price, "接受赞赏"]:
             choose(cdp, text)
         fill(cdp, "input[placeholder=最少填写5个字]", meta["thanks"])
         cdp.eval("document.querySelector('dt.weui-desktop-form__dropdowncascade__dt').click()")
@@ -153,7 +161,7 @@ def main():
         record = cdp.eval("""({url:location.href,title:document.querySelector('input[placeholder=填写表情专辑名称]').value,
           words:[...document.querySelectorAll('input[placeholder=输入含义词]')].map(x=>x.value),
           checked:[...document.querySelectorAll('input:checked')].map(x=>x.parentElement.innerText.trim())})""")
-        if record["words"] != meta["words"] or record["title"] != meta["title"] or not {"10 微信豆", "接受赞赏"}.issubset(record["checked"]):
+        if record["words"] != meta["words"] or record["title"] != meta["title"] or not {price, "接受赞赏"}.issubset(record["checked"]):
             raise ValueError("Saved settings do not match; preserve this work and inspect")
         verify_packaging(cdp)
         record.update(status="saved_draft_not_submitted", id=saved)

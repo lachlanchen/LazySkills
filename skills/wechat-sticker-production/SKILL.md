@@ -81,6 +81,18 @@ Reuse the user's specified authorized Chrome/CDP profile. Use available browser 
 
 For albums choose 表情专辑 and 动态表情 instead of the single route. Upload sorted GIFs into one form, append only missing files when staging uploads, and verify remote order and meaning words. Banner, cover and icon have separate file inputs. Re-read checked values after each reactive form update. Use a name within eight Chinese characters, a short viewer-facing description, and the appropriate daily/cute classification. Confirm the complete count and thumbnails before one submission; retain the durable work URL and review status. Do not resubmit an already pending pilot single.
 
+For an authorized compact update of a listed pack, use its existing Modify control
+and inspect the monthly edit allowance. If exhausted, preserve the live listing
+and prepared edition; do not unlist or duplicate it. A GIF-only replacement should
+snapshot and verify all other metadata, packaging, price and appreciation after
+reload. Submission success may coexist with `已上架` and `信息审核中`: the old
+release is live while the new edition awaits review.
+
+For a specifically requested free extension, select `免费` explicitly and retain
+appreciation. The staging helper accepts metadata `price_mode: "free"`; its
+existing paid default is unchanged. Verify both choices after saving. A draft
+upload is not review submission.
+
 A blank upload route after login can be a failed static-resource request. Inspect loading evidence; revisit the dashboard and reopen the same route before replacing the browser or asking for another login.
 
 A new work ID alone does not prove a saved draft. GIF previews may remain local blobs until Save; verify complete local thumbnails first, then remote GIFs and all five packaging roles after reload, along with text, paid mode and appreciation. If login expires during Submit, recover the session and inspect that work's status before retrying. `stage_wechat_album.py` stages/saves empty drafts; `replace_wechat_draft_gifs.py` edits an explicitly identified existing draft. Neither submits review. See [series expansion and review](references/series-expansion-and-review.md) for the verified recovery sequence.
