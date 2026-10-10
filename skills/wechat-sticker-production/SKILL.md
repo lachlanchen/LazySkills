@@ -13,6 +13,12 @@ For this owner, each selected formal sticker must have a distinct animation acro
 
 Define a small series around common chat replies. Each sticker should work alone, while shared clothes, palette, character relationships, or a small daily-life arc connect the set. Prefer one or two clear subjects, a large expressive face, a simple backdrop, and one readable action. Learn from public sticker collections without copying their characters or assets.
 
+For this owner's future cross-platform packs, use 16 distinct animations by
+default, or 24 for a fuller theme. Verify current animated-pack limits on each
+target platform before rendering. Choose the portable count up front rather
+than padding 12/20-item packs later. Already prepared or approved exceptions
+stay intact unless the owner requests a count change.
+
 For LALACHAN, inspect the canonical individual images first. Aya is the red panda in a navy sailor outfit; Lala is the black-and-white panda. Preserve the user's approved reference, including prior versions. Do not force every buddy or branded prop into every sticker.
 
 Work one sticker at a time when requested: reference -> user/style acceptance -> local animation -> small-size/loop review -> upload. Planned stickers are not generated stickers. Later cute-angry interactions can form reply pairs such as 哼 / 给你 / 好吧 without becoming hurtful or requiring the full story to understand them.
