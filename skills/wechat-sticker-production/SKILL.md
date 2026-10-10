@@ -150,6 +150,15 @@ For this owner's sticker series, keep the approved offline gallery design and ex
 
 `build_sticker_library.py` provides a portable all-series overview. Clicking a GIF opens the embedded viewer; previous/next respects filters, and Close/Escape/browser Back restore the review position. Keep old assets and avoid periodic reloads during inspection. Album backlinks depend on destination depth; verify them after copying. Use `sticker_review_sheets.py` for phase/chat-size samples plus running-GIF review.
 
+For artwork-only review bundles, the library reads captions from
+`review-manifest.json`; private per-GIF sidecars need not be exported. Use
+`snapshot_wechat_gallery.py --all-editions` on a combined library to show its
+All tab and load hidden candidates before full-page/per-GIF capture.
+`build_sticker_review_bundle.py` can select a per-item `gif_edition` without
+overwriting prior exports. When lettering overlaps moving art,
+`probe_sticker_caption.py` tests caption positions against the whole motion
+union before a new GIF export; this packaging adjustment does not call a model.
+
 Use `--archive-root` to include preserved exports in separate historical and alternative views. Exact copied GIFs are indexed once, without deleting originals. Public preparation is opt-in with `public: true` and `--public-only` into a new empty destination; it never deploys. See [independent editions and gallery](references/independent-editions-gallery.md) for audit boundaries, portable exports and browser tests.
 
 See [the album production runbook](references/album-production.md) for the full sequential workflow, resume rules, upload ordering and resource lessons.

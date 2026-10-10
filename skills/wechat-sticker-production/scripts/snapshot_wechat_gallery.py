@@ -83,6 +83,8 @@ def main():
     parser.add_argument("destination", type=Path)
     parser.add_argument("--cdp-url", required=True)
     parser.add_argument("--page-id", required=True, help="Existing local gallery tab, not an account tab")
+    parser.add_argument("--all-editions", action="store_true",
+                        help="Show the library's All tab before capturing current and archived GIFs")
     args = parser.parse_args()
     album = args.album.resolve()
     destination = args.destination.resolve()
@@ -99,9 +101,17 @@ def main():
         cdp.navigate(url)
         cdp.bring_to_front()
         deadline = time.monotonic() + 30
+        editions_selected = not args.all_editions
         while time.monotonic() < deadline:
+            if not editions_selected:
+                editions_selected = cdp.eval("location.href === " + json.dumps(url) +
+                    " && document.readyState === 'complete' && (() => {"
+                    "const all=document.querySelector('[data-edition=all]');"
+                    "if(!all)return false; all.click();"
+                    "document.querySelectorAll('img').forEach(i=>i.loading='eager');"
+                    "return true;})()") is True
             ready = cdp.eval("location.href === " + json.dumps(url) + " && document.readyState === 'complete' && document.querySelectorAll('main figure img').length > 0 && [...document.querySelectorAll('header img, main figure img')].every(i => i.complete && i.naturalWidth > 0)")
-            if ready is True:
+            if ready is True and editions_selected:
                 break
             time.sleep(.25)
         else:

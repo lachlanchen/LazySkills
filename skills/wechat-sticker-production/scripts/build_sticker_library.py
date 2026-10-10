@@ -71,6 +71,14 @@ def build(config, output, archive_root=None, public_only=False):
             raise ValueError('Pack id must be a portable slug')
         folder = Path(pack['folder']).expanduser()
         files = pack.get('files', sorted((folder / 'gifs').glob('*.gif')))
+        review_labels = {}
+        review_manifest = folder / 'review-manifest.json'
+        if review_manifest.is_file():
+            for row in json.loads(review_manifest.read_text()).get('items', []):
+                relative = Path(row.get('file', ''))
+                if (len(relative.parts) == 2 and relative.parts[0] == 'gifs'
+                        and isinstance(row.get('label'), str)):
+                    review_labels[relative.name] = row['label']
         status = pack.get('public_status', '') if public_only else pack['status']
         entry = {'id': pack['id'], 'title': pack['title'], 'status': status,
                  'group': pack['group'], 'count': len(files), 'expected': pack.get('expected', len(files))}
@@ -86,7 +94,9 @@ def build(config, output, archive_root=None, public_only=False):
                 raise ValueError('Existing copy does not match; preserve and inspect')
             sidecar = path.with_suffix('.json')
             info = json.loads(sidecar.read_text()) if sidecar.exists() else {}
-            label = pack.get('labels', {}).get(path.name) or info.get('label') or info.get('layout', {}).get('label') or path.stem
+            label = (pack.get('labels', {}).get(path.name) or info.get('label')
+                     or info.get('layout', {}).get('label')
+                     or review_labels.get(path.name) or path.stem)
             with Image.open(path) as im:
                 size, frames = im.size, im.n_frames
             note = '' if public_only else pack.get('notes', {}).get(path.name, '')
