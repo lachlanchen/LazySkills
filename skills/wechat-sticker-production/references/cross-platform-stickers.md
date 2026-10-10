@@ -48,6 +48,26 @@ Use relevant expression/character tags and an actual owned source website.
 Be truthful about AI-assisted origin. An application submission and public GIF
 URLs do not establish Instagram partner-search availability.
 
+The successful upload page can remain at `/upload/finalize`. Verify the
+expected number of `Open Sticker` links and `Open Channel`; a navigation
+timeout is not an upload failure and must not trigger another submission.
+Keep an intent receipt before clicking Upload and reconcile completed links
+after interruptions. Add tags one at a time through the visible add button,
+waiting for the input to clear. Save the source URL and check public visibility.
+
+For new multilingual packs, localize the approved clean native clips rather
+than relabeling an already lettered GIF. The LALACHAN
+`localize_sticker_selection.py` helper reuses the shop's word-aware English
+renderer; square CJK character spacing is unsuitable for English. Review
+longer labels over the complete motion and preserve earlier exports.
+
+For LINE, `stage_line_sticker_pack.mjs` saves an explicit metadata/asset edition;
+`submit_line_sticker_review.mjs --confirm-review` separately requests review.
+Both take private receipt paths and the installed Playwright module through
+configuration. Inspect the actual lowest price and auto-release setting, then
+reload to verify `Waiting for Review`. In WeChat a taken album title should be
+corrected on the same draft, not by creating a duplicate work.
+
 Telegram, GIPHY, LINE and WeChat have different formats and commercial models.
 Do not invent a paid tier where a platform offers free sharing only. Check
 eligibility before preparing submissions: Zalo's published guide conflicts with
