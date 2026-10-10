@@ -39,6 +39,14 @@ Discover the current LocalVideoGen API and its resource policy from the installe
 
 Check RAM, swap, GPU and queue before rendering. Small output dimensions do not eliminate model-loading memory. Keep the normal resource gates; clean up only verified owned idle runtimes. Never close an active VM or another project's service just to fit a render. Stop the render services you launched when finished, while preserving a browser or image viewer needed for user review.
 
+If RAM is unexpectedly scarce, inspect duplicate noVNC viewer tabs as well as
+model processes. Use Chrome Task Manager to match tab titles to renderer PIDs;
+high RSS alone does not prove a process is disposable. Close redundant viewers
+of the same project desktop while retaining one review view, its noVNC server
+and the actual logged-in remote browser. Recheck memory after pages are released
+and rerun the unchanged resource gate. A viewer can consume many GiB without
+being the browser that owns the task or its login.
+
 Bundled `scripts/render_wechat_sticker.py` supports the local H3 API contract used by this workflow. It records submission intent and receipt, fingerprints inputs, and resumes the same job after interruption. An ambiguous POST is blocked from automatic retry. An explicit preflight rejection is not a completed GPU attempt; preserve that evidence and correct the actual prompt/contract before resubmitting. Do not disable a guard just to get past it.
 
 ## GIF packaging
