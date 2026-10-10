@@ -54,6 +54,24 @@ search tags, with relevant expression tags in addition. The verified channel is
 GIPHY/Instagram search eligibility. Existing uploads can be tagged through their
 Edit UI without creating duplicate GIFs; verify the tags after reload.
 
+The owner requests a small `@lazyingart` corner credit on future GIPHY GIFs.
+Choose a quiet corner using the entire motion, keep the credit fixed, and check
+chat-scale legibility on light/dark backgrounds. Export to a new edition folder.
+The current editor lacks a media-replacement control; preserve existing posts
+and apply this preference to future uploads rather than deleting old content.
+
+Tenor's website accepts at most ten files per batch. Its preview order can
+differ from file-input order: match preview blob hashes to source hashes before
+assigning expression tags. Save intent before one Upload click and reconcile
+the profile afterward. Processing, pending review and publicly searchable are
+different states. Inspect rejection notices for the exact item before retrying;
+a generic technical rejection does not prove every file failed. The LALACHAN
+`normalize_tenor_gif.py` helper creates a new full-frame transparent GIF and
+checks exact timing, dimensions and full decode. Repost a corrected rejected
+item once; preserve accepted/pending files and all originals. If it fails again,
+use support/appeal instead of repeated re-encoding uploads. Keep authenticated
+media URLs private because their query strings can contain credentials.
+
 The successful upload page can remain at `/upload/finalize`. Verify the
 expected number of `Open Sticker` links and `Open Channel`; a navigation
 timeout is not an upload failure and must not trigger another submission.
