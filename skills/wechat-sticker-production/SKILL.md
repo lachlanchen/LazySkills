@@ -101,6 +101,11 @@ Paid access is different from appreciation. Check the current official paid guid
 
 ## Records
 
+For Telegram, GIPHY and other distribution routes, read
+[cross-platform stickers](references/cross-platform-stickers.md). Reuse approved
+animation, verify current platform eligibility, preserve interrupted-send receipts
+and report upload, review and live install/search states separately.
+
 For a separate public sticker shop, read [multilingual storefronts](references/multilingual-storefront.md).
 Keep the selected public edition separate from the owner's archived alternatives;
 translate lettering from clean animations, and bind each purchase to all advertised
