@@ -60,12 +60,12 @@ def sync_file(source, destination):
         raise ValueError(f"Copy verification failed: {source.name}")
 
 
-def artwork_files(album):
+def artwork_files(album, flat_gifs=False):
     """Explicit allowlist: never export account receipts or browser screenshots."""
     names = ["index.html", "cover.png", "icon.png", "banner.jpg", "audit.json",
              "reward-guide.png", "reward-thanks.png"]
     return [album / name for name in names if (album / name).is_file()] + sorted(
-        (album / "gifs").glob("*.gif"))
+        (album if flat_gifs else album / "gifs").glob("*.gif"))
 
 
 def capture(cdp, path, clip):
@@ -85,10 +85,12 @@ def main():
     parser.add_argument("--page-id", required=True, help="Existing local gallery tab, not an account tab")
     parser.add_argument("--all-editions", action="store_true",
                         help="Show the library's All tab before capturing current and archived GIFs")
+    parser.add_argument("--flat-gifs", action="store_true",
+                        help="GIPHY export layout: GIFs beside index.html rather than in gifs/")
     args = parser.parse_args()
     album = args.album.resolve()
     destination = args.destination.resolve()
-    expected = sorted(path.name for path in (album / "gifs").glob("*.gif"))
+    expected = sorted(path.name for path in (album if args.flat_gifs else album / "gifs").glob("*.gif"))
     if not expected or not (album / "index.html").is_file():
         parser.error("an existing populated local gallery is required")
     if destination == album or album in destination.parents or destination in album.parents:
@@ -118,7 +120,8 @@ def main():
             raise TimeoutError("Gallery images did not finish loading")
         cdp.eval("document.fonts.ready.then(() => true)", await_promise=True)
         items = cdp.eval("[...document.querySelectorAll('main figure img')].map(i => {const r=i.getBoundingClientRect();return {src:i.getAttribute('src'),x:r.x+scrollX,y:r.y+scrollY,width:r.width,height:r.height};})")
-        if sorted(item["src"] for item in items) != ["gifs/" + name for name in expected]:
+        prefix = "" if args.flat_gifs else "gifs/"
+        if sorted(item["src"] for item in items) != [prefix + name for name in expected]:
             raise ValueError("Gallery and GIF folder differ; rebuild the gallery first")
         stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
         folder = album / "captures" / stamp
@@ -133,7 +136,7 @@ def main():
                     "files": [{"file": str(path.relative_to(folder)), "sha256": sha256(path)}
                               for path in sorted(folder.rglob("*.png"))]}
         (folder / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n")
-        files = artwork_files(album) + [path for path in folder.rglob("*") if path.is_file()]
+        files = artwork_files(album, args.flat_gifs) + [path for path in folder.rglob("*") if path.is_file()]
         for source in files:
             sync_file(source, destination / source.relative_to(album))
         print(json.dumps({"count": len(expected), "copied_files": len(files),
