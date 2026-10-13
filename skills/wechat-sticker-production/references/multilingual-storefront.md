@@ -72,7 +72,8 @@ downloads, old paid receipts and rollback before switching the catalog.
 
 For owner-requested attribution, export a separate edition with the small
 `@lazyingart` corner credit, preserving source timing and accepted animation.
-The GIPHY exporter applies it by default; inspect faces, gesture extremes and
-existing lettering. A local credited derivative is not an updated live post.
+This is opt-in: the owner's 2026-10-14 GIPHY default is uncredited, as recorded
+in [cross-platform stickers](cross-platform-stickers.md). Inspect faces, gesture
+extremes and existing lettering. A local credited derivative is not an updated live post.
 Where a platform lacks media replacement, new uploads get new URLs. Keep old
 posts intact and avoid duplicate pending submissions.
