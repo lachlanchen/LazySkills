@@ -48,15 +48,18 @@ Use relevant expression/character tags and an actual owned source website.
 Be truthful about AI-assisted origin. An application submission and public GIF
 URLs do not establish Instagram partner-search availability.
 
-For this owner's Aya/Lala collections, use `ayalala` and `lazyingart` as common
-search tags, with relevant expression tags in addition. The verified channel is
+For this owner's Aya/Lala collections, use `ayalala` and relevant expression
+tags. The 2026-10-14 Japanese upload request omits the `lazyingart` metadata
+tag. The verified channel is
 `@lazyingart`; preserve its handle. Report tag-save success separately from
 GIPHY/Instagram search eligibility. Existing uploads can be tagged through their
 Edit UI without creating duplicate GIFs; verify the tags after reload.
 
-The owner requests a small `@lazyingart` corner credit on future GIPHY GIFs.
-Choose a quiet corner using the entire motion, keep the credit fixed, and check
-chat-scale legibility on light/dark backgrounds. Export to a new edition folder.
+The owner's 2026-10-14 default is no visible corner credit on future GIPHY GIFs,
+superseding the earlier `@lazyingart` overlay. For Japanese editions, enlarge
+lettering from clean native animation where space permits and check 120-pixel
+previews on light/dark backgrounds, keeping faces/gestures clear.
+Export to a new edition folder.
 The current editor lacks a media-replacement control; preserve existing posts
 and apply this preference to future uploads rather than deleting old content.
 
