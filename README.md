@@ -1,4 +1,8 @@
-﻿[English](README.md) Â· [ç®€ä½“ä¸­æ–‡](i18n/README.zh-CN.md) Â· [ç¹é«”ä¸­æ–‡](i18n/README.zh-TW.md) Â· [æ—¥æœ¬èªž](i18n/README.ja.md) Â· [í•œêµ­ì–´](i18n/README.ko.md) Â· [FranÃ§ais](i18n/README.fr.md) Â· [EspaÃ±ol](i18n/README.es.md) Â· [Deutsch](i18n/README.de.md) Â· [Italiano](i18n/README.it.md) Â· [PortuguÃªs](i18n/README.pt-BR.md) Â· [Ð ÑƒÑÑÐºÐ¸Ð¹](i18n/README.ru.md) Â· [Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©](i18n/README.ar.md)
+LazyingArt profile: [English](https://github.com/lachlanchen/lachlanchen/blob/main/README.md) · [العربية](https://github.com/lachlanchen/lachlanchen/blob/main/i18n/README.ar.md) · [Español](https://github.com/lachlanchen/lachlanchen/blob/main/i18n/README.es.md) · [Français](https://github.com/lachlanchen/lachlanchen/blob/main/i18n/README.fr.md) · [日本語](https://github.com/lachlanchen/lachlanchen/blob/main/i18n/README.ja.md) · [한국어](https://github.com/lachlanchen/lachlanchen/blob/main/i18n/README.ko.md) · [Tiếng Việt](https://github.com/lachlanchen/lachlanchen/blob/main/i18n/README.vi.md) · [中文 (简体)](https://github.com/lachlanchen/lachlanchen/blob/main/i18n/README.zh-Hans.md) · [中文（繁體）](https://github.com/lachlanchen/lachlanchen/blob/main/i18n/README.zh-Hant.md) · [Deutsch](https://github.com/lachlanchen/lachlanchen/blob/main/i18n/README.de.md) · [Русский](https://github.com/lachlanchen/lachlanchen/blob/main/i18n/README.ru.md)
+
+[![LazyingArt banner](https://github.com/lachlanchen/lachlanchen/raw/main/figs/banner.png)](https://lazying.art)
+
+[English](README.md) · [中文 (简体)](i18n/README.zh-CN.md) · [中文（繁體）](i18n/README.zh-TW.md) · [日本語](i18n/README.ja.md) · [한국어](i18n/README.ko.md) · [Français](i18n/README.fr.md) · [Español](i18n/README.es.md) · [Deutsch](i18n/README.de.md) · [Italiano](i18n/README.it.md) · [Português](i18n/README.pt-BR.md) · [Русский](i18n/README.ru.md) · [العربية](i18n/README.ar.md)
 
 # LazySkills
 
