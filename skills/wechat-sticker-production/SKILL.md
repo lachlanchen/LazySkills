@@ -13,17 +13,21 @@ For this owner, each selected formal sticker must have a distinct animation acro
 
 Define a small series around common chat replies. Each sticker should work alone, while shared clothes, palette, character relationships, or a small daily-life arc connect the set. Prefer one or two clear subjects, a large expressive face, a simple backdrop, and one readable action. Learn from public sticker collections without copying their characters or assets.
 
-For this owner's future cross-platform packs, use 16 distinct animations by
-default, or 24 for a fuller theme. Verify current animated-pack limits on each
-target platform before rendering. Choose the portable count up front rather
-than padding 12/20-item packs later. Already prepared or approved exceptions
-stay intact unless the owner requests a count change.
+For this owner's future series, default to **two packs: 16 free core stickers
+and 16 additional paid stickers**, 32 distinct animations (2026-10-13).
+Both receive the same visual quality; the expansion adds useful situations and
+character interactions, not relabeled free animations. Verify each destination's
+current limits and monetization support; keep existing editions/prices intact.
+Read [paired-pack planning](references/paired-pack-planning.md) before choosing
+the phrase/character list. Balance common replies across all four over successive
+series, including more thanks and encouragement for Lala. Examples are flexible,
+not a fixed list or a requirement to give every character every word in one pack.
 
 For LALACHAN, inspect the canonical individual images first. Aya is the red panda in a navy sailor outfit; Lala is the black-and-white panda. Preserve the user's approved reference, including prior versions. Do not force every buddy or branded prop into every sticker.
 
 Work one sticker at a time when requested: reference -> user/style acceptance -> local animation -> small-size/loop review -> upload. Planned stickers are not generated stickers. Later cute-angry interactions can form reply pairs such as 哼 / 给你 / 好吧 without becoming hurtful or requiring the full story to understand them.
 
-If the user requests a whole first album, the pilot is a style checkpoint, not the deliverable. Establish a complete 8-24-sticker scope using the live platform limits, then finish that scope sequentially. User additions such as hugs, kisses, shyness and encouragement can extend the same album. Keep each GIF useful independently and do not force all four characters into every composition.
+For a complete series request, the pilot is a style checkpoint, not the deliverable. Establish the paired 16+16 scope unless explicitly overridden, verify live platform limits, then finish that scope sequentially. Keep each GIF useful independently and do not force all four characters into every composition.
 
 The first still must already communicate the emotion. Inspect at 240 px and chat-like 120 px, with audio absent. Check character identity, limb count, expression, text, crop, motion, and three repeated loops. A smooth global image wobble is not a substitute for a character acting.
 
@@ -85,7 +89,7 @@ The owner's latest 2026-10-09 choice is **edge / 贴边版 for formal publicatio
 
 Read the current [WeChat official specifications](https://sticker.weixin.qq.com/cgi-bin/mmemoticon-bin/readtemplate?t=guide/index.html#/makingSpecifications#specifications_stickers). On 2026-10-04 a dynamic single used 240 x 240 GIF, looping, <=500 KB. This helper conservatively targets 500,000 bytes. The meaning word allowed four Chinese characters. Albums required 8-24 images. LINE APNG and WeChat effect frame limits are not GIF requirements.
 
-For a complete album, use `scripts/audit_wechat_album.py ALBUM --expected 24` (or the actual planned count). Set `--title` for subsequent series; `--partial` permits progress previews but is not final acceptance. It writes a portable gallery and checks GIF dimensions, loop, byte limit, duplicate content, transparent cover/icon and banner. The layout expects `gifs/*.gif`, `cover.png` (240 square), `icon.png` (50 square), and `banner.jpg` (750 x 400). Full-size originals stay preserved. A high-quality JPEG can fit the banner limit when its PNG is too large.
+For a complete album, use `scripts/audit_wechat_album.py ALBUM --expected 16` (or the actual explicitly planned count). Set `--title` for subsequent series; `--partial` permits progress previews but is not final acceptance. It writes a portable gallery and checks GIF dimensions, loop, byte limit, duplicate content, transparent cover/icon and banner. The layout expects `gifs/*.gif`, `cover.png` (240 square), `icon.png` (50 square), and `banner.jpg` (750 x 400). Full-size originals stay preserved. A high-quality JPEG can fit the banner limit when its PNG is too large.
 
 Different albums need genuinely distinct covers and chat icons. Reusing either caused two review rejections on 2026-10-09. Give each volume its own pose/composition and matching banner, appreciation guide and thank-you art; preserve accepted GIFs when repairing packaging. Run `scripts/audit_wechat_packaging.py` across volumes and visually review the 50-pixel icons. See [distinct packaging](references/distinct-album-packaging.md) for exports and same-work resubmission.
 
@@ -111,10 +115,13 @@ snapshot and verify all other metadata, packaging, price and appreciation after
 reload. Submission success may coexist with `已上架` and `信息审核中`: the old
 release is live while the new edition awaits review.
 
-For a specifically requested free extension, select `免费` explicitly and retain
-appreciation. The staging helper accepts metadata `price_mode: "free"`; its
-existing paid default is unchanged. Verify both choices after saving. A draft
-upload is not review submission.
+For each paired release, set `price_mode: "free"` on the free core and
+`price_mode: "paid"` on the expansion explicitly, including a separately
+requested free extension. The staging helper's historical paid default is not
+the series plan. Keep appreciation enabled where supported and verify price and
+appreciation after saving. A draft upload is not review submission. If a target
+cannot express the requested free/paid split, report that limitation rather than
+silently changing the distribution plan.
 
 A blank upload route after login can be a failed static-resource request. Inspect loading evidence; revisit the dashboard and reopen the same route before replacing the browser or asking for another login.
 
