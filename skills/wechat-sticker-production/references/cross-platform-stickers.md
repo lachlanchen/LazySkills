@@ -60,8 +60,29 @@ superseding the earlier `@lazyingart` overlay. For Japanese editions, enlarge
 lettering from clean native animation where space permits and check 120-pixel
 previews on light/dark backgrounds, keeping faces/gestures clear.
 Export to a new edition folder.
-The current editor lacks a media-replacement control; preserve existing posts
-and apply this preference to future uploads rather than deleting old content.
+The current editor lacks a media-replacement control. GIPHY hosts the upload;
+the source website URL is attribution, not a live source for sticker pixels.
+A new file receives a new public URL. The owner allowed deletion/reupload, then
+clarified that both versions may remain: keep old posts and new clean editions
+for this refresh, with all local artifacts preserved. A no-credit preference
+alone never authorizes arbitrary future deletion or hiding.
+
+Apply small-display checks to English and Chinese as well as Japanese. Keep
+English words horizontal, use natural short expressions, and review actual
+decoded GIF pixels at 120 px on light and dark backgrounds. For cleaner edges,
+use selected native animation before adding text. A simple white threshold can
+leave floor patches; an optional existing local U2Net model can separate these
+while preserving white fur. Validate every animation and preserve the prior
+cutout if the semantic mask loses props or thin limbs. No new animation render
+is needed. The LALACHAN `export_large_caption_giphy.py --matte-model` records
+model/method hashes and uses CPU only; it does not download weights.
+
+Owner language direction: WeChat Chinese; LINE Japanese first, with selected
+English/Traditional Chinese expansion; GIPHY EN/JA/ZH. Tenor documents Japanese
+and Simplified/Traditional Chinese localization, not audience counts. Start
+with English and add selected useful localized versions when authorized.
+`@lazyingart` searches the account, not Japanese exclusively; observed language
+splits in Instagram keyword results are not guaranteed.
 
 Tenor's website accepts at most ten files per batch. Its preview order can
 differ from file-input order: match preview blob hashes to source hashes before
