@@ -42,3 +42,15 @@ Show one recognizable problem, one real product action, and a small human payoff
 - Stop only the runtime launched for this task after evidence capture, unless the user is actively reviewing it. An accepted file is the evidence, not an idle GPU process.
 
 Public metadata should discuss the reader's problem and the real product naturally. Do not lead with model names, render settings or “this AI video.” Use required platform synthetic-content controls separately; do not present fictional characters as genuine customer testimonials.
+
+## LazyingArt publication defaults
+
+An approved clean preview is not an instruction to omit subtitles from publication. Unless the owner explicitly requests an exception, use `lazyedit-publish-workflow` to publish with corrected **English, Japanese, Chinese and French** subtitles. Reuse an audio-checked SRT rather than transcribing the accepted film again. In LazyEdit, top-to-bottom `en,ja,zh-Hant,fr` is requested with the bottom-to-top CLI order `--languages fr,zh-Hant,ja,en`.
+
+- **Native portrait:** `--no-portrait-blur-fill`. Preserve the picture's original framing; use outlined subtitles without a filled panel.
+- **Landscape adapted for vertical social posts:** enable the normal portrait background-fill layout, keeping the original foreground sharp and the subtitle area readable. Do not apply it twice.
+- Keep the approved performance, voices, music and end card. Add only the publishing overlays; use the configured Studio logo unless the owner specifies otherwise.
+- Prepare with `--no-publish`, inspect the actual four-language text, timing and rendered mobile readability, then publish the inspected output. Check that silent sections stay silent and that subtitles do not cover the main UI.
+- If a prior publication is still running, prepare locally but wait for its final receipt before dispatch. Reconcile ambiguous jobs instead of submitting another. A specifically requested subtitled repost is a separate run; leave the earlier post untouched unless its deletion is authorized.
+
+These defaults concern LazyingArt product-introduction films, not unrelated music/player workflows with their own instructions. Save one-shot settings with the publication receipt; do not silently change shared Studio defaults.

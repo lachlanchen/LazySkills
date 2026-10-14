@@ -46,7 +46,7 @@ The final retained transcription matched all three intended lines after punctuat
 
 - English then Chinese reading layers, with pinyin, recorded from the actual Bunko browser reader at 1260 × 2220. The Japanese book title stayed visible; it was not a third reading layer. The English study translation was not called original English text.
 - Final timeline: approved performance 0–8.8 seconds; real-reader reveal inside it at 3.8–5.85; continuing real passage 8.8–15.8; end card 15.8–19.4.
-- Large Bunko icon/name top-left on a transparent background; brief opening hook. No burned dialogue subtitles in this review master; corrected Chinese SRT supplied separately.
+- Large Bunko icon/name top-left on a transparent background; brief opening hook. No burned dialogue subtitles in this review master; corrected Chinese SRT supplied separately. The owner subsequently required English/Japanese/Chinese/French subtitles for publication: approval of this clean review master does not waive the publishing defaults in `SKILL.md`.
 - Quiet existing Musia instrumental under the native conversation and reader. Full decode passed; measured final peak −5.5 dBFS. These are reference results, not mandatory mix targets for all products.
 - Owner's final refinement: remove filled store rectangles, use recognizable App Store/Google Play icons with small labels. Keep the product and benefit visually dominant.
 
