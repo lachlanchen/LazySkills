@@ -65,6 +65,7 @@ The repository is intentionally platform-neutral. A skill should be useful to Ag
 
 | Skill | What it does | Key tools |
 | --- | --- | --- |
+| `overleaf-local-sync` | Reconciles local and Overleaf manuscript edits, preserves collaborator changes, and verifies incremental text and figure updates. | Three-way comparison, source ZIPs, Git, browser/CDP, PDF verification |
 | `novnc-webapp-control` | Operates and validates first-party webapps through a dedicated, observable noVNC browser while preserving visible user controls and paid-action guards. | Xvfb, x11vnc, noVNC, Chrome/CDP, Playwright, screenshots, artifact probes |
 | `store-login-session` | Reuses Apple/Google store logins and recovers remembered-account sign-in before interrupting a release. | Existing noVNC/CDP profile, observed Continue controls, private credential handoff, submission reconciliation |
 | `lalachan-xyq-browser-video` | Generates and monitors Xiaoyunque videos through the logged-in browser UI, with visible validation before paid submission. | Chrome/CDP, upload verification, prompt fill, thread watcher, MP4 download fallback |

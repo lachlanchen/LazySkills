@@ -14,6 +14,13 @@
   },
   "skills": [
     {
+      "id": "overleaf-local-sync",
+      "path": "skills/overleaf-local-sync/SKILL.md",
+      "category": "academic-writing",
+      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "description": "Reconcile local LaTeX and Overleaf changes with three-way comparisons, preserve collaborator edits, apply incremental browser updates, and verify source and compiled output."
+    },
+    {
       "id": "wechat-sticker-production",
       "path": "skills/wechat-sticker-production/SKILL.md",
       "category": "image-workflow",

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Overleaf Local Sync"
+  short_description: "Sync local and Overleaf edits without losing either"
+  default_prompt: "Use $overleaf-local-sync to reconcile my local paper with Overleaf, preserve collaborator edits, and verify the compiled result."
