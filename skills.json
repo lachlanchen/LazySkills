@@ -14,6 +14,13 @@
   },
   "skills": [
     {
+      "id": "product-demo-local-video",
+      "path": "skills/product-demo-local-video/SKILL.md",
+      "category": "video-production",
+      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "description": "Create short product films with LocalVideoGen native dialogue, approved characters and readable real-app captures; refine accepted branding without regenerating the performance."
+    },
+    {
       "id": "overleaf-local-sync",
       "path": "skills/overleaf-local-sync/SKILL.md",
       "category": "academic-writing",

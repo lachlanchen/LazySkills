@@ -1,0 +1,4 @@
+interface:
+  display_name: "Local Product Demo Video"
+  short_description: "Natural dialogue and real app footage for product films"
+  default_prompt: "Use $product-demo-local-video to make a clear product introduction with natural dialogue and genuine app footage."
