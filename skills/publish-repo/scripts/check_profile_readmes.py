@@ -39,7 +39,9 @@ TRANSLATIONS = (
 )
 REQUIRED_FRAGMENTS = (
     "LazyingArt banner",
-    "| Donate | PayPal | Stripe |",
+    "https://lazying.art/media/brand/lazyingart-intro.gif",
+    "<!-- support:start -->",
+    "<!-- support:end -->",
     "https://chat.lazying.art/donate",
     "https://paypal.me/RongzhouChen",
     "https://buy.stripe.com/aFadR8gIaflgfQV6T4fw400",
@@ -49,6 +51,37 @@ REQUIRED_FRAGMENTS = (
 )
 STABLE_FENCE_LANGUAGES = {"bash", "sh", "shell", "console", "bibtex"}
 FENCE_PATTERN = re.compile(r"^```([^\n]*)\n(.*?)^```\s*$", re.MULTILINE | re.DOTALL)
+
+
+def brand_errors(text: str) -> list[str]:
+    """Validate displayed branding without flagging documentation examples."""
+    text = re.sub(r"(?ms)^(`{3,}|~{3,})[^\n]*\n.*?^\1\s*$", "", text)
+    errors = []
+    image = "https://lazying.art/media/brand/lazyingart-intro.gif"
+    linked_md = re.search(r"\[!\[[^\]]*\]\(" + re.escape(image) + r"\)\]\(https://lazying\.art/?\)", text)
+    linked_html = re.search(r'<a\b[^>]*href=[\x27"]https://lazying\.art/?[\x27"][^>]*>\s*<img\b[^>]*src=[\x27"]' + re.escape(image) + r'[\x27"][^>]*>\s*</a>', text, re.I)
+    if not (linked_md or linked_html):
+        errors.append("animated banner must link to the LazyingArt website")
+    panels = re.findall(r"<!-- support:start -->(.*?)<!-- support:end -->", text, re.S)
+    if len(panels) != 1:
+        errors.append("expected one managed support panel")
+    else:
+        badges = re.findall(r"\[!\[([^\]]*)\]\(([^)]+)\)\]\(([^)]+)\)", panels[0])
+        expected = {
+            "GitHub Sponsors": "https://github.com/sponsors/lachlanchen",
+            "LazyingArt Support": "https://chat.lazying.art/donate",
+            "PayPal Support": "https://paypal.me/RongzhouChen",
+            "Stripe Support": "https://buy.stripe.com/aFadR8gIaflgfQV6T4fw400",
+        }
+        if len(badges) != 4 or {label: target for label, _, target in badges} != expected:
+            errors.append("support badges must use the four approved labels and destinations")
+        if any(not url.startswith("https://img.shields.io/badge/") or "style=for-the-badge" not in url for _, url, _ in badges):
+            errors.append("support badges must use direct, consistent Shields images")
+        if re.search(r"camo\.githubusercontent\.com|RongzhouChen|(?:Donate|donate)-|logo=kofi", " ".join(url for _, url, _ in badges)):
+            errors.append("support badge images contain obsolete or personal labels")
+    if re.search(r"donate_(?:wechat|alipay)\.(?:png|jpe?g|svg)", text, re.I):
+        errors.append("remove Alipay/WeChat payment QR embeds from the README")
+    return errors
 
 
 def first_content_line(text: str) -> str:
@@ -89,6 +122,7 @@ def validate(repo: Path) -> list[str]:
     root_text = root_path.read_text(encoding="utf-8")
     if first_content_line(root_text) != ROOT_HEADER:
         errors.append("README.md does not start with the exact 11-language header")
+    errors.extend(f"README.md: {error}" for error in brand_errors(root_text))
     for fragment in REQUIRED_FRAGMENTS:
         if fragment not in root_text:
             errors.append(f"README.md is missing required profile element: {fragment}")
@@ -104,6 +138,7 @@ def validate(repo: Path) -> list[str]:
             continue
         text = path.read_text(encoding="utf-8")
         label = f"i18n/{name}"
+        errors.extend(f"{label}: {error}" for error in brand_errors(text))
         if first_content_line(text) != I18N_HEADER:
             errors.append(f"{label} does not start with the exact 11-language header")
         for fragment in REQUIRED_FRAGMENTS:

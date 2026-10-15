@@ -6,6 +6,8 @@ The English README and ten files under `i18n/` form one synchronized public docu
 
 ## Language Header
 
+Use plain links only: no `Language:`, `Languages:` or `LazyingArt profile:` prefix. New full-profile publications require real translations, not eleven links to untranslated stubs.
+
 Root README:
 
 ```markdown
@@ -21,16 +23,23 @@ i18n README files:
 ## Banner
 
 ```markdown
-[![LazyingArt banner](https://github.com/lachlanchen/lachlanchen/raw/main/figs/banner.png)](https://github.com/lachlanchen/lachlanchen/blob/main/figs/banner.png)
+[![LazyingArt banner — apps and four buddies](https://lazying.art/media/brand/lazyingart-intro.gif)](https://lazying.art)
 ```
+
+Keep the historical static image and GitHub-hosted GIF available for existing forks and clones. Change the displayed source, not those assets.
 
 ## Support Panel
 
 ```markdown
-| Donate | PayPal | Stripe |
-| --- | --- | --- |
-| [![Donate](https://img.shields.io/badge/Donate-LazyingArt-0EA5E9?style=for-the-badge&logo=kofi&logoColor=white)](https://chat.lazying.art/donate) | [![PayPal](https://img.shields.io/badge/PayPal-RongzhouChen-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://paypal.me/RongzhouChen) | [![Stripe](https://img.shields.io/badge/Stripe-Donate-635BFF?style=for-the-badge&logo=stripe&logoColor=white)](https://buy.stripe.com/aFadR8gIaflgfQV6T4fw400) |
+<!-- support:start -->
+[![GitHub Sponsors](https://img.shields.io/badge/GitHub-Sponsors-EA4AAA?style=for-the-badge&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/lachlanchen)
+[![LazyingArt Support](https://img.shields.io/badge/LazyingArt-Support-0EA5E9?style=for-the-badge)](https://chat.lazying.art/donate)
+[![PayPal Support](https://img.shields.io/badge/PayPal-Support-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://paypal.me/RongzhouChen)
+[![Stripe Support](https://img.shields.io/badge/Stripe-Support-635BFF?style=for-the-badge&logo=stripe&logoColor=white)](https://buy.stripe.com/aFadR8gIaflgfQV6T4fw400)
+<!-- support:end -->
 ```
+
+One responsive badge row, no redundant table headings. Use the same labels across translations; translate surrounding support prose naturally. No personal payment QR images, account identifiers in badge labels, or Camo proxy URLs. Preserve the approved destinations; a generic badge does not make its linked recipient anonymous. Do not promise tax deductibility, rewards, service delivery or preferential support in exchange for a contribution. Removing embeds does not remove images from Git history.
 
 ## FUNDING.yml
 
@@ -115,7 +124,7 @@ Use a compact structure:
 3. Project title and one strong italic tagline.
 4. Badges for website, key artifacts, and GitHub Sponsors.
 5. One paragraph explaining what the repo is.
-6. Donation panel.
+6. Support panel.
 7. Visual signal: screenshot, render, diagram, or asset when available.
 8. System/project concept bullets.
 9. Current contents table with paths.

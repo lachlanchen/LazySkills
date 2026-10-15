@@ -38,6 +38,7 @@ Use this skill when the user asks to publish a local repository to GitHub, add r
 4. Commit intentionally:
    - use a concise imperative message;
    - include only files in scope.
+   - For routine LazyingArt README maintenance, prefer a neutral message such as `docs: tidy readme [skip ci]`, without private context, tags or release announcements. Public commits remain visible; this is not a notification-suppression guarantee.
 5. Publish:
    - run `scripts/publish_repo.sh` from this skill, or manually run the same `gh` steps.
 6. Verify:
@@ -53,15 +54,17 @@ Read `references/lachlanchen-profile-readme-style.md` before editing. Required o
 
 - `README.md` in English.
 - `i18n/README.ar.md`, `README.es.md`, `README.fr.md`, `README.ja.md`, `README.ko.md`, `README.vi.md`, `README.zh-Hans.md`, `README.zh-Hant.md`, `README.de.md`, and `README.ru.md`.
-- The 11-language header on every README, with root-relative links in the root README and `../README.md` links in i18n files.
-- LazyingArt banner from the profile README.
-- Donation panel with Donate, PayPal, and Stripe links.
+- The plain 11-language link row on every README, without `Language:` or `LazyingArt profile:` labels, with paths relative to that README.
+- The shared animated banner at `https://lazying.art/media/brand/lazyingart-intro.gif`, linking to `https://lazying.art`. Preserve historical banner assets and URLs.
+- The reference's compact four-button support panel: GitHub Sponsors, LazyingArt, PayPal and Stripe. No Alipay/WeChat QR embeds, recipient names in badge labels, or copied GitHub Camo image URLs.
 - `.github/FUNDING.yml` matching the lachlanchen profile sponsorship pattern.
 - `CITATION.cff` at repository root, plus a citation block in `README.md` and all i18n README files.
 - A concise repo-specific README body: project promise, visual/asset signal, current contents, quick start, validation/build commands, status, and links to key PDFs/docs/assets.
 - GitHub About metadata: a concise description, the most relevant public product or project homepage, and repo-specific topics including `lazying-art`.
 
 Treat the 11 README files as one public document set. When public-facing content changes materially, update every translation in the same publication commit. Do not machine-translate blindly if repo-specific terms matter. Preserve project names, command names, file paths, and badge labels. Translate section prose completely for each language, not only the headings.
+
+For a narrow maintenance request, preserve project prose and existing navigation; do not expand into unrelated metadata, citation or translation rewrites. Existing profile-language links are not full project translations. Report pre-existing gaps separately rather than inventing translation completeness. Use “Support” for voluntary project support; do not imply charitable or tax-deductible status. Payment links can expose recipient identity and remain subject to provider/account eligibility; README wording does not qualify the payment account.
 
 Before publishing, run `scripts/check_profile_readmes.py` from this skill against the target repository. It verifies all 11 files, navigation, profile panels, section counts, substantive prose, and stable command/BibTeX blocks; it complements rather than replaces a human-quality translation review. After pushing, verify the live default branch plus description, homepage, and topics with `gh repo view`.
 
