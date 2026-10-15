@@ -71,11 +71,18 @@ Apply small-display checks to English and Chinese as well as Japanese. Keep
 English words horizontal, use natural short expressions, and review actual
 decoded GIF pixels at 120 px on light and dark backgrounds. For cleaner edges,
 use selected native animation before adding text. A simple white threshold can
-leave floor patches; an optional existing local U2Net model can separate these
-while preserving white fur. Validate every animation and preserve the prior
-cutout if the semantic mask loses props or thin limbs. No new animation render
+leave floor patches. Framewise U2Net also removed white robot panels in the
+2026-10-16 audit; it is a baseline, not a reliable preservation guarantee.
+Validate every animation and preserve the prior cutout if the mask loses
+white fur, props or thin limbs. No new animation render
 is needed. The LALACHAN `export_large_caption_giphy.py --matte-model` records
 model/method hashes and uses CPU only; it does not download weights.
+
+For same-color foreground, enclosed gaps or moving-edge failures, read
+[video matting](video-matting.md). Use native RGB animation and reviewed masks;
+retain lossless RGBA masters. Platform converters preserve existing alpha and
+do not white-key it again. LINE's bounded RGB quantization must retain soft
+alpha rather than applying GIF-style binary transparency.
 
 Owner language direction: WeChat Chinese; LINE Japanese first, with selected
 English/Traditional Chinese expansion; GIPHY EN/JA/ZH. Tenor documents Japanese

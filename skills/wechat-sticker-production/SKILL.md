@@ -64,6 +64,11 @@ Bundled `scripts/render_wechat_sticker.py` supports the local H3 API contract us
 
 ## GIF packaging
 
+When making transparent LINE/GIPHY/Telegram editions, read
+[video matting](references/video-matting.md) for white foreground, enclosed gaps
+and moving-edge failures. Preserve approved alpha through platform conversion;
+background removal is a separately reviewed step, not repeated white-keying.
+
 Bundled helper: `scripts/video_to_wechat_gif.py`. Requires Python 3.11+, Pillow, FFmpeg, and an explicitly supplied CJK font when text is used.
 
 ```bash
