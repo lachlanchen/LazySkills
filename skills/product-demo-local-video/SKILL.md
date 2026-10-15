@@ -11,6 +11,7 @@ Show one recognizable problem, one real product action, and a small human payoff
 
 - **Accepted film, new icon/title/end card:** edit the existing master. Do not regenerate the performance or re-synthesize voices. Preserve its approved audio and unaffected frames; compare hashes where stream copying allows it.
 - **New introduction:** capture the actual app and establish one short scene before spending a render. Read [the tested Bunko recipe](references/bunko-native-dialogue.md) for the local H3 starting point, its limitations, and review checks.
+- **Fuller walkthrough:** when the owner asks to show several app areas or both sides of an interaction, read [immersive walkthroughs](references/immersive-walkthroughs.md). Connect those actions into one understandable journey; do not force a full-app request into a single-feature short.
 - **Publication:** use `lazyedit-publish-workflow` only when publishing is in scope. Creating a film or recording this skill is not permission to post it.
 
 ## Creative decisions that matter
@@ -22,6 +23,7 @@ Show one recognizable problem, one real product action, and a small human payoff
 - Avoid an old spoken guide containing unrelated words. It can contaminate generated dialogue. A requested voice match needs a clean, qualified reference and a separate listening check.
 - Keep approved character references separate and identify each clearly. Do not redesign familiar characters without the user's request.
 - Generate the scene and emotion; record the software. Model-invented phone text, buttons and results are not product evidence.
+- Treat an accepted film as a concrete style reference, not a guarantee that its seed or settings will reproduce the same quality. Preserve what the owner liked: delivery, readable framing, purposeful movement and real app outcomes. Inspect every new performance independently.
 
 ## Capture and edit
 
