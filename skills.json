@@ -14,6 +14,13 @@
   },
   "skills": [
     {
+      "id": "publisher-voice",
+      "path": "skills/publisher-voice/SKILL.md",
+      "category": "writing",
+      "platforms": ["aginti", "codex", "claude", "gemini", "copilot", "generic"],
+      "description": "Write reader-facing copy in the intended publisher's voice, separate private working discussion from publication, and preserve evidence and necessary disclosures."
+    },
+    {
       "id": "product-demo-local-video",
       "path": "skills/product-demo-local-video/SKILL.md",
       "category": "video-production",
