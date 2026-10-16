@@ -26,5 +26,44 @@ color thresholds cannot distinguish them. Global hole filling is not a fix.
 
 LALACHAN research implementation and runbook:
 `references/wechat-stickers/matting-research/README.md`.
-The 2026-10-16 CPU prototype is experimental, not an automatically approved
-batch-replacement pipeline. Existing live listings remain unchanged.
+The initial 2026-10-16 CPU/SAM 2 prototype is experimental. The later catalog
+repair reviewed 296 native animations with BiRefNet-lite semantic proposals,
+motion-gated smoothing and PyMatting boundaries. That is a supervised production
+workflow, not a newly trained model or guaranteed automatic cutout service.
+
+## Catalog Repair Lessons
+
+- Preserve the native RGB animation and source hash. Cache semantic predictions;
+  one reviewed RGBA master feeds every language/platform instead of re-keying
+  an already damaged GIF. Native animation and caption changes are separate.
+- Review dark and colored composites at several phases, then inspect decoded
+  platform output. White panels, tabletops, blankets, cables and effect marks
+  were common failure cases. Segmenter confidence alone did not catch them.
+- Apply local source-bound correction only where needed. Positive/negative
+  temporal anchors require motion confidence; textureless solid surfaces may
+  need explicitly corresponding geometric anchors at both endpoints and motion
+  changes. Preserve the rejected candidate and review the corrected motion.
+- A baked white vignette cannot be exactly inverted. Four office exports used
+  an explicitly documented approximate bottom-fade reconstruction. Do not call
+  this recovery of missing legs or apply it generally to white characters.
+- LINE preserves soft alpha even during palette compression. Validate opacity
+  at source time samples because identical adjacent APNG frames may merge.
+  LINE's maximum four-second playback is not an infinite-loop format.
+- Bind candidate approval, caption choice and delivery to hashes. Hold partial
+  encodes in their original folder; use a new edition for recovery. A remote
+  upload intent without a result requires reconciliation before another send.
+- Serialize shared-CDP controllers and bring the active platform tab forward.
+  GIPHY six-item batches avoid excessive decoding memory; Tenor accepts ten in
+  the qualified uploader. Telegram replaces exact snapshotted document IDs and
+  retains the pack URL. Never change paid-pack pricing or create paid duplicates
+  simply because a platform cannot replace approved artwork.
+- Export an artwork-only portable history gallery and verify copy hashes.
+  Platform receipts, account screenshots and private paths do not belong there.
+  Local Nutstore copying is not proof of cloud acknowledgement.
+
+Full commands, model pin/license, tests and limitations:
+`references/wechat-stickers/matting-research/catalog-repair-20261016.md`.
+
+Owner preference: new GIPHY editions have **no visible @lazyingart credit**;
+retain account/search tags. Preserve earlier credited posts unless separately
+authorized for retirement. This supersedes the earlier corner-credit preference.
