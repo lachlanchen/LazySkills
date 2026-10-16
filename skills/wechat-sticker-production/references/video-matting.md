@@ -67,3 +67,9 @@ Full commands, model pin/license, tests and limitations:
 Owner preference: new GIPHY editions have **no visible @lazyingart credit**;
 retain account/search tags. Preserve earlier credited posts unless separately
 authorized for retirement. This supersedes the earlier corner-credit preference.
+
+On 2026-10-16 the owner clarified that existing artwork may stay unchanged when
+the platform cannot replace it. Use reviewed alpha masters for future exports;
+do not treat account login as approval to unlist or duplicate an existing pack.
+Keep prepared repairs and prior editions. For an already running upload queue,
+finish and reconcile the in-flight submission before stopping further batches.
