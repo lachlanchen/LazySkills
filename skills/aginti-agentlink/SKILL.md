@@ -40,6 +40,11 @@ Do not rely on chat memory alone. Durable shared context must live in tracked do
 - Before controlling hardware or services, verify real state with probes, not conversation claims.
 - Use action contracts for cross-agent work: who owns which device, which commands are allowed, and what evidence closes the task.
 - Commit and push durable docs/skills after updating shared memory, unless the repo policy says otherwise.
+- For Codex messages, use the `codex-collaboration` recipient gate: full UUID,
+  verified workspace and current task owner. Keep messages short and readable;
+  send one material request/result with an evidence path and next action.
+  Do not broadcast unrelated work, repeat unchanged status or create
+  acknowledgement loops. A delayed packet does not reopen a closed operation.
 
 ## Workflow
 

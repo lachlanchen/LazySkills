@@ -90,7 +90,7 @@ Put a curated, non-private version under the project's tracked `references/` whe
 | Fresh bounded task, capture the result | `python3 "$CS" delegate --cwd DIR --prompt-file packet.md "-"` or `codex exec -C DIR --json -o last.md "PROMPT"` |
 | Continue an existing thread non-interactively | `codex exec resume UUID-or-name "PROMPT"` (or `$CS delegate --resume NAME`) |
 | Interactive session for the user, in tmux | `tmux new -d -s codex-NAME -c DIR "codex resume UUID-or-name"` |
-| Send a message into a live interactive session | `python3 "$CS" queue --thread NAME --message "..."` |
+| Send a message into a verified session | `python3 "$CS" queue --thread FULL_UUID --expected-cwd /absolute/recipient/project --message "..."` |
 | Branch without disturbing the original | `codex fork UUID "PROMPT"` (interactive) or `codex exec fork UUID "PROMPT"` |
 
 `codex exec` sandboxes: `read-only`, `workspace-write` (default here), `danger-full-access`. Only pass `--full-auto` (bypass approvals and sandbox) when the user runs Codex that way already, as their TUI status line shows.
@@ -104,6 +104,34 @@ Put a curated, non-private version under the project's tracked `references/` whe
 - Poll a Codex run through its `--json` event file or `tail`, never by reading the rollout mid-write with a full extract.
 - When both agents may commit to the same repo, each rebases before committing and never resets or reverts the other's changes.
 - Use `aginti-agentlink` conventions when more than one machine or repo is involved.
+
+### Recipient and message gate
+
+Before sending, resolve the intended owner's full UUID and verify its recorded
+workspace against the task's project. Names, prefixes and old handoffs are
+discovery aids, not sending targets. `queue` requires `--expected-cwd` and refuses
+missing, ambiguous or mismatched metadata. Use `--dry-run` to check routing
+without sending or spending inference quota. Do not bypass a refusal with the
+raw CLI. If the owner moved to another session, verify the replacement first.
+
+A correct directory alone does not prove task ownership. Check the current
+owner handoff and scope, especially when one session serves multiple projects.
+Do not forward a whole conversation or route build coordination to an unrelated
+product, video or publishing session.
+
+Send only when the recipient needs to act or a material result changes its next
+step. Use normal spacing and short prose: the result or request, the evidence
+path, then the exact next action and any essential boundary. Keep detailed
+hashes, logs and history in the packet rather than repeating them in chat.
+An instruction to work in a repo must name that repo, not just "your app".
+
+Combine related corrections into one update. Before resending, check whether the
+same packet/version was already delivered or superseded. Do not broadcast,
+send acknowledgement-only replies, repeatedly poll with messages, or revive a
+closed admission from a delayed notice. Unchanged state needs no new message.
+If send outcome is uncertain, inspect the existing receipt before any retry.
+The coordinator advances a real dependency; it does not make peers request
+another acknowledgement or rewrite unchanged evidence.
 
 ## Reporting
 

@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import argparse
 import datetime as _dt
+import hashlib
 import json
 import os
 import re
@@ -482,14 +483,54 @@ def cmd_delegate(args: argparse.Namespace) -> int:
     return proc.returncode
 
 
+def verify_queue_target(thread: str, expected_cwd: str) -> dict[str, str]:
+    """Check exact recipient identity without reading message bodies or starting a turn."""
+    if not UUID_RE.fullmatch(thread):
+        raise SystemExit("queue requires a full session UUID; use find for name/prefix lookup first")
+    expected = Path(expected_cwd).expanduser()
+    if not expected.is_absolute() or not expected.is_dir():
+        raise SystemExit("--expected-cwd must be an existing absolute project directory")
+    paths = sorted({p.resolve() for p in SESSIONS.rglob(f"rollout-*-{thread}.jsonl")})
+    if len(paths) != 1:
+        raise SystemExit(f"refusing queue: expected one exact rollout for {thread}, found {len(paths)}")
+    try:
+        with paths[0].open("rb") as stream:
+            raw = stream.readline(1024 * 1024 + 1)
+        if len(raw) > 1024 * 1024:
+            raise ValueError("oversized session metadata")
+        event = json.loads(raw)
+        meta = event.get("payload") or {}
+        if event.get("type") != "session_meta" or meta.get("id") != thread:
+            raise ValueError("session metadata ID does not match the recipient")
+        cwd = meta.get("cwd")
+        if not isinstance(cwd, str) or not Path(cwd).is_absolute() or not Path(cwd).is_dir():
+            raise ValueError("session has no verifiable project directory")
+        actual = Path(cwd).resolve(strict=True)
+        wanted = expected.resolve(strict=True)
+        if actual != wanted:
+            raise ValueError(f"recipient workspace is {actual}, not {wanted}")
+    except (OSError, ValueError, TypeError, AttributeError) as error:
+        raise SystemExit(f"refusing queue: {error}") from error
+    return {"thread": thread, "cwd": str(actual), "rollout": str(paths[0])}
+
+
 def cmd_queue(args: argparse.Namespace) -> int:
-    quota_gate(args.min_quota_percent, skip=args.skip_quota_check)
-    cmd = ["codex", "queue", "--thread", args.thread, "--message", args.message]
+    recipient = verify_queue_target(args.thread, args.expected_cwd)
+    if not args.message.strip():
+        raise SystemExit("refusing queue: empty message")
+    cmd = ["codex", "queue", "--thread", recipient["thread"], "--message", args.message]
     for img in args.image or []:
         cmd += ["-i", img]
     if args.dry_run:
-        print(json.dumps({"dry_run": True, "cmd": cmd}))
+        # A recipient check never starts a turn, queries quota, or prints private copy.
+        print(json.dumps({"dry_run": True, "recipient": recipient,
+                          "message_sha256": hashlib.sha256(args.message.encode()).hexdigest(),
+                          "image_count": len(args.image or []), "sent": False}))
         return 0
+    quota_gate(args.min_quota_percent, skip=args.skip_quota_check)
+    # Check again after the quota probe rather than sending on stale metadata.
+    if verify_queue_target(args.thread, args.expected_cwd) != recipient:
+        raise SystemExit("refusing queue: recipient changed during verification")
     return subprocess.run(cmd).returncode
 
 
@@ -558,7 +599,8 @@ def main(argv: list[str] | None = None) -> int:
     p.set_defaults(fn=cmd_delegate)
 
     p = sub.add_parser("queue", help="queue a message into a live interactive session")
-    p.add_argument("--thread", required=True)
+    p.add_argument("--thread", required=True, help="full session UUID; names/prefixes are lookup-only")
+    p.add_argument("--expected-cwd", required=True, help="intended recipient's absolute project directory")
     p.add_argument("--message", required=True)
     p.add_argument("--image", action="append")
     p.add_argument("--min-quota-percent", type=float, default=5.0)
