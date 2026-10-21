@@ -164,6 +164,14 @@ Always include: 不要字幕，不要生成任何字幕、说明文字、下三�
 Post-generation: always auto-download the finished MP4, verify it, copy it to Videos/, and send it back to the requesting chat. Submit to LazyEdit only when the current request explicitly asks for LazyEdit/import/process or public publishing.
 ```
 
+Carry the no-generated-subtitles requirement into every actual shot prompt and
+continuation, not just the opening request. Check any visible caption setting
+before each paid render and inspect sampled output frames. Approved physical
+words cards are props, not subtitle overlays. Acceptance of an existing
+subtitled output applies only to that output; preserve and disclose it without
+an unapproved paid rerender. LazyEdit publication subtitles remain enabled by
+default and are added separately after generation.
+
 For default work, target `30秒` and use `创作 Agent` / integrated-agent with
 `Seedance 2.0 Mini 体验版` / the cheapest visible suitable model. Use
 `沉浸式短片` when the user explicitly requests `15秒` or another duration that
