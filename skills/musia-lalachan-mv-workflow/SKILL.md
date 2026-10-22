@@ -112,6 +112,19 @@ ffmpeg -y -ss START_SECONDS -i "$MUSIA_ROOT/data/creative_projects/SONG/final/se
 
 ## Prompt Rules
 
+For each shot, specify the cast, expected count and positions. Each named
+character has only one physical instance in the scene: one Aya, one Sasa, one
+Lala and one Zhuangzi when all four appear. Reference views are the same
+individual, not extra cast members; do not force every buddy into every shot.
+Carry a no-duplicate-selves/no-identity-swaps constraint into continuations.
+Parallel travel/home scenes and memories should be distinct shots or clearly
+framed representations, not accidental copies sharing the same physical space.
+
+During review of new footage, check identities throughout entrances, camera
+moves, occlusion reveals and transitions, not only the first frame. Preserve
+approved music and performances; future-only feedback does not authorize
+rechecking or regenerating an already accepted MV.
+
 The generation prompt should include:
 
 - clean asset labels such as `图1`, `图2`, `音频1`;
