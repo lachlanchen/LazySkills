@@ -27,6 +27,15 @@ setup -> problem -> cooperation/twist -> payoff
 Dialogue must sound speakable in normal Chinese. If a line sounds like a report,
 translation, slogan, or AI explanation, rewrite it.
 
+## Continuing Adventure Preference
+
+For LALACHAN's serial adventures, favor gripping openings, escalating stakes,
+earned reversals and a final reveal that creates a concrete reason to follow
+the next episode. Begin from the preceding video's actual ending, complete
+the episode's immediate payoff, and alternate action with brief warmth or
+humor. Clear causality and distinct character choices make the twists work.
+Preserve an owner-approved story; let its readable action determine duration.
+
 ## Repeated Critique Loop
 
 Never accept the first draft for a LALACHAN story. Run a critique loop before
