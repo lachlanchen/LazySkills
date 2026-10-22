@@ -7,6 +7,31 @@ description: Use when generating, correcting, reviewing, documenting, publishing
 
 Use this skill for original song creation and review. For strict same-song localization, also use `musia-song-localization`.
 
+## Toolchain Maintenance
+
+For requests to update models or pursue current best quality, run
+`node bin/musia.js toolchain audit --online --output .musia/toolchain/latest.json`
+from Musia before installing anything. Read
+`references/music-toolchain-refresh-2026-10-22.md` in the Musia checkout for
+the reviewed pins, optional decoder, staged tools and qualification commands.
+This is an on-demand check, not permission for unattended upgrades.
+
+Keep the proven ACE XL Turbo/official-decoder route as the control until a
+licensed challenger wins a full-song listening comparison. ScragVAE is an
+installed optional decoder, not an established quality win. Select it explicitly
+with `musia ace-sweep --vae scragvae` in a new output directory. The runner
+fingerprints decoder bytes and refuses untraceable legacy resumes. Source
+staging, downloads, synthetic CPU tests and ASR scores are not music-quality
+approval. Reuse existing weights/environments; do not blanket-upgrade PyTorch.
+
+Run direct backend commands with `PYTHONNOUSERSITE=1`. A user-site import
+conflict is not evidence that the dedicated environment needs reinstalling.
+When NVIDIA telemetry fails, record the actual error and coordinate shared-host
+repair; do not reboot, unload drivers or kill peers. A CUDA availability result
+alone is not a GPU reservation. MuLaCover and YuE2 remain outside the commercial
+generation route pending applicable licensing clearance; VocalRender is a
+score-vocal watchlist item, not a tested replacement for full-song ACE.
+
 ## Default Repo
 
 ```text
