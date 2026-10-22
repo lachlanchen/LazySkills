@@ -48,6 +48,21 @@ owner's local/Pi workflow or authorize a new real post.
 
 ## Core Rule
 
+Keep the owner's two publication tracks distinct. Normal publication uses
+LazyEdit/AutoPublish and its configured accounts; promotion uses Postiz or the
+explicitly selected native/CDP account. Instagram `@lazyingart` (normal) and
+`@lazying.art` (promotion) are different destinations: verify the live account,
+not just the platform name. An explicit direct-Instagram request may use that
+selected CDP account; do not silently reroute it or cross-post to the other track.
+Record track, account and permalink together. Other platforms may share the
+same account across tracks, so check existing posts before duplicating an upload.
+
+For app promos, preserve the approved top-left app icon/title and final app/store
+card in the actual packaged MP4. Check the opening, UI insert and ending after
+subtitles/logo processing; a generic publisher logo does not replace app identity.
+Use genuine store artwork only for verified live destinations. These branding
+defaults do not add an app pitch to unrelated stories or authorize publication.
+
 Prefer the LazyEdit CLI over manual browser work. It creates normal LazyEdit jobs, so the webapp queue stays in sync.
 
 For a normal publish, run one `lazyedit_publish.py` command and give LazyEdit a
