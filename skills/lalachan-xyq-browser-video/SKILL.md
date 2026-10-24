@@ -139,6 +139,13 @@ Story writing rule:
 - If a concept is educational or technical, show it through a visible action and one plain sentence, not a lecture.
 - For lab scenes, keep the lab clean and believable: gloves, sterile bench, incubator, microscope, pipette, petri dish, and careful movement. Dance can happen as small safe steps, shoulder moves, or rhythm while working, not reckless lab behavior.
 - Before turning a new story into a Xiaoyunque prompt, run a critic pass using `lalachan-story-critic` when available. Fix exact awkward lines first, then write the final prompt.
+- For multi-clip continuations, keep a short boundary record of the actual
+  location/landmark, cast positions, prop custody and unfinished action. Use a
+  clean accepted boundary frame plus individual identity references. Match the
+  next opening to that state, give each clip one main action, and show travel
+  between places. Review adjacent clips together before the next paid submit;
+  adapt to rendered events rather than repeating an action already completed.
+  Express this as concise positive staging, not a growing negative checklist.
 
 Never paste local filesystem paths into the Xiaoyunque prompt. Paths are only
 for the browser file upload command. The prompt should refer only to actually
