@@ -20,6 +20,34 @@ def save(path, value):
     temporary.replace(path)
 
 
+def reference_frames(spec, token):
+    loop_reference = spec.get("loop_reference", True)
+    if not isinstance(loop_reference, bool):
+        raise ValueError("loop_reference must be a boolean")
+    return {"first_frame": token, "last_frame": token if loop_reference else None}
+
+
+def render_prompt(spec):
+    styles = {
+        "figurine_3d": "Exact reference identity and clothing, tactile cute 3D figurines.",
+        "illustrated_2d": (
+            "Hand-drawn 2D character animation matching the reference identity, outfit, "
+            "warm thick outlines and flat soft colors throughout. Expressive face changes, "
+            "articulated limbs and gentle squash-and-stretch with clear anticipation and settling. "
+            "Keep the illustrated 2D style throughout the movement."
+        ),
+    }
+    style = spec.get("visual_style", "figurine_3d")
+    if style not in styles:
+        raise ValueError("visual_style must be figurine_3d or illustrated_2d")
+    ending = ("Settle back into the starting pose for a gentle loop. "
+              if spec.get("loop_reference", True) else "Finish in a readable held reaction. ")
+    return (spec["action"] + " " + styles[style] + " "
+            "Locked camera, plain white background. Clear expressive character action, not camera wobble. "
+            "All heads and hands remain visible. " + ending +
+            "No text or subtitles. Quiet movement sounds only, no speech.")
+
+
 def with_supports(spec):
     """Use a declared seat/support before falling back to standing on the floor."""
     entities = copy.deepcopy(spec["entities"])
@@ -56,10 +84,14 @@ def main():
     parser.add_argument("spec", type=Path)
     parser.add_argument("--api", default="http://127.0.0.1:8190")
     parser.add_argument("--font", type=Path, required=True)
+    parser.add_argument("--native-only", action="store_true",
+                        help="Download and review native video; package captions separately")
     args = parser.parse_args()
     if urlparse(args.api).hostname not in {"localhost", "127.0.0.1", "::1"}:
         parser.error("only a local H3 API is allowed")
     spec = json.loads(args.spec.read_text())
+    reference_frames(spec, "validation-only")
+    render_prompt(spec)
     if not re.fullmatch(r"[a-z0-9][a-z0-9-]*", spec.get("id", "")):
         parser.error("id must be a lowercase, hyphenated filename slug")
     if spec.get("reference_approved") is not True:
@@ -117,11 +149,8 @@ def run(args, spec, reference, out, fingerprint):
                 motions.append({"entity": entity["id"], "kind": kind, "description": description})
         request = {"mode": "i2v", "profile": "quality_int8_offload", "width": 512,
                    "height": 512, "duration": 5, "seed": spec["seed"],
-                   "first_frame": token, "last_frame": token, "audio_intent": "ambient", "dialogue": [],
-                   "prompt": spec["action"] + " Exact reference identity and clothing, tactile cute 3D figurines. "
-                   "Locked camera, plain white background. Clear expressive character action, not camera wobble. "
-                   "All heads and hands remain visible. Settle back into the starting pose for a gentle loop. "
-                   "No text or subtitles. Quiet movement sounds only, no speech.",
+                   **reference_frames(spec, token), "audio_intent": "ambient", "dialogue": [],
+                   "prompt": render_prompt(spec),
                    "physical_contract": {"entities": entities, "contacts": contacts,
                                          "motions": motions}}
         save(out / "request.json", request)
@@ -165,7 +194,7 @@ def run(args, spec, reference, out, fingerprint):
             part.replace(video)
     subprocess.run(["ffmpeg", "-v", "error", "-i", str(video), "-f", "null", "-"], check=True)
     gif = out / (spec["id"] + ".gif")
-    if not gif.exists():
+    if not args.native_only and not gif.exists():
         subprocess.run([sys.executable, str(Path(__file__).with_name("video_to_wechat_gif.py")),
                         str(video), str(gif), "--duration", "5.125", "--speed", "1.25",
                         "--fps", "15", "--label", spec["label"], "--font", str(args.font)], check=True)
@@ -174,8 +203,8 @@ def run(args, spec, reference, out, fingerprint):
         subprocess.run(["ffmpeg", "-v", "error", "-i", str(video), "-vf",
                         "fps=2,scale=192:192,tile=5x2", "-frames:v", "1", str(contact)], check=True)
     save(out / "review-required.json", {"status": "needs_visual_review", "auto_rerender": False,
-                                        "video": video.name, "gif": gif.name})
-    print("Downloaded and packaged; visual review required: " + str(out), flush=True)
+                                        "video": video.name, "gif": gif.name if gif.exists() else None})
+    print("Downloaded; visual review required: " + str(out), flush=True)
 
 
 if __name__ == "__main__":

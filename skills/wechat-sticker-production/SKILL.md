@@ -48,6 +48,11 @@ For this owner, retain every generated candidate, including wrong versions, nati
 
 ## Local animation
 
+For illustrated 2D editions and the reusable four-buddy 2D library, read
+[illustrated 2D stickers](references/illustrated-2d.md). Use the explicit style
+field rather than the renderer's existing 3D default; deliver real character
+animation, not a still image with animated lettering.
+
 Discover the current LocalVideoGen API and its resource policy from the installed repository. Use its validated image upload and render API, keep the accepted reference as first frame, optionally as final frame for a loop, and save the job ID immediately. Submit each attempt once, monitor that same ID, download its observed output, and fully decode/sample it. A corrective attempt requires inspection and a new versioned spec explaining the change; the owner's local correction permission above is not transport-retry permission.
 
 Check RAM, swap, GPU and queue before rendering. Small output dimensions do not eliminate model-loading memory. Keep the normal resource gates; clean up only verified owned idle runtimes. Never close an active VM or another project's service just to fit a render. Stop the render services you launched when finished, while preserving a browser or image viewer needed for user review.
