@@ -7,6 +7,28 @@ description: Create and refine short product-introduction films with LocalVideoG
 
 Show one recognizable problem, one real product action, and a small human payoff. The viewer should understand the app before being asked to download it. Use the product requested, not a montage of the portfolio.
 
+## LazyPromotion defaults
+
+For new videos made in LazyPromotion, use **LocalVideoGen** and the approved
+**illustrated 2D** buddies from
+`/home/lachlan/ProjectsLFS/LALACHAN/assets/characters/2d/v1/{lala,aya,sasa,zhuangzi}.png`.
+Read the LALACHAN character reference guide and map the individual images to
+the actual upload order. Keep one edition throughout; an explicit style request
+or continuation of an accepted film takes precedence. Do not convert old films
+or switch to paid generation just to enforce this default.
+
+In four-buddy fight/action sequences, give **all four an active, consequential
+role** across the sequence, not one fighter with three spectators. Choreograph
+connected actions—attack, cover, rescue, distraction, a tool or environmental
+move—so each buddy helps change the outcome. Vary who leads; those examples
+are not fixed character assignments. Stage clear beats and readable positions,
+not four simultaneous gestures or constant four-person wide shots. Check the
+actual footage for each contribution, continuity and accidental duplicates.
+
+Use the 2D style to pursue expressive movement, richer staging and consistent
+identities. Do not claim it saves compute or guarantees quality without measured
+evidence. Keep real app demonstrations genuine and readable.
+
 ## Choose the smallest operation
 
 - **Accepted film, new icon/title/end card:** edit the existing master. Do not regenerate the performance or re-synthesize voices. Preserve its approved audio and unaffected frames; compare hashes where stream copying allows it.
@@ -17,7 +39,7 @@ Show one recognizable problem, one real product action, and a small human payoff
 ## Creative decisions that matter
 
 - Open with the difficulty or action, not a long logo reveal. Make the benefit visible early.
-- For a four-buddy short, two speakers are often enough. Others can react. Distinct identities do not require four sales pitches.
+- For a four-buddy short, two speakers are often enough. Others can act and react; speaking count is not participation count. Distinct identities do not require four sales pitches.
 - Give dialogue a conversational reason: hesitation, useful observation, small discovery. Short turns, pauses and believable reactions work better than feature lists or exaggerated testimonial claims.
 - Prefer speech generated together with the performance when natural dialogue and timing are wanted. Describe age, warmth and delivery; do not promise exact canonical voice identity without separate evidence.
 - Avoid an old spoken guide containing unrelated words. It can contaminate generated dialogue. A requested voice match needs a clean, qualified reference and a separate listening check.
