@@ -36,6 +36,20 @@ the episode's immediate payoff, and alternate action with brief warmth or
 humor. Clear causality and distinct character choices make the twists work.
 Preserve an owner-approved story; let its readable action determine duration.
 
+## Participation and emotional focus
+
+For a shared conflict, ask what each present buddy visibly does and how it
+affects the situation. Fighting, protecting, noticing and acting, helping or
+escaping can all be meaningful participation. Give waiting or hesitation a
+visible reason when relevant; equal fight time is unnecessary. Carry those
+contributions into actual shot staging and inspect the rendered action.
+
+A quiet relationship scene may need only one or two characters and one feeling.
+Use a specific gesture, pause and reaction; the adventure preference does not
+require a battle, twist or cliffhanger in every short. When studying a popular
+Reel, separate observed craft and public counts from hypotheses about sharing.
+Choose a feeling someone might want to communicate, not a promised like count.
+
 ## Repeated Critique Loop
 
 Never accept the first draft for a LALACHAN story. Run a critique loop before
