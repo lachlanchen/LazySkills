@@ -57,56 +57,37 @@ $LAZYSKILLS_ROOT/docs/lalachan-story-video-generation-handoff.md
 
 ## LALACHAN Defaults
 
-Default uploaded image order in the LALACHAN project:
+Select the visual edition before preparing uploads. Normal 3D figurine work
+uses the root files; explicitly requested 2D animation uses the individual 2D
+PNGs. Keep that edition across shots.
 
-```text
-words-card.jpg
-LazyingArtRobot.png
-display.png
-patchwork-leather-notebook-luxury-clean-v2.png
-raraxia.jpeg
-ayachan.png
-sasakun.jpeg
-Trio.png
-```
+| Character | 3D path relative to LALACHAN | 2D path relative to LALACHAN |
+| --- | --- | --- |
+| Lala Xia / 啦啦侠, giant panda | `raraxia.jpeg` | `assets/characters/2d/v1/lala.png` |
+| Aya Chan / 阿芽酱, red panda | `ayachan.png` | `assets/characters/2d/v1/aya.png` |
+| Sasa Kun / 飒飒君, human boy in panda hood | `sasakun.jpeg` | `assets/characters/2d/v1/sasa.png` |
+| Zhuangzi / 庄子机器人, articulated single-camera robot | `LazyingArtRobot.png` | `assets/characters/2d/v1/zhuangzi.png` |
 
-Prompt labels after upload:
+Read `$LALACHAN_ROOT/references/characters/four-buddy-reference-guide.md` for
+identity details, numbered 2D exports, style prompts and cross-project handoffs.
+The 2D sheet is for style review. Upload individual character files; `Trio.png`
+is not part of the default set.
 
-- 图1: words card / 小白屏学习卡.
-- 图2: `LazyingArtRobot.png`, robot `庄子`; keep the LazyingArt logo on chest.
-- 图3: LightMind AI glasses.
-- 图4: handmade patchwork notebook.
-- 图5: `raraxia.jpeg`, individual 啦啦侠 / Rara Xia reference.
-- 图6: `ayachan.png`, individual 阿芽酱 / Aya Chan reference.
-- 图7: `sasakun.jpeg`, individual 飒飒君 / Sasa Kun reference.
-- 图8: `Trio.png`, three-character group identity reference.
+Default full-episode attachment order, with labels verified after upload:
 
-No-Trio variant:
+1. Episode-specific words card generated from `words-card.jpg`.
+2. Zhuangzi individual reference in the chosen edition; preserve its chest emblem.
+3. `display.png`, LightMind AI glasses.
+4. `patchwork-leather-notebook-luxury-clean-v2.png`, notebook prop.
+5. Lala individual reference in the chosen edition.
+6. Aya individual reference in the chosen edition.
+7. Sasa individual reference in the chosen edition.
 
-- If the user says not to upload `Trio.png`, skip only `Trio.png`.
-- Still upload supporting assets unless separately excluded: `words-card.jpg`,
-  `LazyingArtRobot.png`, `display.png`, and
-  `patchwork-leather-notebook-luxury-clean-v2.png`.
-- Still upload the three individual character references: `raraxia.jpeg`,
-  `ayachan.png`, and `sasakun.jpeg`.
-- In that case labels stop at 图7 and the prompt must not mention 图8 or a
-  group-reference image. "No Trio" does not mean "only character photos" unless
-  the user explicitly says only to upload character photos.
-
-Characters:
-
-- `啦啦侠 / Lala Xia`: use `raraxia.jpeg` as the primary individual reference.
-- `阿芽酱 / Aya Chan`: use `ayachan.png` as the primary individual reference.
-- `飒飒君 / Sasa Kun`: use `sasakun.jpeg` as the primary individual reference.
-- `Trio.png`: optional group identity/reference image when uploaded; omit it
-  when the user requests no Trio.
-- `words-card.jpg`: words card / 小白屏学习卡 style reference.
-- `LazyingArtRobot.png`: robot `庄子`; preserve the LazyingArt chest logo.
-- `display.png`: LightMind AI glasses.
-- `patchwork-leather-notebook-luxury-clean-v2.png`: handmade patchwork notebook/tool prop.
-- `raraxia.jpeg`: individual 啦啦侠 / Rara Xia reference.
-- `ayachan.png`: individual 阿芽酱 / Aya Chan reference.
-- `sasakun.jpeg`: individual 飒飒君 / Sasa Kun reference.
+Keep the supporting props unless the task changes their scope. A cast-only
+export has a different order. Derive prompt labels from the actual visible
+attachments, including any renumbering in each shot's render card. In 2D,
+animate faces and articulated actions in the approved drawn style; in 3D,
+preserve the figurine appearance. The props do not override the cast style.
 
 Main-cast identity is a paid-submit blocker:
 
@@ -149,8 +130,8 @@ Story writing rule:
 
 Never paste local filesystem paths into the Xiaoyunque prompt. Paths are only
 for the browser file upload command. The prompt should refer only to actually
-uploaded labels: normally `图1` through `图8`, or `图1` through `图7` when
-`Trio.png` is intentionally omitted. Explicitly ask not to draw file names or
+uploaded labels: normally `图1` through `图7` for the full-episode set above.
+Explicitly ask not to draw file names or
 paths into the video.
 
 Always upload the actual reference image files before generation. Do not treat
@@ -264,12 +245,17 @@ scripts/xyq_cdp_browser.py --cdp-url "$XYQ_CDP_URL" visible PAGE_ID
 
 ```bash
 scripts/xyq_cdp_browser.py --cdp-url "$XYQ_CDP_URL" upload-images-verify PAGE_ID \
-  words-card.jpg \
-  LazyingArtRobot.png display.png patchwork-leather-notebook-luxury-clean-v2.png \
-  raraxia.jpeg ayachan.png sasakun.jpeg Trio.png \
+  "$EPISODE_WORDS_CARD" \
+  "$LALACHAN_ROOT/LazyingArtRobot.png" "$LALACHAN_ROOT/display.png" \
+  "$LALACHAN_ROOT/patchwork-leather-notebook-luxury-clean-v2.png" \
+  "$LALACHAN_ROOT/raraxia.jpeg" "$LALACHAN_ROOT/ayachan.png" \
+  "$LALACHAN_ROOT/sasakun.jpeg" \
   --timeout 180 \
   --screenshot outputs/xyq-run/after-upload.png
 ```
+
+The example is for 3D. For a 2D episode, use the four mapped 2D files instead,
+retaining the same character roles and the episode's prepared props.
 
 5. Fill the saved prompt:
 

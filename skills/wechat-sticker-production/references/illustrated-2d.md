@@ -1,9 +1,12 @@
 # Illustrated 2D Stickers
 
 Use the approved versioned four-buddy library at
-`LALACHAN/assets/characters/2d/v1/` for this owner's 2D work. The existing 3D
-figurine references remain a separate style. The sheet is the style authority;
-individual transparent PNGs identify Lala, Aya, Sasa and Zhuangzi.
+`LALACHAN/assets/characters/2d/v1/` for this owner's 2D work. Use `lala.png`,
+`aya.png`, `sasa.png` and `zhuangzi.png` as individual character references.
+The sheet is the style authority, including its approved bottom-row reactions.
+For normal 3D work, use root `raraxia.jpeg`, `ayachan.png`, `sasakun.jpeg` and
+`LazyingArtRobot.png` instead. The complete current-use guide is
+`LALACHAN/references/characters/four-buddy-reference-guide.md`.
 
 `scripts/export_2d_character_library.py OUTPUT --cast aya lala` in LALACHAN
 verifies hashes and creates a numbered cast with a path-free upload-order note.

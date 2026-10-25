@@ -23,7 +23,15 @@ the phrase/character list. Balance common replies across all four over successiv
 series, including more thanks and encouragement for Lala. Examples are flexible,
 not a fixed list or a requirement to give every character every word in one pack.
 
-For LALACHAN, inspect the canonical individual images first. Aya is the red panda in a navy sailor outfit; Lala is the black-and-white panda. Preserve the user's approved reference, including prior versions. Do not force every buddy or branded prop into every sticker.
+For LALACHAN, choose the visual edition and inspect its individual images first.
+3D references are at the repository root: `raraxia.jpeg` (Lala), `ayachan.png`
+(Aya), `sasakun.jpeg` (Sasa), `LazyingArtRobot.png` (Zhuangzi). Explicit 2D work
+uses `assets/characters/2d/v1/{lala,aya,sasa,zhuangzi}.png`. Read
+`$LALACHAN_ROOT/references/characters/four-buddy-reference-guide.md` for the
+full mapping, identities and cross-project handoff. Aya is the red panda in a
+navy sailor outfit; Lala is the giant panda; Sasa is a human boy in a panda hood;
+Zhuangzi is the single-camera articulated robot. Preserve approved references
+and choose the characters/props that serve each sticker.
 
 Work one sticker at a time when requested: reference -> user/style acceptance -> local animation -> small-size/loop review -> upload. Planned stickers are not generated stickers. Later cute-angry interactions can form reply pairs such as 哼 / 给你 / 好吧 without becoming hurtful or requiring the full story to understand them.
 
