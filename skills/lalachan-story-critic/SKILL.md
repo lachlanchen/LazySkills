@@ -50,6 +50,10 @@ require a battle, twist or cliffhanger in every short. When studying a popular
 Reel, separate observed craft and public counts from hypotheses about sharing.
 Choose a feeling someone might want to communicate, not a promised like count.
 
+For warm 2D comedy and learning from accepted films, read
+[successful scene notes](references/successful-2d-scenes.md). Use concrete
+gestures and reactions, and scale furniture to the characters where useful.
+
 ## Repeated Critique Loop
 
 Never accept the first draft for a LALACHAN story. Run a critique loop before
