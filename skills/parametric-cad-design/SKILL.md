@@ -45,6 +45,18 @@ When designing or revising a hollow belt-driven rotary stage, read `references/h
 - When a design is ready to print, create a timestamped run folder inside the design, such as `runs/run-N-short-name-print-ready-YYYYMMDDTHHMMSSZ/`, and put the direct print outputs there instead of leaving them only in root `artifacts/`. Also make a clean Nutstore print folder such as `/home/lachlan/Nutstore Files/Projects/LabCanvas/<design>/run-N-short-name-print-ready-YYYYMMDDTHHMMSSZ/` with `PRINT_THIS_*.stl`, `PRINT_THIS_*.step`, `PRINT_THIS_*.3mf`, manifest, README, separate part STEP files when relevant, and render PNGs for both the final single assembly and the exact direct-print layout. Loose STEP copies are useful for Shapr handoff, but print-ready folders prevent choosing the wrong run.
 - Do not expose source assembly coordinates or a multi-object edit package as the default slicer file. Rigidly orient every `PRINT_THIS` model, center it in XY, place its true printable base at `Z=0`, and package one intended print as one 3MF model/build object. When the source B-rep stores thread teeth and roots as overlapping solids, boolean-union them only in the print copy and verify one valid watertight solid; keep the exact multi-solid STEP unchanged. Validate `min_z = 0`, at least one triangle crossing the first layer, one 3MF build item, and a rendered build-plate view. Keep source-coordinate/multi-solid evidence under `artifacts/` or an archived run.
 
+## Hardware Handoff
+
+For a build that needs purchased hardware, include a complete BOM with exact
+thread, length, head shape/envelope, washer stack, nut type and quantities.
+Common-size assortments are useful only when their verified contents cover the
+design; supplement missing lengths instead of substituting unsafe screws.
+Check known inventory and existing cart entries before procurement. Follow any
+explicit owner authorization for cart preparation, verify exact variants and
+quantities, and retain the shopping manifest with the design. Cart preparation
+never implies permission for checkout, ordering or payment; do not turn an
+owner-specific standing preference into authorization in another workspace.
+
 ## Layer-Shift Triage
 
 When a physical print develops a lateral staircase, do not assume the CAD was
