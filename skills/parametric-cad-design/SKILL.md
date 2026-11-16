@@ -22,6 +22,7 @@ Use this skill for agent-assisted mechanical design where the deliverable should
 When Shapr3D archives, OpenHI/Nature geometry, C-mount, optical holders, or sensor/PCB holders are involved, read `references/shapr3d-cad-patterns.md` after this file.
 When a PCB photo, sketch, rear view, component view, or mating face controls an asymmetric holder, also read `references/pcb-sensor-mating-face-orientation.md`.
 When joining round OpenHI/4F tubes inside a thin square envelope, also read `references/openhi-square-tube-connectors.md`.
+When designing or revising a hollow belt-driven rotary stage, read `references/hollow-rotary-stage.md` for the field-assembled OpenHI example, bearing retention, tool access, fastener stack-ups and optional parallel motor plates.
 
 ## Geometry Discipline
 
