@@ -51,6 +51,21 @@ a different motor, belt or bearing.
 
 ## Manufacturing and fasteners
 
+For optical inserts, use the measured optic thickness rather than a placeholder
+or approximate catalog value. The later GSP-25 update uses a measured 4.5 mm
+optic and two intentionally shallow 2 mm recesses: the cap floats with a 0.5 mm
+seam gap, or 0.7 mm with two 0.1 mm peripheral pads. Never tighten such a gap
+closed against glass. Recess depth is not the overall part thickness; preserve
+adequate retaining lips and fastener-pocket roofs. Document both-side contact,
+aperture, radial fit, screw-tip clearance and the changed installed height.
+
+Direct screws in printed plastic and through-bolts with nuts are both valid
+choices; do not turn an owner's consideration of one into an exclusive rule.
+A 2.5 mm pilot is a useful example for tapping M3 x 0.5, not a universal
+"diameter minus 0.5" rule for self-tapping/thread-forming screws. Select the
+pilot for the actual screw and material. Fit-test coupons are optional test
+pieces, not installed parts; explain their purpose when they are delivered.
+
 A broad unsupported flange was revised to a 6 mm-high, 45-degree annular
 transition and a 0.2 mm radial lip. The cup prints upright. This reduced the
 measured steep downward mesh area by about 85%; it did not prove that every
